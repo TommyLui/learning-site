@@ -7,7 +7,7 @@ import type { Course } from '../../../data/courses';
 import { withBase } from '../../../utils/paths';
 
 export function getStaticPaths() {
-  return getCourses('zh').filter((course) => course.slug !== 'spring-boot').map((course) => ({
+  return getCourses('zh').filter((course) => !['spring-boot', 'react', 'mysql'].includes(course.slug)).map((course) => ({
     params: { slug: course.slug },
     props: { course },
   }));
@@ -33,7 +33,7 @@ function getLessonHref(lessonNumber: string) {
 ---
 
 <BaseLayout
-  title={`${course.title} · Tommy 的學習筆記`}
+  title={`${course.title} · Tommy's Notes`}
   description={course.subtitle}
   currentCourse={course}
   locale={locale}

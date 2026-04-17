@@ -11,7 +11,11 @@ function getLocalePrefix(locale: SiteLocale) {
 }
 
 export function getCoursePath(courseSlug: string) {
-  return courseSlug === 'spring-boot' ? '/courses/spring-boot/lessons' : `/courses/${courseSlug}`;
+  if (courseSlug === 'spring-boot' || courseSlug === 'react' || courseSlug === 'mysql') {
+    return `/courses/${courseSlug}/lessons`;
+  }
+
+  return `/courses/${courseSlug}`;
 }
 
 export function withBase(path: string, locale: SiteLocale = 'en') {
