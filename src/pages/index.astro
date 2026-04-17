@@ -1,30 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CourseCard from '../components/CourseCard.astro';
-import LessonRow from '../components/LessonRow.astro';
-import { courses, recentLessons } from '../data/courses';
-import { withBase } from '../utils/paths';
+import { courses } from '../data/courses';
 ---
 
 <BaseLayout
   title="Tommy's Learning Notes"
   description="Use teaching content to record and organize the learning process for React, Spring Boot, and MySQL."
+  showPrimaryNav={false}
 >
   <section class="hero hero--home">
     <div class="hero-backdrop"></div>
     <div class="container hero-inner hero-inner--home">
       <div class="hero-copy">
         <p class="eyebrow">Personal teaching materials</p>
-        <h1>用教學內容，整理我真正學會的東西。</h1>
+        <h1 class="home-hero-title">用教學內容，整理我真正學會的東西。</h1>
         <p class="lead">
           這個網站不是日記，而是把每次學到的觀念、範例與整理，寫成可以回頭複習的教學內容。
           每一篇內容都是我的學習紀錄，也是未來能再次使用的知識資產。
         </p>
-
-        <div class="hero-actions">
-          <a class="hero-action hero-action--primary" href={withBase('/courses')}>Browse all tracks</a>
-          <a class="hero-action" href={withBase('/courses/spring-boot/lessons')}>Read Spring Boot lessons</a>
-        </div>
       </div>
     </div>
   </section>
@@ -32,20 +26,7 @@ import { withBase } from '../utils/paths';
   <section class="floating-panel-wrap">
     <div class="container">
       <div class="main-panel">
-        <section class="panel-section panel-section--first" id="recent-lessons">
-          <div class="section-heading section-heading--editorial">
-            <h2>最新整理</h2>
-            <p>最近補完或重新整理的教學內容。</p>
-          </div>
-
-          <div class="recent-list recent-list--editorial">
-            {recentLessons.map((lesson) => (
-              <LessonRow lesson={lesson} />
-            ))}
-          </div>
-        </section>
-
-        <section class="panel-section" id="course-series">
+        <section class="panel-section panel-section--first" id="course-series">
           <div class="section-heading section-heading--editorial">
             <h2>學習主題</h2>
             <p>目前用三條主題線持續整理我的學習內容。</p>

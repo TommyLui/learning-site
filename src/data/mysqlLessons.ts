@@ -1,0 +1,397 @@
+export type CourseLessonArticle = {
+  lesson: number;
+  slug: string;
+  title: string;
+  summary: string;
+  moduleTitle: string;
+  intro: string;
+  learningPoints: string[];
+  lessonNotes: string[];
+  exampleLanguage: string;
+  exampleCode: string;
+  practice: string[];
+  reasons: string[];
+  mistakes: string[];
+  takeaways: string[];
+  references: { label: string; url: string }[];
+};
+
+export const mysqlLessons: CourseLessonArticle[] = [
+  {
+    lesson: 1,
+    slug: 'lesson-1',
+    title: 'What a relational database is',
+    summary: 'Learn tables, rows, columns, and why relational structure matters.',
+    moduleTitle: 'Module 1 · Query basics',
+    intro: '這一課先建立最基礎的資料庫心智模型：資料不是一整包放著，而是有結構地存放在 tables 中。',
+    learningPoints: [
+      '理解 table、row、column 的基本概念。',
+      '知道 relational database 為什麼適合結構化資料。',
+      '能把日常資料問題轉成資料表思維。',
+    ],
+    lessonNotes: [
+      'Relational database 把資料以表格形式存放，每一列代表一筆記錄，每一欄代表一種欄位屬性。',
+      '真正重要的不是表格長得像 Excel，而是資料有一致結構，這讓查詢、排序、關聯和約束變得可控。',
+      '當你開始用 table 思考會員、訂單、課程、付款等資料時，就會慢慢理解資料庫為什麼是後端應用的基礎。',
+    ],
+    exampleLanguage: 'sql',
+    exampleCode: "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  name VARCHAR(100),\n  email VARCHAR(255)\n);\n\nINSERT INTO users (id, name, email)\nVALUES (1, 'Tommy', 'tommy@example.com');",
+    practice: [
+      '把一個簡單系統，例如圖書館或課程平台，拆成 3 到 5 張資料表。',
+      '指出每張表的 columns 分別代表什麼。',
+      '寫出你認為每張表最重要的一個 primary key。',
+    ],
+    reasons: [
+      '如果不先理解表格結構，後面查詢與 joins 都只會是記語法。',
+      '資料庫設計的核心是資料模型，而不是單條 SQL。',
+    ],
+    mistakes: [
+      '把 relational database 當成純粹存資料的黑盒子。',
+      '只看欄位名稱，不思考每張表真正代表的實體。',
+    ],
+    takeaways: [
+      '資料庫的核心是有結構、有關係的資料模型。',
+      'table、row、column 是後面所有 SQL 操作的基礎語言。',
+    ],
+    references: [
+      { label: 'MySQL docs · Tutorial', url: 'https://dev.mysql.com/doc/refman/8.4/en/tutorial.html' },
+      { label: 'MySQL docs · Data types', url: 'https://dev.mysql.com/doc/refman/8.4/en/data-types.html' },
+    ],
+  },
+  {
+    lesson: 2,
+    slug: 'lesson-2',
+    title: 'SELECT, WHERE, and ORDER BY',
+    summary: 'Filter and sort data using the most common query patterns.',
+    moduleTitle: 'Module 1 · Query basics',
+    intro: '查詢是你和資料庫最常見的互動方式，而 SELECT、WHERE、ORDER BY 是最核心的基本功。',
+    learningPoints: [
+      '知道 SELECT 怎麼取回指定欄位資料。',
+      '理解 WHERE 如何篩選資料。',
+      '能用 ORDER BY 排序查詢結果。',
+    ],
+    lessonNotes: [
+      'SELECT 決定你要看哪些欄位，WHERE 決定哪些資料列要被留下，ORDER BY 決定結果要怎麼排序。',
+      '這三個語法常常一起出現，因為真實查詢很少只是把整張表原封不動取回。',
+      '真正重要的是先想清楚資料問題：你要找誰、條件是什麼、你希望結果用什麼順序呈現。',
+    ],
+    exampleLanguage: 'sql',
+    exampleCode: "SELECT name, email\nFROM users\nWHERE name LIKE 'T%'\nORDER BY name ASC;",
+    practice: [
+      '寫一條查詢，篩選出價格大於指定值的商品。',
+      '把結果依照建立時間由新到舊排序。',
+      '改成只取回你真正需要的欄位，不要用 `SELECT *`。',
+    ],
+    reasons: [
+      '大部分資料庫互動都是從查詢開始。',
+      '查詢基礎不穩，後面 joins 和 subqueries 會更難掌握。',
+    ],
+    mistakes: [
+      '習慣性使用 `SELECT *`，沒有控制取回欄位。',
+      '條件和排序混在一起想，導致查詢需求不清楚。',
+    ],
+    takeaways: [
+      '查詢要先想資料需求，再寫語法。',
+      'SELECT、WHERE、ORDER BY 是最常用也最值得熟練的 SQL 基本組合。',
+    ],
+    references: [
+      { label: 'MySQL docs · SELECT statement', url: 'https://dev.mysql.com/doc/refman/8.4/en/select.html' },
+      { label: 'MySQL docs · Pattern matching', url: 'https://dev.mysql.com/doc/refman/8.4/en/pattern-matching.html' },
+    ],
+  },
+  {
+    lesson: 3,
+    slug: 'lesson-3',
+    title: 'INSERT, UPDATE, and DELETE',
+    summary: 'Modify data safely and understand how write operations affect tables.',
+    moduleTitle: 'Module 1 · Query basics',
+    intro: '這一課從「讀資料」走到「改資料」，也就是資料庫真正會影響系統狀態的地方。',
+    learningPoints: [
+      '理解 INSERT、UPDATE、DELETE 的用途。',
+      '知道修改資料時應該先確認條件。',
+      '建立對資料寫入風險的基本警覺。',
+    ],
+    lessonNotes: [
+      'INSERT 用來新增資料，UPDATE 修改現有資料，DELETE 刪除資料。這些操作看起來簡單，但因為會真正改變資料狀態，所以風險也比較高。',
+      '尤其 UPDATE 和 DELETE，如果沒有 WHERE 條件，很容易一次影響整張表。',
+      '因此，寫入類操作的基本習慣是：先想資料範圍、先確認條件、必要時先用 SELECT 預看受影響的資料。',
+    ],
+    exampleLanguage: 'sql',
+    exampleCode: "INSERT INTO users (id, name, email)\nVALUES (2, 'Amy', 'amy@example.com');\n\nUPDATE users\nSET email = 'amy.liu@example.com'\nWHERE id = 2;\n\nDELETE FROM users\nWHERE id = 2;",
+    practice: [
+      '新增一筆假資料到測試表。',
+      '先用 SELECT 確認範圍，再做一次 UPDATE。',
+      '寫下沒有 WHERE 的 UPDATE / DELETE 會有什麼風險。',
+    ],
+    reasons: [
+      '真實系統的大多數資料錯誤都出現在寫入與更新。',
+      '越早建立安全操作習慣，越不容易在實務環境出事。',
+    ],
+    mistakes: [
+      '沒有先確認受影響資料就直接 UPDATE。',
+      '測試環境和正式環境的 SQL 操作習慣完全不同。',
+    ],
+    takeaways: [
+      '改資料比讀資料更需要紀律。',
+      '對 UPDATE 和 DELETE，WHERE 幾乎永遠是第一件要注意的事。',
+    ],
+    references: [
+      { label: 'MySQL docs · INSERT statement', url: 'https://dev.mysql.com/doc/refman/8.4/en/insert.html' },
+      { label: 'MySQL docs · UPDATE statement', url: 'https://dev.mysql.com/doc/refman/8.4/en/update.html' },
+    ],
+  },
+  {
+    lesson: 4,
+    slug: 'lesson-4',
+    title: 'Understanding INNER JOIN and LEFT JOIN',
+    summary: 'Combine related rows across tables and understand the difference between common join types.',
+    moduleTitle: 'Module 2 · Relationships and joins',
+    intro: 'joins 是 relational database 最能展現「關聯」價值的地方，因為它讓你從多張表中拼出真正有意義的資訊。',
+    learningPoints: [
+      '理解 JOIN 的基本目的。',
+      '知道 INNER JOIN 和 LEFT JOIN 的差別。',
+      '能看懂多表資料如何連接。',
+    ],
+    lessonNotes: [
+      'JOIN 的本質是：依照共同關係，把多張表中的資料連起來。',
+      'INNER JOIN 只保留兩邊都對得上的資料，而 LEFT JOIN 會保留左表所有資料，即使右表沒有對應也會留下。',
+      '這不是單純語法選擇，而是你對資料完整性與商業需求的判斷：你要只看配對成功的資料，還是連沒有對到的也一起保留？',
+    ],
+    exampleLanguage: 'sql',
+    exampleCode: "SELECT u.name, o.order_number\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id\nORDER BY u.name;",
+    practice: [
+      '建立 users 與 orders 兩張表的簡化版本。',
+      '各寫一條 INNER JOIN 和 LEFT JOIN，比較結果差異。',
+      '找出哪一種 join 更適合顯示「尚未下單會員」名單。',
+    ],
+    reasons: [
+      '大部分真實商業資料都分散在多張表，不會只待在一張表裡。',
+      '不理解 joins，就很難真正使用 relational database 的價值。',
+    ],
+    mistakes: [
+      '只背 join 語法，卻不知道結果集為什麼長那樣。',
+      '寫錯 join condition，導致資料倍增或錯配。',
+    ],
+    takeaways: [
+      'join 的重點不是語法，而是資料關係。',
+      'INNER JOIN 和 LEFT JOIN 的差別，決定你最終看到的是什麼資料。',
+    ],
+    references: [
+      { label: 'MySQL docs · JOIN clause', url: 'https://dev.mysql.com/doc/refman/8.4/en/join.html' },
+      { label: 'MySQL docs · Example foreign keys', url: 'https://dev.mysql.com/doc/refman/8.4/en/create-table-foreign-keys.html' },
+    ],
+  },
+  {
+    lesson: 5,
+    slug: 'lesson-5',
+    title: 'Primary keys and foreign keys',
+    summary: 'Use keys to enforce relationships and protect data integrity.',
+    moduleTitle: 'Module 2 · Relationships and joins',
+    intro: '關聯資料庫不是因為有多張表就叫 relational，而是因為這些表之間有明確、可驗證的關係。',
+    learningPoints: [
+      '理解 primary key 和 foreign key 的角色。',
+      '知道 keys 如何幫助建立資料關係。',
+      '認識資料完整性在設計上的重要性。',
+    ],
+    lessonNotes: [
+      'Primary key 用來唯一識別每一列資料，而 foreign key 表示另一張表中的某筆資料參考了這個 key。',
+      '這些 keys 不只是方便 joins，更重要的是能建立資料完整性，避免出現沒有對應會員的訂單，或沒有對應課程的評論。',
+      '當 key 設計清楚時，你對資料模型的掌控也會更強。',
+    ],
+    exampleLanguage: 'sql',
+    exampleCode: "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  name VARCHAR(100)\n);\n\nCREATE TABLE orders (\n  id INT PRIMARY KEY,\n  user_id INT,\n  FOREIGN KEY (user_id) REFERENCES users(id)\n);",
+    practice: [
+      '設計兩張有 parent-child 關係的資料表。',
+      '標出 primary key 與 foreign key 應該放在哪裡。',
+      '思考如果沒有 foreign key，資料會出現哪些問題。',
+    ],
+    reasons: [
+      '資料完整性不是可有可無，它會直接影響系統可信度。',
+      '沒有 key，後面 joins 和 schema 設計會變得很脆弱。',
+    ],
+    mistakes: [
+      '把 key 當成純技術欄位，而不是資料模型核心。',
+      '只想查得出資料，沒想過資料是否能維持一致。',
+    ],
+    takeaways: [
+      'primary key 負責唯一識別，foreign key 負責建立關係。',
+      'keys 是 relational schema 穩定運作的基礎。',
+    ],
+    references: [
+      { label: 'MySQL docs · Primary keys', url: 'https://dev.mysql.com/doc/refman/8.4/en/constraint-primary-key.html' },
+      { label: 'MySQL docs · Foreign keys', url: 'https://dev.mysql.com/doc/refman/8.4/en/create-table-foreign-keys.html' },
+    ],
+  },
+  {
+    lesson: 6,
+    slug: 'lesson-6',
+    title: 'One-to-many thinking through real examples',
+    summary: 'Translate app data into cleaner relational structures.',
+    moduleTitle: 'Module 2 · Relationships and joins',
+    intro: '一對多關係是資料建模中最常見的模式，真正重要的是學會把現實世界問題轉成關聯結構。',
+    learningPoints: [
+      '理解 one-to-many 關係在資料設計中的意義。',
+      '知道怎麼把 app domain 轉成 tables。',
+      '避免把重複資訊塞在同一張表。',
+    ],
+    lessonNotes: [
+      '會員和訂單、課程和章節、文章和留言，這些都屬於典型的一對多關係。',
+      '當你能辨認這些關係，就比較不會把多筆子資料硬塞在同一列裡，造成設計混亂。',
+      '這一課的目標是讓你從需求描述裡看出資料關係，而不是只在圖表上背型態名稱。',
+    ],
+    exampleLanguage: 'text',
+    exampleCode: "users\n  id\n  name\n\norders\n  id\n  user_id\n  order_number\n\nOne user -> many orders",
+    practice: [
+      '為一個課程平台畫出 users、courses、lessons 三者的關係。',
+      '把原本混在一張表裡的重複資料拆成合理的一對多設計。',
+      '說明為什麼這樣的設計比單一大表更好。',
+    ],
+    reasons: [
+      '資料關係看不懂，schema 就很難設計得好。',
+      '一對多是最常見的資料模型模式。',
+    ],
+    mistakes: [
+      '把多筆子資料塞進單一欄位。',
+      '沒有先分清主體實體與附屬實體。',
+    ],
+    takeaways: [
+      '一對多不是抽象名詞，而是實際資料建模的常見基礎。',
+      '看懂需求裡的實體與關係，比背 schema 術語更重要。',
+    ],
+    references: [
+      { label: 'MySQL docs · CREATE TABLE', url: 'https://dev.mysql.com/doc/refman/8.4/en/create-table.html' },
+      { label: 'MySQL docs · InnoDB and foreign keys', url: 'https://dev.mysql.com/doc/refman/8.4/en/innodb-foreign-key-constraints.html' },
+    ],
+  },
+  {
+    lesson: 7,
+    slug: 'lesson-7',
+    title: 'Normalization and practical schema design',
+    summary: 'Reduce duplication while keeping data understandable.',
+    moduleTitle: 'Module 3 · Design and performance',
+    intro: '正規化的本質不是考試題，而是幫你減少重複資料、降低修改風險，讓 schema 更穩。',
+    learningPoints: [
+      '理解 normalization 的核心目的。',
+      '知道為什麼重複資料會帶來風險。',
+      '能在實務中做出合理的 schema 拆分。',
+    ],
+    lessonNotes: [
+      'Normalization 是一種思考資料拆分的方式，目標是讓每份資料只在最合理的地方保存一次。',
+      '如果同樣資訊散落在多個欄位或多張表裡，更新時很容易漏掉，造成不一致。',
+      '實務上不一定追求最理論化的正規化，而是要在查詢效率、可讀性、維護成本之間取得平衡。',
+    ],
+    exampleLanguage: 'text',
+    exampleCode: "Bad\norders\n  order_id\n  user_name\n  user_email\n\nBetter\nusers\n  id\n  name\n  email\n\norders\n  id\n  user_id",
+    practice: [
+      '找一個重複欄位很多的表，重新設計成較乾淨的 schema。',
+      '說明你保留了哪些欄位在原表，哪些拆去別張表。',
+      '思考這次拆分是否會影響查詢複雜度。',
+    ],
+    reasons: [
+      '壞 schema 會讓每次改資料都更危險。',
+      'normalize 的思維能大幅提升資料設計品質。',
+    ],
+    mistakes: [
+      '只背 1NF/2NF/3NF 名稱，卻無法處理實際資料設計。',
+      '為了追求理論完美而讓 schema 失去實用性。',
+    ],
+    takeaways: [
+      'normalize 的目標是讓資料更一致、更好維護。',
+      '實務設計需要在理論與可用性之間平衡。',
+    ],
+    references: [
+      { label: 'MySQL docs · Constraints', url: 'https://dev.mysql.com/doc/refman/8.4/en/constraints.html' },
+      { label: 'MySQL docs · Optimization overview', url: 'https://dev.mysql.com/doc/refman/8.4/en/optimization.html' },
+    ],
+  },
+  {
+    lesson: 8,
+    slug: 'lesson-8',
+    title: 'Indexes and query performance',
+    summary: 'Understand why some queries are fast and others are not.',
+    moduleTitle: 'Module 3 · Design and performance',
+    intro: '效能問題常常不是 SQL 太長，而是資料量一大後，資料庫找資料的方式不對。',
+    learningPoints: [
+      '理解 index 的作用。',
+      '知道什麼情況下該考慮加 index。',
+      '建立基本的查詢效能思維。',
+    ],
+    lessonNotes: [
+      'Index 類似書的目錄，它幫助資料庫更快定位需要的資料，而不是每次都掃描整張表。',
+      '但 index 不是越多越好，因為它也會增加寫入成本與維護成本。',
+      '真正的重點是：知道哪些欄位會常被查詢、排序、過濾，並理解資料量變大後為什麼速度會差很多。',
+    ],
+    exampleLanguage: 'sql',
+    exampleCode: "CREATE INDEX idx_users_email ON users(email);\n\nEXPLAIN SELECT *\nFROM users\nWHERE email = 'tommy@example.com';",
+    practice: [
+      '對常查詢的欄位建立 index，並用 EXPLAIN 觀察差異。',
+      '比較有 index 與沒 index 的查詢計畫。',
+      '寫下哪幾種欄位適合索引，哪幾種不一定適合。',
+    ],
+    reasons: [
+      '資料量一大，效能問題會直接影響產品體驗。',
+      'index 是最常見也最容易被誤用的效能工具之一。',
+    ],
+    mistakes: [
+      '看到慢就先亂加 index。',
+      '沒有理解查詢模式，就直接優化。',
+    ],
+    takeaways: [
+      'index 的目標是幫資料庫更快找到資料。',
+      '優化前要先理解查詢模式和資料量。',
+    ],
+    references: [
+      { label: 'MySQL docs · Optimization and indexes', url: 'https://dev.mysql.com/doc/refman/8.4/en/mysql-indexes.html' },
+      { label: 'MySQL docs · EXPLAIN', url: 'https://dev.mysql.com/doc/refman/8.4/en/explain.html' },
+    ],
+  },
+  {
+    lesson: 9,
+    slug: 'lesson-9',
+    title: 'Preparing MySQL for application development',
+    summary: 'Create a database foundation that works well with backend frameworks.',
+    moduleTitle: 'Module 3 · Design and performance',
+    intro: '最後一課把 MySQL 從單獨練語法，拉回到它在實際應用開發中扮演的角色。',
+    learningPoints: [
+      '知道 MySQL 在 backend app 裡通常怎麼被使用。',
+      '理解 schema、queries、indexes 如何一起支持應用開發。',
+      '建立把資料庫接進真實專案的準備思維。',
+    ],
+    lessonNotes: [
+      '在真實應用裡，MySQL 不只是用來練 SQL，而是和 API、ORM、驗證、交易、權限控制一起工作。',
+      '因此，你需要的不只是會寫查詢，還要有穩定的 schema、可預期的 key 關係、適當的索引，以及容易讓應用程式接上的結構。',
+      '這一課的重點是把前面所有資料模型與查詢觀念，整合成可以進入後端專案的資料庫基礎。',
+    ],
+    exampleLanguage: 'sql',
+    exampleCode: "CREATE TABLE courses (\n  id INT PRIMARY KEY AUTO_INCREMENT,\n  title VARCHAR(255) NOT NULL,\n  level VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE lessons (\n  id INT PRIMARY KEY AUTO_INCREMENT,\n  course_id INT NOT NULL,\n  title VARCHAR(255) NOT NULL,\n  FOREIGN KEY (course_id) REFERENCES courses(id)\n);",
+    practice: [
+      '為一個簡單後端系統設計初始 schema。',
+      '確認每張表的 key、關係與常用查詢需求。',
+      '想像你要把這份 schema 接給 Spring Boot 或 Node app，還缺什麼。',
+    ],
+    reasons: [
+      '資料庫最終是要服務應用系統，而不是停留在教科書層級。',
+      '把資料設計和 app 開發連起來，學習才會真正落地。',
+    ],
+    mistakes: [
+      '只想著 SQL 單句正不正確，忽略整體 schema 是否好接進 app。',
+      '沒有先預想查詢模式就設計資料表。',
+    ],
+    takeaways: [
+      '真正實用的 MySQL 能力，是把 schema、查詢與應用需求一起考慮。',
+      '資料庫設計應該服務真實系統，而不是停留在孤立範例。',
+    ],
+    references: [
+      { label: 'MySQL docs · CREATE DATABASE', url: 'https://dev.mysql.com/doc/refman/8.4/en/create-database.html' },
+      { label: 'MySQL docs · Table design guidelines', url: 'https://dev.mysql.com/doc/refman/8.4/en/storage-requirements.html' },
+    ],
+  },
+];
+
+export function getMySQLLessons() {
+  return mysqlLessons;
+}
+
+export function getMySQLLessonBySlug(slug: string) {
+  return mysqlLessons.find((lesson) => lesson.slug === slug) ?? null;
+}

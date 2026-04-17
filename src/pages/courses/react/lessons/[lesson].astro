@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { courses } from '../../../../data/courses';
+import { getReactLessons } from '../../../../data/reactLessons';
+import type { CourseLessonArticle } from '../../../../data/reactLessons';
 import { withBase } from '../../../../utils/paths';
 
 const course = courses.find((item) => item.slug === 'react');
@@ -9,34 +11,15 @@ if (!course) {
   throw new Error('React course not found');
 }
 
-type CourseLessonEntry = {
-  lesson: number;
-  slug: string;
-  title: string;
-  summary: string;
-  moduleTitle: string;
-};
+interface Props {
+  lesson: CourseLessonArticle;
+  previousLesson: CourseLessonArticle | null;
+  nextLesson: CourseLessonArticle | null;
+  allLessons: CourseLessonArticle[];
+}
 
 export function getStaticPaths() {
-  const course = courses.find((item) => item.slug === 'react');
-
-  if (!course) {
-    throw new Error('React course not found');
-  }
-
-  const allLessons: CourseLessonEntry[] = course.modules.flatMap((module) =>
-    module.lessons.map((lesson) => {
-      const lessonNumber = Number(lesson.number.match(/(\d+)/)?.[1] ?? '1');
-
-      return {
-        lesson: lessonNumber,
-        slug: `lesson-${lessonNumber}`,
-        title: lesson.title,
-        summary: lesson.summary,
-        moduleTitle: module.title,
-      };
-    })
-  );
+  const allLessons = getReactLessons();
 
   return allLessons.map((lesson, index) => ({
     params: { lesson: lesson.slug },
@@ -49,53 +32,14 @@ export function getStaticPaths() {
   }));
 }
 
-interface Props {
-  lesson: CourseLessonEntry;
-  previousLesson: CourseLessonEntry | null;
-  nextLesson: CourseLessonEntry | null;
-  allLessons: CourseLessonEntry[];
-}
-
-const { lesson, previousLesson, nextLesson, allLessons: lessonList } = Astro.props as Props;
-const estimatedMinutes = 5;
+const { lesson, previousLesson, nextLesson, allLessons } = Astro.props as Props;
+const estimatedMinutes = Math.max(4, Math.ceil((lesson.exampleCode.length + lesson.lessonNotes.join(' ').length) / 900));
 const articleSections = [
   { id: 'learning-points', title: 'What you will learn' },
   { id: 'lesson-notes', title: 'Lesson notes' },
-  { id: 'example', title: 'Example direction' },
+  { id: 'example', title: 'Example' },
   { id: 'practice', title: 'Practice' },
-  { id: 'references', title: 'Next step' },
-];
-const learningPoints = [
-  `Understand the core idea behind ${lesson.title}.`,
-  'Know where this lesson fits in the wider React learning path.',
-  'Use this page as a stable draft for future expansion into a full teaching article.',
-];
-const lessonNotes = [
-  `${lesson.title} sits inside ${lesson.moduleTitle} and marks an important part of the React learning flow.`,
-  'This page is now structured like a real article page, even though the final detailed lesson content has not been fully expanded yet.',
-  'When this lesson is expanded later, this section can grow into a full explanation with examples, pitfalls, and implementation notes.',
-];
-const exampleIdeas = [
-  'Build a tiny component or screen that demonstrates this lesson in isolation.',
-  'Keep the first example small enough to understand in one read, then expand to a second version if needed.',
-  'Use naming and file structure that still make sense when the example grows into a medium-sized app.',
-];
-const practice = [
-  `Summarize ${lesson.title} in your own words before writing any code.`,
-  'Create a minimal React example that proves you understand the concept of this lesson.',
-  'Write down one confusion point you still have so it can be expanded in the next revision.',
-];
-const reasons = [
-  'React lessons build on each other, so understanding the place of this lesson helps everything later feel less random.',
-  'A structured lesson page makes it easier to return later and keep expanding the material without rewriting from scratch.',
-];
-const mistakes = [
-  'Jumping straight into code without first understanding what this lesson is trying to teach.',
-  'Treating the lesson title as enough context instead of connecting it back to the surrounding module.',
-];
-const takeaways = [
-  `${lesson.title} is already positioned as part of a full React course, not a loose placeholder.`,
-  'This page is ready to be expanded into a deeper article when you want to continue writing the full lesson.',
+  { id: 'references', title: 'References' },
 ];
 ---
 
@@ -128,8 +72,8 @@ const takeaways = [
               <dd>{lesson.moduleTitle}</dd>
             </div>
             <div>
-              <dt>Status</dt>
-              <dd>Structured draft page</dd>
+              <dt>Focus</dt>
+              <dd>{lesson.learningPoints.join(', ')}</dd>
             </div>
             <div>
               <dt>Read time</dt>
@@ -150,9 +94,9 @@ const takeaways = [
               <div class="content-panel content-panel--editorial note-panel note-article-overview">
                 <div>
                   <p class="eyebrow">Article overview</p>
-                  <h2>這一課已經整理成正式文章頁骨架</h2>
+                  <h2>{lesson.intro}</h2>
                   <p>
-                    雖然 React 單課內容還在逐步補寫，但這頁已經具備完整閱讀結構，後續可以直接把正式教學內容填進來。
+                    這一課已經是正式 React lesson page，包含重點摘要、正文、範例、練習與參考資料，可以直接拿來複習或繼續擴寫。
                   </p>
                 </div>
                 <div class="note-tag-list">
@@ -165,10 +109,10 @@ const takeaways = [
               <div class="content-panel content-panel--editorial note-panel" id="learning-points">
                 <div class="section-heading section-heading--editorial">
                   <h2>What you will learn</h2>
-                  <p>先抓住這一課在 React 主線裡扮演什麼角色。</p>
+                  <p>先用學習目標抓住這一課最值得記住的東西。</p>
                 </div>
                 <ul class="simple-list">
-                  {learningPoints.map((item) => (
+                  {lesson.learningPoints.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
@@ -177,10 +121,10 @@ const takeaways = [
               <div class="content-panel content-panel--editorial note-panel" id="lesson-notes">
                 <div class="section-heading section-heading--editorial">
                   <h2>Lesson notes</h2>
-                  <p>這裡先保留成正式課程正文區，之後可以直接擴寫。</p>
+                  <p>這一課的正式教學內容與觀念整理。</p>
                 </div>
                 <div class="article-flow">
-                  {lessonNotes.map((paragraph) => (
+                  {lesson.lessonNotes.map((paragraph) => (
                     <p>{paragraph}</p>
                   ))}
                 </div>
@@ -188,23 +132,19 @@ const takeaways = [
 
               <div class="content-panel content-panel--editorial note-panel" id="example">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Example direction</h2>
-                  <p>先定義這一課未來最適合補什麼樣的示範。</p>
+                  <h2>Example</h2>
+                  <p>先看一個最小可理解範例，把觀念和 UI/程式碼接起來。</p>
                 </div>
-                <ul class="simple-list">
-                  {exampleIdeas.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
+                <pre class="note-code-block"><code>{lesson.exampleCode}</code></pre>
               </div>
 
               <div class="content-panel content-panel--editorial note-panel" id="practice">
                 <div class="section-heading section-heading--editorial">
                   <h2>Practice</h2>
-                  <p>在正式內容還沒補滿前，也可以先用這些練習題維持主線節奏。</p>
+                  <p>把這一課轉成可操作的練習，會比單純閱讀更容易留下記憶。</p>
                 </div>
                 <ul class="simple-list">
-                  {practice.map((item) => (
+                  {lesson.practice.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
@@ -212,12 +152,13 @@ const takeaways = [
 
               <div class="content-panel content-panel--editorial note-panel" id="references">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Next step</h2>
-                  <p>這一頁已經從 placeholder 變成真正可擴寫的 lesson article。</p>
+                  <h2>References</h2>
+                  <p>回到官方文件或延伸資料時，可以從這裡繼續往下讀。</p>
                 </div>
                 <ul class="simple-list">
-                  <li>之後可以補上完整範例、關鍵 API、常見錯誤與延伸閱讀。</li>
-                  <li>如果你要沿著主線走，讀完這頁後就直接接下一課。</li>
+                  {lesson.references.map((item) => (
+                    <li><a href={item.url} target="_blank" rel="noreferrer">{item.label}</a></li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -226,7 +167,7 @@ const takeaways = [
               <div class="content-panel content-panel--editorial sticky-panel note-panel">
                 <div class="section-heading section-heading--editorial">
                   <h2>Reading guide</h2>
-                  <p>先看這頁結構，再決定要快速略讀還是繼續把內容補完整。</p>
+                  <p>先抓閱讀順序，再決定是快速複習還是完整讀完這一課。</p>
                 </div>
 
                 <div class="lesson-anchor-list">
@@ -240,21 +181,21 @@ const takeaways = [
 
                 <h3 class="note-side-heading">Why this matters</h3>
                 <ul class="simple-list simple-list--compact">
-                  {reasons.map((item) => (
+                  {lesson.reasons.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
 
                 <h3 class="note-side-heading">Common mistakes</h3>
                 <ul class="simple-list simple-list--compact">
-                  {mistakes.map((item) => (
+                  {lesson.mistakes.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
 
                 <h3 class="note-side-heading">Key takeaway</h3>
                 <ul class="simple-list simple-list--compact">
-                  {takeaways.map((item) => (
+                  {lesson.takeaways.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
@@ -263,16 +204,16 @@ const takeaways = [
               <div class="content-panel content-panel--editorial note-panel note-progress-panel">
                 <div class="section-heading section-heading--editorial">
                   <h2>Course progress</h2>
-                  <p>快速知道目前在第幾課，也能直接跳到其他 React lessons。</p>
+                  <p>快速知道你目前在第幾課，也能直接跳到其他 React lessons。</p>
                 </div>
 
-                <p class="note-progress-copy">目前閱讀：Lesson {lesson.lesson} / {lessonList.length}</p>
+                <p class="note-progress-copy">目前閱讀：Lesson {lesson.lesson} / {allLessons.length}</p>
                 <div class="lesson-progress-bar" aria-hidden="true">
-                  <span style={`width: ${(lesson.lesson / lessonList.length) * 100}%`}></span>
+                  <span style={`width: ${(lesson.lesson / allLessons.length) * 100}%`}></span>
                 </div>
 
                 <div class="lesson-mini-nav">
-                  {lessonList.map((entry) => (
+                  {allLessons.map((entry) => (
                     <a
                       href={withBase(`/courses/react/lessons/${entry.slug}`)}
                       class:list={['lesson-mini-link', { 'is-active': entry.slug === lesson.slug }]}
@@ -290,7 +231,7 @@ const takeaways = [
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
             <h2>Lesson continuity</h2>
-            <p>保持主線節奏，從前一課順著接到下一課。</p>
+            <p>保持學習節奏，從前一課順著接到下一課。</p>
           </div>
 
           <div class="notes-list notes-list--continuity">

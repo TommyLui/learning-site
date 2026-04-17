@@ -8,12 +8,14 @@ interface Props {
   title?: string;
   description?: string;
   currentCourse?: Course | null;
+  showPrimaryNav?: boolean;
 }
 
 const {
   title = 'Learning Site',
   description = 'Structured learning materials for React, Spring Boot, and MySQL.',
   currentCourse = null,
+  showPrimaryNav = true,
 } = Astro.props;
 ---
 
@@ -29,7 +31,7 @@ const {
 
   <body>
     <div class="site-shell">
-      <Header currentCourse={currentCourse} />
+      <Header currentCourse={currentCourse} showPrimaryNav={showPrimaryNav} />
       <main class="page-shell">
         <slot />
       </main>

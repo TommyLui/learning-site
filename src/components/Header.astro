@@ -5,9 +5,10 @@ import { withBase } from '../utils/paths';
 
 interface Props {
   currentCourse?: Course | null;
+  showPrimaryNav?: boolean;
 }
 
-const { currentCourse = null } = Astro.props;
+const { currentCourse = null, showPrimaryNav = true } = Astro.props;
 const dropdownLabel = currentCourse ? currentCourse.title : 'Learning tracks';
 ---
 
@@ -17,10 +18,12 @@ const dropdownLabel = currentCourse ? currentCourse.title : 'Learning tracks';
       <span class="brand-title">Tommy's Learning Notes</span>
     </a>
 
-    <nav class="header-nav" aria-label="Primary">
-      <a href={withBase('/courses')}>文章分類</a>
-      <a href={withBase('/#recent-lessons')}>最新整理</a>
-    </nav>
+    {showPrimaryNav && (
+      <nav class="header-nav" aria-label="Primary">
+        <a href={withBase('/courses')}>文章分類</a>
+        <a href={withBase('/#recent-lessons')}>最新整理</a>
+      </nav>
+    )}
 
     <details class="course-dropdown">
       <summary>
