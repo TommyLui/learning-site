@@ -21,37 +21,37 @@ export const mysqlLessons: CourseLessonArticle[] = [
     lesson: 1,
     slug: 'lesson-1',
     title: '什麼是關聯式資料庫',
-    summary: '理解 tables、rows、columns，以及關聯式結構為什麼重要。',
+    summary: '理解資料表、資料列、資料欄，以及關聯式結構為什麼重要。',
     moduleTitle: '模組 1 · Query 基礎',
-    intro: '這一課先建立最基礎的資料庫心智模型：資料不是一整包放著，而是有結構地存放在 tables 中。',
+    intro: '這一課先建立最基礎的資料庫心智模型：資料不是一整包放著，而是有結構地存放在資料表中。',
     learningPoints: [
-      '理解 table、row、column 的基本概念。',
-      '知道 relational database 為什麼適合結構化資料。',
+      '理解資料表（table）、資料列（row）、資料欄（column）的基本概念。',
+      '知道關聯式資料庫為什麼適合結構化資料。',
       '能把日常資料問題轉成資料表思維。',
     ],
     lessonNotes: [
-      'Relational database 把資料以表格形式存放，每一列代表一筆記錄，每一欄代表一種欄位屬性。',
+      '關聯式資料庫把資料以表格形式存放，每一列代表一筆記錄，每一欄代表一種欄位屬性。',
       '真正重要的不是表格長得像 Excel，而是資料有一致結構，這讓查詢、排序、關聯和約束變得可控。',
-      '當你開始用 table 思考會員、訂單、課程、付款等資料時，就會慢慢理解資料庫為什麼是後端應用的基礎。',
+      '當你開始用資料表思考會員、訂單、課程、付款等資料時，就會慢慢理解資料庫為什麼是後端應用的基礎。',
     ],
     exampleLanguage: 'sql',
     exampleCode: "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  name VARCHAR(100),\n  email VARCHAR(255)\n);\n\nINSERT INTO users (id, name, email)\nVALUES (1, 'Tommy', 'tommy@example.com');",
     practice: [
       '把一個簡單系統，例如圖書館或課程平台，拆成 3 到 5 張資料表。',
-      '指出每張表的 columns 分別代表什麼。',
-      '寫出你認為每張表最重要的一個 primary key。',
+      '指出每張表的資料欄分別代表什麼。',
+      '寫出你認為每張表最重要的一個主鍵（primary key）。',
     ],
     reasons: [
-      '如果不先理解表格結構，後面查詢與 joins 都只會是記語法。',
+      '如果不先理解表格結構，後面查詢與 JOIN 都只會是記語法。',
       '資料庫設計的核心是資料模型，而不是單條 SQL。',
     ],
     mistakes: [
-      '把 relational database 當成純粹存資料的黑盒子。',
+      '把關聯式資料庫當成純粹存資料的黑盒子。',
       '只看欄位名稱，不思考每張表真正代表的實體。',
     ],
     takeaways: [
       '資料庫的核心是有結構、有關係的資料模型。',
-      'table、row、column 是後面所有 SQL 操作的基礎語言。',
+      '資料表、資料列、資料欄是後面所有 SQL 操作的基礎語言。',
     ],
     references: [
       { label: 'MySQL docs · Tutorial', url: 'https://dev.mysql.com/doc/refman/8.4/en/tutorial.html' },
@@ -84,7 +84,7 @@ export const mysqlLessons: CourseLessonArticle[] = [
     ],
     reasons: [
       '大部分資料庫互動都是從查詢開始。',
-      '查詢基礎不穩，後面 joins 和 subqueries 會更難掌握。',
+      '查詢基礎不穩，後面 JOIN 和子查詢會更難掌握。',
     ],
     mistakes: [
       '習慣性使用 `SELECT *`，沒有控制取回欄位。',
@@ -144,9 +144,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
     lesson: 4,
     slug: 'lesson-4',
     title: '理解 INNER JOIN 與 LEFT JOIN',
-    summary: '把多張表中的相關資料列連起來，並理解常見 join 類型的差異。',
+    summary: '把多張表中的相關資料列連起來，並理解常見 JOIN 類型的差異。',
     moduleTitle: '模組 2 · 關聯與 joins',
-    intro: 'joins 是 relational database 最能展現「關聯」價值的地方，因為它讓你從多張表中拼出真正有意義的資訊。',
+    intro: 'JOIN 是關聯式資料庫最能展現「關聯」價值的地方，因為它讓你從多張表中拼出真正有意義的資訊。',
     learningPoints: [
       '理解 JOIN 的基本目的。',
       '知道 INNER JOIN 和 LEFT JOIN 的差別。',
@@ -162,19 +162,19 @@ export const mysqlLessons: CourseLessonArticle[] = [
     practice: [
       '建立 users 與 orders 兩張表的簡化版本。',
       '各寫一條 INNER JOIN 和 LEFT JOIN，比較結果差異。',
-      '找出哪一種 join 更適合顯示「尚未下單會員」名單。',
+      '找出哪一種 JOIN 更適合顯示「尚未下單會員」名單。',
     ],
     reasons: [
       '大部分真實商業資料都分散在多張表，不會只待在一張表裡。',
-      '不理解 joins，就很難真正使用 relational database 的價值。',
+      '不理解 JOIN，就很難真正使用關聯式資料庫的價值。',
     ],
     mistakes: [
-      '只背 join 語法，卻不知道結果集為什麼長那樣。',
-      '寫錯 join condition，導致資料倍增或錯配。',
+      '只背 JOIN 語法，卻不知道結果集為什麼長那樣。',
+      '寫錯 JOIN 條件（join condition），導致資料倍增或錯配。',
     ],
     takeaways: [
-      'join 的重點不是語法，而是資料關係。',
-      'INNER JOIN 和 LEFT JOIN 的差別，決定你最終看到的是什麼資料。',
+      'JOIN 的重點不是語法，而是資料關係。',
+      'INNER JOIN 和 LEFT JOIN 的差別，決定你最終看到哪些資料。',
     ],
     references: [
       { label: 'MySQL docs · JOIN clause', url: 'https://dev.mysql.com/doc/refman/8.4/en/join.html' },
@@ -184,38 +184,38 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 5,
     slug: 'lesson-5',
-    title: 'Primary key 與 foreign key',
-    summary: '用 keys 建立關聯並保護資料完整性。',
+    title: '主鍵（Primary Key）與外鍵（Foreign Key）',
+    summary: '用鍵值建立關聯並保護資料完整性。',
     moduleTitle: '模組 2 · 關聯與 joins',
-    intro: '關聯資料庫不是因為有多張表就叫 relational，而是因為這些表之間有明確、可驗證的關係。',
+    intro: '關聯式資料庫不是因為有多張表，而是因為這些表之間有明確、可驗證的關係。',
     learningPoints: [
-      '理解 primary key 和 foreign key 的角色。',
-      '知道 keys 如何幫助建立資料關係。',
+      '理解主鍵（primary key）和外鍵（foreign key）的角色。',
+      '知道鍵值（keys）如何幫助建立資料關係。',
       '認識資料完整性在設計上的重要性。',
     ],
     lessonNotes: [
-      'Primary key 用來唯一識別每一列資料，而 foreign key 表示另一張表中的某筆資料參考了這個 key。',
-      '這些 keys 不只是方便 joins，更重要的是能建立資料完整性，避免出現沒有對應會員的訂單，或沒有對應課程的評論。',
-      '當 key 設計清楚時，你對資料模型的掌控也會更強。',
+      '主鍵（primary key）用來唯一識別每一列資料，而外鍵（foreign key）表示另一張表中的某筆資料參考了這個鍵。',
+      '這些鍵值（keys）不只是方便 JOIN，更重要的是能建立資料完整性，避免出現沒有對應會員的訂單，或沒有對應課程的評論。',
+      '當鍵值設計清楚時，你對資料模型的掌控也會更強。',
     ],
     exampleLanguage: 'sql',
     exampleCode: "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  name VARCHAR(100)\n);\n\nCREATE TABLE orders (\n  id INT PRIMARY KEY,\n  user_id INT,\n  FOREIGN KEY (user_id) REFERENCES users(id)\n);",
     practice: [
       '設計兩張有 parent-child 關係的資料表。',
-      '標出 primary key 與 foreign key 應該放在哪裡。',
-      '思考如果沒有 foreign key，資料會出現哪些問題。',
+      '標出主鍵與外鍵應該放在哪裡。',
+      '思考如果沒有外鍵，資料會出現哪些問題。',
     ],
     reasons: [
       '資料完整性不是可有可無，它會直接影響系統可信度。',
-      '沒有 key，後面 joins 和 schema 設計會變得很脆弱。',
+      '沒有鍵值，後面 JOIN 和資料表結構（schema）設計會變得很脆弱。',
     ],
     mistakes: [
-      '把 key 當成純技術欄位，而不是資料模型核心。',
+      '把鍵值當成純技術欄位，而不是資料模型核心。',
       '只想查得出資料，沒想過資料是否能維持一致。',
     ],
     takeaways: [
-      'primary key 負責唯一識別，foreign key 負責建立關係。',
-      'keys 是 relational schema 穩定運作的基礎。',
+      '主鍵負責唯一識別，外鍵負責建立關係。',
+      '鍵值是關聯式資料表結構（schema）穩定運作的基礎。',
     ],
     references: [
       { label: 'MySQL docs · Primary keys', url: 'https://dev.mysql.com/doc/refman/8.4/en/constraint-primary-key.html' },
@@ -230,8 +230,8 @@ export const mysqlLessons: CourseLessonArticle[] = [
     moduleTitle: '模組 2 · 關聯與 joins',
     intro: '一對多關係是資料建模中最常見的模式，真正重要的是學會把現實世界問題轉成關聯結構。',
     learningPoints: [
-      '理解 one-to-many 關係在資料設計中的意義。',
-      '知道怎麼把 app domain 轉成 tables。',
+      '理解一對多（one-to-many）關係在資料設計中的意義。',
+      '知道怎麼把應用領域（application domain）轉成資料表。',
       '避免把重複資訊塞在同一張表。',
     ],
     lessonNotes: [
@@ -247,7 +247,7 @@ export const mysqlLessons: CourseLessonArticle[] = [
       '說明為什麼這樣的設計比單一大表更好。',
     ],
     reasons: [
-      '資料關係看不懂，schema 就很難設計得好。',
+      '資料關係看不懂，資料表結構（schema）就很難設計得好。',
       '一對多是最常見的資料模型模式。',
     ],
     mistakes: [
@@ -256,7 +256,7 @@ export const mysqlLessons: CourseLessonArticle[] = [
     ],
     takeaways: [
       '一對多不是抽象名詞，而是實際資料建模的常見基礎。',
-      '看懂需求裡的實體與關係，比背 schema 術語更重要。',
+      '看懂需求裡的實體與關係，比背資料表結構（schema）術語更重要。',
     ],
     references: [
       { label: 'MySQL docs · CREATE TABLE', url: 'https://dev.mysql.com/doc/refman/8.4/en/create-table.html' },
@@ -266,37 +266,37 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 7,
     slug: 'lesson-7',
-    title: '正規化與實務 schema 設計',
+    title: '正規化與實務 Schema 設計',
     summary: '在保持資料可理解的同時，減少重複與混亂。',
     moduleTitle: '模組 3 · 設計與效能',
-    intro: '正規化的本質不是考試題，而是幫你減少重複資料、降低修改風險，讓 schema 更穩。',
+    intro: '正規化的本質不是考試題，而是幫你減少重複資料、降低修改風險，讓資料表結構（schema）更穩。',
     learningPoints: [
-      '理解 normalization 的核心目的。',
+      '理解正規化（normalization）的核心目的。',
       '知道為什麼重複資料會帶來風險。',
-      '能在實務中做出合理的 schema 拆分。',
+      '能在實務中做出合理的 Schema 拆分。',
     ],
     lessonNotes: [
-      'Normalization 是一種思考資料拆分的方式，目標是讓每份資料只在最合理的地方保存一次。',
+      '正規化（normalization）是一種思考資料拆分的方式，目標是讓每份資料只在最合理的地方保存一次。',
       '如果同樣資訊散落在多個欄位或多張表裡，更新時很容易漏掉，造成不一致。',
       '實務上不一定追求最理論化的正規化，而是要在查詢效率、可讀性、維護成本之間取得平衡。',
     ],
     exampleLanguage: 'text',
     exampleCode: "Bad\norders\n  order_id\n  user_name\n  user_email\n\nBetter\nusers\n  id\n  name\n  email\n\norders\n  id\n  user_id",
     practice: [
-      '找一個重複欄位很多的表，重新設計成較乾淨的 schema。',
+      '找一個重複欄位很多的表，重新設計成較乾淨的 Schema。',
       '說明你保留了哪些欄位在原表，哪些拆去別張表。',
       '思考這次拆分是否會影響查詢複雜度。',
     ],
     reasons: [
-      '壞 schema 會讓每次改資料都更危險。',
-      'normalize 的思維能大幅提升資料設計品質。',
+      '壞的資料表結構（schema）會讓每次改資料都更危險。',
+      '正規化思維能大幅提升資料設計品質。',
     ],
     mistakes: [
       '只背 1NF/2NF/3NF 名稱，卻無法處理實際資料設計。',
-      '為了追求理論完美而讓 schema 失去實用性。',
+      '為了追求理論完美而讓資料表結構（schema）失去實用性。',
     ],
     takeaways: [
-      'normalize 的目標是讓資料更一致、更好維護。',
+      '正規化的目標是讓資料更一致、更好維護。',
       '實務設計需要在理論與可用性之間平衡。',
     ],
     references: [
@@ -312,32 +312,32 @@ export const mysqlLessons: CourseLessonArticle[] = [
     moduleTitle: '模組 3 · 設計與效能',
     intro: '效能問題常常不是 SQL 太長，而是資料量一大後，資料庫找資料的方式不對。',
     learningPoints: [
-      '理解 index 的作用。',
-      '知道什麼情況下該考慮加 index。',
+      '理解索引（index）的作用。',
+      '知道什麼情況下該考慮加索引。',
       '建立基本的查詢效能思維。',
     ],
     lessonNotes: [
-      'Index 類似書的目錄，它幫助資料庫更快定位需要的資料，而不是每次都掃描整張表。',
-      '但 index 不是越多越好，因為它也會增加寫入成本與維護成本。',
+      '索引（index）類似書的目錄，它幫助資料庫更快定位需要的資料，而不是每次都掃描整張表。',
+      '但索引不是越多越好，因為它也會增加寫入成本與維護成本。',
       '真正的重點是：知道哪些欄位會常被查詢、排序、過濾，並理解資料量變大後為什麼速度會差很多。',
     ],
     exampleLanguage: 'sql',
     exampleCode: "CREATE INDEX idx_users_email ON users(email);\n\nEXPLAIN SELECT *\nFROM users\nWHERE email = 'tommy@example.com';",
     practice: [
-      '對常查詢的欄位建立 index，並用 EXPLAIN 觀察差異。',
-      '比較有 index 與沒 index 的查詢計畫。',
+      '對常查詢的欄位建立索引，並用 EXPLAIN 觀察差異。',
+      '比較有索引與沒索引的查詢計畫。',
       '寫下哪幾種欄位適合索引，哪幾種不一定適合。',
     ],
     reasons: [
       '資料量一大，效能問題會直接影響產品體驗。',
-      'index 是最常見也最容易被誤用的效能工具之一。',
+      '索引是最常見也最容易被誤用的效能工具之一。',
     ],
     mistakes: [
-      '看到慢就先亂加 index。',
+      '看到慢就先亂加索引。',
       '沒有理解查詢模式，就直接優化。',
     ],
     takeaways: [
-      'index 的目標是幫資料庫更快找到資料。',
+      '索引的目標是幫資料庫更快找到資料。',
       '優化前要先理解查詢模式和資料量。',
     ],
     references: [
@@ -353,32 +353,32 @@ export const mysqlLessons: CourseLessonArticle[] = [
     moduleTitle: '模組 3 · 設計與效能',
     intro: '最後一課把 MySQL 從單獨練語法，拉回到它在實際應用開發中扮演的角色。',
     learningPoints: [
-      '知道 MySQL 在 backend app 裡通常怎麼被使用。',
-      '理解 schema、queries、indexes 如何一起支持應用開發。',
+      '知道 MySQL 在後端應用程式中通常怎麼被使用。',
+      '理解資料表結構（schema）、查詢（queries）、索引（indexes）如何一起支援應用開發。',
       '建立把資料庫接進真實專案的準備思維。',
     ],
     lessonNotes: [
       '在真實應用裡，MySQL 不只是用來練 SQL，而是和 API、ORM、驗證、交易、權限控制一起工作。',
-      '因此，你需要的不只是會寫查詢，還要有穩定的 schema、可預期的 key 關係、適當的索引，以及容易讓應用程式接上的結構。',
+      '因此，你需要的不只是會寫查詢，還要有穩定的資料表結構（schema）、可預期的鍵值關係、適當的索引，以及容易讓應用程式接上的結構。',
       '這一課的重點是把前面所有資料模型與查詢觀念，整合成可以進入後端專案的資料庫基礎。',
     ],
     exampleLanguage: 'sql',
     exampleCode: "CREATE TABLE courses (\n  id INT PRIMARY KEY AUTO_INCREMENT,\n  title VARCHAR(255) NOT NULL,\n  level VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE lessons (\n  id INT PRIMARY KEY AUTO_INCREMENT,\n  course_id INT NOT NULL,\n  title VARCHAR(255) NOT NULL,\n  FOREIGN KEY (course_id) REFERENCES courses(id)\n);",
     practice: [
-      '為一個簡單後端系統設計初始 schema。',
-      '確認每張表的 key、關係與常用查詢需求。',
-      '想像你要把這份 schema 接給 Spring Boot 或 Node app，還缺什麼。',
+      '為一個簡單後端系統設計初始資料表結構（schema）。',
+      '確認每張表的鍵值、關係與常用查詢需求。',
+      '想像你要把這份資料表結構（schema）接給 Spring Boot 或 Node 應用程式，還缺什麼。',
     ],
     reasons: [
       '資料庫最終是要服務應用系統，而不是停留在教科書層級。',
-      '把資料設計和 app 開發連起來，學習才會真正落地。',
+      '把資料設計和應用開發連起來，學習才會真正落地。',
     ],
     mistakes: [
-      '只想著 SQL 單句正不正確，忽略整體 schema 是否好接進 app。',
+      '只想著 SQL 單句正不正確，忽略整體資料表結構（schema）是否好接進應用程式。',
       '沒有先預想查詢模式就設計資料表。',
     ],
     takeaways: [
-      '真正實用的 MySQL 能力，是把 schema、查詢與應用需求一起考慮。',
+      '真正實用的 MySQL 能力，是把資料表結構（schema）、查詢與應用需求一起考慮。',
       '資料庫設計應該服務真實系統，而不是停留在孤立範例。',
     ],
     references: [
@@ -395,12 +395,12 @@ export const mysqlLessons: CourseLessonArticle[] = [
     intro: '這一課把查詢從「找單筆資料」進一步帶到「總結整批資料」，也是報表與分析查詢的基礎。',
     learningPoints: [
       '理解 GROUP BY 的用途。',
-      '知道 COUNT、SUM、AVG 等 aggregate functions 怎麼用。',
+      '知道 COUNT、SUM、AVG 等聚合函式（aggregate functions）怎麼用。',
       '能用分組結果回答更像商業問題的查詢。',
     ],
     lessonNotes: [
-      '當你不只想看每筆資料，而是想知道每個分類有幾筆、總和多少、平均多少時，就會進入 aggregation 的世界。',
-      'GROUP BY 讓資料依某個欄位被分組，再配合 aggregate functions 計算結果。',
+      '當你不只想看每筆資料，而是想知道每個分類有幾筆、總和多少、平均多少時，就會進入聚合（aggregation）的世界。',
+      'GROUP BY 讓資料依某個欄位被分組，再配合聚合函式（aggregate functions）計算結果。',
       '這一課的核心是把 SQL 從明細查詢提升到摘要查詢，讓你能回答更像報表與分析的問題。',
     ],
     exampleLanguage: 'sql',
@@ -412,7 +412,7 @@ export const mysqlLessons: CourseLessonArticle[] = [
     ],
     reasons: [
       '實際工作裡很多查詢不是拿明細，而是拿摘要。',
-      'Aggregation 是從 CRUD 走向分析思維的重要一步。',
+      '聚合（aggregation）是從 CRUD 走向分析思維的重要一步。',
     ],
     mistakes: [
       'GROUP BY 後卻仍然想取出不該直接出現的欄位。',
@@ -420,7 +420,7 @@ export const mysqlLessons: CourseLessonArticle[] = [
     ],
     takeaways: [
       'GROUP BY 讓你把資料從一列列明細提升成摘要結果。',
-      'Aggregate functions 是回答「總共有多少、平均多少」這類問題的基礎。',
+      '聚合函式是回答「總共有多少、平均多少」這類問題的基礎。',
     ],
     references: [
       { label: 'MySQL docs · GROUP BY', url: 'https://dev.mysql.com/doc/refman/8.4/en/group-by-handling.html' },
@@ -433,34 +433,34 @@ export const mysqlLessons: CourseLessonArticle[] = [
     title: '子查詢與衍生資料表',
     summary: '用巢狀查詢把更大的問題拆成較小步驟。',
     moduleTitle: '模組 4 · 聚合與進階查詢',
-    intro: '有些查詢問題如果一次寫完會很亂，subquery 幫你把它拆成比較可理解的中間步驟。',
+    intro: '有些查詢問題如果一次寫完會很亂，子查詢（subquery）能幫你把它拆成比較可理解的中間步驟。',
     learningPoints: [
-      '理解 subquery 的基本用途。',
-      '知道什麼情況下 nested query 會更清楚。',
-      '能讀懂 derived table 的查詢結構。',
+      '理解子查詢（subquery）的基本用途。',
+      '知道什麼情況下巢狀查詢（nested query）會更清楚。',
+      '能讀懂衍生資料表（derived table）的查詢結構。',
     ],
     lessonNotes: [
-      'Subquery 的本質是先用一個小查詢算出中間結果，再把它當作另一個查詢的輸入。',
+      '子查詢（subquery）的本質是先用一個小查詢算出中間結果，再把它當作另一個查詢的輸入。',
       '這種做法很適合處理條件依賴、排名、或先篩選再聚合的問題。',
-      '雖然 subquery 不是每次都最優，但它能幫你把大問題拆解成較容易推理的步驟。',
+      '雖然子查詢不一定每次都最優，但它能幫你把大問題拆解成較容易推理的步驟。',
     ],
     exampleLanguage: 'sql',
     exampleCode: "SELECT title\nFROM courses\nWHERE id IN (\n  SELECT course_id\n  FROM lessons\n  GROUP BY course_id\n  HAVING COUNT(*) >= 5\n);",
     practice: [
-      '做一條先篩條件、再用外層查詢取資料的 subquery。',
+      '做一條先篩條件、再用外層查詢取資料的子查詢。',
       '把一條太長的 SQL 試著拆成較容易理解的兩層結構。',
-      '比較 subquery 與 join 寫法在可讀性上的差異。',
+      '比較子查詢與 JOIN 寫法在可讀性上的差異。',
     ],
     reasons: [
       '進階查詢常常需要中間步驟。',
       '拆得好的查詢會比硬寫成一條大 SQL 更容易維護。',
     ],
     mistakes: [
-      '看到 subquery 就排斥，而不是先判斷可讀性。',
+      '看到子查詢就排斥，而不是先判斷可讀性。',
       '巢狀層數太深，反而讓查詢更難懂。',
     ],
     takeaways: [
-      'Subquery 是拆解複雜查詢的重要工具。',
+      '子查詢是拆解複雜查詢的重要工具。',
       '可讀性仍然是進階 SQL 設計的重要標準。',
     ],
     references: [
@@ -474,22 +474,22 @@ export const mysqlLessons: CourseLessonArticle[] = [
     title: '交易與 ACID 基礎',
     summary: '理解一組操作如何保持安全與一致。',
     moduleTitle: '模組 5 · Transactions 與實務操作',
-    intro: '當一組資料操作必須一起成功或一起失敗時，transaction 就是保護一致性的核心機制。',
+    intro: '當一組資料操作必須一起成功或一起失敗時，交易（transaction）就是保護一致性的核心機制。',
     learningPoints: [
-      '理解 transaction 的基本概念。',
+      '理解交易（transaction）的基本概念。',
       '知道 ACID 代表什麼。',
-      '能分辨什麼情境需要 transaction。',
+      '能分辨什麼情境需要交易。',
     ],
     lessonNotes: [
-      'Transaction 讓多個操作被視為同一組工作單位，避免只做一半就留下不一致資料。',
+      '交易（transaction）讓多個操作被視為同一組工作單位，避免只做一半就留下不一致資料。',
       'ACID 代表的是這組操作在資料庫層面應該具備的可靠性特徵。',
-      '像是轉帳、庫存扣減、訂單建立等流程，如果沒有 transaction，很容易出現資料只更新一半的問題。',
+      '像是轉帳、庫存扣減、訂單建立等流程，如果沒有交易，很容易出現資料只更新一半的問題。',
     ],
     exampleLanguage: 'sql',
     exampleCode: "START TRANSACTION;\nUPDATE accounts SET balance = balance - 100 WHERE id = 1;\nUPDATE accounts SET balance = balance + 100 WHERE id = 2;\nCOMMIT;",
     practice: [
-      '找一個需要多步驟資料更新的情境，判斷是否需要 transaction。',
-      '試寫一個最小 transaction 流程。',
+      '找一個需要多步驟資料更新的情境，判斷是否需要交易。',
+      '試寫一個最小交易流程。',
       '思考如果其中一步失敗，資料會出現什麼問題。',
     ],
     reasons: [
@@ -501,7 +501,7 @@ export const mysqlLessons: CourseLessonArticle[] = [
       '聽過 ACID，但不知道在真實系統中什麼時候會用到。',
     ],
     takeaways: [
-      'Transaction 的目的就是保護一組操作的一致性。',
+      '交易的目的就是保護一組操作的一致性。',
       'ACID 是理解資料可靠性的基本語言。',
     ],
     references: [
@@ -518,7 +518,7 @@ export const mysqlLessons: CourseLessonArticle[] = [
     intro: '資料庫不只要會查，還要能保護、搬移、還原，這些操作能力會直接影響系統安全感。',
     learningPoints: [
       '理解備份、匯入、匯出的基本用途。',
-      '知道什麼情況需要做 dump 或 restore。',
+      '知道什麼情況需要做匯出備份（dump）或還原（restore）。',
       '建立資料保護與搬移的基本觀念。',
     ],
     lessonNotes: [
@@ -529,8 +529,8 @@ export const mysqlLessons: CourseLessonArticle[] = [
     exampleLanguage: 'bash',
     exampleCode: "mysqldump -u root -p learning_site > learning_site.sql\nmysql -u root -p learning_site < learning_site.sql",
     practice: [
-      '對一個測試資料庫做一次 dump。',
-      '把 dump 檔案匯回另一個測試資料庫。',
+      '對一個測試資料庫做一次匯出備份（dump）。',
+      '把匯出備份檔案匯回另一個測試資料庫。',
       '寫下備份時最需要注意的三件事。',
     ],
     reasons: [
@@ -553,37 +553,37 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 14,
     slug: 'lesson-14',
-    title: '使用者權限與 production 基礎',
-    summary: '讓 MySQL 更適合團隊使用與 production 環境。',
-    moduleTitle: '模組 5 · Transactions 與實務操作',
-    intro: '最後一課把 MySQL 拉到更接近 production 的角度：誰能做什麼、環境怎麼分、資料怎麼保護。',
+    title: '使用者權限與正式環境（Production）基礎',
+    summary: '讓 MySQL 更適合團隊使用與正式環境。',
+    moduleTitle: '模組 5 · 交易（Transactions）與實務操作',
+    intro: '最後一課把 MySQL 拉到更接近正式環境（production）的角度：誰能做什麼、環境怎麼分、資料怎麼保護。',
     learningPoints: [
       '理解使用者權限為什麼重要。',
-      '知道 development 與 production 環境應該分開思考。',
-      '建立基本的 production safety mindset。',
+      '知道開發（development）與正式（production）環境應該分開思考。',
+      '建立基本的正式環境安全思維（production safety mindset）。',
     ],
     lessonNotes: [
       '不是每個人或每個應用都應該擁有資料庫的全部權限。權限設計本身就是資料安全的一部分。',
-      'Production 環境需要更嚴格的權限、備份、變更流程與監控思維。',
+      '正式環境（production）需要更嚴格的權限、備份、變更流程與監控思維。',
       '這一課的目標不是讓你立刻變成 DBA，而是知道資料庫進入真實環境後，思考方式必須從單機練習升級。',
     ],
     exampleLanguage: 'sql',
     exampleCode: "CREATE USER 'app_user'@'localhost' IDENTIFIED BY 'strong-password';\nGRANT SELECT, INSERT, UPDATE, DELETE ON learning_site.* TO 'app_user'@'localhost';\nFLUSH PRIVILEGES;",
     practice: [
       '建立一個只擁有必要權限的應用帳號。',
-      '列出 production 環境中不應隨意開放的權限。',
+      '列出正式環境中不應隨意開放的權限。',
       '想像你要交接資料庫給團隊，會先定哪些安全規則。',
     ],
     reasons: [
       '資料庫安全不只靠密碼，而是靠最小權限與環境紀律。',
-      '進 production 後，資料庫思維必須從練習模式轉成風險控管模式。',
+      '進正式環境後，資料庫思維必須從練習模式轉成風險控管模式。',
     ],
     mistakes: [
       '所有應用都用 root 或高權限帳號連線。',
-      '把 production 當成和本機一樣可以隨意操作的地方。',
+      '把正式環境當成和本機一樣可以隨意操作的地方。',
     ],
     takeaways: [
-      '資料庫進 production 後，安全與權限管理就是基本功。',
+      '資料庫進正式環境後，安全與權限管理就是基本功。',
       '最小權限原則是實務環境的重要底線。',
     ],
     references: [

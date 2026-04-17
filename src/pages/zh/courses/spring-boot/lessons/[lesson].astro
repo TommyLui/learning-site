@@ -39,14 +39,22 @@ export async function getStaticPaths() {
 }
 
 const { note, previousNote, nextNote, allNotes } = Astro.props as Props;
-const learningPoints = parseBulletList(note.sections['What You Will Learn'] ?? '');
-const reasons = parseBulletList(note.sections['Why This Matters'] ?? '');
-const ideas = parseBulletList(note.sections['Main Ideas'] ?? '');
-const lessonNotes = parseParagraphs(note.sections['Lesson Notes'] ?? '');
-const mistakes = parseBulletList(note.sections['Common Mistakes'] ?? '');
-const practice = parseBulletList(note.sections.Practice ?? note.sections.練習 ?? '');
-const takeaways = parseBulletList(note.sections['Key Takeaway'] ?? '');
-const references = parseBulletList(note.sections['Official References'] ?? '');
+const getSectionContent = (...keys: string[]) => {
+  for (const key of keys) {
+    const value = note.sections[key];
+    if (value) return value;
+  }
+
+  return '';
+};
+const learningPoints = parseBulletList(getSectionContent('這一課會學到什麼', 'What You Will Learn'));
+const reasons = parseBulletList(getSectionContent('為什麼重要', 'Why This Matters'));
+const ideas = parseBulletList(getSectionContent('主要觀念', 'Main Ideas'));
+const lessonNotes = parseParagraphs(getSectionContent('課程筆記', 'Lesson Notes'));
+const mistakes = parseBulletList(getSectionContent('常見錯誤', 'Common Mistakes'));
+const practice = parseBulletList(getSectionContent('練習', 'Practice'));
+const takeaways = parseBulletList(getSectionContent('課後重點', 'Key Takeaway'));
+const references = parseBulletList(getSectionContent('官方參考資料', 'Official References'));
 const estimatedMinutes = Math.max(4, Math.ceil((note.exampleCode.length + lessonNotes.join(' ').length) / 900));
 const trimLessonTitle = (title: string) => title.replace(/^(?:Lesson \d+:\s*|第\s*\d+\s*課：\s*)/, '');
 const article段落s = [
@@ -149,7 +157,7 @@ const article段落s = [
               <div class="content-panel content-panel--editorial note-panel" id="example">
                 <div class="section-heading section-heading--editorial">
                   <h2>範例</h2>
-                  <p>保留每課的最小範例，方便後續擴充成可執行 示範程式。</p>
+                  <p>保留每課的最小範例，方便後續擴充成可執行的示範程式。</p>
                 </div>
                 <pre class="note-code-block"><code>{note.exampleCode}</code></pre>
               </div>
@@ -220,7 +228,7 @@ const article段落s = [
               <div class="content-panel content-panel--editorial note-panel note-progress-panel">
                 <div class="section-heading section-heading--editorial">
                   <h2>課程進度</h2>
-                  <p>快速知道你目前在第幾課，也能直接跳到其他 lesson。</p>
+                  <p>快速知道你目前在第幾課，也能直接跳到其他課程。</p>
                 </div>
 
                 <p class="note-progress-copy">目前閱讀：第 {note.lesson} 課 / {allNotes.length}</p>

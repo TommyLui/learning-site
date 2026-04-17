@@ -13,6 +13,33 @@ export type SpringBootNote = {
   exampleCode: string;
 };
 
+const SECTION_KEY_ALIASES: Record<string, string> = {
+  'What You Will Learn': 'What You Will Learn',
+  '這一課會學到什麼': 'What You Will Learn',
+  'Why This Matters': 'Why This Matters',
+  '為什麼重要': 'Why This Matters',
+  'Main Ideas': 'Main Ideas',
+  '主要觀念': 'Main Ideas',
+  'Lesson Notes': 'Lesson Notes',
+  '課程筆記': 'Lesson Notes',
+  Example: 'Example',
+  範例: 'Example',
+  'Common Mistakes': 'Common Mistakes',
+  '常見錯誤': 'Common Mistakes',
+  Practice: 'Practice',
+  練習: 'Practice',
+  Continuity: 'Continuity',
+  延續閱讀: 'Continuity',
+  'Key Takeaway': 'Key Takeaway',
+  '課後重點': 'Key Takeaway',
+  'Official References': 'Official References',
+  '官方參考資料': 'Official References',
+};
+
+function normalizeSectionKey(rawSectionKey: string) {
+  return SECTION_KEY_ALIASES[rawSectionKey] ?? rawSectionKey;
+}
+
 function getNotesDirectory(locale: 'en' | 'zh' = 'en') {
   const folder = locale === 'zh' ? 'springboot-zh' : 'springboot';
   return path.join(process.cwd(), 'course-notes', folder);
@@ -44,10 +71,22 @@ function parseSections(body: string) {
   const titleMatch = body.match(/^#\s+.+\n\n([\s\S]*?)(?=\n##\s)/);
   const intro = titleMatch ? titleMatch[1].trim() : '';
   const sections: Record<string, string> = {};
-  const matches = body.matchAll(/^##\s+(.+)\n([\s\S]*?)(?=^##\s+|\Z)/gm);
+  const matches = Array.from(body.matchAll(/^##\s+(.+)$/gm));
 
-  for (const match of matches) {
-    sections[match[1].trim()] = match[2].trim();
+  for (let index = 0; index < matches.length; index += 1) {
+    const match = matches[index];
+    const nextMatch = matches[index + 1] ?? null;
+    const rawSectionKey = match[1].trim();
+    const normalizedSectionKey = normalizeSectionKey(rawSectionKey);
+    const sectionStart = (match.index ?? 0) + match[0].length;
+    const sectionEnd = nextMatch?.index ?? body.length;
+    const sectionContent = body.slice(sectionStart, sectionEnd).replace(/^\r?\n/, '').trim();
+
+    sections[normalizedSectionKey] = sectionContent;
+
+    if (normalizedSectionKey !== rawSectionKey) {
+      sections[rawSectionKey] = sectionContent;
+    }
   }
 
   return { intro, sections };
@@ -71,7 +110,7 @@ async function readNoteFile(fileName: string, locale: 'en' | 'zh' = 'en'): Promi
   const source = await readFile(`${notesDirectory}/${fileName}`, 'utf8');
   const { frontmatter, body } = parseFrontmatter(source);
   const { intro, sections } = parseSections(body);
-  const { exampleLanguage, exampleCode } = parseExample(sections.Example ?? '');
+  const { exampleLanguage, exampleCode } = parseExample(sections.Example ?? sections.範例 ?? '');
 
   return {
     lesson: Number(frontmatter.lesson),

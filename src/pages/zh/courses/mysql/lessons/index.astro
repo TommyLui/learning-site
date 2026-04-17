@@ -30,7 +30,7 @@ for (const lesson of lessons) {
 const note模組s = canonicalCourse.modules.map((module, index) => ({
   title: course.modules[index]?.title ?? module.title,
   description: course.modules[index]?.description ?? module.description,
-  lessons: lessonsBy模組.get(module.title) ?? [],
+  lessons: lessonsBy模組.get(course.modules[index]?.title ?? module.title) ?? [],
 }));
 
 const roadmapHighlights = [

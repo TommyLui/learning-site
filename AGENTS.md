@@ -31,8 +31,8 @@
 
 - `src/data/springbootNotes.ts` only loads files matching `lesson-<number>.md`; `lesson-template.md` is ignored.
 - Each Spring Boot note must keep frontmatter keys `title`, `lesson`, `slug`, and `summary`.
-- The loader parses literal `##` headings into section keys. The Spring Boot lesson pages expect headings like `What You Will Learn`, `Why This Matters`, `Main Ideas`, `Lesson Notes`, `Example`, `Common Mistakes`, `Practice`, `Key Takeaway`, and `Official References`.
-- If you rename the `course-notes/springboot*` folders or change those heading labels, update `src/data/springbootNotes.ts` and the Spring Boot lesson pages in both locales.
+- The loader normalizes both English and Traditional Chinese `##` headings. English notes use labels like `What You Will Learn`, `Why This Matters`, `Main Ideas`, `Lesson Notes`, `Example`, `Common Mistakes`, `Practice`, `Continuity`, `Key Takeaway`, and `Official References`; zh notes can use `這一課會學到什麼`, `為什麼重要`, `主要觀念`, `課程筆記`, `範例`, `常見錯誤`, `練習`, `延續閱讀`, `課後重點`, and `官方參考資料`.
+- If you rename the `course-notes/springboot*` folders or change those heading labels, update `src/data/springbootNotes.ts` and the Spring Boot lesson pages in both locales so the aliases stay in sync.
 
 ## Linking Gotcha
 
