@@ -41,19 +41,33 @@ By learning this flow now, you make later security decisions more deliberate. Th
 
 ## Example
 ```java
-@Bean
-PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-}
+package com.tommy.learningapi.security;
 
-@Bean
-UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-    UserDetails admin = User.withUsername("admin")
-        .password(passwordEncoder.encode("secret123"))
-        .roles("ADMIN")
-        .build();
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-    return new InMemoryUserDetailsManager(admin);
+@Configuration
+public class UserSecurityConfig {
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+        UserDetails admin = User.withUsername("admin")
+            .password(passwordEncoder.encode("secret123"))
+            .roles("ADMIN")
+            .build();
+
+        return new InMemoryUserDetailsManager(admin);
+    }
 }
 ```
 

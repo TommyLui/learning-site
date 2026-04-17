@@ -41,6 +41,13 @@ Once your first controller works, you are ready to move from proof of life to ac
 
 ## Example
 ```java
+package com.tommy.learningapi.notes;
+
+import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 @RestController
 @RequestMapping("/api/greetings")
 public class GreetingController {

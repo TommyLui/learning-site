@@ -41,15 +41,25 @@ The best reason to learn service unit tests early is not just correctness. It is
 
 ## Example
 ```java
-@Test
-void create_shouldSaveMappedNote() {
-    NoteRepository repository = mock(NoteRepository.class);
-    NoteService service = new NoteService(repository);
-    CreateNoteRequest request = new CreateNoteRequest("DI", "constructor injection");
+package com.tommy.learningapi.notes;
 
-    service.create(request);
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
-    verify(repository).save(any(Note.class));
+import org.junit.jupiter.api.Test;
+
+class NoteServiceTest {
+    @Test
+    void create_shouldSaveMappedNote() {
+        NoteRepository repository = mock(NoteRepository.class);
+        NoteService service = new NoteService(repository);
+        CreateNoteRequest request = new CreateNoteRequest("DI", "constructor injection");
+
+        service.create(request);
+
+        verify(repository).save(any(Note.class));
+    }
 }
 ```
 

@@ -41,6 +41,12 @@ By the time CRUD flows are in place, you have a strong vertical slice of the app
 
 ## Example
 ```java
+package com.tommy.learningapi.notes;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 @Service
 public class NoteService {
     private final NoteRepository noteRepository;

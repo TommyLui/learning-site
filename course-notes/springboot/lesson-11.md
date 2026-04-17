@@ -41,6 +41,17 @@ This lesson also prepares you for later complexity. Once entity basics are clear
 
 ## Example
 ```java
+package com.tommy.learningapi.notes;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 @Entity
 @Table(name = "notes")
 public class Note {

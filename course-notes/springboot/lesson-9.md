@@ -41,6 +41,17 @@ This lesson turns your API into something more trustworthy. Clients should not h
 
 ## Example
 ```java
+package com.tommy.learningapi.common;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 public record CreateUserRequest(
     @NotBlank(message = "name is required") String name,
     @Email(message = "email must be valid") String email

@@ -41,6 +41,15 @@ This lesson is where backend development starts feeling more realistic. Instead 
 
 ## Example
 ```java
+package com.tommy.learningapi.notes;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 public record CreateNoteRequest(String title, String content) {}
 public record NoteResponse(Long id, String title, String content) {}
 
