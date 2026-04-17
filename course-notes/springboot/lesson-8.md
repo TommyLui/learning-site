@@ -86,5 +86,5 @@ public class NoteController {
 - Most backend work is about turning HTTP input into application actions and returning useful response data.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/web/servlet.html
-- https://spring.io/guides/gs/rest-service
+- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/requestbody.html
+- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/responsebody.html

@@ -1,11 +1,11 @@
 ---
-title: "Lesson 21: Prepare Spring Boot 4.x for Deployment"
+title: "Lesson 21: Prepare Spring Boot 3.x for Deployment"
 lesson: 21
 slug: "lesson-21"
 summary: "Deployment readiness combines packaging, configuration, security, monitoring, and environment discipline."
 ---
 
-# Lesson 21: Prepare Spring Boot 4.x for Deployment
+# Lesson 21: Prepare Spring Boot 3.x for Deployment
 
 Deployment readiness combines packaging, configuration, security, monitoring, and environment discipline.
 
@@ -35,6 +35,8 @@ Startup behavior is another deployment concern. The application should fail clea
 
 Observability also belongs here. If the service starts but no one can check its health, monitor its key signals, or inspect its logs, then the deployment is incomplete from an operational point of view. Running code is not the same thing as manageable code.
 
+For Spring Boot 3.x, it is also worth knowing that deployment discussions may now include Docker images, AOT processing, and native-image builds. Those topics are more advanced than a first deployment, but they help explain why modern Boot packaging is broader than just "make a jar and upload it."
+
 Security and exposure settings must also be reviewed before deployment. Public routes, Actuator endpoints, CORS rules, and credential handling all become more sensitive in a networked environment than they were during local development.
 
 A deployment checklist is useful because it turns these concerns into repeatable practice. Has the app been packaged cleanly? Are secrets externalized? Are health checks available? Are logs readable? Are the required profiles correct? These questions help reduce surprises.
@@ -62,11 +64,12 @@ SERVER_PORT=8080
 
 ## Continuity
 - Previous lesson: `Lesson 20: Use Actuator for Health Checks and Monitoring`
-- Next lesson: This is the final lesson in the Spring Boot 4.x path.
+- Next lesson: This is the final lesson in the Spring Boot 3.x path.
 
 ## Key Takeaway
 - Deployment readiness combines packaging, configuration, security, monitoring, and environment discipline.
 
 ## Official References
 - https://docs.spring.io/spring-boot/reference/actuator/index.html
-- https://docs.spring.io/spring-boot/upgrading.html
+- https://docs.spring.io/spring-boot/reference/packaging/index.html
+- https://docs.spring.io/spring-boot/reference/features/external-config.html

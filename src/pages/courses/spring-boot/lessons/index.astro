@@ -30,19 +30,19 @@ const totalModules = noteModules.length;
 const averageLessonsPerModule = Math.round(notes.length / totalModules);
 const roadmapHighlights = [
   'Use the module map first to see how the course moves from core concepts all the way to deployment.',
-  'Every lesson keeps its summary, full notes, practice, and official references so you can move from reading into real implementation.',
+  'Every lesson keeps its summary, full notes, practice, and official references so you can move from reading into real Spring Boot 3.x implementation.',
   'If you want to follow the track in order, start from Lesson 1 and continue straight through the continuity flow.',
 ];
 const learningPromises = [
-  'Understand how a Spring Boot project is assembled from startup and controllers through services and deployment.',
-  'Connect REST APIs, JPA and MySQL, validation, and testing into one practical development path.',
-  'See when security, deployment, and production thinking should enter the learning flow.',
+  'Understand how a Spring Boot 3.x project is assembled from Java 17+ startup and controllers through services and deployment.',
+  'Connect REST APIs, Jakarta validation, Spring Data JPA/MySQL, and testing into one practical development path.',
+  'See where Spring Security 6, Actuator, Docker, and deployment thinking should enter the learning flow.',
 ];
 ---
 
 <BaseLayout
   title={`Spring Boot lessons · ${course.title}`}
-  description="Browse the full Spring Boot 4.x lesson notes and article drafts."
+  description="Browse the full Spring Boot 3.x lesson notes and article drafts."
   currentCourse={course}
 >
   <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
@@ -52,9 +52,9 @@ const learningPromises = [
       <div class="course-hero-grid course-hero-grid--editorial">
         <div>
           <p class="eyebrow">Course home</p>
-          <h1 class="page-title">Spring Boot 4.x lesson library</h1>
+          <h1 class="page-title">Spring Boot 3.x lesson library</h1>
           <p class="lead narrow">
-            From setup, REST APIs, and JPA/MySQL to testing, security, and deployment, this page turns the Spring Boot 4.x path into a lesson library you can read through from start to finish.
+            From Java 17+ setup, REST APIs, and JPA/MySQL to Spring Security 6, testing, and deployment, this page turns the Spring Boot 3.x path into a lesson library you can read through from start to finish.
           </p>
 
           <div class="hero-actions course-home-actions">

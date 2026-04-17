@@ -54,7 +54,7 @@ public class GreetingController {
     @GetMapping
     public Map<String, String> greeting() {
         return Map.of(
-            "message", "Hello, Spring Boot 4.x",
+            "message", "Hello, Spring Boot 3.x",
             "status", "ready"
         );
     }
@@ -72,12 +72,12 @@ public class GreetingController {
 - 解釋為什麼當應用程式變複雜時，controller 應該保持更精簡。
 
 ## Continuity
-- 上一課：`第 6 課：Spring Boot 4.x 的自動設定`
+- 上一課：`第 6 課：Spring Boot 3.x 的自動設定`
 - 下一課：`第 8 課：處理請求、回應與 JSON`
 
 ## Key Takeaway
 - 第一個 controller 會讓專案從一個正在執行的程序，變成一個真正有用的 Web 應用程式。
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/web/index.html
-- https://spring.io/guides/gs/rest-service
+- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html
+- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/responsebody.html

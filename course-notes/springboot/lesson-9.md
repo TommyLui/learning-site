@@ -10,7 +10,7 @@ summary: "APIs need predictable failure behavior, not only successful responses.
 APIs need predictable failure behavior, not only successful responses.
 
 ## What You Will Learn
-- Validate incoming request data with Bean Validation annotations.
+- Validate incoming request data with Jakarta Validation annotations.
 - Use `@Valid` so invalid input is rejected before business logic runs.
 - Centralize error responses with `@ControllerAdvice` and exception handlers.
 
@@ -27,7 +27,7 @@ APIs need predictable failure behavior, not only successful responses.
 ## Lesson Notes
 A backend application is not defined only by how it behaves when everything is correct. It also has to respond well when requests are incomplete, malformed, or logically invalid. Validation is the first line of defense against these problems.
 
-In Spring Boot, request validation is often handled with Jakarta Bean Validation annotations such as `@NotBlank`, `@Email`, `@Min`, or `@Size`. When these annotations are placed on request DTO fields and the controller uses `@Valid`, Spring checks the payload before your service logic runs.
+In Spring Boot 3.x, request validation is often handled with Jakarta Validation annotations such as `@NotBlank`, `@Email`, `@Min`, or `@Size`. In practice, that means keeping a Bean Validation implementation on the classpath, usually through `spring-boot-starter-validation`. When these annotations are placed on request DTO fields and the controller uses `@Valid`, Spring checks the payload before your service logic runs.
 
 This boundary-level validation is important because it prevents obvious bad input from leaking deeper into the system. It also keeps the API contract clear: clients know what fields are required and what rules apply.
 
@@ -45,25 +45,44 @@ package com.tommy.learningapi.common;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.Valid;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-public record CreateUserRequest(
+record CreateUserRequest(
     @NotBlank(message = "name is required") String name,
     @Email(message = "email must be valid") String email
 ) {}
 
+@RestController
+class UserController {
+    @PostMapping("/api/users")
+    ResponseEntity<Void> create(@Valid @RequestBody CreateUserRequest request) {
+        return ResponseEntity.status(201).build();
+    }
+}
+
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("error", "Validation failed");
         body.put("status", 400);
+        body.put("fieldErrors", ex.getBindingResult().getFieldErrors().stream()
+            .collect(java.util.stream.Collectors.toMap(
+                fieldError -> fieldError.getField(),
+                fieldError -> fieldError.getDefaultMessage(),
+                (first, second) -> first,
+                LinkedHashMap::new
+            )));
         return ResponseEntity.badRequest().body(body);
     }
 }
@@ -81,7 +100,7 @@ public class GlobalExceptionHandler {
 
 ## Continuity
 - Previous lesson: `Lesson 8: Handle Requests, Responses, and JSON`
-- Next lesson: `Lesson 10: Connect Spring Boot 4.x to MySQL`
+- Next lesson: `Lesson 10: Connect Spring Boot 3.x to MySQL`
 
 ## Key Takeaway
 - APIs need predictable failure behavior, not only successful responses.

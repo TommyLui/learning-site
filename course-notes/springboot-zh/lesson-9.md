@@ -10,7 +10,7 @@ summary: "API 不只需要成功回應，也需要可預期的失敗行為。"
 API 不只需要成功回應，也需要可預期的失敗行為。
 
 ## What You Will Learn
-- 使用 Bean Validation 註解驗證傳入的請求資料。
+- 使用 Jakarta Validation 註解驗證傳入的請求資料。
 - 使用 `@Valid`，讓無效輸入在業務邏輯執行前就被拒絕。
 - 透過 `@ControllerAdvice` 與例外處理器集中管理錯誤回應。
 
@@ -27,7 +27,7 @@ API 不只需要成功回應，也需要可預期的失敗行為。
 ## Lesson Notes
 一個後端應用程式，不應只看它在一切正確時如何運作。當請求不完整、格式錯誤或邏輯上無效時，它也必須能良好回應。驗證就是防止這些問題的第一道防線。
 
-在 Spring Boot 中，請求驗證通常透過 Jakarta Bean Validation 註解完成，例如 `@NotBlank`、`@Email`、`@Min` 或 `@Size`。當這些註解加在請求 DTO 欄位上，並且控制器使用 `@Valid` 時，Spring 會在你的服務邏輯執行前先檢查 payload。
+在 Spring Boot 3.x 中，請求驗證通常透過 Jakarta Validation 註解完成，例如 `@NotBlank`、`@Email`、`@Min` 或 `@Size`。實務上，這代表 classpath 上要有 Bean Validation 的實作，通常會透過 `spring-boot-starter-validation` 提供。當這些註解加在請求 DTO 欄位上，並且控制器使用 `@Valid` 時，Spring 會在你的服務邏輯執行前先檢查 payload。
 
 這種邊界層級的驗證很重要，因為它能阻止明顯錯誤的輸入繼續滲透到系統更深處。它也讓 API 契約更清楚：客戶端知道哪些欄位是必要的，以及有哪些規則需要遵守。
 
@@ -45,25 +45,44 @@ package com.tommy.learningapi.common;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.Valid;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-public record CreateUserRequest(
+record CreateUserRequest(
     @NotBlank(message = "name is required") String name,
     @Email(message = "email must be valid") String email
 ) {}
 
+@RestController
+class UserController {
+    @PostMapping("/api/users")
+    ResponseEntity<Void> create(@Valid @RequestBody CreateUserRequest request) {
+        return ResponseEntity.status(201).build();
+    }
+}
+
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("error", "Validation failed");
         body.put("status", 400);
+        body.put("fieldErrors", ex.getBindingResult().getFieldErrors().stream()
+            .collect(java.util.stream.Collectors.toMap(
+                fieldError -> fieldError.getField(),
+                fieldError -> fieldError.getDefaultMessage(),
+                (first, second) -> first,
+                LinkedHashMap::new
+            )));
         return ResponseEntity.badRequest().body(body);
     }
 }
@@ -81,7 +100,7 @@ public class GlobalExceptionHandler {
 
 ## Continuity
 - 上一課：`第 8 課：處理請求、回應與 JSON`
-- 下一課：`第 10 課：將 Spring Boot 4.x 連接到 MySQL`
+- 下一課：`第 10 課：將 Spring Boot 3.x 連接到 MySQL`
 
 ## Key Takeaway
 - API 不只需要成功回應，也需要可預期的失敗行為。

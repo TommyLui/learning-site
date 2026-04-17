@@ -82,7 +82,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 - 說明 entity 與請求 DTO 有什麼不同。
 
 ## Continuity
-- 上一課：`第 10 課：將 Spring Boot 4.x 連接到 MySQL`
+- 上一課：`第 10 課：將 Spring Boot 3.x 連接到 MySQL`
 - 下一課：`第 12 課：用 Service 與 Repository 分層建立 CRUD API`
 
 ## Key Takeaway
@@ -90,4 +90,4 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 
 ## Official References
 - https://docs.spring.io/spring-boot/reference/data/sql.html
-- https://spring.io/projects/spring-data-jpa
+- https://docs.spring.io/spring-data/jpa/reference/

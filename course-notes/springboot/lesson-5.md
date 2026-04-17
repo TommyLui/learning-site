@@ -64,7 +64,7 @@ spring.datasource.url=jdbc:mysql://localhost:3306/learning_dev
 
 ## Continuity
 - Previous lesson: `Lesson 4: Dependency Injection and Beans`
-- Next lesson: `Lesson 6: Auto-configuration in Spring Boot 4.x`
+- Next lesson: `Lesson 6: Auto-configuration in Spring Boot 3.x`
 
 ## Key Takeaway
 - Real applications need different settings for local development, testing, and production.

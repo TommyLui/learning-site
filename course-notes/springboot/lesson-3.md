@@ -74,6 +74,6 @@ public class LearningApiApplication {
 - A clear mental model of startup and structure makes later topics like controllers, repositories, and configuration much easier to understand.
 
 ## Official References
-- https://docs.spring.io/spring-boot/tutorial/index.html
-- https://docs.spring.io/spring-boot/reference/using/index.html
+- https://docs.spring.io/spring-boot/reference/features/spring-application.html
+- https://docs.spring.io/spring-boot/reference/using/using-the-springbootapplication-annotation.html
 - https://docs.spring.io/spring-boot/reference/using/structuring-your-code.html

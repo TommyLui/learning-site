@@ -64,7 +64,7 @@ spring.datasource.url=jdbc:mysql://localhost:3306/learning_dev
 
 ## Continuity
 - 上一課：`第 4 課：依賴注入與 Beans`
-- 下一課：`第 6 課：Spring Boot 4.x 的自動設定`
+- 下一課：`第 6 課：Spring Boot 3.x 的自動設定`
 
 ## Key Takeaway
 - 真實應用程式需要針對本機開發、測試與正式環境使用不同的設定。

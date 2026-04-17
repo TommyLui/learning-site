@@ -32,19 +32,19 @@ const total模組s = note模組s.length;
 const averageLessonsPer模組 = Math.round(notes.length / total模組s);
 const roadmapHighlights = [
   '先用 module map 了解整套課程如何從基礎概念一路走到部署。',
-  '每一課都保留摘要、正文、練習與官方 references，方便從閱讀切進實作。',
+  '每一課都保留摘要、正文、練習與官方 references，方便從閱讀切進真正的 Spring Boot 3.x 實作。',
   '如果你要連續學，建議從第 1 課開始，順著 延續閱讀 一路往下。',
 ];
 const learningPromises = [
-  '理解 Spring Boot 專案怎麼從啟動、Controller、Service 一路組起來。',
-  '把 REST API、JPA/MySQL、Validation、Testing 串成可實作的開發主線。',
-  '知道安全性、部署與 production thinking 要在什麼階段開始補進來。',
+  '理解 Spring Boot 3.x 專案怎麼從 Java 17+ 啟動、Controller、Service 一路組起來。',
+  '把 REST API、Jakarta Validation、JPA/MySQL 與 Testing 串成可實作的開發主線。',
+  '知道 Spring Security 6、Actuator、Docker 與部署思維要在什麼階段補進來。',
 ];
 ---
 
 <BaseLayout
   title={`Spring Boot 課程筆記 · ${course.title}`}
-  description="瀏覽完整整理的 Spring Boot 4.x 課程筆記與文章草稿。"
+  description="瀏覽完整整理的 Spring Boot 3.x 課程筆記與文章草稿。"
   currentCourse={course}
   locale={locale}
 >
@@ -55,9 +55,9 @@ const learningPromises = [
       <div class="course-hero-grid course-hero-grid--editorial">
         <div>
           <p class="eyebrow">課程首頁</p>
-          <h1 class="page-title">Spring Boot 4.x 課程筆記</h1>
+          <h1 class="page-title">Spring Boot 3.x 課程筆記</h1>
           <p class="lead narrow">
-            從入門、REST API、JPA/MySQL、測試、安全性到部署，把整套 Spring Boot 4.x
+            從 Java 17+ 入門、REST API、JPA/MySQL、Spring Security 6、測試到部署，把整套 Spring Boot 3.x
             主線整理成真正可以一路往下讀、往下做的課程閱讀首頁。
           </p>
 

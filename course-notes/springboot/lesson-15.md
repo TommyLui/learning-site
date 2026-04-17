@@ -58,11 +58,11 @@ logging.level.org.hibernate.SQL=DEBUG
 
 ## Continuity
 - Previous lesson: `Lesson 14: Write Integration Tests for Controllers and Repositories`
-- Next lesson: `Lesson 16: Spring Security Fundamentals`
+- Next lesson: `Lesson 16: Spring Security 6 Fundamentals`
 
 ## Key Takeaway
 - Debugging is a daily backend skill, and Spring Boot apps often fail in recognizable patterns.
 
 ## Official References
 - https://docs.spring.io/spring-boot/reference/features/logging.html
-- https://docs.spring.io/spring-boot/reference/using/index.html
+- https://docs.spring.io/spring-boot/reference/features/spring-application.html#features.spring-application.startup-failure

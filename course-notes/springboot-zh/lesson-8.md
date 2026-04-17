@@ -86,5 +86,5 @@ public class NoteController {
 - 大多數後端工作，都是把 HTTP 輸入轉成應用程式動作，並回傳有用的回應資料。
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/web/servlet.html
-- https://spring.io/guides/gs/rest-service
+- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/requestbody.html
+- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/responsebody.html

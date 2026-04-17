@@ -82,12 +82,12 @@ public class UserSecurityConfig {
 - Describe the difference between a successful login and a successful authorization check.
 
 ## Continuity
-- Previous lesson: `Lesson 16: Spring Security Fundamentals`
-- Next lesson: `Lesson 18: Session and JWT Basics`
+- Previous lesson: `Lesson 16: Spring Security 6 Fundamentals`
+- Next lesson: `Lesson 18: Session, JWT, and Resource Server Basics`
 
 ## Key Takeaway
 - A backend needs more than a login form; it needs safe credential handling and permission checks.
 
 ## Official References
-- https://spring.io/projects/spring-security
+- https://docs.spring.io/spring-security/reference/features/authentication/password-storage.html
 - https://docs.spring.io/spring-boot/reference/web/spring-security.html

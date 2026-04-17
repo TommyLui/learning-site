@@ -13,6 +13,7 @@ A backend is only useful when it can be built and run reliably outside the IDE.
 - Understand how to package a Spring Boot app into a runnable artifact.
 - See how the build process supports repeatable delivery across machines and environments.
 - Verify why executable jars are such a common packaging target in Spring Boot.
+- Recognize why Docker-friendly packaging and layered images matter in modern delivery workflows.
 
 ## Why This Matters
 - A backend is only useful when it can be built and run reliably outside the IDE.
@@ -35,7 +36,7 @@ This is also where local convenience ends and operational discipline begins. It 
 
 Running the packaged artifact is an important verification step because it reveals assumptions you may not notice inside the IDE. Missing resources, wrong profiles, or path-related issues often become visible only when the app is launched more realistically.
 
-Packaging also connects directly to deployment automation. CI pipelines and hosting environments rarely care how you started the application in development. They care whether the build command succeeds and produces a stable output.
+Packaging also connects directly to deployment automation. CI pipelines and hosting environments rarely care how you started the application in development. They care whether the build command succeeds and produces a stable output. In modern Spring Boot workflows, that output may later become a Docker image or a layered container build rather than only a jar copied by hand.
 
 This lesson therefore shifts attention from writing code to delivering software. A packaged app is not only easier to run elsewhere; it is a sign that the project is becoming portable and operationally serious.
 
@@ -57,9 +58,10 @@ java -jar target/learning-api-0.0.1-SNAPSHOT.jar
 - Package your project into a jar and run it from the command line.
 - Describe what changes when you run the jar instead of the IDE launcher.
 - Write down why packaging is important for CI and deployment.
+- Describe one reason layered container images can be useful even if you still start by learning executable jars.
 
 ## Continuity
-- Previous lesson: `Lesson 18: Session and JWT Basics`
+- Previous lesson: `Lesson 18: Session, JWT, and Resource Server Basics`
 - Next lesson: `Lesson 20: Use Actuator for Health Checks and Monitoring`
 
 ## Key Takeaway
@@ -67,4 +69,4 @@ java -jar target/learning-api-0.0.1-SNAPSHOT.jar
 
 ## Official References
 - https://docs.spring.io/spring-boot/reference/packaging/index.html
-- https://docs.spring.io/spring-boot/reference/build-tool-plugin/index.html
+- https://docs.spring.io/spring-boot/reference/packaging/container-images/index.html

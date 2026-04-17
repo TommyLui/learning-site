@@ -1,16 +1,16 @@
 ---
-title: "Lesson 1: What Spring Boot 4.x Is and Why It Matters"
+title: "Lesson 1: What Spring Boot 3.x Is and Why It Matters"
 lesson: 1
 slug: "lesson-1"
 summary: "Spring Boot removes much of the setup friction in Java backend development so you can focus on API design, data access, testing, and deployment."
 ---
 
-# Lesson 1: What Spring Boot 4.x Is and Why It Matters
+# Lesson 1: What Spring Boot 3.x Is and Why It Matters
 
 Spring Boot removes much of the setup friction in Java backend development so you can focus on API design, data access, testing, and deployment.
 
 ## What You Will Learn
-- Understand what Spring Boot 4.x is, what problems it solves, and why it is a strong backend learning path.
+- Understand what Spring Boot 3.x is, what problems it solves, and why it is a strong backend learning path.
 - Explain the relationship between Spring Framework and Spring Boot.
 - Recognize how auto-configuration, starters, and production-ready features change the development experience.
 
@@ -35,7 +35,7 @@ This is why the term opinionated matters. Spring Boot makes choices for you up f
 
 That organization becomes especially important as the project grows. A backend service is not just a collection of classes. It needs configuration, startup logic, dependency management, logging, testing, deployment packaging, and operational visibility. Spring Boot supports all of these concerns, which is why it feels closer to real application development than a bare framework demo.
 
-Spring Boot 4.x is also worth learning because it keeps you aligned with the direction of the official ecosystem. When you read current documentation, project pages, release notes, and guides, you are learning from the same source that drives the framework itself. That makes your notes more future-facing and reduces the risk of building habits around older conventions only.
+Spring Boot 3.x is also worth learning because it matches the current mainstream Spring ecosystem. It uses a Java 17+ baseline, aligns with the Jakarta EE namespace, and reflects the conventions you will meet in current guides, examples, and production code.
 
 It is also important to understand what Spring Boot does not do. It does not remove the need to understand architecture. It does not eliminate the need to learn dependency injection, HTTP, JSON, SQL, validation, or security. Instead, it lowers the setup cost so you can spend more time understanding those essential concepts.
 
@@ -66,7 +66,7 @@ public class DemoApplication {
 - List three parts of backend development that become easier to reach because Spring Boot handles common setup.
 
 ## Continuity
-- Previous lesson: This is the starting point of the Spring Boot 4.x course.
+- Previous lesson: This is the starting point of the Spring Boot 3.x course.
 - Next lesson: `Lesson 2: Create a Project With Spring Initializr`
 
 ## Key Takeaway
@@ -74,5 +74,5 @@ public class DemoApplication {
 
 ## Official References
 - https://spring.io/projects/spring-boot
-- https://docs.spring.io/spring-boot/
+- https://docs.spring.io/spring-boot/reference/getting-started/index.html
 - https://github.com/spring-projects/spring-boot/releases

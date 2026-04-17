@@ -98,5 +98,5 @@ public class NoteController {
 - 依賴注入是建立乾淨且可測試的 Spring 應用程式時，最核心的觀念之一。
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/features/index.html
-- https://spring.io/guides/gs/rest-service
+- https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html
+- https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/autowired.html

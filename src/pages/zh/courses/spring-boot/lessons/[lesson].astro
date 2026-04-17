@@ -44,10 +44,11 @@ const reasons = parseBulletList(note.sections['Why This Matters'] ?? '');
 const ideas = parseBulletList(note.sections['Main Ideas'] ?? '');
 const lessonNotes = parseParagraphs(note.sections['Lesson Notes'] ?? '');
 const mistakes = parseBulletList(note.sections['Common Mistakes'] ?? '');
-const practice = parseBulletList(note.sections.練習 ?? '');
+const practice = parseBulletList(note.sections.Practice ?? note.sections.練習 ?? '');
 const takeaways = parseBulletList(note.sections['Key Takeaway'] ?? '');
 const references = parseBulletList(note.sections['Official References'] ?? '');
 const estimatedMinutes = Math.max(4, Math.ceil((note.exampleCode.length + lessonNotes.join(' ').length) / 900));
+const trimLessonTitle = (title: string) => title.replace(/^(?:Lesson \d+:\s*|第\s*\d+\s*課：\s*)/, '');
 const article段落s = [
   { id: 'learning-points', title: '這一課會學到什麼' },
   { id: 'lesson-notes', title: '課程筆記' },
@@ -71,7 +72,7 @@ const article段落s = [
       <div class="course-hero-grid course-hero-grid--editorial">
         <div>
           <p class="eyebrow">第 {note.lesson} 課</p>
-          <h1 class="page-title">{note.title.replace(/^Lesson \d+:\s*/, '')}</h1>
+          <h1 class="page-title">{trimLessonTitle(note.title)}</h1>
           <p class="lead narrow">{note.summary}</p>
         </div>
 
@@ -234,7 +235,7 @@ const article段落s = [
                       class:list={['lesson-mini-link', { 'is-active': entry.slug === note.slug }]}
                     >
                       <span>Lesson {entry.lesson}</span>
-                      <strong>{entry.title.replace(/^Lesson \d+:\s*/, '')}</strong>
+                      <strong>{trimLessonTitle(entry.title)}</strong>
                     </a>
                   ))}
                 </div>
@@ -255,7 +256,7 @@ const article段落s = [
                 <div class="note-card-meta">
                   <span class="course-pill">上一課</span>
                 </div>
-                <h3>{previousNote.title.replace(/^Lesson \d+:\s*/, '')}</h3>
+                <h3>{trimLessonTitle(previousNote.title)}</h3>
                 <p>{previousNote.summary}</p>
               </a>
             )}
@@ -265,7 +266,7 @@ const article段落s = [
                 <div class="note-card-meta">
                   <span class="course-pill">下一課</span>
                 </div>
-                <h3>{nextNote.title.replace(/^Lesson \d+:\s*/, '')}</h3>
+                <h3>{trimLessonTitle(nextNote.title)}</h3>
                 <p>{nextNote.summary}</p>
               </a>
             )}

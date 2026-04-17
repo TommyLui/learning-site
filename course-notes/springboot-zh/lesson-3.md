@@ -74,6 +74,6 @@ public class LearningApiApplication {
 - 對啟動流程與專案結構有清楚的心智模型，會讓之後像 controller、repository 與 configuration 這些主題更容易理解。
 
 ## Official References
-- https://docs.spring.io/spring-boot/tutorial/index.html
-- https://docs.spring.io/spring-boot/reference/using/index.html
+- https://docs.spring.io/spring-boot/reference/features/spring-application.html
+- https://docs.spring.io/spring-boot/reference/using/using-the-springbootapplication-annotation.html
 - https://docs.spring.io/spring-boot/reference/using/structuring-your-code.html

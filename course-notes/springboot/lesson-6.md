@@ -1,11 +1,11 @@
 ---
-title: "Lesson 6: Auto-configuration in Spring Boot 4.x"
+title: "Lesson 6: Auto-configuration in Spring Boot 3.x"
 lesson: 6
 slug: "lesson-6"
 summary: "Auto-configuration explains why Spring Boot feels fast and why adding dependencies can change application behavior."
 ---
 
-# Lesson 6: Auto-configuration in Spring Boot 4.x
+# Lesson 6: Auto-configuration in Spring Boot 3.x
 
 Auto-configuration explains why Spring Boot feels fast and why adding dependencies can change application behavior.
 
@@ -31,11 +31,11 @@ The word 'auto' can be misleading if you imagine random behavior. Boot is not gu
 
 That means your dependency list is more important than it first appears. Adding a web starter suggests that you want web support. Adding JPA and a database driver suggests that you want persistence-related setup. The more you understand this relationship, the easier it becomes to predict what startup should do.
 
-This is also why two Spring Boot projects can behave very differently even if their application classes look almost identical. The major difference often comes from what is on the classpath and which configuration properties are active.
+This is also why two Spring Boot 3.x projects can behave very differently even if their application classes look almost identical. The major difference often comes from what is on the classpath, which starter modules are present, and which configuration properties are active.
 
 Auto-configuration is powerful because it reduces boilerplate, but it does not remove control. If you want custom behavior, you can define your own beans or settings. In many cases, Boot will back off when it sees that you have supplied a more specific configuration.
 
-A healthy learning habit is to treat auto-configuration as something to inspect rather than simply trust. Read startup output, notice which starters you add, and pay attention when a new dependency changes application behavior. These observations teach you more than memorizing annotation names alone.
+A healthy learning habit is to treat auto-configuration as something to inspect rather than simply trust. Read startup output, notice which starters you add, and pay attention when a new dependency changes application behavior. In Spring Boot 3.x, that also means noticing when Jakarta-based dependencies, data starters, or security starters activate different defaults.
 
 Many early debugging problems connect back to this topic. Missing datasource settings, unexpected security defaults, or web endpoints not behaving as expected often make more sense once you understand that Boot is responding to conditions, not just executing static code.
 

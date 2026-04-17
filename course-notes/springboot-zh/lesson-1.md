@@ -1,16 +1,16 @@
 ---
-title: "第 1 課：什麼是 Spring Boot 4.x，以及它為什麼重要"
+title: "第 1 課：什麼是 Spring Boot 3.x，以及它為什麼重要"
 lesson: 1
 slug: "lesson-1"
 summary: "Spring Boot 移除了 Java 後端開發中大量的設定阻力，讓你能把重心放在 API 設計、資料存取、測試與部署上。"
 ---
 
-# 第 1 課：什麼是 Spring Boot 4.x，以及它為什麼重要
+# 第 1 課：什麼是 Spring Boot 3.x，以及它為什麼重要
 
 Spring Boot 移除了 Java 後端開發中大量的設定阻力，讓你能把重心放在 API 設計、資料存取、測試與部署上。
 
 ## What You Will Learn
-- 理解 Spring Boot 4.x 是什麼、它解決哪些問題，以及為什麼它是很適合的後端學習路線。
+- 理解 Spring Boot 3.x 是什麼、它解決哪些問題，以及為什麼它是很適合的後端學習路線。
 - 說明 Spring Framework 與 Spring Boot 之間的關係。
 - 認識自動設定、starter 與正式環境功能，如何改變開發體驗。
 
@@ -35,7 +35,7 @@ Spring Framework 本來就提供了很強大的基礎元件，用來處理依賴
 
 隨著專案成長，這種組織方式會變得特別重要。後端服務不只是一些 class 的集合。它還需要設定、啟動流程、相依管理、日誌、測試、部署封裝，以及營運可觀測性。Spring Boot 支援所有這些面向，所以比起單純展示 framework 的範例，它更接近真實的應用程式開發。
 
-Spring Boot 4.x 也值得學，因為它能讓你跟上官方生態系的方向。當你閱讀最新的文件、專案頁面、發行說明與指南時，你學習的是與框架本身同步的來源。這會讓你的筆記更面向未來，也降低你只建立在舊慣例上的風險。
+Spring Boot 3.x 很值得學，因為它對齊目前主流的 Spring 生態系。它使用 Java 17+ 作為基線、全面轉向 Jakarta 命名空間，也反映了你在最新指南、範例與實際專案中會遇到的慣例。
 
 同時，也要理解 Spring Boot 沒有做什麼。它不會讓你不需要理解架構，也不會消除你學習依賴注入、HTTP、JSON、SQL、驗證或安全性的必要。它做的事情，是降低設定成本，讓你能把更多時間花在理解那些真正重要的概念上。
 
@@ -66,7 +66,7 @@ public class DemoApplication {
 - 列出三個因為 Spring Boot 處理了常見設定，而變得更容易接觸到的後端開發部分。
 
 ## Continuity
-- 上一課：這是 Spring Boot 4.x 課程的起點。
+- 上一課：這是 Spring Boot 3.x 課程的起點。
 - 下一課：`第 2 課：使用 Spring Initializr 建立專案`
 
 ## Key Takeaway
@@ -74,5 +74,5 @@ public class DemoApplication {
 
 ## Official References
 - https://spring.io/projects/spring-boot
-- https://docs.spring.io/spring-boot/
+- https://docs.spring.io/spring-boot/reference/getting-started/index.html
 - https://github.com/spring-projects/spring-boot/releases

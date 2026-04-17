@@ -11,7 +11,7 @@ Production applications need observability, not just features.
 
 ## What You Will Learn
 - Use Spring Boot Actuator to expose operational information about the application.
-- Understand the purpose of health and info endpoints.
+- Understand the purpose of health, info, and metrics endpoints.
 - Recognize why observability belongs in the application before deployment day arrives.
 
 ## Why This Matters
@@ -27,7 +27,7 @@ Production applications need observability, not just features.
 ## Lesson Notes
 A backend service is not finished just because it can handle requests. Once it is deployed, people and systems need to know whether it is healthy, what it is doing, and how it should be monitored. Spring Boot Actuator exists to support exactly that operational perspective.
 
-Actuator adds endpoints that expose information such as application health, build info, metrics, mappings, and environment details. These endpoints are useful for developers, operators, and deployment platforms that need to evaluate whether the application is functioning correctly.
+Actuator adds endpoints that expose information such as application health, build info, metrics, mappings, loggers, and environment details. These endpoints are useful for developers, operators, and deployment platforms that need to evaluate whether the application is functioning correctly.
 
 The health endpoint is especially important because it acts as a quick signal of whether the application is alive and, depending on configuration, whether dependent systems such as databases are also available. This can influence load balancing, restart behavior, and deployment readiness checks.
 
@@ -35,15 +35,15 @@ Observability is not only about dashboards or advanced monitoring stacks. It beg
 
 At the same time, operational endpoints should not be exposed carelessly. Some of them reveal sensitive implementation details. That is why exposure settings and security rules matter. Visibility should be intentional, not accidental.
 
-A healthy practice is to decide early which operational signals are valuable and who should be allowed to see them. That decision becomes more important as the app gains more endpoints, infrastructure, and deployment complexity.
+A healthy practice is to decide early which operational signals are valuable and who should be allowed to see them. That decision becomes more important as the app gains more endpoints, infrastructure, and deployment complexity. In Spring Boot, this usually means exposing only the endpoints you need and being careful with settings that reveal full health details or environment information.
 
 By learning Actuator here, you start treating the application as a long-running service that needs to be understood and maintained, not just a set of controller methods.
 
 ## Example
 ```properties
 management.endpoints.web.exposure.include=health,info,metrics
-management.endpoint.health.show-details=always
-management.info.env.enabled=true
+# Limit sensitive details unless the audience is trusted.
+management.endpoint.health.show-details=when-authorized
 ```
 
 ## Common Mistakes
@@ -58,11 +58,11 @@ management.info.env.enabled=true
 
 ## Continuity
 - Previous lesson: `Lesson 19: Build and Package the Application`
-- Next lesson: `Lesson 21: Prepare Spring Boot 4.x for Deployment`
+- Next lesson: `Lesson 21: Prepare Spring Boot 3.x for Deployment`
 
 ## Key Takeaway
 - Production applications need observability, not just features.
 
 ## Official References
 - https://docs.spring.io/spring-boot/reference/actuator/index.html
-- https://spring.io/projects/spring-boot
+- https://docs.spring.io/spring-boot/reference/actuator/endpoints.html

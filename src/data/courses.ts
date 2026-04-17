@@ -177,36 +177,36 @@ export const courses: Course[] = [
   },
   {
     slug: 'spring-boot',
-    title: 'Spring Boot 4.x',
-    shortLabel: 'SB4',
+    title: 'Spring Boot 3.x',
+    shortLabel: 'SB3',
     category: 'Backend development',
     accent: '#6AA05A',
-    subtitle: 'Build backend APIs with Spring Boot 4.x, REST, JPA, and production-ready practices.',
+    subtitle: 'Build backend APIs with Spring Boot 3.x, Java 17+, Spring Data JPA/MySQL, Spring Security 6, and production-ready practices.',
     overview:
-      'This course follows a Spring Boot 4.x learning path, starting from setup and core concepts, then moving through API design, data access, testing, security, and deployment.',
+      'This course follows a Spring Boot 3.x learning path with Java 17+, Jakarta-based APIs, REST design, data access, testing, security, and deployment-focused practices.',
     level: 'Beginner to intermediate',
     totalLessons: 21,
-    focus: ['Spring Boot 4.x fundamentals', 'REST APIs', 'JPA and MySQL', 'testing and security'],
-    prerequisites: ['Java syntax', 'object-oriented programming', 'basic SQL concepts'],
+    focus: ['Java 17+ and Spring Boot 3.x', 'REST APIs', 'Spring Data JPA + MySQL', 'Jakarta validation', 'Spring Security 6'],
+    prerequisites: ['Java syntax', 'object-oriented programming', 'basic SQL concepts', 'ability to run Java 17+ locally'],
     outcomes: [
-      'Understand the Spring Boot 4.x application model and startup flow',
-      'Build layered REST APIs with validation, testing, and clear boundaries',
-      'Connect Spring Boot 4.x to MySQL and prepare apps for production',
+      'Understand the Spring Boot 3.x application model, Java 17+ baseline, and startup flow',
+      'Build layered REST APIs with Jakarta validation, testing, and clear boundaries',
+      'Connect Spring Boot 3.x to MySQL and secure APIs with modern Spring Security patterns',
     ],
     modules: [
       {
-        title: 'Module 1 · Spring Boot 4.x introduction and setup',
-        description: 'Learn what Spring Boot 4.x solves, how to create a project, and how the application starts.',
+        title: 'Module 1 · Spring Boot 3.x introduction and setup',
+        description: 'Learn what Spring Boot 3.x solves, why Java 17+ matters, and how the application starts.',
         lessons: [
           {
             number: 'Lesson 1',
-            title: 'What Spring Boot 4.x is and why it matters',
-            summary: 'Understand how Spring Boot 4.x simplifies backend development and where it fits in the Java ecosystem.',
+            title: 'What Spring Boot 3.x is and why it matters',
+            summary: 'Understand how Spring Boot 3.x simplifies backend development, including its Java 17+ baseline and Jakarta-based ecosystem.',
           },
           {
             number: 'Lesson 2',
             title: 'Create a project with Spring Initializr',
-            summary: 'Generate a clean starter project and choose the right dependencies for a modern backend app.',
+            summary: 'Generate a clean starter project, choose a compatible Java version, and select dependencies deliberately.',
           },
           {
             number: 'Lesson 3',
@@ -216,8 +216,8 @@ export const courses: Course[] = [
         ],
       },
       {
-        title: 'Module 2 · Core concepts in Spring Boot 4.x',
-        description: 'Build a strong mental model for beans, configuration, profiles, and auto-configuration.',
+        title: 'Module 2 · Core concepts in Spring Boot 3.x',
+        description: 'Build a strong mental model for beans, configuration, profiles, and starter-driven auto-configuration.',
         lessons: [
           {
             number: 'Lesson 4',
@@ -231,13 +231,13 @@ export const courses: Course[] = [
           },
           {
             number: 'Lesson 6',
-            title: 'Auto-configuration in Spring Boot 4.x',
-            summary: 'See how Spring Boot reduces boilerplate and when you should customize the default behavior.',
+            title: 'Auto-configuration in Spring Boot 3.x',
+            summary: 'See how conditional auto-configuration and starters reduce boilerplate while still allowing customization.',
           },
         ],
       },
       {
-        title: 'Module 3 · Build REST APIs with Spring Boot 4.x',
+        title: 'Module 3 · Build REST APIs with Spring Boot 3.x',
         description: 'Create HTTP endpoints, structure request and response models, and keep the web layer clean.',
         lessons: [
           {
@@ -253,23 +253,23 @@ export const courses: Course[] = [
           {
             number: 'Lesson 9',
             title: 'Validation and global exception handling',
-            summary: 'Validate input, return clearer error messages, and centralize exception handling across the API.',
+            summary: 'Validate input with Jakarta-based APIs, return clearer error messages, and centralize exception handling across the API.',
           },
         ],
       },
       {
         title: 'Module 4 · MySQL and Spring Data JPA',
-        description: 'Connect the app to MySQL and use JPA to model entities, repositories, and CRUD flows.',
+        description: 'Connect the app to MySQL and use Jakarta Persistence, Hibernate 6, and Spring Data JPA for CRUD flows.',
         lessons: [
           {
             number: 'Lesson 10',
-            title: 'Connect Spring Boot 4.x to MySQL',
-            summary: 'Configure the datasource, verify the connection, and prepare the project for relational data access.',
+            title: 'Connect Spring Boot 3.x to MySQL',
+            summary: 'Configure the datasource, MySQL driver, and key JPA settings for reliable relational data access.',
           },
           {
             number: 'Lesson 11',
             title: 'Entities, repositories, and JPA basics',
-            summary: 'Map domain objects to tables and use repositories to query and persist data cleanly.',
+            summary: 'Map domain objects with Jakarta Persistence annotations and use repositories to query and persist data cleanly.',
           },
           {
             number: 'Lesson 12',
@@ -279,18 +279,18 @@ export const courses: Course[] = [
         ],
       },
       {
-        title: 'Module 5 · Validation, exception handling, and testing',
-        description: 'Improve reliability with better input handling, test coverage, and debugging habits.',
+        title: 'Module 5 · Testing and debugging',
+        description: 'Improve reliability with focused tests, integration coverage, and practical debugging habits.',
         lessons: [
           {
             number: 'Lesson 13',
             title: 'Write unit tests for service logic',
-            summary: 'Test business rules in isolation so service code stays easy to verify and change.',
+            summary: 'Test business rules in isolation with fast feedback and minimal framework overhead.',
           },
           {
             number: 'Lesson 14',
             title: 'Write integration tests for controllers and repositories',
-            summary: 'Verify that web, data, and persistence layers work together correctly.',
+            summary: 'Verify web and persistence behavior with MockMvc, repository tests, and realistic integration coverage.',
           },
           {
             number: 'Lesson 15',
@@ -301,43 +301,43 @@ export const courses: Course[] = [
       },
       {
         title: 'Module 6 · Security and authentication',
-        description: 'Add authentication and authorization with a practical introduction to Spring Security.',
+        description: 'Add authentication and authorization with Spring Security 6 and modern filter-chain configuration.',
         lessons: [
           {
             number: 'Lesson 16',
-            title: 'Spring Security fundamentals',
-            summary: 'Understand the security filter chain, authentication, authorization, and common defaults.',
+            title: 'Spring Security 6 fundamentals',
+            summary: 'Understand the security filter chain, authentication, authorization, and SecurityFilterChain-based configuration.',
           },
           {
             number: 'Lesson 17',
             title: 'Login flow, password encoding, and authorization',
-            summary: 'Protect endpoints, encode passwords safely, and apply role-based access control.',
+            summary: 'Protect endpoints, encode passwords safely, and apply role-based access control with clear authorization rules.',
           },
           {
             number: 'Lesson 18',
-            title: 'Session and JWT basics',
-            summary: 'Compare session-based and token-based authentication for backend APIs.',
+            title: 'Session, JWT, and resource-server basics',
+            summary: 'Compare session-based auth with JWT-based APIs and understand where resource-server support fits.',
           },
         ],
       },
       {
         title: 'Module 7 · Packaging, monitoring, and deployment',
-        description: 'Prepare the application for production with packaging, health checks, and deployment basics.',
+        description: 'Prepare the application for production with executable jars, Actuator, Docker-friendly packaging, and deployment basics.',
         lessons: [
           {
             number: 'Lesson 19',
             title: 'Build and package the application',
-            summary: 'Create a runnable artifact and understand common packaging workflows for Spring Boot apps.',
+            summary: 'Build an executable artifact and understand common packaging and container-friendly delivery workflows.',
           },
           {
             number: 'Lesson 20',
             title: 'Use Actuator for health checks and monitoring',
-            summary: 'Expose useful operational endpoints and understand the role of production-ready features.',
+            summary: 'Expose health, info, metrics, and related operational endpoints with Spring Boot Actuator.',
           },
           {
             number: 'Lesson 21',
-            title: 'Prepare Spring Boot 4.x for deployment',
-            summary: 'Review environment setup, externalized configuration, and practical deployment considerations.',
+            title: 'Prepare Spring Boot 3.x for deployment',
+            summary: 'Review environment setup, externalized configuration, Docker, and native-image-aware deployment considerations.',
           },
         ],
       },
@@ -479,10 +479,10 @@ export const recentLessons: RecentLesson[] = [
   },
   {
     courseSlug: 'spring-boot',
-    courseTitle: 'Spring Boot 4.x',
+    courseTitle: 'Spring Boot 3.x',
     accent: '#6AA05A',
     number: 'Lesson 10',
-    title: 'Connect Spring Boot 4.x to MySQL',
+    title: 'Connect Spring Boot 3.x to MySQL',
     summary: 'Configure the datasource and prepare the project for relational data access with MySQL.',
     updatedAt: 'Updated Apr 2026',
     href: '/courses/spring-boot/lessons/lesson-10',
@@ -499,11 +499,11 @@ export const recentLessons: RecentLesson[] = [
   },
   {
     courseSlug: 'spring-boot',
-    courseTitle: 'Spring Boot 4.x',
+    courseTitle: 'Spring Boot 3.x',
     accent: '#6AA05A',
     number: 'Lesson 16',
-    title: 'Spring Security fundamentals',
-    summary: 'Understand authentication, authorization, and the security filter chain in Spring Boot 4.x apps.',
+    title: 'Spring Security 6 fundamentals',
+    summary: 'Understand authentication, authorization, and SecurityFilterChain-based API protection in Spring Boot 3.x apps.',
     updatedAt: 'Updated Apr 2026',
     href: '/courses/spring-boot/lessons/lesson-16',
   },

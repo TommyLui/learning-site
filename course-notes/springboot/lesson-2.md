@@ -10,7 +10,7 @@ summary: "Starting from the official generator reduces setup mistakes and keeps 
 Starting from the official generator reduces setup mistakes and keeps your project aligned with Spring Boot conventions.
 
 ## What You Will Learn
-- Learn how to create a clean Spring Boot 4.x project using the official Initializr workflow.
+- Learn how to create a clean Spring Boot 3.x project using the official Initializr workflow.
 - Understand what the main Initializr fields mean and how they affect the generated project.
 - Choose dependencies in a way that supports gradual learning instead of accidental complexity.
 
@@ -27,7 +27,7 @@ Starting from the official generator reduces setup mistakes and keeps your proje
 ## Lesson Notes
 Spring Initializr is the official way to start a Spring Boot project, and that matters more than it might seem at first. Instead of assembling a build file manually and guessing which dependencies belong together, you begin with a project generated from the same conventions the Spring team expects.
 
-The page at `start.spring.io` looks simple, but each field controls something meaningful. Project chooses the build tool, usually Maven or Gradle. Language chooses whether the generated code is Java, Kotlin, or Groovy. Spring Boot selects the framework version you want to target. For your learning path, that should stay aligned with the 4.x branch you are documenting.
+The page at `start.spring.io` looks simple, but each field controls something meaningful. Project chooses the build tool, usually Maven or Gradle. Language chooses whether the generated code is Java, Kotlin, or Groovy. Spring Boot selects the framework version you want to target. For this learning path, that should stay aligned with Spring Boot 3.x and a supported Java 17+ runtime. Java 21 also works for many Spring Boot 3 releases, but Java 17 is the safe baseline this course keeps returning to.
 
 The metadata section is easy to underestimate. Group usually reflects a package namespace such as `com.tommy`, while artifact is the project identifier, such as `learning-api`. Those values influence generated package names, build outputs, and how the application identifies itself in a team or portfolio context. Good names keep the project readable as it grows.
 
@@ -47,11 +47,11 @@ This lesson is really about adopting a repeatable starting habit. Every future S
 ```text
 Project: Maven
 Language: Java
-Spring Boot: 4.x
+Spring Boot: 3.x
 Group: com.tommy
 Artifact: learning-api
 Packaging: Jar
-Java: 21
+Java: 17
 Dependencies: Spring Web
 ```
 
@@ -62,12 +62,12 @@ Dependencies: Spring Web
 - Treating group and artifact values as disposable names instead of part of project structure.
 
 ## Practice
-- Create a new Spring Boot 4.x project with only `Spring Web` selected.
+- Create a new Spring Boot 3.x project with only `Spring Web` selected.
 - Write down what each Initializr field controls before downloading the project.
 - Open the generated project and identify which choices from Initializr are visible in the folder structure or build file.
 
 ## Continuity
-- Previous lesson: `Lesson 1: What Spring Boot 4.x Is and Why It Matters`
+- Previous lesson: `Lesson 1: What Spring Boot 3.x Is and Why It Matters`
 - Next lesson: `Lesson 3: Understand the Project Structure and Startup Flow`
 
 ## Key Takeaway

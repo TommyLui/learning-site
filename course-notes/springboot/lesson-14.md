@@ -33,7 +33,7 @@ Repository integration tests matter for a similar reason. An entity might look c
 
 Integration tests are usually slower than pure unit tests, which is why they should be used deliberately. The goal is not to test every trivial branch at the highest cost. The goal is to choose the places where framework wiring and cross-layer behavior are most important.
 
-A strong testing strategy often looks like a pyramid: many unit tests, fewer integration tests, and a smaller set of full end-to-end checks. Spring Boot makes it practical to build the middle layer of that pyramid with focused testing tools.
+A strong testing strategy often looks like a pyramid: many unit tests, fewer integration tests, and a smaller set of full end-to-end checks. Spring Boot makes it practical to build the middle layer of that pyramid with focused testing tools. In Spring Boot 3.x, that can also include Testcontainers or service-connection-based database tests when you want realistic persistence behavior.
 
 These tests are also valuable because they reflect the real public contract of the application. If the API returns the wrong JSON shape, or if a repository query fails because of a mapping issue, integration tests will often reveal it before a user does.
 
@@ -78,6 +78,7 @@ class NoteControllerTest {
 - Write one MockMvc test for a GET endpoint.
 - Add one repository test that verifies entity persistence or lookup behavior.
 - Compare what your unit tests cover versus what your integration tests cover.
+- If possible, describe when a Testcontainers-backed database test would be more trustworthy than an in-memory substitute.
 
 ## Continuity
 - Previous lesson: `Lesson 13: Write Unit Tests for Service Logic`
@@ -88,4 +89,4 @@ class NoteControllerTest {
 
 ## Official References
 - https://docs.spring.io/spring-boot/reference/testing/index.html
-- https://spring.io/guides/gs/testing-web
+- https://docs.spring.io/spring-framework/reference/testing/mockmvc.html

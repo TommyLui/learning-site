@@ -58,11 +58,11 @@ logging.level.org.hibernate.SQL=DEBUG
 
 ## Continuity
 - 上一課：`第 14 課：為 Controller 與 Repository 撰寫整合測試`
-- 下一課：`第 16 課：Spring Security 基礎`
+- 下一課：`第 16 課：Spring Security 6 基礎`
 
 ## Key Takeaway
 - 除錯是後端開發的日常技能，而 Spring Boot 應用程式常以可辨識的模式發生問題。
 
 ## Official References
 - https://docs.spring.io/spring-boot/reference/features/logging.html
-- https://docs.spring.io/spring-boot/reference/using/index.html
+- https://docs.spring.io/spring-boot/reference/features/spring-application.html#features.spring-application.startup-failure

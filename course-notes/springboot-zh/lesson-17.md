@@ -82,12 +82,12 @@ public class UserSecurityConfig {
 - 描述成功登入與成功授權檢查之間的差異。
 
 ## Continuity
-- 上一課：`第 16 課：Spring Security 基礎`
-- 下一課：`第 18 課：Session 與 JWT 基礎`
+- 上一課：`第 16 課：Spring Security 6 基礎`
+- 下一課：`第 18 課：Session、JWT 與 Resource Server 基礎`
 
 ## Key Takeaway
 - 後端不只需要登入表單；它還需要安全地處理憑證與進行權限檢查。
 
 ## Official References
-- https://spring.io/projects/spring-security
+- https://docs.spring.io/spring-security/reference/features/authentication/password-storage.html
 - https://docs.spring.io/spring-boot/reference/web/spring-security.html

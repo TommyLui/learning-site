@@ -37,6 +37,8 @@ A common trap is over-mocking or testing implementation details. If your asserti
 
 Another trap is using full `@SpringBootTest` startup for simple service verification. That makes tests slower and blurs the line between unit and integration testing. There is a place for broader tests, but service rules often deserve a much smaller testing scope.
 
+In a Spring Boot 3.x codebase, this distinction matters even more because integration tests can also cover real framework wiring, configuration properties, security rules, and container-backed dependencies. Keep unit tests narrow so those broader checks remain purposeful instead of accidental.
+
 The best reason to learn service unit tests early is not just correctness. It is confidence. As the application grows, being able to change service behavior without fear becomes a major productivity advantage.
 
 ## Example
@@ -82,4 +84,4 @@ class NoteServiceTest {
 
 ## Official References
 - https://docs.spring.io/spring-boot/reference/testing/index.html
-- https://spring.io/guides/gs/testing-web
+- https://docs.spring.io/spring-security/reference/servlet/test/method.html

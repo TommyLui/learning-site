@@ -1,11 +1,11 @@
 ---
-title: "Lesson 10: Connect Spring Boot 4.x to MySQL"
+title: "Lesson 10: Connect Spring Boot 3.x to MySQL"
 lesson: 10
 slug: "lesson-10"
 summary: "Persistent data is a core part of most backend systems, and correct database setup is the foundation."
 ---
 
-# Lesson 10: Connect Spring Boot 4.x to MySQL
+# Lesson 10: Connect Spring Boot 3.x to MySQL
 
 Persistent data is a core part of most backend systems, and correct database setup is the foundation.
 
@@ -29,7 +29,7 @@ Many early Spring Boot examples use in-memory data or return static values becau
 
 Connecting Spring Boot to MySQL begins with dependencies. The application needs a driver that knows how to speak to MySQL and a data access stack such as Spring Data JPA if you plan to work through entities and repositories.
 
-Once the dependencies are present, configuration becomes the key step. Spring Boot needs to know the database URL, username, password, and, in many cases, JPA or Hibernate-related settings that influence schema handling and SQL behavior.
+Once the dependencies are present, configuration becomes the key step. Spring Boot 3.x needs to know the database URL, username, password, and, in many cases, JPA or Hibernate-related settings that influence schema handling and SQL behavior. In practice, this usually means Spring Data JPA on top of Hibernate 6 with a MySQL driver.
 
 These values should never be buried inside Java classes. They are environmental details, not business concepts. Treating them as configuration keeps the application safer and easier to move between local development, testing, and deployment targets.
 
@@ -37,15 +37,17 @@ A successful database connection is more than a technical checkbox. It changes h
 
 It is also worth noticing that datasource problems are often startup problems. Invalid credentials, wrong hosts, or unavailable databases usually appear before the app begins handling requests. That makes configuration accuracy especially important in the early persistence phase.
 
-Once MySQL is connected correctly, the rest of the persistence story can begin. Entities, repositories, transactions, and CRUD behavior all depend on this foundation.
+Once MySQL is connected correctly, the rest of the persistence story can begin. Entities, repositories, transactions, and CRUD behavior all depend on this foundation. It is also worth building a healthy habit here: convenience settings such as `spring.jpa.hibernate.ddl-auto=update` can be acceptable in local development, but production systems usually move schema changes into a dedicated migration tool such as Flyway or Liquibase.
 
 ## Example
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/learning_db
 spring.datasource.username=root
 spring.datasource.password=secret
+# Local development convenience only; production usually prefers migrations.
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
 ```
 
 ## Common Mistakes

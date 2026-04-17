@@ -1,11 +1,11 @@
 ---
-title: "Lesson 16: Spring Security Fundamentals"
+title: "Lesson 16: Spring Security 6 Fundamentals"
 lesson: 16
 slug: "lesson-16"
 summary: "Security changes how requests move through the application and is essential for real APIs."
 ---
 
-# Lesson 16: Spring Security Fundamentals
+# Lesson 16: Spring Security 6 Fundamentals
 
 Security changes how requests move through the application and is essential for real APIs.
 
@@ -13,6 +13,7 @@ Security changes how requests move through the application and is essential for 
 - Understand the core concepts of authentication, authorization, and the filter chain.
 - See why adding Spring Security changes request handling even before custom code exists.
 - Build a mental model for protecting endpoints intentionally rather than accidentally.
+- Recognize why Spring Boot 3.x uses `SecurityFilterChain` configuration instead of `WebSecurityConfigurerAdapter`.
 
 ## Why This Matters
 - Security changes how requests move through the application and is essential for real APIs.
@@ -35,7 +36,7 @@ This design is powerful because it gives you central control over access rules. 
 
 For learners, the most useful mindset is to see security as traffic control at the application boundary. You are not just adding a login screen. You are deciding how every request should be evaluated before it reaches business logic.
 
-Spring Boot makes this easier by integrating Security with the rest of the application model, but that convenience should not hide the concepts underneath. If you understand the filter chain and access rules, later features such as custom login flow, JWT, or method-level security become much easier to reason about.
+Spring Boot makes this easier by integrating Security with the rest of the application model, but that convenience should not hide the concepts underneath. In Spring Security 6, the modern style is to register a `SecurityFilterChain` bean and configure rules explicitly rather than extending the old `WebSecurityConfigurerAdapter`. Method-level security also moved to `@EnableMethodSecurity`, which matches the same newer configuration model. If you understand the filter chain and access rules, later features such as custom login flow, JWT, or method-level security become much easier to reason about.
 
 This lesson is the point where the course shifts from building functionality to protecting functionality. That change is central to real backend development.
 
@@ -84,5 +85,5 @@ public class SecurityConfig {
 - Security changes how requests move through the application and is essential for real APIs.
 
 ## Official References
-- https://spring.io/projects/spring-security
-- https://docs.spring.io/spring-boot/reference/web/spring-security.html
+- https://docs.spring.io/spring-security/reference/servlet/architecture.html
+- https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html

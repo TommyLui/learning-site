@@ -43,9 +43,12 @@ By the time CRUD flows are in place, you have a strong vertical slice of the app
 ```java
 package com.tommy.learningapi.notes;
 
+import java.util.Map;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Service
 public class NoteService {
@@ -64,7 +67,22 @@ public class NoteService {
 
     public Note findById(Long id) {
         return noteRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found"));
+            .orElseThrow(() -> new NoteNotFoundException(id));
+    }
+}
+
+class NoteNotFoundException extends RuntimeException {
+    public NoteNotFoundException(Long id) {
+        super("Note not found: " + id);
+    }
+}
+
+@RestControllerAdvice
+class NoteErrorHandler {
+    @ExceptionHandler(NoteNotFoundException.class)
+    ResponseEntity<Map<String, Object>> handleNotFound(NoteNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(Map.of("error", ex.getMessage(), "status", 404));
     }
 }
 ```
@@ -87,5 +105,5 @@ public class NoteService {
 - CRUD is the foundation of many backend apps, and a layered approach keeps that logic maintainable.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/web/index.html
-- https://docs.spring.io/spring-boot/reference/data/index.html
+- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html
+- https://docs.spring.io/spring-data/jpa/reference/

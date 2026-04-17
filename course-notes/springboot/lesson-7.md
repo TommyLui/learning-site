@@ -54,7 +54,7 @@ public class GreetingController {
     @GetMapping
     public Map<String, String> greeting() {
         return Map.of(
-            "message", "Hello, Spring Boot 4.x",
+            "message", "Hello, Spring Boot 3.x",
             "status", "ready"
         );
     }
@@ -72,12 +72,12 @@ public class GreetingController {
 - Explain why controllers should stay thinner as the application becomes more complex.
 
 ## Continuity
-- Previous lesson: `Lesson 6: Auto-configuration in Spring Boot 4.x`
+- Previous lesson: `Lesson 6: Auto-configuration in Spring Boot 3.x`
 - Next lesson: `Lesson 8: Handle Requests, Responses, and JSON`
 
 ## Key Takeaway
 - The first controller turns the project from a running process into a useful web application.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/web/index.html
-- https://spring.io/guides/gs/rest-service
+- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html
+- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/responsebody.html

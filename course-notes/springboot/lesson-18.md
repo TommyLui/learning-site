@@ -1,11 +1,11 @@
 ---
-title: "Lesson 18: Session and JWT Basics"
+title: "Lesson 18: Session, JWT, and Resource Server Basics"
 lesson: 18
 slug: "lesson-18"
 summary: "Choosing an auth model affects API design, client interaction, and deployment behavior."
 ---
 
-# Lesson 18: Session and JWT Basics
+# Lesson 18: Session, JWT, and Resource Server Basics
 
 Choosing an auth model affects API design, client interaction, and deployment behavior.
 
@@ -13,6 +13,7 @@ Choosing an auth model affects API design, client interaction, and deployment be
 - Compare session-based and token-based authentication approaches.
 - Understand where authenticated state lives in each model.
 - Recognize the trade-offs that influence when sessions or JWTs make sense.
+- See where Spring Security resource-server support fits into JWT-based APIs.
 
 ## Why This Matters
 - Choosing an auth model affects API design, client interaction, and deployment behavior.
@@ -37,7 +38,7 @@ That is why JWT should not be chosen just because it sounds modern. It solves ce
 
 For a learner, the most valuable outcome is understanding the location of trust. In sessions, trust is strongly server-centered. In JWT-based systems, some trust information travels with the client in a signed artifact. The security design follows from that difference.
 
-This lesson gives you a vocabulary for comparing authentication approaches sensibly. Later, when you build a specific login system, you should be able to justify the model rather than copying it from a tutorial.
+This lesson gives you a vocabulary for comparing authentication approaches sensibly. In Spring Boot 3.x, JWT-based API protection is often expressed through Spring Security's resource-server support, where the application validates bearer tokens rather than inventing a token parser from scratch. Later, when you build a specific login system, you should be able to justify the model rather than copying it from a tutorial.
 
 ## Example
 ```http
@@ -48,7 +49,10 @@ Content-Type: application/json
   "username": "tommy",
   "password": "secret123"
 }
+```
 
+```http
+GET /api/messages HTTP/1.1
 Authorization: Bearer <jwt-token>
 ```
 
@@ -61,6 +65,7 @@ Authorization: Bearer <jwt-token>
 - Write one advantage and one drawback of sessions.
 - Write one advantage and one drawback of JWT-based auth.
 - Explain where the authenticated state is stored in each model.
+- Explain when a Spring Security resource server is a better fit than a session-based login flow.
 
 ## Continuity
 - Previous lesson: `Lesson 17: Login Flow, Password Encoding, and Authorization`
@@ -70,5 +75,5 @@ Authorization: Bearer <jwt-token>
 - Choosing an auth model affects API design, client interaction, and deployment behavior.
 
 ## Official References
-- https://spring.io/projects/spring-security
 - https://docs.spring.io/spring-boot/reference/web/spring-security.html
+- https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html
