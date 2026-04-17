@@ -96,7 +96,7 @@ const articleSections = [
                   <p class="eyebrow">Article overview</p>
                   <h2>{lesson.intro}</h2>
                   <p>
-                    這一課已經是正式 React lesson page，包含重點摘要、正文、範例、練習與參考資料，可以直接拿來複習或繼續擴寫。
+                    This lesson is already a full React article page, with key ideas, lesson notes, examples, practice, and references ready for review or expansion.
                   </p>
                 </div>
                 <div class="note-tag-list">
@@ -109,7 +109,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="learning-points">
                 <div class="section-heading section-heading--editorial">
                   <h2>What you will learn</h2>
-                  <p>先用學習目標抓住這一課最值得記住的東西。</p>
+                  <p>Use the learning goals first to lock onto the ideas worth remembering most.</p>
                 </div>
                 <ul class="simple-list">
                   {lesson.learningPoints.map((item) => (
@@ -121,7 +121,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="lesson-notes">
                 <div class="section-heading section-heading--editorial">
                   <h2>Lesson notes</h2>
-                  <p>這一課的正式教學內容與觀念整理。</p>
+                  <p>The main teaching notes and concept summary for this lesson.</p>
                 </div>
                 <div class="article-flow">
                   {lesson.lessonNotes.map((paragraph) => (
@@ -133,7 +133,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="example">
                 <div class="section-heading section-heading--editorial">
                   <h2>Example</h2>
-                  <p>先看一個最小可理解範例，把觀念和 UI/程式碼接起來。</p>
+                  <p>Start with a small understandable example that connects the concept to UI and code.</p>
                 </div>
                 <pre class="note-code-block"><code>{lesson.exampleCode}</code></pre>
               </div>
@@ -141,7 +141,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="practice">
                 <div class="section-heading section-heading--editorial">
                   <h2>Practice</h2>
-                  <p>把這一課轉成可操作的練習，會比單純閱讀更容易留下記憶。</p>
+                  <p>Turn the lesson into action with practice. It sticks better than reading alone.</p>
                 </div>
                 <ul class="simple-list">
                   {lesson.practice.map((item) => (
@@ -153,7 +153,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="references">
                 <div class="section-heading section-heading--editorial">
                   <h2>References</h2>
-                  <p>回到官方文件或延伸資料時，可以從這裡繼續往下讀。</p>
+                  <p>Use these links when you want to continue into official docs or further reading.</p>
                 </div>
                 <ul class="simple-list">
                   {lesson.references.map((item) => (
@@ -167,7 +167,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial sticky-panel note-panel">
                 <div class="section-heading section-heading--editorial">
                   <h2>Reading guide</h2>
-                  <p>先抓閱讀順序，再決定是快速複習還是完整讀完這一課。</p>
+                  <p>Get the reading order first, then decide whether to skim or read the whole lesson carefully.</p>
                 </div>
 
                 <div class="lesson-anchor-list">
@@ -204,10 +204,10 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel note-progress-panel">
                 <div class="section-heading section-heading--editorial">
                   <h2>Course progress</h2>
-                  <p>快速知道你目前在第幾課，也能直接跳到其他 React lessons。</p>
+                  <p>See where you are in the track and jump directly to other React lessons.</p>
                 </div>
 
-                <p class="note-progress-copy">目前閱讀：Lesson {lesson.lesson} / {allLessons.length}</p>
+                <p class="note-progress-copy">Current lesson: Lesson {lesson.lesson} / {allLessons.length}</p>
                 <div class="lesson-progress-bar" aria-hidden="true">
                   <span style={`width: ${(lesson.lesson / allLessons.length) * 100}%`}></span>
                 </div>
@@ -231,7 +231,7 @@ const articleSections = [
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
             <h2>Lesson continuity</h2>
-            <p>保持學習節奏，從前一課順著接到下一課。</p>
+            <p>Keep the learning flow going by moving smoothly from one lesson to the next.</p>
           </div>
 
           <div class="notes-list notes-list--continuity">

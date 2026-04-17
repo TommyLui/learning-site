@@ -31,14 +31,14 @@ const noteModules = course.modules.map((module) => ({
 }));
 
 const roadmapHighlights = [
-  '先用 module map 了解 React 如何從 component thinking 一路走到 hooks、forms 與 routing。',
-  '這一頁與單課內容現在讀的是同一份正式 lesson data，不再是兩套分開維護的 placeholder。',
-  '如果你要沿著主線讀，建議從 Lesson 1 開始，再用 continuity 一路往下。',
+  'Use the module map first to see how React moves from component thinking into hooks, forms, and routing.',
+  'This landing page and each lesson article now read from the same lesson data, instead of separate placeholder content.',
+  'If you want to follow the core path in order, start from Lesson 1 and continue straight through the track.',
 ];
 const learningPromises = [
-  '建立 component、props、state、effect 之間的前端主線心智模型。',
-  '把表單、routing、專案結構等中型應用常見問題串成可重複複習的課程。',
-  '每一課都可以直接進 article page 深讀，不只是跳到空白 placeholder。',
+  'Build a clear frontend mental model across components, props, state, and effects.',
+  'Turn forms, routing, and project structure into one course flow you can revisit repeatedly.',
+  'Open every lesson as a full article page instead of landing on an empty placeholder.',
 ];
 ---
 
@@ -56,18 +56,18 @@ const learningPromises = [
           <p class="eyebrow">Course home</p>
           <h1 class="page-title">React lessons</h1>
           <p class="lead narrow">
-            把 React 主線整理成正式可閱讀的課程首頁，從 foundations、state/hooks 到 app structure，現在都能直接接到正式單課內容。
+            This track turns the React learning path into a readable course home, from foundations and hooks to app structure, with every stop connected to a full lesson article.
           </p>
 
           <div class="hero-actions course-home-actions">
             {firstLesson ? (
               <a class="hero-action hero-action--primary" href={withBase(`/courses/react/lessons/${firstLesson.slug}`)}>
-                從 Lesson 1 開始
+                Start from Lesson 1
               </a>
             ) : null}
             {latestLesson ? (
               <a class="hero-action" href={withBase(`/courses/react/lessons/${latestLesson.slug}`)}>
-                直接看最後一課
+                Jump to the final lesson
               </a>
             ) : null}
           </div>
@@ -104,15 +104,15 @@ const learningPromises = [
         <section class="panel-section panel-section--first">
           <div class="section-heading section-heading--editorial">
             <h2>Start here</h2>
-            <p>這一頁現在和單課 article 共用同一份 lesson data，所以閱讀順序和內容來源是同步的。</p>
+            <p>This page now shares the same lesson data as the article pages, so the reading order and content source stay aligned.</p>
           </div>
 
           <div class="course-home-grid">
             <article class="content-panel content-panel--editorial note-panel course-home-feature">
               <p class="eyebrow">Reading flow</p>
-              <h3>先看模組順序，再進入正式 lesson article，最後一路把 React 主線讀完</h3>
+              <h3>Read the modules first, then move into the full lesson articles and follow the React path end to end</h3>
               <p>
-                如果你想從 React 初學一路走到能整理中型 app 的結構，建議先用這頁掌握主線，再進入每一課的正式文章頁面。
+                If you want to go from React beginner basics to structuring a medium-sized app, use this page to understand the flow first and then move lesson by lesson through the full articles.
               </p>
               <ul class="simple-list simple-list--compact">
                 {roadmapHighlights.map((highlight) => (
@@ -123,7 +123,7 @@ const learningPromises = [
 
             <aside class="content-panel content-panel--editorial note-panel course-home-aside">
               <p class="eyebrow">What you will get</p>
-              <h3>這條 React 主線會把常見前端核心能力串成一套可以反覆複習的內容</h3>
+              <h3>This React track connects the core frontend skills into one path you can revisit and review</h3>
               <ul class="simple-list simple-list--compact">
                 {learningPromises.map((promise) => (
                   <li>{promise}</li>
@@ -136,32 +136,32 @@ const learningPromises = [
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
             <h2>Recommended path</h2>
-            <p>如果你不想自己決定順序，可以先照這條節奏讀。</p>
+            <p>If you do not want to decide the order yourself, start with this suggested sequence.</p>
           </div>
 
           <div class="course-home-steps">
             <article class="course-step-card">
               <span class="course-step-number">01</span>
-              <h3>先建立元件思維</h3>
-              <p>先把 JSX、components、props 讀順，後面 state 和 hooks 會更穩。</p>
+              <h3>Start with component thinking</h3>
+              <p>Get comfortable with JSX, components, and props first so state and hooks feel much steadier later.</p>
             </article>
             <article class="course-step-card">
               <span class="course-step-number">02</span>
-              <h3>再進入互動邏輯</h3>
-              <p>把 state、effects、forms 理清楚，React 才會從靜態畫面變成真正可操作 UI。</p>
+              <h3>Then move into interaction logic</h3>
+              <p>Clarify state, effects, and forms so React turns from a static screen into a truly interactive UI.</p>
             </article>
             <article class="course-step-card">
               <span class="course-step-number">03</span>
-              <h3>最後整理 app 結構</h3>
-              <p>再往 routing、page structure、project organization 走，整體前端架構才會完整。</p>
+              <h3>Finish by shaping the app structure</h3>
+              <p>Then move into routing, page structure, and project organization so the overall frontend architecture becomes complete.</p>
             </article>
           </div>
         </section>
 
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
-            <h2>模組地圖</h2>
-            <p>先用模組分組看 React 主線，再從個別 lessons 深入。</p>
+            <h2>Module map</h2>
+            <p>Use the module groups to understand the React path first, then dive into each lesson.</p>
           </div>
 
           <div class="module-list">
@@ -194,8 +194,8 @@ const learningPromises = [
 
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
-            <h2>全部 lessons</h2>
-            <p>這裡列出的每一課都已經有對應的正式 lesson article page。</p>
+            <h2>All lessons</h2>
+            <p>Every lesson listed here already has a full article page behind it.</p>
           </div>
 
           <div class="notes-list notes-list--compact-cards">

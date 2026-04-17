@@ -3,8 +3,8 @@ const locale = 'zh' as const;
 const localize = (path: string) => withBase(path, locale);
 import BaseLayout from '../../../../../layouts/BaseLayout.astro';
 import { courses } from '../../../../../data/courses';
-import { getReactLessons } from '../../../../../data/reactLessons';
-import type { CourseLessonArticle } from '../../../../../data/reactLessons';
+import { getReactLessons } from '../../../../../data/reactLessonsZh';
+import type { CourseLessonArticle } from '../../../../../data/reactLessonsZh';
 import { withBase } from '../../../../../utils/paths';
 
 const course = courses.find((item) => item.slug === 'react');

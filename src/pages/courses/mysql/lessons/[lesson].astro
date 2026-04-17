@@ -96,7 +96,7 @@ const articleSections = [
                   <p class="eyebrow">Article overview</p>
                   <h2>{lesson.intro}</h2>
                   <p>
-                    這一課已經是正式 MySQL lesson page，從資料觀念、SQL 範例到練習與官方文件入口都已經整理好。
+                    This lesson is already a full MySQL article page, with data concepts, SQL examples, practice, and official references prepared in one place.
                   </p>
                 </div>
                 <div class="note-tag-list">
@@ -109,7 +109,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="learning-points">
                 <div class="section-heading section-heading--editorial">
                   <h2>What you will learn</h2>
-                  <p>先抓住這一課最值得記住的資料庫核心概念。</p>
+                  <p>Start with the database ideas that matter most in this lesson.</p>
                 </div>
                 <ul class="simple-list">
                   {lesson.learningPoints.map((item) => (
@@ -121,7 +121,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="lesson-notes">
                 <div class="section-heading section-heading--editorial">
                   <h2>Lesson notes</h2>
-                  <p>這一課的正式觀念整理與學習說明。</p>
+                  <p>The main concept notes and teaching explanation for this lesson.</p>
                 </div>
                 <div class="article-flow">
                   {lesson.lessonNotes.map((paragraph) => (
@@ -133,7 +133,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="example">
                 <div class="section-heading section-heading--editorial">
                   <h2>Example</h2>
-                  <p>先用最小 SQL 或 schema 範例理解這一課的核心做法。</p>
+                  <p>Use a small SQL or schema example to understand the core idea first.</p>
                 </div>
                 <pre class="note-code-block"><code>{lesson.exampleCode}</code></pre>
               </div>
@@ -141,7 +141,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="practice">
                 <div class="section-heading section-heading--editorial">
                   <h2>Practice</h2>
-                  <p>把概念轉成操作，會比只讀 SQL 語法更容易真的記住。</p>
+                  <p>Turn the concept into action. It is easier to remember than reading syntax alone.</p>
                 </div>
                 <ul class="simple-list">
                   {lesson.practice.map((item) => (
@@ -153,7 +153,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="references">
                 <div class="section-heading section-heading--editorial">
                   <h2>References</h2>
-                  <p>想回到官方文件或延伸資料時，可以從這些入口繼續往下看。</p>
+                  <p>Use these links when you want to continue into official docs or related references.</p>
                 </div>
                 <ul class="simple-list">
                   {lesson.references.map((item) => (
@@ -167,7 +167,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial sticky-panel note-panel">
                 <div class="section-heading section-heading--editorial">
                   <h2>Reading guide</h2>
-                  <p>先抓這一課閱讀順序，再決定要快速複習還是慢慢完整讀完。</p>
+                  <p>Get the reading order first, then decide whether to review quickly or read the whole lesson carefully.</p>
                 </div>
 
                 <div class="lesson-anchor-list">
@@ -204,10 +204,10 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel note-progress-panel">
                 <div class="section-heading section-heading--editorial">
                   <h2>Course progress</h2>
-                  <p>快速知道你目前在第幾課，也能直接跳到其他 MySQL lessons。</p>
+                  <p>See where you are in the track and jump directly to other MySQL lessons.</p>
                 </div>
 
-                <p class="note-progress-copy">目前閱讀：Lesson {lesson.lesson} / {allLessons.length}</p>
+                <p class="note-progress-copy">Current lesson: Lesson {lesson.lesson} / {allLessons.length}</p>
                 <div class="lesson-progress-bar" aria-hidden="true">
                   <span style={`width: ${(lesson.lesson / allLessons.length) * 100}%`}></span>
                 </div>
@@ -231,7 +231,7 @@ const articleSections = [
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
             <h2>Lesson continuity</h2>
-            <p>保持學習節奏，從前一課順著接到下一課。</p>
+            <p>Keep the learning flow moving smoothly from the previous lesson to the next one.</p>
           </div>
 
           <div class="notes-list notes-list--continuity">

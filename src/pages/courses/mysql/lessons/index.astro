@@ -31,14 +31,14 @@ const noteModules = course.modules.map((module) => ({
 }));
 
 const roadmapHighlights = [
-  '先用 module map 看 MySQL 如何從 query basics 一路走到 schema design 與 performance。',
-  '這一頁和單課內容現在讀的是同一份正式 lesson data，不再是獨立 placeholder 清單。',
-  '如果你要從頭建立資料庫主線，建議從 Lesson 1 開始一路接到最後。',
+  'Use the module map first to see how MySQL moves from query basics into schema design and performance.',
+  'This page and the lesson articles now read from the same formal lesson data instead of separate placeholder lists.',
+  'If you want to build the database path from the beginning, start at Lesson 1 and continue to the end.',
 ];
 const learningPromises = [
-  '把 SELECT、INSERT、UPDATE、DELETE、joins、keys 與 schema 設計串成一條清楚主線。',
-  '理解關聯式資料庫的結構思維，而不只是零散記幾條 SQL。',
-  '每一課都可以直接進正式 lesson article 深讀與複習。',
+  'Connect SELECT, INSERT, UPDATE, DELETE, joins, keys, and schema design into one clear database path.',
+  'Understand the structural thinking behind relational databases instead of memorizing isolated SQL fragments.',
+  'Open every lesson directly as a full article for deeper reading and review.',
 ];
 ---
 
@@ -56,18 +56,18 @@ const learningPromises = [
           <p class="eyebrow">Course home</p>
           <h1 class="page-title">MySQL lessons</h1>
           <p class="lead narrow">
-            把 MySQL 主線整理成正式可閱讀的課程首頁，從 query basics、relationships 到 schema design 與 performance，現在都能直接接到正式單課內容。
+            This track turns the MySQL learning path into a readable course home, from query basics and relationships to schema design and performance, with every step connected to a full lesson article.
           </p>
 
           <div class="hero-actions course-home-actions">
             {firstLesson ? (
               <a class="hero-action hero-action--primary" href={withBase(`/courses/mysql/lessons/${firstLesson.slug}`)}>
-                從 Lesson 1 開始
+                Start from Lesson 1
               </a>
             ) : null}
             {latestLesson ? (
               <a class="hero-action" href={withBase(`/courses/mysql/lessons/${latestLesson.slug}`)}>
-                直接看最後一課
+                Jump to the final lesson
               </a>
             ) : null}
           </div>
@@ -104,15 +104,15 @@ const learningPromises = [
         <section class="panel-section panel-section--first">
           <div class="section-heading section-heading--editorial">
             <h2>Start here</h2>
-            <p>這一頁現在和單課 article 共用同一份 lesson data，所以課程首頁和正式內容已經同步。</p>
+            <p>This page now shares the same lesson data as the article pages, so the course home and lesson content stay in sync.</p>
           </div>
 
           <div class="course-home-grid">
             <article class="content-panel content-panel--editorial note-panel course-home-feature">
               <p class="eyebrow">Reading flow</p>
-              <h3>先看 query 主線，再進 joins，最後建立 schema 與 performance 思維</h3>
+              <h3>Start with query basics, then move into joins, and finish with schema and performance thinking</h3>
               <p>
-                如果你想把資料庫知識整理成穩定可重複使用的主線，建議先用這頁掌握整體架構，再進正式 lesson 頁面逐課往下讀。
+                If you want to turn database knowledge into a stable learning path you can revisit, use this page to understand the structure first and then move through the lesson articles one by one.
               </p>
               <ul class="simple-list simple-list--compact">
                 {roadmapHighlights.map((highlight) => (
@@ -123,7 +123,7 @@ const learningPromises = [
 
             <aside class="content-panel content-panel--editorial note-panel course-home-aside">
               <p class="eyebrow">What you will get</p>
-              <h3>這條 MySQL 主線會把查詢、關聯與資料設計串成真正可複習的資料庫課程</h3>
+              <h3>This MySQL track connects querying, relationships, and data design into a course you can truly revisit</h3>
               <ul class="simple-list simple-list--compact">
                 {learningPromises.map((promise) => (
                   <li>{promise}</li>
@@ -136,32 +136,32 @@ const learningPromises = [
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
             <h2>Recommended path</h2>
-            <p>如果你不想自己決定順序，可以先照這條閱讀節奏走。</p>
+            <p>If you do not want to choose the order yourself, follow this recommended sequence first.</p>
           </div>
 
           <div class="course-home-steps">
             <article class="course-step-card">
               <span class="course-step-number">01</span>
-              <h3>先打穩 query basics</h3>
-              <p>先把 SELECT、WHERE、ORDER BY 與資料寫入更新刪除讀順，之後看 joins 會更穩。</p>
+              <h3>Build strong query basics first</h3>
+              <p>Read through SELECT, WHERE, ORDER BY, and data writes first so joins feel steadier later.</p>
             </article>
             <article class="course-step-card">
               <span class="course-step-number">02</span>
-              <h3>再理解 relationships</h3>
-              <p>把 joins、keys、one-to-many 觀念理順，才能真正看懂 app data 怎麼落到資料表。</p>
+              <h3>Then understand relationships</h3>
+              <p>Clarify joins, keys, and one-to-many thinking so you can really see how app data lands in tables.</p>
             </article>
             <article class="course-step-card">
               <span class="course-step-number">03</span>
-              <h3>最後進 schema 與 performance</h3>
-              <p>再往 normalization、indexes、practical design 走，資料庫思維才會開始成熟。</p>
+              <h3>Finish with schema and performance</h3>
+              <p>Then move into normalization, indexes, and practical design so your database thinking becomes more mature.</p>
             </article>
           </div>
         </section>
 
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
-            <h2>模組地圖</h2>
-            <p>先用模組分組理解這套 MySQL 主線，再進入個別 lessons。</p>
+            <h2>Module map</h2>
+            <p>Use the module groups to understand the MySQL path first, then open each lesson in detail.</p>
           </div>
 
           <div class="module-list">
@@ -194,8 +194,8 @@ const learningPromises = [
 
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
-            <h2>全部 lessons</h2>
-            <p>這裡列出的每一課都已經有對應的正式 lesson article page。</p>
+            <h2>All lessons</h2>
+            <p>Every lesson listed here already has a full article page behind it.</p>
           </div>
 
           <div class="notes-list notes-list--compact-cards">

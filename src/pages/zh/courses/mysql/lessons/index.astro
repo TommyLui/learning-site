@@ -3,8 +3,8 @@ const locale = 'zh' as const;
 const localize = (path: string) => withBase(path, locale);
 import BaseLayout from '../../../../../layouts/BaseLayout.astro';
 import { courses } from '../../../../../data/courses';
-import { getMySQLLessons } from '../../../../../data/mysqlLessons';
-import type { CourseLessonArticle } from '../../../../../data/mysqlLessons';
+import { getMySQLLessons as getMySQLLessons } from '../../../../../data/mysqlLessonsZh';
+import type { CourseLessonArticle } from '../../../../../data/mysqlLessonsZh';
 import { withBase } from '../../../../../utils/paths';
 
 const course = courses.find((item) => item.slug === 'mysql');
