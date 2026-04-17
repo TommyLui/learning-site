@@ -49,8 +49,16 @@ public class NoteService {
         this.noteRepository = noteRepository;
     }
 
-    public List<Note> findAll() {
-        return noteRepository.findAll();
+    public Note create(CreateNoteRequest request) {
+        Note note = new Note();
+        note.setTitle(request.title());
+        note.setContent(request.content());
+        return noteRepository.save(note);
+    }
+
+    public Note findById(Long id) {
+        return noteRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found"));
     }
 }
 ```

@@ -42,16 +42,22 @@ This lesson also prepares you for later complexity. Once entity basics are clear
 ## Example
 ```java
 @Entity
+@Table(name = "notes")
 public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false, length = 2000)
     private String content;
 }
 
-public interface NoteRepository extends JpaRepository<Note, Long> {}
+public interface NoteRepository extends JpaRepository<Note, Long> {
+    List<Note> findByTitleContainingIgnoreCase(String keyword);
+}
 ```
 
 ## Common Mistakes

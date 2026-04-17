@@ -45,6 +45,7 @@ spring.datasource.url=jdbc:mysql://localhost:3306/learning_db
 spring.datasource.username=root
 spring.datasource.password=secret
 spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
 ```
 
 ## Common Mistakes

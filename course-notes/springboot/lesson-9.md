@@ -42,15 +42,18 @@ This lesson turns your API into something more trustworthy. Clients should not h
 ## Example
 ```java
 public record CreateUserRequest(
-    @NotBlank String name,
-    @Email String email
+    @NotBlank(message = "name is required") String name,
+    @Email(message = "email must be valid") String email
 ) {}
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidation(MethodArgumentNotValidException ex) {
-        return Map.of("error", "Validation failed");
+    public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("error", "Validation failed");
+        body.put("status", 400);
+        return ResponseEntity.badRequest().body(body);
     }
 }
 ```

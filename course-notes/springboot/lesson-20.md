@@ -41,8 +41,9 @@ By learning Actuator here, you start treating the application as a long-running 
 
 ## Example
 ```properties
-management.endpoints.web.exposure.include=health,info
+management.endpoints.web.exposure.include=health,info,metrics
 management.endpoint.health.show-details=always
+management.info.env.enabled=true
 ```
 
 ## Common Mistakes

@@ -45,6 +45,16 @@ By learning this flow now, you make later security decisions more deliberate. Th
 PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
 }
+
+@Bean
+UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+    UserDetails admin = User.withUsername("admin")
+        .password(passwordEncoder.encode("secret123"))
+        .roles("ADMIN")
+        .build();
+
+    return new InMemoryUserDetailsManager(admin);
+}
 ```
 
 ## Common Mistakes

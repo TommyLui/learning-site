@@ -47,8 +47,9 @@ spring.application.name=learning-api
 server.port=8081
 spring.profiles.active=dev
 
-# application-dev.properties can override dev-only values
+# application-dev.properties
 logging.level.com.tommy.learningapi=DEBUG
+spring.datasource.url=jdbc:mysql://localhost:3306/learning_dev
 ```
 
 ## Common Mistakes

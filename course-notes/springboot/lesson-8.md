@@ -42,13 +42,19 @@ This lesson is where backend development starts feeling more realistic. Instead 
 ## Example
 ```java
 public record CreateNoteRequest(String title, String content) {}
+public record NoteResponse(Long id, String title, String content) {}
 
 @RestController
 @RequestMapping("/api/notes")
 public class NoteController {
     @PostMapping
-    public Map<String, String> create(@RequestBody CreateNoteRequest request) {
-        return Map.of("title", request.title(), "content", request.content());
+    public NoteResponse create(@RequestBody CreateNoteRequest request) {
+        return new NoteResponse(1L, request.title(), request.content());
+    }
+
+    @GetMapping("/{id}")
+    public NoteResponse findById(@PathVariable Long id) {
+        return new NoteResponse(id, "Spring Boot", "Request and response example");
     }
 }
 ```

@@ -43,9 +43,11 @@ The broader lesson is that Spring Boot is not only a framework for writing backe
 
 ## Example
 ```bash
+SPRING_PROFILES_ACTIVE=prod
 SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/learning_db
 SPRING_DATASOURCE_USERNAME=app_user
 SPRING_DATASOURCE_PASSWORD=***
+SERVER_PORT=8080
 ```
 
 ## Common Mistakes

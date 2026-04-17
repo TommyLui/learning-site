@@ -44,24 +44,30 @@ Once this concept is clear, many later topics become easier. Configuration class
 ## Example
 ```java
 @Service
-public class GreetingService {
-    public String greet() {
-        return "Hello from Spring Boot";
+public class NoteService {
+    private final NoteRepository noteRepository;
+
+    public NoteService(NoteRepository noteRepository) {
+        this.noteRepository = noteRepository;
+    }
+
+    public List<Note> findAll() {
+        return noteRepository.findAll();
     }
 }
 
 @RestController
-@RequestMapping("/api/greetings")
-public class GreetingController {
-    private final GreetingService greetingService;
+@RequestMapping("/api/notes")
+public class NoteController {
+    private final NoteService noteService;
 
-    public GreetingController(GreetingService greetingService) {
-        this.greetingService = greetingService;
+    public NoteController(NoteService noteService) {
+        this.noteService = noteService;
     }
 
     @GetMapping
-    public String greeting() {
-        return greetingService.greet();
+    public List<Note> getNotes() {
+        return noteService.findAll();
     }
 }
 ```

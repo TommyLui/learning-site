@@ -44,10 +44,23 @@ The goal of this lesson is not to disable auto-configuration everywhere. The goa
 ## Example
 ```java
 @Configuration
-public class TimeConfig {
+public class AppConfig {
     @Bean
-    public Clock appClock() {
+    Clock appClock() {
         return Clock.systemUTC();
+    }
+}
+
+@Service
+public class ReportService {
+    private final Clock appClock;
+
+    public ReportService(Clock appClock) {
+        this.appClock = appClock;
+    }
+
+    public Instant generatedAt() {
+        return appClock.instant();
     }
 }
 ```

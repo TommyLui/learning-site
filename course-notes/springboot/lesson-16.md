@@ -44,10 +44,13 @@ This lesson is the point where the course shifts from building functionality to 
 @Bean
 SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
+        .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/public/**").permitAll()
+            .requestMatchers("/api/public/**").permitAll()
+            .requestMatchers("/api/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
         )
+        .httpBasic(Customizer.withDefaults())
         .build();
 }
 ```

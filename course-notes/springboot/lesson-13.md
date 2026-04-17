@@ -42,13 +42,14 @@ The best reason to learn service unit tests early is not just correctness. It is
 ## Example
 ```java
 @Test
-void returnsAllNotes() {
+void create_shouldSaveMappedNote() {
     NoteRepository repository = mock(NoteRepository.class);
-    when(repository.findAll()).thenReturn(List.of(new Note()));
-
     NoteService service = new NoteService(repository);
+    CreateNoteRequest request = new CreateNoteRequest("DI", "constructor injection");
 
-    assertEquals(1, service.findAll().size());
+    service.create(request);
+
+    verify(repository).save(any(Note.class));
 }
 ```
 

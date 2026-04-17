@@ -48,9 +48,10 @@ class NoteControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void returnsOk() throws Exception {
+    void getNotes_returnsOk() throws Exception {
         mockMvc.perform(get("/api/notes"))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 }
 ```

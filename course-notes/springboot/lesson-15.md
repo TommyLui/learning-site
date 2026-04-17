@@ -43,6 +43,7 @@ The goal of debugging is not only to solve the current issue. It is to build a m
 ```properties
 logging.level.org.springframework=INFO
 logging.level.com.tommy.learningapi=DEBUG
+logging.level.org.hibernate.SQL=DEBUG
 ```
 
 ## Common Mistakes

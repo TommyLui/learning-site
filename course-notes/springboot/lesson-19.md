@@ -41,10 +41,10 @@ This lesson therefore shifts attention from writing code to delivering software.
 
 ## Example
 ```bash
-# Maven
+# Build the project
 ./mvnw clean package
 
-# Run the built application
+# Run the packaged application
 java -jar target/learning-api-0.0.1-SNAPSHOT.jar
 ```
 

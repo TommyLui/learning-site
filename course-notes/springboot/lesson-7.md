@@ -46,7 +46,10 @@ Once your first controller works, you are ready to move from proof of life to ac
 public class GreetingController {
     @GetMapping
     public Map<String, String> greeting() {
-        return Map.of("message", "Hello, Spring Boot 4.x");
+        return Map.of(
+            "message", "Hello, Spring Boot 4.x",
+            "status", "ready"
+        );
     }
 }
 ```

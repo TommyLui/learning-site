@@ -41,7 +41,15 @@ This lesson gives you a vocabulary for comparing authentication approaches sensi
 
 ## Example
 ```http
-Authorization: Bearer <token>
+POST /api/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "tommy",
+  "password": "secret123"
+}
+
+Authorization: Bearer <jwt-token>
 ```
 
 ## Common Mistakes
