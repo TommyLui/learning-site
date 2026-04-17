@@ -341,7 +341,7 @@ export const reactLessons: CourseLessonArticle[] = [
       '表單設計越早規劃，後面驗證和維護越輕鬆。',
     ],
     references: [
-      { label: 'React docs · Responding to input with state', url: 'https://react.dev/learn/reacting-to-input-with-state' },
+      { label: 'React docs · Reacting to input with state', url: 'https://react.dev/learn/reacting-to-input-with-state' },
       { label: 'React docs · Choosing the state structure', url: 'https://react.dev/learn/choosing-the-state-structure' },
     ],
   },
@@ -399,7 +399,7 @@ export const reactLessons: CourseLessonArticle[] = [
       '能建立最小可理解的資料抓取流程。',
     ],
     lessonNotes: [
-      '前端抓資料的重點不只是成功拿到回應（response），而是把載入中、成功、失敗三種狀態都納入設計。',
+      '這一課先聚焦在最基本的抓取流程：發送請求、接收資料、更新畫面。下一課再把載入中、錯誤與空資料狀態完整補上。',
       '在 React 中，資料抓取常和 effect 一起出現，因為它屬於和外部系統同步的工作。',
       '這一課最重要的是理解資料流：何時發請求、請求回來後怎麼更新 state、畫面又應該怎麼跟著變。',
     ],
@@ -670,7 +670,7 @@ export const reactLessons: CourseLessonArticle[] = [
     ],
     references: [
       { label: 'Vite docs · Building for production', url: 'https://vite.dev/guide/build.html' },
-      { label: 'React docs · Production checklist', url: 'https://react.dev/learn' },
+      { label: 'React docs · Learn React', url: 'https://react.dev/learn' },
     ],
   },
 ];

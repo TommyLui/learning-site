@@ -178,7 +178,7 @@ export const mysqlLessons: CourseLessonArticle[] = [
     ],
     references: [
       { label: 'MySQL docs · JOIN clause', url: 'https://dev.mysql.com/doc/refman/8.4/en/join.html' },
-      { label: 'MySQL docs · Example foreign keys', url: 'https://dev.mysql.com/doc/refman/8.4/en/create-table-foreign-keys.html' },
+      { label: 'MySQL docs · FOREIGN KEY constraints', url: 'https://dev.mysql.com/doc/refman/8.4/en/create-table-foreign-keys.html' },
     ],
   },
   {
@@ -505,7 +505,10 @@ export const mysqlLessons: CourseLessonArticle[] = [
       'ACID is the basic language for understanding data reliability.',
     ],
     references: [
-      { label: 'MySQL docs · START TRANSACTION', url: 'https://dev.mysql.com/doc/refman/8.4/en/commit.html' },
+      {
+        label: 'MySQL docs · START TRANSACTION, COMMIT, and ROLLBACK Statements',
+        url: 'https://dev.mysql.com/doc/refman/8.4/en/commit.html',
+      },
       { label: 'MySQL docs · InnoDB transaction model', url: 'https://dev.mysql.com/doc/refman/8.4/en/innodb-transaction-model.html' },
     ],
   },

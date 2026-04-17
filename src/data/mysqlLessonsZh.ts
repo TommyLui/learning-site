@@ -178,7 +178,7 @@ export const mysqlLessons: CourseLessonArticle[] = [
     ],
     references: [
       { label: 'MySQL docs · JOIN clause', url: 'https://dev.mysql.com/doc/refman/8.4/en/join.html' },
-      { label: 'MySQL docs · Example foreign keys', url: 'https://dev.mysql.com/doc/refman/8.4/en/create-table-foreign-keys.html' },
+      { label: 'MySQL docs · FOREIGN KEY constraints', url: 'https://dev.mysql.com/doc/refman/8.4/en/create-table-foreign-keys.html' },
     ],
   },
   {
@@ -351,7 +351,7 @@ export const mysqlLessons: CourseLessonArticle[] = [
     title: '為應用開發準備 MySQL',
     summary: '建立能良好配合後端框架的資料庫基礎。',
     moduleTitle: '模組 3 · 設計與效能',
-    intro: '最後一課把 MySQL 從單獨練語法，拉回到它在實際應用開發中扮演的角色。',
+    intro: '這一課把 MySQL 從單獨練語法，拉回到它在實際應用開發中扮演的角色。',
     learningPoints: [
       '知道 MySQL 在後端應用程式中通常怎麼被使用。',
       '理解資料表結構（schema）、查詢（queries）、索引（indexes）如何一起支援應用開發。',
@@ -505,7 +505,10 @@ export const mysqlLessons: CourseLessonArticle[] = [
       'ACID 是理解資料可靠性的基本語言。',
     ],
     references: [
-      { label: 'MySQL docs · START TRANSACTION', url: 'https://dev.mysql.com/doc/refman/8.4/en/commit.html' },
+      {
+        label: 'MySQL docs · START TRANSACTION, COMMIT, and ROLLBACK Statements',
+        url: 'https://dev.mysql.com/doc/refman/8.4/en/commit.html',
+      },
       { label: 'MySQL docs · InnoDB transaction model', url: 'https://dev.mysql.com/doc/refman/8.4/en/innodb-transaction-model.html' },
     ],
   },
@@ -555,7 +558,7 @@ export const mysqlLessons: CourseLessonArticle[] = [
     slug: 'lesson-14',
     title: '使用者權限與正式環境（Production）基礎',
     summary: '讓 MySQL 更適合團隊使用與正式環境。',
-    moduleTitle: '模組 5 · 交易（Transactions）與實務操作',
+    moduleTitle: '模組 5 · Transactions 與實務操作',
     intro: '最後一課把 MySQL 拉到更接近正式環境（production）的角度：誰能做什麼、環境怎麼分、資料怎麼保護。',
     learningPoints: [
       '理解使用者權限為什麼重要。',

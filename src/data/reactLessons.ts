@@ -128,7 +128,7 @@ export const reactLessons: CourseLessonArticle[] = [
       'Later lessons about state and lifting state keep returning to how data flows through props.',
     ],
     mistakes: [
-      'Shoving too many unnecessary props into a component and creating a messy API.',
+      'Passing too many unnecessary props into a component and creating a messy API.',
       'Using abstract prop names that do not show what the value really means.',
     ],
     takeaways: [
@@ -341,7 +341,7 @@ export const reactLessons: CourseLessonArticle[] = [
       'The earlier you plan form structure, the easier validation and maintenance become.',
     ],
     references: [
-      { label: 'React docs · Responding to input with state', url: 'https://react.dev/learn/reacting-to-input-with-state' },
+      { label: 'React docs · Reacting to input with state', url: 'https://react.dev/learn/reacting-to-input-with-state' },
       { label: 'React docs · Choosing the state structure', url: 'https://react.dev/learn/choosing-the-state-structure' },
     ],
   },
@@ -399,7 +399,7 @@ export const reactLessons: CourseLessonArticle[] = [
       'Build the smallest understandable fetching flow.',
     ],
     lessonNotes: [
-      'Fetching is not only about getting a successful response. You also need to design loading, success, and failure states together.',
+      'This lesson focuses on the basic fetch flow first: start a request, receive data, and render it. The next lesson expands this foundation with loading, error, and empty states.',
       'In React, fetching often appears alongside effects because it synchronizes the app with an external system.',
       'The most important thing in this lesson is understanding the data flow: when a request starts, how state updates after it returns, and how the screen should respond.',
     ],
@@ -670,7 +670,7 @@ export const reactLessons: CourseLessonArticle[] = [
     ],
     references: [
       { label: 'Vite docs · Building for production', url: 'https://vite.dev/guide/build.html' },
-      { label: 'React docs · Production checklist', url: 'https://react.dev/learn' },
+      { label: 'React docs · Learn React', url: 'https://react.dev/learn' },
     ],
   },
 ];
