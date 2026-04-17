@@ -1,6 +1,6 @@
 ---
 import type { Course } from '../data/courses';
-import { withBase } from '../utils/paths';
+import { getCoursePath, withBase } from '../utils/paths';
 import type { SiteLocale } from '../utils/paths';
 
 interface Props {
@@ -31,7 +31,7 @@ const isChinese = locale === 'zh';
       <span>{course.level}</span>
     </div>
 
-    <a class="course-link" href={withBase(`/courses/${course.slug}`, locale)}>
+    <a class="course-link" href={withBase(getCoursePath(course.slug), locale)}>
       {isChinese ? '閱讀這條主題線' : 'Read this track'} <span aria-hidden="true">→</span>
     </a>
   </div>

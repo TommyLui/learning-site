@@ -1,7 +1,7 @@
 ---
 import { getCourses } from '../data/courses';
 import type { Course } from '../data/courses';
-import { detectLocaleFromPathname, localizePath, withBase } from '../utils/paths';
+import { detectLocaleFromPathname, getCoursePath, localizePath, withBase } from '../utils/paths';
 import type { SiteLocale } from '../utils/paths';
 
 interface Props {
@@ -46,7 +46,7 @@ const dropdownLabel = currentCourse ? currentCourse.title : isChinese ? '課程�
             {courses.map((course) => (
               <li>
                 <a
-                  href={withBase(`/courses/${course.slug}`, locale)}
+                  href={withBase(getCoursePath(course.slug), locale)}
                   class:list={['course-menu-link', { 'is-active': currentCourse?.slug === course.slug }]}
                   aria-current={currentCourse?.slug === course.slug ? 'page' : undefined}
                 >

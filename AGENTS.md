@@ -2,50 +2,45 @@
 
 ## Scope
 
-- Use the repo root app. `gullible-gamma/` is an ignored scaffold and not the active project.
-- This is a static Astro teaching site for three separate tracks: React, Spring Boot, and MySQL. Keep them as separate course tracks unless explicitly asked to merge or restructure them.
+- Work in the repo root app. `gullible-gamma/` is gitignored scaffold, not the active project.
+- This is a static Astro teaching site with three separate tracks: React, Spring Boot, and MySQL. Keep the tracks separate unless the user explicitly asks to restructure them.
 
-## Tooling
+## Commands
 
-- Required Node version: `>=22.12.0` in `package.json`; GitHub Pages deploy also uses `22.12.0` in `.github/workflows/deploy.yml`.
-- Package manager and scripts:
-  - `npm install`
-  - `npm run dev`
-  - `npm run check`
-  - `npm run build`
-  - `npm run preview`
-- There is no repo lint or test script. For normal verification, run `npm run check` and then `npm run build`.
+- Use Node `>=22.12.0`. `package.json` requires it and `.github/workflows/deploy.yml` builds with `22.12.0`.
+- Main commands: `npm install`, `npm run dev`, `npm run check`, `npm run build`, `npm run preview`.
+- There is no lint or test script. Normal verification is `npm run check` then `npm run build`.
 
-## Routing And Deployment Gotchas
+## Routing And Locale
 
-- The site is deployed under the GitHub Pages base path `/learning-site` in `astro.config.mjs`.
+- The deployed site lives under the GitHub Pages base path `/learning-site` from `astro.config.mjs`.
 - Do not hardcode root-relative links or asset paths. Use `src/utils/paths.ts`, especially `withBase()` and `localizePath()`.
-- English routes live under `src/pages/**`; Traditional Chinese routes mirror them under `src/pages/zh/**`.
-- The header locale switcher rewrites the current pathname by adding or removing `/zh`. Keep English and Chinese route structures parallel or the switcher will send users to missing pages.
-- For new Chinese pages, follow the existing pattern used in `src/pages/zh/**`: define `const locale = 'zh' as const`, wrap `withBase()` in a local helper, and pass `locale={locale}` to `BaseLayout`.
+- Spring Boot is the exception to the generic course route: its canonical landing page is `/courses/spring-boot/lessons` and `/zh/courses/spring-boot/lessons`. The old `/courses/spring-boot` routes redirect there.
+- English pages live under `src/pages/**`; Traditional Chinese pages mirror them under `src/pages/zh/**`.
+- `src/components/Header.astro` switches locale by rewriting the current pathname with or without `/zh`. Keep English and Chinese route structures parallel or the switcher will lead to missing pages.
+- For new Chinese pages, follow the existing page pattern: define `const locale = 'zh' as const`, use a local `withBase()` wrapper for links, and pass `locale={locale}` into `BaseLayout` so `<html lang>` and shared navigation stay correct.
 
-## Content Sources
+## Content Wiring
 
-- `src/data/courses.ts` is the shared course catalog and module map used by the homepage and course landing pages in both locales.
-- React lesson libraries come from `src/data/reactLessons.ts` and `src/data/reactLessonsZh.ts`.
-- MySQL lesson libraries come from `src/data/mysqlLessons.ts` and `src/data/mysqlLessonsZh.ts`.
-- Spring Boot lesson libraries are built from markdown files in `course-notes/springboot/` and `course-notes/springboot-zh/` through `src/data/springbootNotes.ts`.
+- `src/data/courses.ts` is the shared course catalog for homepages and course landing pages in both locales.
+- React lessons come from `src/data/reactLessons.ts` and `src/data/reactLessonsZh.ts`.
+- MySQL lessons come from `src/data/mysqlLessons.ts` and `src/data/mysqlLessonsZh.ts`.
+- Spring Boot lessons are filesystem-backed markdown loaded by `src/data/springbootNotes.ts` from `course-notes/springboot/` and `course-notes/springboot-zh/`.
 
-## Spring Boot Markdown Format
+## Spring Boot Notes
 
-- `src/data/springbootNotes.ts` reads Spring Boot notes directly from the filesystem with `fs/promises`. If you move or rename the `course-notes/` folders, update that loader too.
-- Each Spring Boot note is expected to keep the current frontmatter keys: `title`, `lesson`, `slug`, `summary`.
-- Section content is parsed from literal `##` headings and then read by the lesson page templates. Before renaming or translating section headings, check both:
-  - `src/pages/courses/spring-boot/lessons/[lesson].astro`
-  - `src/pages/zh/courses/spring-boot/lessons/[lesson].astro`
+- `src/data/springbootNotes.ts` only loads files matching `lesson-<number>.md`; `lesson-template.md` is ignored.
+- Each Spring Boot note must keep frontmatter keys `title`, `lesson`, `slug`, and `summary`.
+- The loader parses literal `##` headings into section keys. The Spring Boot lesson pages expect headings like `What You Will Learn`, `Why This Matters`, `Main Ideas`, `Lesson Notes`, `Example`, `Common Mistakes`, `Practice`, `Key Takeaway`, and `Official References`.
+- If you rename the `course-notes/springboot*` folders or change those heading labels, update `src/data/springbootNotes.ts` and the Spring Boot lesson pages in both locales.
 
 ## Linking Gotcha
 
-- `src/pages/courses/[slug].astro` and `src/pages/zh/courses/[slug].astro` build lesson links from the numeric part of `course.modules[].lessons[].number` in `src/data/courses.ts` and assume lesson URLs like `lesson-1`.
-- If lesson numbering in `courses.ts` and the dedicated lesson slugs ever diverge, course landing page links will break. Keep them aligned or update those helpers.
+- `src/pages/courses/[slug].astro` and `src/pages/zh/courses/[slug].astro` are only the React/MySQL course landing pages. They build lesson links by extracting the number from `course.modules[].lessons[].number` and pointing to slugs like `lesson-1`.
+- If the numbering in `src/data/courses.ts` stops matching the actual lesson slugs in the lesson libraries, course landing page links break.
 
-## UI Constraints
+## UI
 
-- Shared shell: `src/layouts/BaseLayout.astro`; shared navigation/footer: `src/components/Header.astro` and `src/components/Footer.astro`.
-- Keep changes Astro-first and CSS-first. The current app uses plain `.astro` components and CSS, not client framework islands.
-- Preserve the editorial, content-first direction. The header dropdown and locale switcher are the main global navigation patterns; avoid turning the site into a dashboard or blog unless explicitly asked.
+- Shared shell lives in `src/layouts/BaseLayout.astro` with navigation in `src/components/Header.astro` and footer in `src/components/Footer.astro`.
+- Keep changes Astro-first and CSS-first. This site uses plain `.astro` pages/components, not framework islands.
+- Preserve the existing editorial, content-first layout style rather than turning pages into app-like dashboards unless the user asks for that.

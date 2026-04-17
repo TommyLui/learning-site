@@ -5,7 +5,7 @@ import type { Course } from '../../data/courses';
 import { withBase } from '../../utils/paths';
 
 export function getStaticPaths() {
-  return courses.map((course) => ({
+  return courses.filter((course) => course.slug !== 'spring-boot').map((course) => ({
     params: { slug: course.slug },
     props: { course },
   }));

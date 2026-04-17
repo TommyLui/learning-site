@@ -31,8 +31,8 @@ const latestLesson = notes[notes.length - 1];
 const total模組s = note模組s.length;
 const averageLessonsPer模組 = Math.round(notes.length / total模組s);
 const roadmapHighlights = [
-  '先用 module map 了解整套課程如何從基礎概念一路走到部署。',
-  '每一課都保留摘要、正文、練習與官方 references，方便從閱讀切進真正的 Spring Boot 3.x 實作。',
+  '先用模組地圖了解整套課程如何從基礎概念一路走到部署。',
+  '每一課都保留摘要、正文、練習與官方參考資料，方便從閱讀切進真正的 Spring Boot 3.x 實作。',
   '如果你要連續學，建議從第 1 課開始，順著 延續閱讀 一路往下。',
 ];
 const learningPromises = [
@@ -51,7 +51,7 @@ const learningPromises = [
   <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
     <div class="page-intro-backdrop"></div>
     <div class="container page-intro-inner">
-      <a href={localize('/courses/spring-boot')} class="back-link">← 返回 Spring Boot 主題</a>
+      <a href={localize('/courses')} class="back-link">← 返回所有主題</a>
       <div class="course-hero-grid course-hero-grid--editorial">
         <div>
           <p class="eyebrow">課程首頁</p>
@@ -106,7 +106,7 @@ const learningPromises = [
         <section class="panel-section panel-section--first">
           <div class="section-heading section-heading--editorial">
             <h2>從這裡開始</h2>
-            <p>這裡不是單純 lesson list，而是讓你知道要怎麼進、怎麼讀、怎麼一路學完的課程首頁。</p>
+            <p>這裡不是單純的課程清單，而是讓你知道要怎麼進、怎麼讀、怎麼一路學完的課程首頁。</p>
           </div>
 
           <div class="course-home-grid">
@@ -114,8 +114,7 @@ const learningPromises = [
               <p class="eyebrow">閱讀方式</p>
               <h3>先看整張地圖，再進單課，最後用 延續閱讀 接到下一課</h3>
               <p>
-                如果你是第一次學 Spring Boot，建議先把這頁當成課程入口：用模組地圖確認主線，再進入 lesson
-                文章頁，最後順著每課底部的 延續閱讀 繼續往下。
+                如果你是第一次學 Spring Boot，建議先把這頁當成課程入口：用模組地圖確認主線，再進入單課頁，最後順著每課底部的 延續閱讀 繼續往下。
               </p>
               <ul class="simple-list simple-list--compact">
                 {roadmapHighlights.map((highlight) => (
@@ -164,7 +163,7 @@ const learningPromises = [
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
             <h2>模組地圖</h2>
-            <p>先用模組分組理解這套課程的學習階段，再進入個別 lesson。</p>
+            <p>先用模組分組理解這套課程的學習階段，再進入個別單課。</p>
           </div>
 
           <div class="module-list">
@@ -197,7 +196,7 @@ const learningPromises = [
 
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
-            <h2>全部 lessons</h2>
+            <h2>全部課程</h2>
             <p>如果你想快速跳到指定課次，也可以直接從完整清單進入。</p>
           </div>
 

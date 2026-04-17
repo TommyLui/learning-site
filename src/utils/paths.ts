@@ -10,6 +10,10 @@ function getLocalePrefix(locale: SiteLocale) {
   return locale === 'zh' ? '/zh' : '';
 }
 
+export function getCoursePath(courseSlug: string) {
+  return courseSlug === 'spring-boot' ? '/courses/spring-boot/lessons' : `/courses/${courseSlug}`;
+}
+
 export function withBase(path: string, locale: SiteLocale = 'en') {
   if (!path) {
     return `${BASE_URL}${getLocalePrefix(locale)}` || '/';
