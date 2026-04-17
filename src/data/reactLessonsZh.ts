@@ -20,9 +20,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 1,
     slug: 'lesson-1',
-    title: 'What React is and why component thinking matters',
-    summary: 'Understand React’s role in frontend development and the benefit of reusable UI building blocks.',
-    moduleTitle: 'Module 1 · React foundations',
+    title: '什麼是 React，為什麼元件思維很重要',
+    summary: '理解 React 在前端開發中的角色，以及可重用 UI 組件帶來的價值。',
+    moduleTitle: '模組 1 · React 基礎',
     intro: '這一課先建立 React 最重要的心智模型：畫面不是一整頁一次寫完，而是由可重用的 components 組出來。',
     learningPoints: [
       '知道 React 在前端開發裡解決的是什麼問題。',
@@ -61,9 +61,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 2,
     slug: 'lesson-2',
-    title: 'JSX basics and how React renders UI',
-    summary: 'Learn how JSX maps to elements and how React updates the interface when data changes.',
-    moduleTitle: 'Module 1 · React foundations',
+    title: 'JSX 基礎與 React 如何渲染 UI',
+    summary: '理解 JSX 如何對應元素，以及 React 如何在資料變化時更新畫面。',
+    moduleTitle: '模組 1 · React 基礎',
     intro: '這一課要把 JSX 從「看起來像 HTML」的表面理解，拉回到「它其實是描述 UI 的 JavaScript 表達方式」。',
     learningPoints: [
       '理解 JSX 是什麼，以及它和 HTML 的差別。',
@@ -102,9 +102,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 3,
     slug: 'lesson-3',
-    title: 'Props and component reuse',
-    summary: 'Pass data into components and build flexible UI patterns that scale.',
-    moduleTitle: 'Module 1 · React foundations',
+    title: 'Props 與元件重用',
+    summary: '把資料傳進元件，建立可延伸且有彈性的 UI 模式。',
+    moduleTitle: '模組 1 · React 基礎',
     intro: '這一課把 components 從靜態區塊推進到可重用 UI：同一個 component，因為 props 不同，可以在不同地方扮演不同角色。',
     learningPoints: [
       '理解 props 是 component 的輸入資料。',
@@ -143,9 +143,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 4,
     slug: 'lesson-4',
-    title: 'State with useState',
-    summary: 'Handle user interaction and update the UI predictably with local state.',
-    moduleTitle: 'Module 2 · State and hooks',
+    title: '用 useState 管理狀態',
+    summary: '用區域 state 處理使用者互動，並可預期地更新 UI。',
+    moduleTitle: '模組 2 · State 與 hooks',
     intro: '這一課正式讓 UI 動起來：畫面不再只是接收資料，而是會因使用者互動而更新。',
     learningPoints: [
       '理解 local state 在 component 裡的角色。',
@@ -184,9 +184,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 5,
     slug: 'lesson-5',
-    title: 'Side effects with useEffect',
-    summary: 'Run effects safely and understand dependency arrays and cleanup.',
-    moduleTitle: 'Module 2 · State and hooks',
+    title: '用 useEffect 處理副作用',
+    summary: '安全地執行 effects，並理解 dependency array 與 cleanup。',
+    moduleTitle: '模組 2 · State 與 hooks',
     intro: 'useEffect 常常是 React 初學者最容易混亂的地方，因為它處理的是 render 之外與外部世界同步的工作。',
     learningPoints: [
       '理解什麼情況才需要 useEffect。',
@@ -225,9 +225,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 6,
     slug: 'lesson-6',
-    title: 'Lifting state and sharing logic',
-    summary: 'Organize state across components and avoid duplication.',
-    moduleTitle: 'Module 2 · State and hooks',
+    title: '提升 state 與共享邏輯',
+    summary: '在元件之間整理 state，避免資料重複與不同步。',
+    moduleTitle: '模組 2 · State 與 hooks',
     intro: '當多個 components 都需要同一份資料時，state 該放哪裡就變成設計問題，而不是語法問題。',
     learningPoints: [
       '理解 lifting state 的概念。',
@@ -266,9 +266,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 7,
     slug: 'lesson-7',
-    title: 'Client-side routing',
-    summary: 'Add page transitions and navigation structure to multi-screen apps.',
-    moduleTitle: 'Module 3 · App structure',
+    title: '前端路由',
+    summary: '為多畫面應用加入頁面切換與導覽結構。',
+    moduleTitle: '模組 3 · App 結構',
     intro: '當應用不再只有一個畫面時，routing 就決定了使用者怎麼在不同頁面間移動。',
     learningPoints: [
       '理解 client-side routing 的用途。',
@@ -307,9 +307,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 8,
     slug: 'lesson-8',
-    title: 'Forms and controlled inputs',
-    summary: 'Capture user input cleanly and validate common form interactions.',
-    moduleTitle: 'Module 3 · App structure',
+    title: '表單與受控輸入',
+    summary: '乾淨地處理使用者輸入，並驗證常見表單互動。',
+    moduleTitle: '模組 3 · App 結構',
     intro: '表單是 React 裡最常見也最容易混亂的互動之一，因為它同時涉及 state、事件與驗證。',
     learningPoints: [
       '理解 controlled input 的概念。',
@@ -348,9 +348,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 9,
     slug: 'lesson-9',
-    title: 'Project structure for medium-sized apps',
-    summary: 'Organize components, hooks, and pages so the code stays readable.',
-    moduleTitle: 'Module 3 · App structure',
+    title: '中型應用的專案結構',
+    summary: '整理 components、hooks 與 pages，讓程式碼保持清楚可讀。',
+    moduleTitle: '模組 3 · App 結構',
     intro: '當 app 成長到一定規模時，檔案結構本身就會影響開發效率與團隊可讀性。',
     learningPoints: [
       '理解中型 React app 常見的結構分層。',
@@ -389,9 +389,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 10,
     slug: 'lesson-10',
-    title: 'Fetching data in React apps',
-    summary: 'Load remote data safely and understand where fetching fits in the UI lifecycle.',
-    moduleTitle: 'Module 4 · Data fetching and async UI',
+    title: '在 React 應用中抓取資料',
+    summary: '安全地載入遠端資料，並理解資料抓取在 UI 生命週期中的位置。',
+    moduleTitle: '模組 4 · Data fetching 與非同步 UI',
     intro: '真正的前端很少只有靜態資料，這一課開始把畫面和 API、遠端資料來源接起來。',
     learningPoints: [
       '理解資料抓取在 React 畫面生命週期中的位置。',
@@ -430,9 +430,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 11,
     slug: 'lesson-11',
-    title: 'Loading, error, and empty states',
-    summary: 'Design UI states that make async data feel reliable and clear to users.',
-    moduleTitle: 'Module 4 · Data fetching and async UI',
+    title: 'Loading、error 與 empty 狀態',
+    summary: '設計讓非同步資料流程更清楚、也更可靠的 UI 狀態。',
+    moduleTitle: '模組 4 · Data fetching 與非同步 UI',
     intro: '一個可靠的 UI，不是只有「有資料時看起來正常」，而是所有資料狀態都清楚可預期。',
     learningPoints: [
       '理解 loading、error、empty 是 async UI 的基本狀態。',
@@ -471,9 +471,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 12,
     slug: 'lesson-12',
-    title: 'Custom hooks for reusable async logic',
-    summary: 'Extract repeated fetching and state patterns into reusable hooks.',
-    moduleTitle: 'Module 4 · Data fetching and async UI',
+    title: '用自訂 hooks 重用非同步邏輯',
+    summary: '把重複的 fetching 與 state 模式抽成可重用的 hooks。',
+    moduleTitle: '模組 4 · Data fetching 與非同步 UI',
     intro: '當同一套 fetching 與 state 邏輯重複出現時，custom hook 能幫你把重用層級拉高。',
     learningPoints: [
       '理解 custom hook 的價值。',
@@ -512,9 +512,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 13,
     slug: 'lesson-13',
-    title: 'Context for shared application state',
-    summary: 'Share state across distant components without threading props through every layer.',
-    moduleTitle: 'Module 5 · State scaling and performance',
+    title: '用 Context 管理共享應用狀態',
+    summary: '在跨層元件之間共享 state，而不必把 props 一層層往下傳。',
+    moduleTitle: '模組 5 · 狀態擴展與效能',
     intro: '當 state 需要跨很多層共用時，Context 能幫你減少一層層 props drilling 的負擔。',
     learningPoints: [
       '理解 Context 解決的是什麼問題。',
@@ -553,9 +553,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 14,
     slug: 'lesson-14',
-    title: 'Memoization and rendering performance',
-    summary: 'Understand when React rerenders and how to avoid unnecessary work.',
-    moduleTitle: 'Module 5 · State scaling and performance',
+    title: '記憶化與渲染效能',
+    summary: '理解 React 什麼時候會重新渲染，以及如何避免不必要的工作。',
+    moduleTitle: '模組 5 · 狀態擴展與效能',
     intro: '效能優化不是一開始就到處 memo，而是先理解 React 為什麼 rerender，再決定要不要優化。',
     learningPoints: [
       '理解 rerender 的常見來源。',
@@ -594,9 +594,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 15,
     slug: 'lesson-15',
-    title: 'Testing React components and user flows',
-    summary: 'Write practical tests that verify what users can see and do.',
-    moduleTitle: 'Module 6 · Testing and shipping',
+    title: '測試 React 元件與使用者流程',
+    summary: '撰寫能驗證使用者看得到、做得到什麼的實用測試。',
+    moduleTitle: '模組 6 · 測試與交付',
     intro: '測試不是為了追求數字，而是確保使用者真的能看到正確畫面、做正確操作。',
     learningPoints: [
       '理解 React component testing 的基本目標。',
@@ -635,9 +635,9 @@ export const reactLessons: CourseLessonArticle[] = [
   {
     lesson: 16,
     slug: 'lesson-16',
-    title: 'Build and deploy a React application',
-    summary: 'Prepare the app for production with a clean build and deployment workflow.',
-    moduleTitle: 'Module 6 · Testing and shipping',
+    title: '建置與部署 React 應用',
+    summary: '用乾淨的 build 與 deployment 流程，把 app 準備到 production。',
+    moduleTitle: '模組 6 · 測試與交付',
     intro: '最後一課把 React 從本機開發帶到真正可以上線的狀態：build、deploy、production checks。',
     learningPoints: [
       '理解 build 與 dev environment 的差別。',

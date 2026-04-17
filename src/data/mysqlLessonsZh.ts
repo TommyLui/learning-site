@@ -20,9 +20,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 1,
     slug: 'lesson-1',
-    title: 'What a relational database is',
-    summary: 'Learn tables, rows, columns, and why relational structure matters.',
-    moduleTitle: 'Module 1 · Query basics',
+    title: '什麼是關聯式資料庫',
+    summary: '理解 tables、rows、columns，以及關聯式結構為什麼重要。',
+    moduleTitle: '模組 1 · Query 基礎',
     intro: '這一課先建立最基礎的資料庫心智模型：資料不是一整包放著，而是有結構地存放在 tables 中。',
     learningPoints: [
       '理解 table、row、column 的基本概念。',
@@ -61,9 +61,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 2,
     slug: 'lesson-2',
-    title: 'SELECT, WHERE, and ORDER BY',
-    summary: 'Filter and sort data using the most common query patterns.',
-    moduleTitle: 'Module 1 · Query basics',
+    title: 'SELECT、WHERE 與 ORDER BY',
+    summary: '用最常見的查詢模式篩選與排序資料。',
+    moduleTitle: '模組 1 · Query 基礎',
     intro: '查詢是你和資料庫最常見的互動方式，而 SELECT、WHERE、ORDER BY 是最核心的基本功。',
     learningPoints: [
       '知道 SELECT 怎麼取回指定欄位資料。',
@@ -102,9 +102,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 3,
     slug: 'lesson-3',
-    title: 'INSERT, UPDATE, and DELETE',
-    summary: 'Modify data safely and understand how write operations affect tables.',
-    moduleTitle: 'Module 1 · Query basics',
+    title: 'INSERT、UPDATE 與 DELETE',
+    summary: '安全地修改資料，並理解寫入操作如何影響資料表。',
+    moduleTitle: '模組 1 · Query 基礎',
     intro: '這一課從「讀資料」走到「改資料」，也就是資料庫真正會影響系統狀態的地方。',
     learningPoints: [
       '理解 INSERT、UPDATE、DELETE 的用途。',
@@ -143,9 +143,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 4,
     slug: 'lesson-4',
-    title: 'Understanding INNER JOIN and LEFT JOIN',
-    summary: 'Combine related rows across tables and understand the difference between common join types.',
-    moduleTitle: 'Module 2 · Relationships and joins',
+    title: '理解 INNER JOIN 與 LEFT JOIN',
+    summary: '把多張表中的相關資料列連起來，並理解常見 join 類型的差異。',
+    moduleTitle: '模組 2 · 關聯與 joins',
     intro: 'joins 是 relational database 最能展現「關聯」價值的地方，因為它讓你從多張表中拼出真正有意義的資訊。',
     learningPoints: [
       '理解 JOIN 的基本目的。',
@@ -184,9 +184,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 5,
     slug: 'lesson-5',
-    title: 'Primary keys and foreign keys',
-    summary: 'Use keys to enforce relationships and protect data integrity.',
-    moduleTitle: 'Module 2 · Relationships and joins',
+    title: 'Primary key 與 foreign key',
+    summary: '用 keys 建立關聯並保護資料完整性。',
+    moduleTitle: '模組 2 · 關聯與 joins',
     intro: '關聯資料庫不是因為有多張表就叫 relational，而是因為這些表之間有明確、可驗證的關係。',
     learningPoints: [
       '理解 primary key 和 foreign key 的角色。',
@@ -225,9 +225,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 6,
     slug: 'lesson-6',
-    title: 'One-to-many thinking through real examples',
-    summary: 'Translate app data into cleaner relational structures.',
-    moduleTitle: 'Module 2 · Relationships and joins',
+    title: '用真實例子理解一對多關係',
+    summary: '把應用資料轉成更乾淨的關聯結構。',
+    moduleTitle: '模組 2 · 關聯與 joins',
     intro: '一對多關係是資料建模中最常見的模式，真正重要的是學會把現實世界問題轉成關聯結構。',
     learningPoints: [
       '理解 one-to-many 關係在資料設計中的意義。',
@@ -266,9 +266,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 7,
     slug: 'lesson-7',
-    title: 'Normalization and practical schema design',
-    summary: 'Reduce duplication while keeping data understandable.',
-    moduleTitle: 'Module 3 · Design and performance',
+    title: '正規化與實務 schema 設計',
+    summary: '在保持資料可理解的同時，減少重複與混亂。',
+    moduleTitle: '模組 3 · 設計與效能',
     intro: '正規化的本質不是考試題，而是幫你減少重複資料、降低修改風險，讓 schema 更穩。',
     learningPoints: [
       '理解 normalization 的核心目的。',
@@ -307,9 +307,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 8,
     slug: 'lesson-8',
-    title: 'Indexes and query performance',
-    summary: 'Understand why some queries are fast and others are not.',
-    moduleTitle: 'Module 3 · Design and performance',
+    title: '索引與查詢效能',
+    summary: '理解為什麼有些查詢很快，有些卻很慢。',
+    moduleTitle: '模組 3 · 設計與效能',
     intro: '效能問題常常不是 SQL 太長，而是資料量一大後，資料庫找資料的方式不對。',
     learningPoints: [
       '理解 index 的作用。',
@@ -348,9 +348,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 9,
     slug: 'lesson-9',
-    title: 'Preparing MySQL for application development',
-    summary: 'Create a database foundation that works well with backend frameworks.',
-    moduleTitle: 'Module 3 · Design and performance',
+    title: '為應用開發準備 MySQL',
+    summary: '建立能良好配合後端框架的資料庫基礎。',
+    moduleTitle: '模組 3 · 設計與效能',
     intro: '最後一課把 MySQL 從單獨練語法，拉回到它在實際應用開發中扮演的角色。',
     learningPoints: [
       '知道 MySQL 在 backend app 裡通常怎麼被使用。',
@@ -389,9 +389,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 10,
     slug: 'lesson-10',
-    title: 'GROUP BY and aggregate functions',
-    summary: 'Summarize data with COUNT, SUM, AVG, and grouped results.',
-    moduleTitle: 'Module 4 · Aggregation and advanced querying',
+    title: 'GROUP BY 與聚合函式',
+    summary: '用 COUNT、SUM、AVG 與分組結果整理資料摘要。',
+    moduleTitle: '模組 4 · 聚合與進階查詢',
     intro: '這一課把查詢從「找單筆資料」進一步帶到「總結整批資料」，也是報表與分析查詢的基礎。',
     learningPoints: [
       '理解 GROUP BY 的用途。',
@@ -430,9 +430,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 11,
     slug: 'lesson-11',
-    title: 'Subqueries and derived tables',
-    summary: 'Break bigger query problems into smaller steps with nested queries.',
-    moduleTitle: 'Module 4 · Aggregation and advanced querying',
+    title: '子查詢與衍生資料表',
+    summary: '用巢狀查詢把更大的問題拆成較小步驟。',
+    moduleTitle: '模組 4 · 聚合與進階查詢',
     intro: '有些查詢問題如果一次寫完會很亂，subquery 幫你把它拆成比較可理解的中間步驟。',
     learningPoints: [
       '理解 subquery 的基本用途。',
@@ -471,9 +471,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 12,
     slug: 'lesson-12',
-    title: 'Transactions and ACID basics',
-    summary: 'Understand how grouped operations stay safe and consistent.',
-    moduleTitle: 'Module 5 · Transactions and practical operations',
+    title: '交易與 ACID 基礎',
+    summary: '理解一組操作如何保持安全與一致。',
+    moduleTitle: '模組 5 · Transactions 與實務操作',
     intro: '當一組資料操作必須一起成功或一起失敗時，transaction 就是保護一致性的核心機制。',
     learningPoints: [
       '理解 transaction 的基本概念。',
@@ -512,9 +512,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 13,
     slug: 'lesson-13',
-    title: 'Backup, import, and export workflows',
-    summary: 'Handle common operational tasks for moving and protecting MySQL data.',
-    moduleTitle: 'Module 5 · Transactions and practical operations',
+    title: '備份、匯入與匯出流程',
+    summary: '處理搬移與保護 MySQL 資料時常見的實務操作。',
+    moduleTitle: '模組 5 · Transactions 與實務操作',
     intro: '資料庫不只要會查，還要能保護、搬移、還原，這些操作能力會直接影響系統安全感。',
     learningPoints: [
       '理解備份、匯入、匯出的基本用途。',
@@ -553,9 +553,9 @@ export const mysqlLessons: CourseLessonArticle[] = [
   {
     lesson: 14,
     slug: 'lesson-14',
-    title: 'User permissions and production basics',
-    summary: 'Prepare MySQL for safer team usage and production-style environments.',
-    moduleTitle: 'Module 5 · Transactions and practical operations',
+    title: '使用者權限與 production 基礎',
+    summary: '讓 MySQL 更適合團隊使用與 production 環境。',
+    moduleTitle: '模組 5 · Transactions 與實務操作',
     intro: '最後一課把 MySQL 拉到更接近 production 的角度：誰能做什麼、環境怎麼分、資料怎麼保護。',
     learningPoints: [
       '理解使用者權限為什麼重要。',
