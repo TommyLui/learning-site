@@ -9,40 +9,313 @@ if (!course) {
   throw new Error('React course not found');
 }
 
-export function getStaticPaths() {
-  const lessonPlaceholders = [
-    { slug: 'lesson-1', title: 'Lesson 1' },
-    { slug: 'lesson-2', title: 'Lesson 2' },
-    { slug: 'lesson-3', title: 'Lesson 3' },
-    { slug: 'lesson-4', title: 'Lesson 4' },
-    { slug: 'lesson-5', title: 'Lesson 5' },
-    { slug: 'lesson-6', title: 'Lesson 6' },
-    { slug: 'lesson-7', title: 'Lesson 7' },
-    { slug: 'lesson-8', title: 'Lesson 8' },
-    { slug: 'lesson-9', title: 'Lesson 9' },
-  ];
+type CourseLessonEntry = {
+  lesson: number;
+  slug: string;
+  title: string;
+  summary: string;
+  moduleTitle: string;
+};
 
-  return lessonPlaceholders.map((lesson) => ({
+export function getStaticPaths() {
+  const course = courses.find((item) => item.slug === 'react');
+
+  if (!course) {
+    throw new Error('React course not found');
+  }
+
+  const allLessons: CourseLessonEntry[] = course.modules.flatMap((module) =>
+    module.lessons.map((lesson) => {
+      const lessonNumber = Number(lesson.number.match(/(\d+)/)?.[1] ?? '1');
+
+      return {
+        lesson: lessonNumber,
+        slug: `lesson-${lessonNumber}`,
+        title: lesson.title,
+        summary: lesson.summary,
+        moduleTitle: module.title,
+      };
+    })
+  );
+
+  return allLessons.map((lesson, index) => ({
     params: { lesson: lesson.slug },
-    props: { lesson },
+    props: {
+      lesson,
+      previousLesson: index > 0 ? allLessons[index - 1] : null,
+      nextLesson: index < allLessons.length - 1 ? allLessons[index + 1] : null,
+      allLessons,
+    },
   }));
 }
 
-const { lesson } = Astro.props;
+interface Props {
+  lesson: CourseLessonEntry;
+  previousLesson: CourseLessonEntry | null;
+  nextLesson: CourseLessonEntry | null;
+  allLessons: CourseLessonEntry[];
+}
+
+const { lesson, previousLesson, nextLesson, allLessons: lessonList } = Astro.props as Props;
+const estimatedMinutes = 5;
+const articleSections = [
+  { id: 'learning-points', title: 'What you will learn' },
+  { id: 'lesson-notes', title: 'Lesson notes' },
+  { id: 'example', title: 'Example direction' },
+  { id: 'practice', title: 'Practice' },
+  { id: 'references', title: 'Next step' },
+];
+const learningPoints = [
+  `Understand the core idea behind ${lesson.title}.`,
+  'Know where this lesson fits in the wider React learning path.',
+  'Use this page as a stable draft for future expansion into a full teaching article.',
+];
+const lessonNotes = [
+  `${lesson.title} sits inside ${lesson.moduleTitle} and marks an important part of the React learning flow.`,
+  'This page is now structured like a real article page, even though the final detailed lesson content has not been fully expanded yet.',
+  'When this lesson is expanded later, this section can grow into a full explanation with examples, pitfalls, and implementation notes.',
+];
+const exampleIdeas = [
+  'Build a tiny component or screen that demonstrates this lesson in isolation.',
+  'Keep the first example small enough to understand in one read, then expand to a second version if needed.',
+  'Use naming and file structure that still make sense when the example grows into a medium-sized app.',
+];
+const practice = [
+  `Summarize ${lesson.title} in your own words before writing any code.`,
+  'Create a minimal React example that proves you understand the concept of this lesson.',
+  'Write down one confusion point you still have so it can be expanded in the next revision.',
+];
+const reasons = [
+  'React lessons build on each other, so understanding the place of this lesson helps everything later feel less random.',
+  'A structured lesson page makes it easier to return later and keep expanding the material without rewriting from scratch.',
+];
+const mistakes = [
+  'Jumping straight into code without first understanding what this lesson is trying to teach.',
+  'Treating the lesson title as enough context instead of connecting it back to the surrounding module.',
+];
+const takeaways = [
+  `${lesson.title} is already positioned as part of a full React course, not a loose placeholder.`,
+  'This page is ready to be expanded into a deeper article when you want to continue writing the full lesson.',
+];
 ---
 
 <BaseLayout
   title={`${lesson.title} · ${course.title}`}
-  description="React lesson placeholder page."
+  description={lesson.summary}
   currentCourse={course}
 >
   <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
     <div class="page-intro-backdrop"></div>
     <div class="container page-intro-inner">
       <a href={withBase('/courses/react/lessons')} class="back-link">← Back to React lessons</a>
-      <p class="eyebrow">Placeholder page</p>
-      <h1 class="page-title">{lesson.title}</h1>
-      <p class="lead narrow">這個頁面已建立，內容之後會再補上。</p>
+
+      <div class="course-hero-grid course-hero-grid--editorial">
+        <div>
+          <p class="eyebrow">Lesson {lesson.lesson}</p>
+          <h1 class="page-title">{lesson.title}</h1>
+          <p class="lead narrow">{lesson.summary}</p>
+        </div>
+
+        <aside class="course-summary-card course-summary-card--editorial">
+          <h2>Lesson summary</h2>
+          <dl>
+            <div>
+              <dt>Track</dt>
+              <dd>{course.title}</dd>
+            </div>
+            <div>
+              <dt>Module</dt>
+              <dd>{lesson.moduleTitle}</dd>
+            </div>
+            <div>
+              <dt>Status</dt>
+              <dd>Structured draft page</dd>
+            </div>
+            <div>
+              <dt>Read time</dt>
+              <dd>~{estimatedMinutes} min</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="floating-panel-wrap floating-panel-wrap--page">
+    <div class="container">
+      <div class="main-panel">
+        <section class="panel-section panel-section--first">
+          <div class="course-layout note-layout">
+            <div class="course-main-column">
+              <div class="content-panel content-panel--editorial note-panel note-article-overview">
+                <div>
+                  <p class="eyebrow">Article overview</p>
+                  <h2>這一課已經整理成正式文章頁骨架</h2>
+                  <p>
+                    雖然 React 單課內容還在逐步補寫，但這頁已經具備完整閱讀結構，後續可以直接把正式教學內容填進來。
+                  </p>
+                </div>
+                <div class="note-tag-list">
+                  <span class="note-tag">React</span>
+                  <span class="note-tag">{lesson.moduleTitle}</span>
+                  <span class="note-tag">Lesson {lesson.lesson}</span>
+                </div>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="learning-points">
+                <div class="section-heading section-heading--editorial">
+                  <h2>What you will learn</h2>
+                  <p>先抓住這一課在 React 主線裡扮演什麼角色。</p>
+                </div>
+                <ul class="simple-list">
+                  {learningPoints.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="lesson-notes">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Lesson notes</h2>
+                  <p>這裡先保留成正式課程正文區，之後可以直接擴寫。</p>
+                </div>
+                <div class="article-flow">
+                  {lessonNotes.map((paragraph) => (
+                    <p>{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="example">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Example direction</h2>
+                  <p>先定義這一課未來最適合補什麼樣的示範。</p>
+                </div>
+                <ul class="simple-list">
+                  {exampleIdeas.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="practice">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Practice</h2>
+                  <p>在正式內容還沒補滿前，也可以先用這些練習題維持主線節奏。</p>
+                </div>
+                <ul class="simple-list">
+                  {practice.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="references">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Next step</h2>
+                  <p>這一頁已經從 placeholder 變成真正可擴寫的 lesson article。</p>
+                </div>
+                <ul class="simple-list">
+                  <li>之後可以補上完整範例、關鍵 API、常見錯誤與延伸閱讀。</li>
+                  <li>如果你要沿著主線走，讀完這頁後就直接接下一課。</li>
+                </ul>
+              </div>
+            </div>
+
+            <aside class="course-side-column note-side-column">
+              <div class="content-panel content-panel--editorial sticky-panel note-panel">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Reading guide</h2>
+                  <p>先看這頁結構，再決定要快速略讀還是繼續把內容補完整。</p>
+                </div>
+
+                <div class="lesson-anchor-list">
+                  {articleSections.map((section) => (
+                    <a class="lesson-anchor-link" href={`#${section.id}`}>
+                      <span>Section</span>
+                      <strong>{section.title}</strong>
+                    </a>
+                  ))}
+                </div>
+
+                <h3 class="note-side-heading">Why this matters</h3>
+                <ul class="simple-list simple-list--compact">
+                  {reasons.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+
+                <h3 class="note-side-heading">Common mistakes</h3>
+                <ul class="simple-list simple-list--compact">
+                  {mistakes.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+
+                <h3 class="note-side-heading">Key takeaway</h3>
+                <ul class="simple-list simple-list--compact">
+                  {takeaways.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel note-progress-panel">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Course progress</h2>
+                  <p>快速知道目前在第幾課，也能直接跳到其他 React lessons。</p>
+                </div>
+
+                <p class="note-progress-copy">目前閱讀：Lesson {lesson.lesson} / {lessonList.length}</p>
+                <div class="lesson-progress-bar" aria-hidden="true">
+                  <span style={`width: ${(lesson.lesson / lessonList.length) * 100}%`}></span>
+                </div>
+
+                <div class="lesson-mini-nav">
+                  {lessonList.map((entry) => (
+                    <a
+                      href={withBase(`/courses/react/lessons/${entry.slug}`)}
+                      class:list={['lesson-mini-link', { 'is-active': entry.slug === lesson.slug }]}
+                    >
+                      <span>Lesson {entry.lesson}</span>
+                      <strong>{entry.title}</strong>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>Lesson continuity</h2>
+            <p>保持主線節奏，從前一課順著接到下一課。</p>
+          </div>
+
+          <div class="notes-list notes-list--continuity">
+            {previousLesson && (
+              <a class="note-card" href={withBase(`/courses/react/lessons/${previousLesson.slug}`)}>
+                <div class="note-card-meta">
+                  <span class="course-pill">Previous</span>
+                </div>
+                <h3>{previousLesson.title}</h3>
+                <p>{previousLesson.summary}</p>
+              </a>
+            )}
+
+            {nextLesson && (
+              <a class="note-card" href={withBase(`/courses/react/lessons/${nextLesson.slug}`)}>
+                <div class="note-card-meta">
+                  <span class="course-pill">Next</span>
+                </div>
+                <h3>{nextLesson.title}</h3>
+                <p>{nextLesson.summary}</p>
+              </a>
+            )}
+          </div>
+        </section>
+      </div>
     </div>
   </section>
 </BaseLayout>

@@ -9,40 +9,313 @@ if (!course) {
   throw new Error('MySQL course not found');
 }
 
-export function getStaticPaths() {
-  const lessonPlaceholders = [
-    { slug: 'lesson-1', title: 'Lesson 1' },
-    { slug: 'lesson-2', title: 'Lesson 2' },
-    { slug: 'lesson-3', title: 'Lesson 3' },
-    { slug: 'lesson-4', title: 'Lesson 4' },
-    { slug: 'lesson-5', title: 'Lesson 5' },
-    { slug: 'lesson-6', title: 'Lesson 6' },
-    { slug: 'lesson-7', title: 'Lesson 7' },
-    { slug: 'lesson-8', title: 'Lesson 8' },
-    { slug: 'lesson-9', title: 'Lesson 9' },
-  ];
+type CourseLessonEntry = {
+  lesson: number;
+  slug: string;
+  title: string;
+  summary: string;
+  moduleTitle: string;
+};
 
-  return lessonPlaceholders.map((lesson) => ({
+export function getStaticPaths() {
+  const course = courses.find((item) => item.slug === 'mysql');
+
+  if (!course) {
+    throw new Error('MySQL course not found');
+  }
+
+  const allLessons: CourseLessonEntry[] = course.modules.flatMap((module) =>
+    module.lessons.map((lesson) => {
+      const lessonNumber = Number(lesson.number.match(/(\d+)/)?.[1] ?? '1');
+
+      return {
+        lesson: lessonNumber,
+        slug: `lesson-${lessonNumber}`,
+        title: lesson.title,
+        summary: lesson.summary,
+        moduleTitle: module.title,
+      };
+    })
+  );
+
+  return allLessons.map((lesson, index) => ({
     params: { lesson: lesson.slug },
-    props: { lesson },
+    props: {
+      lesson,
+      previousLesson: index > 0 ? allLessons[index - 1] : null,
+      nextLesson: index < allLessons.length - 1 ? allLessons[index + 1] : null,
+      allLessons,
+    },
   }));
 }
 
-const { lesson } = Astro.props;
+interface Props {
+  lesson: CourseLessonEntry;
+  previousLesson: CourseLessonEntry | null;
+  nextLesson: CourseLessonEntry | null;
+  allLessons: CourseLessonEntry[];
+}
+
+const { lesson, previousLesson, nextLesson, allLessons: lessonList } = Astro.props as Props;
+const estimatedMinutes = 5;
+const articleSections = [
+  { id: 'learning-points', title: 'What you will learn' },
+  { id: 'lesson-notes', title: 'Lesson notes' },
+  { id: 'example', title: 'Example direction' },
+  { id: 'practice', title: 'Practice' },
+  { id: 'references', title: 'Next step' },
+];
+const learningPoints = [
+  `Understand the core idea behind ${lesson.title}.`,
+  'Know where this lesson sits in the MySQL learning path from query basics to design and performance.',
+  'Use this page as a stable lesson draft that can later expand into a full teaching article.',
+];
+const lessonNotes = [
+  `${lesson.title} belongs to ${lesson.moduleTitle} and helps connect this lesson to the wider MySQL roadmap.`,
+  'This page is now structured like a real lesson article even though the final deep content is still being expanded over time.',
+  'When you continue building this course, this section can grow into a full explanation with query examples, diagrams, and common mistakes.',
+];
+const exampleIdeas = [
+  'Use a tiny schema or query example that demonstrates the lesson without adding extra noise.',
+  'Prefer examples that can connect naturally to backend application development later.',
+  'Keep the first example readable enough that you can explain every line without context switching.',
+];
+const practice = [
+  `Explain ${lesson.title} in your own words before writing SQL.`,
+  'Create a minimal table or query example that proves you understand the lesson objective.',
+  'Write down one place where this lesson would show up in real backend or database work.',
+];
+const reasons = [
+  'Database concepts become much easier when each lesson is anchored inside a clear learning sequence.',
+  'A structured article page lets you keep expanding the course without rebuilding the layout every time.',
+];
+const mistakes = [
+  'Trying to memorize syntax without first understanding the data problem this lesson is solving.',
+  'Reading this lesson in isolation without connecting it back to queries, relationships, or schema design.',
+];
+const takeaways = [
+  `${lesson.title} is now framed as a real course lesson, not an empty placeholder.`,
+  'This page is ready to grow into a fuller MySQL article with practical examples and exercises.',
+];
 ---
 
 <BaseLayout
   title={`${lesson.title} · ${course.title}`}
-  description="MySQL lesson placeholder page."
+  description={lesson.summary}
   currentCourse={course}
 >
   <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
     <div class="page-intro-backdrop"></div>
     <div class="container page-intro-inner">
       <a href={withBase('/courses/mysql/lessons')} class="back-link">← Back to MySQL lessons</a>
-      <p class="eyebrow">Placeholder page</p>
-      <h1 class="page-title">{lesson.title}</h1>
-      <p class="lead narrow">這個頁面已建立，內容之後會再補上。</p>
+
+      <div class="course-hero-grid course-hero-grid--editorial">
+        <div>
+          <p class="eyebrow">Lesson {lesson.lesson}</p>
+          <h1 class="page-title">{lesson.title}</h1>
+          <p class="lead narrow">{lesson.summary}</p>
+        </div>
+
+        <aside class="course-summary-card course-summary-card--editorial">
+          <h2>Lesson summary</h2>
+          <dl>
+            <div>
+              <dt>Track</dt>
+              <dd>{course.title}</dd>
+            </div>
+            <div>
+              <dt>Module</dt>
+              <dd>{lesson.moduleTitle}</dd>
+            </div>
+            <div>
+              <dt>Status</dt>
+              <dd>Structured draft page</dd>
+            </div>
+            <div>
+              <dt>Read time</dt>
+              <dd>~{estimatedMinutes} min</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="floating-panel-wrap floating-panel-wrap--page">
+    <div class="container">
+      <div class="main-panel">
+        <section class="panel-section panel-section--first">
+          <div class="course-layout note-layout">
+            <div class="course-main-column">
+              <div class="content-panel content-panel--editorial note-panel note-article-overview">
+                <div>
+                  <p class="eyebrow">Article overview</p>
+                  <h2>這一課已經整理成正式文章頁骨架</h2>
+                  <p>
+                    雖然 MySQL 單課內容還會持續補寫，但這頁現在已經是正式 lesson page，可以直接往裡面補查詢、schema 與實作內容。
+                  </p>
+                </div>
+                <div class="note-tag-list">
+                  <span class="note-tag">MySQL</span>
+                  <span class="note-tag">{lesson.moduleTitle}</span>
+                  <span class="note-tag">Lesson {lesson.lesson}</span>
+                </div>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="learning-points">
+                <div class="section-heading section-heading--editorial">
+                  <h2>What you will learn</h2>
+                  <p>先理解這一課在整條 MySQL 主線裡的位置。</p>
+                </div>
+                <ul class="simple-list">
+                  {learningPoints.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="lesson-notes">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Lesson notes</h2>
+                  <p>這裡先保留成正式正文區，後續可以直接擴寫查詢與資料設計內容。</p>
+                </div>
+                <div class="article-flow">
+                  {lessonNotes.map((paragraph) => (
+                    <p>{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="example">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Example direction</h2>
+                  <p>先定義這一課未來最適合補什麼類型的資料庫例子。</p>
+                </div>
+                <ul class="simple-list">
+                  {exampleIdeas.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="practice">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Practice</h2>
+                  <p>即使正式內容還沒補滿，也可以先用這些練習維持學習節奏。</p>
+                </div>
+                <ul class="simple-list">
+                  {practice.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="references">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Next step</h2>
+                  <p>這一頁已經不是單純 placeholder，而是可持續擴寫的 lesson article。</p>
+                </div>
+                <ul class="simple-list">
+                  <li>之後可以補上實際 SQL、資料表設計示意、錯誤案例與延伸閱讀。</li>
+                  <li>如果你想沿著主線往下學，讀完這頁後就直接接下一課。</li>
+                </ul>
+              </div>
+            </div>
+
+            <aside class="course-side-column note-side-column">
+              <div class="content-panel content-panel--editorial sticky-panel note-panel">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Reading guide</h2>
+                  <p>先看這頁的閱讀順序，再決定是先補內容還是直接接著往下讀。</p>
+                </div>
+
+                <div class="lesson-anchor-list">
+                  {articleSections.map((section) => (
+                    <a class="lesson-anchor-link" href={`#${section.id}`}>
+                      <span>Section</span>
+                      <strong>{section.title}</strong>
+                    </a>
+                  ))}
+                </div>
+
+                <h3 class="note-side-heading">Why this matters</h3>
+                <ul class="simple-list simple-list--compact">
+                  {reasons.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+
+                <h3 class="note-side-heading">Common mistakes</h3>
+                <ul class="simple-list simple-list--compact">
+                  {mistakes.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+
+                <h3 class="note-side-heading">Key takeaway</h3>
+                <ul class="simple-list simple-list--compact">
+                  {takeaways.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel note-progress-panel">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Course progress</h2>
+                  <p>快速知道目前在第幾課，也能直接跳到其他 MySQL lessons。</p>
+                </div>
+
+                <p class="note-progress-copy">目前閱讀：Lesson {lesson.lesson} / {lessonList.length}</p>
+                <div class="lesson-progress-bar" aria-hidden="true">
+                  <span style={`width: ${(lesson.lesson / lessonList.length) * 100}%`}></span>
+                </div>
+
+                <div class="lesson-mini-nav">
+                  {lessonList.map((entry) => (
+                    <a
+                      href={withBase(`/courses/mysql/lessons/${entry.slug}`)}
+                      class:list={['lesson-mini-link', { 'is-active': entry.slug === lesson.slug }]}
+                    >
+                      <span>Lesson {entry.lesson}</span>
+                      <strong>{entry.title}</strong>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>Lesson continuity</h2>
+            <p>保持主線節奏，從前一課順著接到下一課。</p>
+          </div>
+
+          <div class="notes-list notes-list--continuity">
+            {previousLesson && (
+              <a class="note-card" href={withBase(`/courses/mysql/lessons/${previousLesson.slug}`)}>
+                <div class="note-card-meta">
+                  <span class="course-pill">Previous</span>
+                </div>
+                <h3>{previousLesson.title}</h3>
+                <p>{previousLesson.summary}</p>
+              </a>
+            )}
+
+            {nextLesson && (
+              <a class="note-card" href={withBase(`/courses/mysql/lessons/${nextLesson.slug}`)}>
+                <div class="note-card-meta">
+                  <span class="course-pill">Next</span>
+                </div>
+                <h3>{nextLesson.title}</h3>
+                <p>{nextLesson.summary}</p>
+              </a>
+            )}
+          </div>
+        </section>
+      </div>
     </div>
   </section>
 </BaseLayout>
