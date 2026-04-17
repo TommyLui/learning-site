@@ -13,7 +13,10 @@ export type SpringBootNote = {
   exampleCode: string;
 };
 
-const notesDirectory = path.join(process.cwd(), 'course-notes', 'springboot');
+function getNotesDirectory(locale: 'en' | 'zh' = 'en') {
+  const folder = locale === 'zh' ? 'springboot-zh' : 'springboot';
+  return path.join(process.cwd(), 'course-notes', folder);
+}
 
 function parseFrontmatter(source: string) {
   const match = source.match(/^---\n([\s\S]*?)\n---\n\n([\s\S]*)$/);
@@ -63,7 +66,8 @@ function parseExample(section: string) {
   };
 }
 
-async function readNoteFile(fileName: string): Promise<SpringBootNote> {
+async function readNoteFile(fileName: string, locale: 'en' | 'zh' = 'en'): Promise<SpringBootNote> {
+  const notesDirectory = getNotesDirectory(locale);
   const source = await readFile(`${notesDirectory}/${fileName}`, 'utf8');
   const { frontmatter, body } = parseFrontmatter(source);
   const { intro, sections } = parseSections(body);
@@ -81,16 +85,17 @@ async function readNoteFile(fileName: string): Promise<SpringBootNote> {
   };
 }
 
-export async function getSpringBootNotes() {
+export async function getSpringBootNotes(locale: 'en' | 'zh' = 'en') {
+  const notesDirectory = getNotesDirectory(locale);
   const files = await readdir(notesDirectory);
   const lessonFiles = files.filter((file) => /^lesson-\d+\.md$/.test(file));
-  const notes = await Promise.all(lessonFiles.map((file) => readNoteFile(file)));
+  const notes = await Promise.all(lessonFiles.map((file) => readNoteFile(file, locale)));
 
   return notes.sort((a, b) => a.lesson - b.lesson);
 }
 
-export async function getSpringBootNoteBySlug(slug: string) {
-  const notes = await getSpringBootNotes();
+export async function getSpringBootNoteBySlug(slug: string, locale: 'en' | 'zh' = 'en') {
+  const notes = await getSpringBootNotes(locale);
   return notes.find((note) => note.slug === slug) ?? null;
 }
 

@@ -1,0 +1,277 @@
+---
+const locale = 'zh' as const;
+const localize = (path: string) => withBase(path, locale);
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import { courses } from '../../../../../data/courses';
+import {
+  getSpringBootNotes,
+  parseBulletList,
+  parseParagraphs,
+} from '../../../../../data/springbootNotes';
+import type { SpringBootNote } from '../../../../../data/springbootNotes';
+import { withBase } from '../../../../../utils/paths';
+
+const course = courses.find((item) => item.slug === 'spring-boot');
+
+if (!course) {
+  throw new Error('Spring Boot course not found');
+}
+
+interface Props {
+  note: SpringBootNote;
+  previousNote: SpringBootNote | null;
+  nextNote: SpringBootNote | null;
+  allNotes: SpringBootNote[];
+}
+
+export async function getStaticPaths() {
+  const notes: SpringBootNote[] = await getSpringBootNotes('zh');
+
+  return notes.map((note: SpringBootNote, index: number) => ({
+    params: { lesson: note.slug },
+    props: {
+      note,
+      previousNote: index > 0 ? notes[index - 1] : null,
+      nextNote: index < notes.length - 1 ? notes[index + 1] : null,
+      allNotes: notes,
+    },
+  }));
+}
+
+const { note, previousNote, nextNote, allNotes } = Astro.props as Props;
+const learningPoints = parseBulletList(note.sections['What You Will Learn'] ?? '');
+const reasons = parseBulletList(note.sections['Why This Matters'] ?? '');
+const ideas = parseBulletList(note.sections['Main Ideas'] ?? '');
+const lessonNotes = parseParagraphs(note.sections['Lesson Notes'] ?? '');
+const mistakes = parseBulletList(note.sections['Common Mistakes'] ?? '');
+const practice = parseBulletList(note.sections.Practice ?? '');
+const takeaways = parseBulletList(note.sections['Key Takeaway'] ?? '');
+const references = parseBulletList(note.sections['Official References'] ?? '');
+const estimatedMinutes = Math.max(4, Math.ceil((note.exampleCode.length + lessonNotes.join(' ').length) / 900));
+const articleSections = [
+  { id: 'learning-points', title: 'What you will learn' },
+  { id: 'lesson-notes', title: 'Lesson notes' },
+  { id: 'example', title: 'Example' },
+  { id: 'practice', title: 'Practice' },
+  { id: 'references', title: 'Official references' },
+];
+---
+
+<BaseLayout
+  title={`${note.title} · ${course.title}`}
+  description={note.summary}
+  currentCourse={course}
+  locale={locale}
+>
+  <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
+    <div class="page-intro-backdrop"></div>
+    <div class="container page-intro-inner">
+      <a href={localize('/courses/spring-boot/lessons')} class="back-link">← Back to all Spring Boot lessons</a>
+
+      <div class="course-hero-grid course-hero-grid--editorial">
+        <div>
+          <p class="eyebrow">Lesson {note.lesson}</p>
+          <h1 class="page-title">{note.title.replace(/^Lesson \d+:\s*/, '')}</h1>
+          <p class="lead narrow">{note.summary}</p>
+        </div>
+
+        <aside class="course-summary-card course-summary-card--editorial">
+          <h2>Lesson summary</h2>
+          <dl>
+            <div>
+              <dt>Track</dt>
+              <dd>{course.title}</dd>
+            </div>
+            <div>
+              <dt>Lesson slug</dt>
+              <dd>{note.slug}</dd>
+            </div>
+            <div>
+              <dt>Focus</dt>
+              <dd>{ideas.join(', ')}</dd>
+            </div>
+            <div>
+              <dt>Read time</dt>
+              <dd>~{estimatedMinutes} min</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="floating-panel-wrap floating-panel-wrap--page">
+    <div class="container">
+      <div class="main-panel">
+        <section class="panel-section panel-section--first">
+          <div class="course-layout note-layout">
+            <div class="course-main-column">
+              <div class="content-panel content-panel--editorial note-panel note-article-overview">
+                <div>
+                  <p class="eyebrow">Article overview</p>
+                  <h2>這一課會帶你從觀念到實作</h2>
+                  <p>
+                    先用學習目標抓重點，再讀正文與範例，最後用 practice 把這一課的內容轉成真正能記住的實作。
+                  </p>
+                </div>
+                <div class="note-tag-list">
+                  {ideas.map((idea) => (
+                    <span class="note-tag">{idea}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="learning-points">
+                <div class="section-heading section-heading--editorial">
+                  <h2>What you will learn</h2>
+                  <p>{note.intro}</p>
+                </div>
+                <ul class="simple-list">
+                  {learningPoints.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="lesson-notes">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Lesson notes</h2>
+                  <p>這一課的正式筆記內容，後續可以持續擴寫成完整教學文。</p>
+                </div>
+                <div class="article-flow">
+                  {lessonNotes.map((paragraph) => (
+                    <p>{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="example">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Example</h2>
+                  <p>保留每課的最小範例，方便後續擴充成可執行 demo。</p>
+                </div>
+                <pre class="note-code-block"><code>{note.exampleCode}</code></pre>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="practice">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Practice</h2>
+                  <p>把這一課的重點轉成實際操作，會比只閱讀更容易留下記憶。</p>
+                </div>
+                <ul class="simple-list">
+                  {practice.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="references">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Official references</h2>
+                  <p>回到官方文件時，可以把這些連結當成延伸閱讀與版本確認入口。</p>
+                </div>
+                <ul class="simple-list">
+                  {references.map((item) => (
+                    <li><a href={item} target="_blank" rel="noreferrer">{item}</a></li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <aside class="course-side-column note-side-column">
+              <div class="content-panel content-panel--editorial sticky-panel note-panel">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Reading guide</h2>
+                  <p>先抓這一課的閱讀順序，再決定是要快速複習還是慢慢完整讀完。</p>
+                </div>
+
+                <div class="lesson-anchor-list">
+                  {articleSections.map((section) => (
+                    <a class="lesson-anchor-link" href={`#${section.id}`}>
+                      <span>Section</span>
+                      <strong>{section.title}</strong>
+                    </a>
+                  ))}
+                </div>
+
+                <h3 class="note-side-heading">Why this matters</h3>
+                <ul class="simple-list simple-list--compact">
+                  {reasons.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+
+                <h3 class="note-side-heading">Common mistakes</h3>
+                <ul class="simple-list simple-list--compact">
+                  {mistakes.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+
+                <h3 class="note-side-heading">Key takeaway</h3>
+                <ul class="simple-list simple-list--compact">
+                  {takeaways.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel note-progress-panel">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Course progress</h2>
+                  <p>快速知道你目前在第幾課，也能直接跳到其他 lesson。</p>
+                </div>
+
+                <p class="note-progress-copy">目前閱讀：Lesson {note.lesson} / {allNotes.length}</p>
+                <div class="lesson-progress-bar" aria-hidden="true">
+                  <span style={`width: ${(note.lesson / allNotes.length) * 100}%`}></span>
+                </div>
+
+                <div class="lesson-mini-nav">
+                  {allNotes.map((entry) => (
+                    <a
+                      href={localize(`/courses/spring-boot/lessons/${entry.slug}`)}
+                      class:list={['lesson-mini-link', { 'is-active': entry.slug === note.slug }]}
+                    >
+                      <span>Lesson {entry.lesson}</span>
+                      <strong>{entry.title.replace(/^Lesson \d+:\s*/, '')}</strong>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>Lesson continuity</h2>
+            <p>保持學習節奏，從前一課順著接到下一課。</p>
+          </div>
+
+          <div class="notes-list notes-list--continuity">
+            {previousNote && (
+              <a class="note-card" href={localize(`/courses/spring-boot/lessons/${previousNote.slug}`)}>
+                <div class="note-card-meta">
+                  <span class="course-pill">Previous</span>
+                </div>
+                <h3>{previousNote.title.replace(/^Lesson \d+:\s*/, '')}</h3>
+                <p>{previousNote.summary}</p>
+              </a>
+            )}
+
+            {nextNote && (
+              <a class="note-card" href={localize(`/courses/spring-boot/lessons/${nextNote.slug}`)}>
+                <div class="note-card-meta">
+                  <span class="course-pill">Next</span>
+                </div>
+                <h3>{nextNote.title.replace(/^Lesson \d+:\s*/, '')}</h3>
+                <p>{nextNote.summary}</p>
+              </a>
+            )}
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

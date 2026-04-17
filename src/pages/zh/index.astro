@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CourseCard from '../../components/CourseCard.astro';
+import { courses } from '../../data/courses';
+
+const locale = 'zh' as const;
+---
+
+<BaseLayout
+  title="Tommy's Learning Notes"
+  description="Use teaching content to record and organize the learning process for React, Spring Boot, and MySQL."
+  showPrimaryNav={false}
+  locale={locale}
+>
+  <section class="hero hero--home">
+    <div class="hero-backdrop"></div>
+    <div class="container hero-inner hero-inner--home">
+      <div class="hero-copy">
+        <h1 class="home-hero-title">用教學內容，整理我真正學會的東西。</h1>
+        <p class="lead">
+          這個網站不是日記，而是把每次學到的觀念、範例與整理，寫成可以回頭複習的教學內容。
+          每一篇內容都是我的學習紀錄，也是未來能再次使用的知識資產。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="floating-panel-wrap">
+    <div class="container">
+      <div class="main-panel">
+        <section class="panel-section panel-section--first" id="course-series">
+          <div class="section-heading section-heading--editorial">
+            <h2>學習主題</h2>
+            <p>目前用三條主題線持續整理我的學習內容。</p>
+          </div>
+
+          <div class="course-grid course-grid--editorial">
+            {courses.map((course) => (
+              <CourseCard course={course} />
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

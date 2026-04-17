@@ -1,0 +1,220 @@
+---
+const locale = 'zh' as const;
+const localize = (path: string) => withBase(path, locale);
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import { courses } from '../../../../../data/courses';
+import { getMySQLLessons } from '../../../../../data/mysqlLessons';
+import type { CourseLessonArticle } from '../../../../../data/mysqlLessons';
+import { withBase } from '../../../../../utils/paths';
+
+const course = courses.find((item) => item.slug === 'mysql');
+
+if (!course) {
+  throw new Error('MySQL course not found');
+}
+
+const lessons: CourseLessonArticle[] = getMySQLLessons();
+const firstLesson = lessons[0];
+const latestLesson = lessons[lessons.length - 1];
+const totalModules = course.modules.length;
+const currentLessonCount = lessons.length;
+const lessonsByModule = new Map<string, CourseLessonArticle[]>();
+
+for (const lesson of lessons) {
+  const existingLessons = lessonsByModule.get(lesson.moduleTitle) ?? [];
+  existingLessons.push(lesson);
+  lessonsByModule.set(lesson.moduleTitle, existingLessons);
+}
+
+const noteModules = course.modules.map((module) => ({
+  title: module.title,
+  description: module.description,
+  lessons: lessonsByModule.get(module.title) ?? [],
+}));
+
+const roadmapHighlights = [
+  '先用 module map 看 MySQL 如何從 query basics 一路走到 schema design 與 performance。',
+  '這一頁和單課內容現在讀的是同一份正式 lesson data，不再是獨立 placeholder 清單。',
+  '如果你要從頭建立資料庫主線，建議從 Lesson 1 開始一路接到最後。',
+];
+const learningPromises = [
+  '把 SELECT、INSERT、UPDATE、DELETE、joins、keys 與 schema 設計串成一條清楚主線。',
+  '理解關聯式資料庫的結構思維，而不只是零散記幾條 SQL。',
+  '每一課都可以直接進正式 lesson article 深讀與複習。',
+];
+---
+
+<BaseLayout
+  title={`MySQL lessons · ${course.title}`}
+  description="Browse the formal MySQL lesson library and article pages."
+  currentCourse={course}
+  locale={locale}
+>
+  <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
+    <div class="page-intro-backdrop"></div>
+    <div class="container page-intro-inner">
+      <a href={localize('/courses/mysql')} class="back-link">← Back to MySQL track</a>
+      <div class="course-hero-grid course-hero-grid--editorial">
+        <div>
+          <p class="eyebrow">Course home</p>
+          <h1 class="page-title">MySQL lessons</h1>
+          <p class="lead narrow">
+            把 MySQL 主線整理成正式可閱讀的課程首頁，從 query basics、relationships 到 schema design 與 performance，現在都能直接接到正式單課內容。
+          </p>
+
+          <div class="hero-actions course-home-actions">
+            {firstLesson ? (
+              <a class="hero-action hero-action--primary" href={localize(`/courses/mysql/lessons/${firstLesson.slug}`)}>
+                從 Lesson 1 開始
+              </a>
+            ) : null}
+            {latestLesson ? (
+              <a class="hero-action" href={localize(`/courses/mysql/lessons/${latestLesson.slug}`)}>
+                直接看最後一課
+              </a>
+            ) : null}
+          </div>
+        </div>
+
+        <aside class="course-summary-card course-summary-card--editorial course-summary-card--dense">
+          <h2>Notes overview</h2>
+          <dl>
+            <div>
+              <dt>Current lessons</dt>
+              <dd>{currentLessonCount}</dd>
+            </div>
+            <div>
+              <dt>Planned lessons</dt>
+              <dd>{course.totalLessons}</dd>
+            </div>
+            <div>
+              <dt>Total modules</dt>
+              <dd>{totalModules}</dd>
+            </div>
+            <div>
+              <dt>Course focus</dt>
+              <dd>{course.focus.join(', ')}</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="floating-panel-wrap floating-panel-wrap--page">
+    <div class="container">
+      <div class="main-panel">
+        <section class="panel-section panel-section--first">
+          <div class="section-heading section-heading--editorial">
+            <h2>Start here</h2>
+            <p>這一頁現在和單課 article 共用同一份 lesson data，所以課程首頁和正式內容已經同步。</p>
+          </div>
+
+          <div class="course-home-grid">
+            <article class="content-panel content-panel--editorial note-panel course-home-feature">
+              <p class="eyebrow">Reading flow</p>
+              <h3>先看 query 主線，再進 joins，最後建立 schema 與 performance 思維</h3>
+              <p>
+                如果你想把資料庫知識整理成穩定可重複使用的主線，建議先用這頁掌握整體架構，再進正式 lesson 頁面逐課往下讀。
+              </p>
+              <ul class="simple-list simple-list--compact">
+                {roadmapHighlights.map((highlight) => (
+                  <li>{highlight}</li>
+                ))}
+              </ul>
+            </article>
+
+            <aside class="content-panel content-panel--editorial note-panel course-home-aside">
+              <p class="eyebrow">What you will get</p>
+              <h3>這條 MySQL 主線會把查詢、關聯與資料設計串成真正可複習的資料庫課程</h3>
+              <ul class="simple-list simple-list--compact">
+                {learningPromises.map((promise) => (
+                  <li>{promise}</li>
+                ))}
+              </ul>
+            </aside>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>Recommended path</h2>
+            <p>如果你不想自己決定順序，可以先照這條閱讀節奏走。</p>
+          </div>
+
+          <div class="course-home-steps">
+            <article class="course-step-card">
+              <span class="course-step-number">01</span>
+              <h3>先打穩 query basics</h3>
+              <p>先把 SELECT、WHERE、ORDER BY 與資料寫入更新刪除讀順，之後看 joins 會更穩。</p>
+            </article>
+            <article class="course-step-card">
+              <span class="course-step-number">02</span>
+              <h3>再理解 relationships</h3>
+              <p>把 joins、keys、one-to-many 觀念理順，才能真正看懂 app data 怎麼落到資料表。</p>
+            </article>
+            <article class="course-step-card">
+              <span class="course-step-number">03</span>
+              <h3>最後進 schema 與 performance</h3>
+              <p>再往 normalization、indexes、practical design 走，資料庫思維才會開始成熟。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>模組地圖</h2>
+            <p>先用模組分組理解這套 MySQL 主線，再進入個別 lessons。</p>
+          </div>
+
+          <div class="module-list">
+            {noteModules.map((module) => (
+              <article class="module-card module-card--editorial module-card--course-home">
+                <div class="module-head module-head--course-home">
+                  <div>
+                    <p class="eyebrow">Module</p>
+                    <h3>{module.title}</h3>
+                  </div>
+                  <p>{module.description}</p>
+                </div>
+
+                <div class="notes-list notes-list--module">
+                  {module.lessons.map((lesson) => (
+                    <a class="note-card note-card--course-home" href={localize(`/courses/mysql/lessons/${lesson.slug}`)}>
+                      <div class="note-card-meta">
+                        <span class="course-pill">Lesson {lesson.lesson}</span>
+                        <span class="note-card-arrow" aria-hidden="true">↗</span>
+                      </div>
+                      <h3>{lesson.title}</h3>
+                      <p>{lesson.summary}</p>
+                    </a>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>全部 lessons</h2>
+            <p>這裡列出的每一課都已經有對應的正式 lesson article page。</p>
+          </div>
+
+          <div class="notes-list notes-list--compact-cards">
+            {lessons.map((lesson) => (
+              <a class="note-card note-card--compact" href={localize(`/courses/mysql/lessons/${lesson.slug}`)}>
+                <div class="note-card-meta">
+                  <span class="course-pill">Lesson {lesson.lesson}</span>
+                  <span class="note-card-arrow" aria-hidden="true">↗</span>
+                </div>
+                <h3>{lesson.title}</h3>
+                <p>{lesson.summary}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

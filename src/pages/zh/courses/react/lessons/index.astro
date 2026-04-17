@@ -1,0 +1,220 @@
+---
+const locale = 'zh' as const;
+const localize = (path: string) => withBase(path, locale);
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import { courses } from '../../../../../data/courses';
+import { getReactLessons } from '../../../../../data/reactLessons';
+import type { CourseLessonArticle } from '../../../../../data/reactLessons';
+import { withBase } from '../../../../../utils/paths';
+
+const course = courses.find((item) => item.slug === 'react');
+
+if (!course) {
+  throw new Error('React course not found');
+}
+
+const lessons: CourseLessonArticle[] = getReactLessons();
+const firstLesson = lessons[0];
+const latestLesson = lessons[lessons.length - 1];
+const totalModules = course.modules.length;
+const currentLessonCount = lessons.length;
+const lessonsByModule = new Map<string, CourseLessonArticle[]>();
+
+for (const lesson of lessons) {
+  const existingLessons = lessonsByModule.get(lesson.moduleTitle) ?? [];
+  existingLessons.push(lesson);
+  lessonsByModule.set(lesson.moduleTitle, existingLessons);
+}
+
+const noteModules = course.modules.map((module) => ({
+  title: module.title,
+  description: module.description,
+  lessons: lessonsByModule.get(module.title) ?? [],
+}));
+
+const roadmapHighlights = [
+  '先用 module map 了解 React 如何從 component thinking 一路走到 hooks、forms 與 routing。',
+  '這一頁與單課內容現在讀的是同一份正式 lesson data，不再是兩套分開維護的 placeholder。',
+  '如果你要沿著主線讀，建議從 Lesson 1 開始，再用 continuity 一路往下。',
+];
+const learningPromises = [
+  '建立 component、props、state、effect 之間的前端主線心智模型。',
+  '把表單、routing、專案結構等中型應用常見問題串成可重複複習的課程。',
+  '每一課都可以直接進 article page 深讀，不只是跳到空白 placeholder。',
+];
+---
+
+<BaseLayout
+  title={`React lessons · ${course.title}`}
+  description="Browse the formal React lesson library and article pages."
+  currentCourse={course}
+  locale={locale}
+>
+  <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
+    <div class="page-intro-backdrop"></div>
+    <div class="container page-intro-inner">
+      <a href={localize('/courses/react')} class="back-link">← Back to React track</a>
+      <div class="course-hero-grid course-hero-grid--editorial">
+        <div>
+          <p class="eyebrow">Course home</p>
+          <h1 class="page-title">React lessons</h1>
+          <p class="lead narrow">
+            把 React 主線整理成正式可閱讀的課程首頁，從 foundations、state/hooks 到 app structure，現在都能直接接到正式單課內容。
+          </p>
+
+          <div class="hero-actions course-home-actions">
+            {firstLesson ? (
+              <a class="hero-action hero-action--primary" href={localize(`/courses/react/lessons/${firstLesson.slug}`)}>
+                從 Lesson 1 開始
+              </a>
+            ) : null}
+            {latestLesson ? (
+              <a class="hero-action" href={localize(`/courses/react/lessons/${latestLesson.slug}`)}>
+                直接看最後一課
+              </a>
+            ) : null}
+          </div>
+        </div>
+
+        <aside class="course-summary-card course-summary-card--editorial course-summary-card--dense">
+          <h2>Notes overview</h2>
+          <dl>
+            <div>
+              <dt>Current lessons</dt>
+              <dd>{currentLessonCount}</dd>
+            </div>
+            <div>
+              <dt>Planned lessons</dt>
+              <dd>{course.totalLessons}</dd>
+            </div>
+            <div>
+              <dt>Total modules</dt>
+              <dd>{totalModules}</dd>
+            </div>
+            <div>
+              <dt>Course focus</dt>
+              <dd>{course.focus.join(', ')}</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="floating-panel-wrap floating-panel-wrap--page">
+    <div class="container">
+      <div class="main-panel">
+        <section class="panel-section panel-section--first">
+          <div class="section-heading section-heading--editorial">
+            <h2>Start here</h2>
+            <p>這一頁現在和單課 article 共用同一份 lesson data，所以閱讀順序和內容來源是同步的。</p>
+          </div>
+
+          <div class="course-home-grid">
+            <article class="content-panel content-panel--editorial note-panel course-home-feature">
+              <p class="eyebrow">Reading flow</p>
+              <h3>先看模組順序，再進入正式 lesson article，最後一路把 React 主線讀完</h3>
+              <p>
+                如果你想從 React 初學一路走到能整理中型 app 的結構，建議先用這頁掌握主線，再進入每一課的正式文章頁面。
+              </p>
+              <ul class="simple-list simple-list--compact">
+                {roadmapHighlights.map((highlight) => (
+                  <li>{highlight}</li>
+                ))}
+              </ul>
+            </article>
+
+            <aside class="content-panel content-panel--editorial note-panel course-home-aside">
+              <p class="eyebrow">What you will get</p>
+              <h3>這條 React 主線會把常見前端核心能力串成一套可以反覆複習的內容</h3>
+              <ul class="simple-list simple-list--compact">
+                {learningPromises.map((promise) => (
+                  <li>{promise}</li>
+                ))}
+              </ul>
+            </aside>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>Recommended path</h2>
+            <p>如果你不想自己決定順序，可以先照這條節奏讀。</p>
+          </div>
+
+          <div class="course-home-steps">
+            <article class="course-step-card">
+              <span class="course-step-number">01</span>
+              <h3>先建立元件思維</h3>
+              <p>先把 JSX、components、props 讀順，後面 state 和 hooks 會更穩。</p>
+            </article>
+            <article class="course-step-card">
+              <span class="course-step-number">02</span>
+              <h3>再進入互動邏輯</h3>
+              <p>把 state、effects、forms 理清楚，React 才會從靜態畫面變成真正可操作 UI。</p>
+            </article>
+            <article class="course-step-card">
+              <span class="course-step-number">03</span>
+              <h3>最後整理 app 結構</h3>
+              <p>再往 routing、page structure、project organization 走，整體前端架構才會完整。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>模組地圖</h2>
+            <p>先用模組分組看 React 主線，再從個別 lessons 深入。</p>
+          </div>
+
+          <div class="module-list">
+            {noteModules.map((module) => (
+              <article class="module-card module-card--editorial module-card--course-home">
+                <div class="module-head module-head--course-home">
+                  <div>
+                    <p class="eyebrow">Module</p>
+                    <h3>{module.title}</h3>
+                  </div>
+                  <p>{module.description}</p>
+                </div>
+
+                <div class="notes-list notes-list--module">
+                  {module.lessons.map((lesson) => (
+                    <a class="note-card note-card--course-home" href={localize(`/courses/react/lessons/${lesson.slug}`)}>
+                      <div class="note-card-meta">
+                        <span class="course-pill">Lesson {lesson.lesson}</span>
+                        <span class="note-card-arrow" aria-hidden="true">↗</span>
+                      </div>
+                      <h3>{lesson.title}</h3>
+                      <p>{lesson.summary}</p>
+                    </a>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>全部 lessons</h2>
+            <p>這裡列出的每一課都已經有對應的正式 lesson article page。</p>
+          </div>
+
+          <div class="notes-list notes-list--compact-cards">
+            {lessons.map((lesson) => (
+              <a class="note-card note-card--compact" href={localize(`/courses/react/lessons/${lesson.slug}`)}>
+                <div class="note-card-meta">
+                  <span class="course-pill">Lesson {lesson.lesson}</span>
+                  <span class="note-card-arrow" aria-hidden="true">↗</span>
+                </div>
+                <h3>{lesson.title}</h3>
+                <p>{lesson.summary}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

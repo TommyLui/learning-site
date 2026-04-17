@@ -1,0 +1,265 @@
+---
+const locale = 'zh' as const;
+const localize = (path: string) => withBase(path, locale);
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import { courses } from '../../../../../data/courses';
+import { getReactLessons } from '../../../../../data/reactLessons';
+import type { CourseLessonArticle } from '../../../../../data/reactLessons';
+import { withBase } from '../../../../../utils/paths';
+
+const course = courses.find((item) => item.slug === 'react');
+
+if (!course) {
+  throw new Error('React course not found');
+}
+
+interface Props {
+  lesson: CourseLessonArticle;
+  previousLesson: CourseLessonArticle | null;
+  nextLesson: CourseLessonArticle | null;
+  allLessons: CourseLessonArticle[];
+}
+
+export function getStaticPaths() {
+  const allLessons = getReactLessons();
+
+  return allLessons.map((lesson, index) => ({
+    params: { lesson: lesson.slug },
+    props: {
+      lesson,
+      previousLesson: index > 0 ? allLessons[index - 1] : null,
+      nextLesson: index < allLessons.length - 1 ? allLessons[index + 1] : null,
+      allLessons,
+    },
+  }));
+}
+
+const { lesson, previousLesson, nextLesson, allLessons } = Astro.props as Props;
+const estimatedMinutes = Math.max(4, Math.ceil((lesson.exampleCode.length + lesson.lessonNotes.join(' ').length) / 900));
+const articleSections = [
+  { id: 'learning-points', title: 'What you will learn' },
+  { id: 'lesson-notes', title: 'Lesson notes' },
+  { id: 'example', title: 'Example' },
+  { id: 'practice', title: 'Practice' },
+  { id: 'references', title: 'References' },
+];
+---
+
+<BaseLayout
+  title={`${lesson.title} · ${course.title}`}
+  description={lesson.summary}
+  currentCourse={course}
+  locale={locale}
+>
+  <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
+    <div class="page-intro-backdrop"></div>
+    <div class="container page-intro-inner">
+      <a href={localize('/courses/react/lessons')} class="back-link">← Back to React lessons</a>
+
+      <div class="course-hero-grid course-hero-grid--editorial">
+        <div>
+          <p class="eyebrow">Lesson {lesson.lesson}</p>
+          <h1 class="page-title">{lesson.title}</h1>
+          <p class="lead narrow">{lesson.summary}</p>
+        </div>
+
+        <aside class="course-summary-card course-summary-card--editorial">
+          <h2>Lesson summary</h2>
+          <dl>
+            <div>
+              <dt>Track</dt>
+              <dd>{course.title}</dd>
+            </div>
+            <div>
+              <dt>Module</dt>
+              <dd>{lesson.moduleTitle}</dd>
+            </div>
+            <div>
+              <dt>Focus</dt>
+              <dd>{lesson.learningPoints.join(', ')}</dd>
+            </div>
+            <div>
+              <dt>Read time</dt>
+              <dd>~{estimatedMinutes} min</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="floating-panel-wrap floating-panel-wrap--page">
+    <div class="container">
+      <div class="main-panel">
+        <section class="panel-section panel-section--first">
+          <div class="course-layout note-layout">
+            <div class="course-main-column">
+              <div class="content-panel content-panel--editorial note-panel note-article-overview">
+                <div>
+                  <p class="eyebrow">Article overview</p>
+                  <h2>{lesson.intro}</h2>
+                  <p>
+                    這一課已經是正式 React lesson page，包含重點摘要、正文、範例、練習與參考資料，可以直接拿來複習或繼續擴寫。
+                  </p>
+                </div>
+                <div class="note-tag-list">
+                  <span class="note-tag">React</span>
+                  <span class="note-tag">{lesson.moduleTitle}</span>
+                  <span class="note-tag">Lesson {lesson.lesson}</span>
+                </div>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="learning-points">
+                <div class="section-heading section-heading--editorial">
+                  <h2>What you will learn</h2>
+                  <p>先用學習目標抓住這一課最值得記住的東西。</p>
+                </div>
+                <ul class="simple-list">
+                  {lesson.learningPoints.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="lesson-notes">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Lesson notes</h2>
+                  <p>這一課的正式教學內容與觀念整理。</p>
+                </div>
+                <div class="article-flow">
+                  {lesson.lessonNotes.map((paragraph) => (
+                    <p>{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="example">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Example</h2>
+                  <p>先看一個最小可理解範例，把觀念和 UI/程式碼接起來。</p>
+                </div>
+                <pre class="note-code-block"><code>{lesson.exampleCode}</code></pre>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="practice">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Practice</h2>
+                  <p>把這一課轉成可操作的練習，會比單純閱讀更容易留下記憶。</p>
+                </div>
+                <ul class="simple-list">
+                  {lesson.practice.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="references">
+                <div class="section-heading section-heading--editorial">
+                  <h2>References</h2>
+                  <p>回到官方文件或延伸資料時，可以從這裡繼續往下讀。</p>
+                </div>
+                <ul class="simple-list">
+                  {lesson.references.map((item) => (
+                    <li><a href={item.url} target="_blank" rel="noreferrer">{item.label}</a></li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <aside class="course-side-column note-side-column">
+              <div class="content-panel content-panel--editorial sticky-panel note-panel">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Reading guide</h2>
+                  <p>先抓閱讀順序，再決定是快速複習還是完整讀完這一課。</p>
+                </div>
+
+                <div class="lesson-anchor-list">
+                  {articleSections.map((section) => (
+                    <a class="lesson-anchor-link" href={`#${section.id}`}>
+                      <span>Section</span>
+                      <strong>{section.title}</strong>
+                    </a>
+                  ))}
+                </div>
+
+                <h3 class="note-side-heading">Why this matters</h3>
+                <ul class="simple-list simple-list--compact">
+                  {lesson.reasons.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+
+                <h3 class="note-side-heading">Common mistakes</h3>
+                <ul class="simple-list simple-list--compact">
+                  {lesson.mistakes.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+
+                <h3 class="note-side-heading">Key takeaway</h3>
+                <ul class="simple-list simple-list--compact">
+                  {lesson.takeaways.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel note-progress-panel">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Course progress</h2>
+                  <p>快速知道你目前在第幾課，也能直接跳到其他 React lessons。</p>
+                </div>
+
+                <p class="note-progress-copy">目前閱讀：Lesson {lesson.lesson} / {allLessons.length}</p>
+                <div class="lesson-progress-bar" aria-hidden="true">
+                  <span style={`width: ${(lesson.lesson / allLessons.length) * 100}%`}></span>
+                </div>
+
+                <div class="lesson-mini-nav">
+                  {allLessons.map((entry) => (
+                    <a
+                      href={localize(`/courses/react/lessons/${entry.slug}`)}
+                      class:list={['lesson-mini-link', { 'is-active': entry.slug === lesson.slug }]}
+                    >
+                      <span>Lesson {entry.lesson}</span>
+                      <strong>{entry.title}</strong>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>Lesson continuity</h2>
+            <p>保持學習節奏，從前一課順著接到下一課。</p>
+          </div>
+
+          <div class="notes-list notes-list--continuity">
+            {previousLesson && (
+              <a class="note-card" href={localize(`/courses/react/lessons/${previousLesson.slug}`)}>
+                <div class="note-card-meta">
+                  <span class="course-pill">Previous</span>
+                </div>
+                <h3>{previousLesson.title}</h3>
+                <p>{previousLesson.summary}</p>
+              </a>
+            )}
+
+            {nextLesson && (
+              <a class="note-card" href={localize(`/courses/react/lessons/${nextLesson.slug}`)}>
+                <div class="note-card-meta">
+                  <span class="course-pill">Next</span>
+                </div>
+                <h3>{nextLesson.title}</h3>
+                <p>{nextLesson.summary}</p>
+              </a>
+            )}
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

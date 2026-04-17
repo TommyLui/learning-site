@@ -1,0 +1,220 @@
+---
+const locale = 'zh' as const;
+const localize = (path: string) => withBase(path, locale);
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import { courses } from '../../../../../data/courses';
+import { getSpringBootNotes } from '../../../../../data/springbootNotes';
+import type { SpringBootNote } from '../../../../../data/springbootNotes';
+import { withBase } from '../../../../../utils/paths';
+
+const course = courses.find((item) => item.slug === 'spring-boot');
+
+if (!course) {
+  throw new Error('Spring Boot course not found');
+}
+
+const notes: SpringBootNote[] = await getSpringBootNotes('zh');
+const notesBySlug = new Map(notes.map((note) => [note.slug, note]));
+const noteModules = course.modules.map((module) => ({
+  title: module.title,
+  description: module.description,
+  lessons: module.lessons
+    .map((lesson) => {
+      const lessonNumber = lesson.number.match(/(\d+)/)?.[1];
+      return lessonNumber ? notesBySlug.get(`lesson-${lessonNumber}`) ?? null : null;
+    })
+    .filter((note): note is SpringBootNote => note !== null),
+}));
+
+const firstLesson = notes[0];
+const latestLesson = notes[notes.length - 1];
+const totalModules = noteModules.length;
+const averageLessonsPerModule = Math.round(notes.length / totalModules);
+const roadmapHighlights = [
+  '先用 module map 了解整套課程如何從基礎概念一路走到部署。',
+  '每一課都保留摘要、正文、練習與官方 references，方便從閱讀切進實作。',
+  '如果你要連續學，建議從 Lesson 1 開始，順著 continuity 一路往下。',
+];
+const learningPromises = [
+  '理解 Spring Boot 專案怎麼從啟動、Controller、Service 一路組起來。',
+  '把 REST API、JPA/MySQL、Validation、Testing 串成可實作的開發主線。',
+  '知道安全性、部署與 production thinking 要在什麼階段開始補進來。',
+];
+---
+
+<BaseLayout
+  title={`Spring Boot lessons · ${course.title}`}
+  description="Browse the full Spring Boot 4.x lesson notes and article drafts."
+  currentCourse={course}
+  locale={locale}
+>
+  <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
+    <div class="page-intro-backdrop"></div>
+    <div class="container page-intro-inner">
+      <a href={localize('/courses/spring-boot')} class="back-link">← Back to Spring Boot track</a>
+      <div class="course-hero-grid course-hero-grid--editorial">
+        <div>
+          <p class="eyebrow">Course home</p>
+          <h1 class="page-title">Spring Boot 4.x 課程筆記</h1>
+          <p class="lead narrow">
+            從入門、REST API、JPA/MySQL、測試、安全性到部署，把整套 Spring Boot 4.x
+            主線整理成真正可以一路往下讀、往下做的課程閱讀首頁。
+          </p>
+
+          <div class="hero-actions course-home-actions">
+            {firstLesson ? (
+              <a class="hero-action hero-action--primary" href={localize(`/courses/spring-boot/lessons/${firstLesson.slug}`)}>
+                從 Lesson 1 開始
+              </a>
+            ) : null}
+            {latestLesson ? (
+              <a class="hero-action" href={localize(`/courses/spring-boot/lessons/${latestLesson.slug}`)}>
+                直接看最新一課
+              </a>
+            ) : null}
+          </div>
+        </div>
+
+        <aside class="course-summary-card course-summary-card--editorial course-summary-card--dense">
+          <h2>Notes overview</h2>
+          <dl>
+            <div>
+              <dt>Total lessons</dt>
+              <dd>{notes.length}</dd>
+            </div>
+            <div>
+              <dt>Total modules</dt>
+              <dd>{totalModules}</dd>
+            </div>
+            <div>
+              <dt>Average pace</dt>
+              <dd>{averageLessonsPerModule} lessons / module</dd>
+            </div>
+            <div>
+              <dt>Course focus</dt>
+              <dd>{course.focus.join(', ')}</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="floating-panel-wrap floating-panel-wrap--page">
+    <div class="container">
+      <div class="main-panel">
+        <section class="panel-section panel-section--first">
+          <div class="section-heading section-heading--editorial">
+            <h2>Start here</h2>
+            <p>這裡不是單純 lesson list，而是讓你知道要怎麼進、怎麼讀、怎麼一路學完的課程首頁。</p>
+          </div>
+
+          <div class="course-home-grid">
+            <article class="content-panel content-panel--editorial note-panel course-home-feature">
+              <p class="eyebrow">Reading flow</p>
+              <h3>先看整張地圖，再進單課，最後用 continuity 接到下一課</h3>
+              <p>
+                如果你是第一次學 Spring Boot，建議先把這頁當成課程入口：用模組地圖確認主線，再進入 lesson
+                文章頁，最後順著每課底部的 continuity 繼續往下。
+              </p>
+              <ul class="simple-list simple-list--compact">
+                {roadmapHighlights.map((highlight) => (
+                  <li>{highlight}</li>
+                ))}
+              </ul>
+            </article>
+
+            <aside class="content-panel content-panel--editorial note-panel course-home-aside">
+              <p class="eyebrow">What you will get</p>
+              <h3>讀完這條主線後，你會更清楚 Spring Boot 專案是怎麼被一步步建起來的</h3>
+              <ul class="simple-list simple-list--compact">
+                {learningPromises.map((promise) => (
+                  <li>{promise}</li>
+                ))}
+              </ul>
+            </aside>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>Recommended path</h2>
+            <p>如果你不想自己決定順序，可以先照這條閱讀節奏走。</p>
+          </div>
+
+          <div class="course-home-steps">
+            <article class="course-step-card">
+              <span class="course-step-number">01</span>
+              <h3>先理解模組順序</h3>
+              <p>從基礎建置、Web API、資料存取、測試、安全到部署，先建立整體脈絡。</p>
+            </article>
+            <article class="course-step-card">
+              <span class="course-step-number">02</span>
+              <h3>進單課吸收實作細節</h3>
+              <p>每課都有 summary、article body、example、practice，適合一路讀一路練。</p>
+            </article>
+            <article class="course-step-card">
+              <span class="course-step-number">03</span>
+              <h3>用 continuity 維持節奏</h3>
+              <p>讀完一課後不要跳掉，直接順著上一課 / 下一課把主線串起來。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>模組地圖</h2>
+            <p>先用模組分組理解這套課程的學習階段，再進入個別 lesson。</p>
+          </div>
+
+          <div class="module-list">
+            {noteModules.map((module) => (
+              <article class="module-card module-card--editorial module-card--course-home">
+                <div class="module-head module-head--course-home">
+                  <div>
+                    <p class="eyebrow">Module</p>
+                    <h3>{module.title}</h3>
+                  </div>
+                  <p>{module.description}</p>
+                </div>
+
+                <div class="notes-list notes-list--module">
+                  {module.lessons.map((note) => (
+                    <a class="note-card note-card--course-home" href={localize(`/courses/spring-boot/lessons/${note.slug}`)}>
+                      <div class="note-card-meta">
+                        <span class="course-pill">Lesson {note.lesson}</span>
+                        <span class="note-card-arrow" aria-hidden="true">↗</span>
+                      </div>
+                      <h3>{note.title.replace(/^Lesson \d+:\s*/, '')}</h3>
+                      <p>{note.summary}</p>
+                    </a>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>全部 lessons</h2>
+            <p>如果你想快速跳到指定課次，也可以直接從完整清單進入。</p>
+          </div>
+
+          <div class="notes-list notes-list--compact-cards">
+            {notes.map((note) => (
+              <a class="note-card note-card--compact" href={localize(`/courses/spring-boot/lessons/${note.slug}`)}>
+                <div class="note-card-meta">
+                  <span class="course-pill">Lesson {note.lesson}</span>
+                  <span class="note-card-arrow" aria-hidden="true">↗</span>
+                </div>
+                <h3>{note.title.replace(/^Lesson \d+:\s*/, '')}</h3>
+                <p>{note.summary}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

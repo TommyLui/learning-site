@@ -1,29 +1,41 @@
 ---
 import { courses } from '../data/courses';
 import type { Course } from '../data/courses';
-import { withBase } from '../utils/paths';
+import { detectLocaleFromPathname, localizePath, withBase } from '../utils/paths';
+import type { SiteLocale } from '../utils/paths';
 
 interface Props {
   currentCourse?: Course | null;
   showPrimaryNav?: boolean;
+  locale?: SiteLocale;
 }
 
-const { currentCourse = null, showPrimaryNav = true } = Astro.props;
-const dropdownLabel = currentCourse ? currentCourse.title : '課程選單';
+const { currentCourse = null, showPrimaryNav = true, locale = 'en' } = Astro.props;
+const isChinese = locale === 'zh';
+const pathname = Astro.url.pathname;
+const currentLocale = detectLocaleFromPathname(pathname);
+const englishPath = localizePath(pathname, 'en');
+const chinesePath = localizePath(pathname, 'zh');
+const dropdownLabel = currentCourse ? currentCourse.title : isChinese ? '課程選單' : 'Course menu';
 ---
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href={withBase('/')}>
+    <a class="brand" href={withBase('/', locale)}>
       <span class="brand-title">Tommy's Learning Notes</span>
     </a>
 
     {showPrimaryNav && (
       <nav class="header-nav" aria-label="Primary">
-        <a href={withBase('/courses')}>文章分類</a>
-        <a href={withBase('/#recent-lessons')}>最新整理</a>
+        <a href={withBase('/courses', locale)}>{isChinese ? '文章分類' : 'Courses'}</a>
+        <a href={withBase('/#recent-lessons', locale)}>{isChinese ? '最新整理' : 'Latest updates'}</a>
       </nav>
     )}
+
+    <div class="language-switch" aria-label={isChinese ? '語言切換' : 'Language switch'}>
+      <a href={englishPath} class:list={['language-link', { 'is-active': currentLocale === 'en' }]}>EN</a>
+      <a href={chinesePath} class:list={['language-link', { 'is-active': currentLocale === 'zh' }]}>中文</a>
+    </div>
 
     <details class="course-dropdown">
       <summary aria-label={dropdownLabel}>
@@ -32,13 +44,13 @@ const dropdownLabel = currentCourse ? currentCourse.title : '課程選單';
       </summary>
 
       <div class="course-menu">
-        <p class="menu-label">Learning tracks</p>
+        <p class="menu-label">{isChinese ? '課程選單' : 'Course menu'}</p>
 
         <ul class="course-menu-list">
           {courses.map((course) => (
             <li>
               <a
-                href={withBase(`/courses/${course.slug}`)}
+                href={withBase(`/courses/${course.slug}`, locale)}
                 class:list={['course-menu-link', { 'is-active': currentCourse?.slug === course.slug }]}
                 aria-current={currentCourse?.slug === course.slug ? 'page' : undefined}
               >
@@ -52,7 +64,7 @@ const dropdownLabel = currentCourse ? currentCourse.title : '課程選單';
           ))}
         </ul>
 
-        <a href={withBase('/courses')} class="course-menu-all">Browse all teaching notes</a>
+        <a href={withBase('/courses', locale)} class="course-menu-all">{isChinese ? '瀏覽所有課程筆記' : 'Browse all teaching notes'}</a>
       </div>
     </details>
   </div>
