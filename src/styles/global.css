@@ -94,6 +94,12 @@ img {
   margin-left: auto;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 .language-switch {
   display: inline-flex;
   align-items: center;
@@ -122,21 +128,6 @@ img {
   color: #3f2a1e;
 }
 
-.language-switch--menu {
-  margin-top: 0.75rem;
-  border-color: var(--line);
-  background: var(--surface-soft);
-  backdrop-filter: none;
-}
-
-.language-switch--menu .language-link {
-  color: var(--muted);
-}
-
-.language-switch--menu .language-link.is-active {
-  background: #3f2a1e;
-  color: #fff7eb;
-}
 
 .header-nav a,
 .course-dropdown summary {
@@ -1162,6 +1153,22 @@ h1,
     backdrop-filter: blur(8px);
   }
 
+  .header-actions {
+    justify-self: end;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .language-switch {
+    padding: 0.2rem;
+  }
+
+  .language-link {
+    min-width: 2.35rem;
+    padding: 0.34rem 0.56rem;
+    font-size: 0.78rem;
+  }
+
   .hero,
   .page-intro {
     min-height: 360px;
@@ -1198,11 +1205,6 @@ h1,
     width: min(24rem, calc(100vw - 2rem));
     right: 0;
     left: auto;
-  }
-
-  .language-switch--menu {
-    width: fit-content;
-    max-width: 100%;
   }
 
   h1,
