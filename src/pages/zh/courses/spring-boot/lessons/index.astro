@@ -2,12 +2,12 @@
 const locale = 'zh' as const;
 const localize = (path: string) => withBase(path, locale);
 import BaseLayout from '../../../../../layouts/BaseLayout.astro';
-import { courses } from '../../../../../data/courses';
+import { getCourseBySlug } from '../../../../../data/courses';
 import { getSpringBootNotes } from '../../../../../data/springbootNotes';
 import type { SpringBootNote } from '../../../../../data/springbootNotes';
 import { withBase } from '../../../../../utils/paths';
 
-const course = courses.find((item) => item.slug === 'spring-boot');
+const course = getCourseBySlug('spring-boot', locale);
 
 if (!course) {
   throw new Error('Spring Boot course not found');

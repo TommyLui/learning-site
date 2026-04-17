@@ -2,14 +2,15 @@
 const locale = 'zh' as const;
 const localize = (path: string) => withBase(path, locale);
 import BaseLayout from '../../../../../layouts/BaseLayout.astro';
-import { courses } from '../../../../../data/courses';
+import { getCourseBySlug } from '../../../../../data/courses';
 import { getReactLessons } from '../../../../../data/reactLessonsZh';
 import type { CourseLessonArticle } from '../../../../../data/reactLessonsZh';
 import { withBase } from '../../../../../utils/paths';
 
-const course = courses.find((item) => item.slug === 'react');
+const course = getCourseBySlug('react', locale);
+const canonicalCourse = getCourseBySlug('react');
 
-if (!course) {
+if (!course || !canonicalCourse) {
   throw new Error('React course not found');
 }
 
@@ -36,6 +37,8 @@ export function getStaticPaths() {
 
 const { lesson, previousLesson, nextLesson, allLessons } = Astro.props as Props;
 const estimatedMinutes = Math.max(4, Math.ceil((lesson.exampleCode.length + lesson.lessonNotes.join(' ').length) / 900));
+const localizedModuleTitle =
+  course.modules[canonicalCourse.modules.findIndex((module) => module.title === lesson.moduleTitle)]?.title ?? lesson.moduleTitle;
 const article段落s = [
   { id: 'learning-points', title: '這一課會學到什麼' },
   { id: 'lesson-notes', title: '課程筆記' },
@@ -72,7 +75,7 @@ const article段落s = [
             </div>
             <div>
               <dt>模組</dt>
-              <dd>{lesson.moduleTitle}</dd>
+               <dd>{localizedModuleTitle}</dd>
             </div>
             <div>
               <dt>重點</dt>
@@ -104,7 +107,7 @@ const article段落s = [
                 </div>
                 <div class="note-tag-list">
                   <span class="note-tag">React</span>
-                  <span class="note-tag">{lesson.moduleTitle}</span>
+                  <span class="note-tag">{localizedModuleTitle}</span>
                   <span class="note-tag">第 {lesson.lesson} 課</span>
                 </div>
               </div>
@@ -169,7 +172,7 @@ const article段落s = [
             <aside class="course-side-column note-side-column">
               <div class="content-panel content-panel--editorial sticky-panel note-panel">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Reading guide</h2>
+                  <h2>閱讀指引</h2>
                   <p>先抓閱讀順序，再決定是快速複習還是完整讀完這一課。</p>
                 </div>
 
@@ -221,7 +224,7 @@ const article段落s = [
                       href={localize(`/courses/react/lessons/${entry.slug}`)}
                       class:list={['lesson-mini-link', { 'is-active': entry.slug === lesson.slug }]}
                     >
-                      <span>Lesson {entry.lesson}</span>
+                      <span>第 {entry.lesson} 課</span>
                       <strong>{entry.title}</strong>
                     </a>
                   ))}

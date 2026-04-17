@@ -2,12 +2,12 @@
 const locale = 'zh' as const;
 const localize = (path: string) => withBase(path, locale);
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { courses } from '../../../data/courses';
+import { getCourses } from '../../../data/courses';
 import type { Course } from '../../../data/courses';
 import { withBase } from '../../../utils/paths';
 
 export function getStaticPaths() {
-  return courses.map((course) => ({
+  return getCourses('zh').map((course) => ({
     params: { slug: course.slug },
     props: { course },
   }));
@@ -33,7 +33,7 @@ function getLessonHref(lessonNumber: string) {
 ---
 
 <BaseLayout
-  title={`${course.title} · Tommy's Learning Notes`}
+  title={`${course.title} · Tommy 的學習筆記`}
   description={course.subtitle}
   currentCourse={course}
   locale={locale}
@@ -101,7 +101,7 @@ function getLessonHref(lessonNumber: string) {
                   <div class="note-library-callout">
                     <div>
                       <p class="eyebrow">課程筆記庫</p>
-                      <h3>這條主題線已經有獨立的 lesson notes</h3>
+                      <h3>這條主題線已經有獨立的課程筆記</h3>
                       <p>
                         你可以先從課程地圖看整體結構，再直接進入每一課的筆記頁面閱讀正式草稿。
                       </p>
@@ -113,7 +113,7 @@ function getLessonHref(lessonNumber: string) {
                 )}
 
                 <div class="module-list">
-                  {course.modules.map((module) => (
+                {course.modules.map((module) => (
                     <article class="module-card module-card--editorial">
                       <div class="module-head">
                         <h3>{module.title}</h3>

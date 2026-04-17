@@ -1,5 +1,5 @@
 ---
-import { courses } from '../data/courses';
+import { getCourses } from '../data/courses';
 import type { Course } from '../data/courses';
 import { detectLocaleFromPathname, localizePath, withBase } from '../utils/paths';
 import type { SiteLocale } from '../utils/paths';
@@ -12,6 +12,7 @@ interface Props {
 
 const { currentCourse = null, showPrimaryNav = true, locale = 'en' } = Astro.props;
 const isChinese = locale === 'zh';
+const courses = getCourses(locale);
 const pathname = Astro.url.pathname;
 const currentLocale = detectLocaleFromPathname(pathname);
 const englishPath = localizePath(pathname, 'en');

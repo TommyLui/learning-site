@@ -1,20 +1,21 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CourseCard from '../../../components/CourseCard.astro';
-import { courses } from '../../../data/courses';
+import { getCourses } from '../../../data/courses';
 
 const locale = 'zh' as const;
+const courses = getCourses(locale);
 ---
 
 <BaseLayout
-  title="Teaching Notes · Tommy's Learning Notes"
-  description="Browse the React, Spring Boot, and MySQL teaching tracks."
+  title="教學筆記 · Tommy 的學習筆記"
+  description="瀏覽 React、Spring Boot 與 MySQL 的教學主題線。"
   locale={locale}
 >
   <section class="page-intro page-intro--editorial">
     <div class="page-intro-backdrop"></div>
     <div class="container page-intro-inner">
-      <p class="eyebrow">Teaching tracks</p>
+      <p class="eyebrow">教學主題線</p>
       <h1 class="page-title">把學過的主題，整理成一套能反覆複習的教學內容。</h1>
       <p class="lead narrow">
         每個主題都獨立整理，避免知識混在一起，也讓後續新增課程內容時更容易延伸。
@@ -28,7 +29,7 @@ const locale = 'zh' as const;
         <section class="panel-section panel-section--first">
           <div class="course-grid course-grid--editorial">
             {courses.map((course) => (
-              <CourseCard course={course} />
+              <CourseCard course={course} locale={locale} />
             ))}
           </div>
         </section>

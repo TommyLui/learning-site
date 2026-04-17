@@ -1,12 +1,15 @@
 ---
 import type { Course } from '../data/courses';
 import { withBase } from '../utils/paths';
+import type { SiteLocale } from '../utils/paths';
 
 interface Props {
   course: Course;
+  locale?: SiteLocale;
 }
 
-const { course } = Astro.props;
+const { course, locale = 'en' } = Astro.props;
+const isChinese = locale === 'zh';
 ---
 
 <article class="course-card" style={`--course-accent: ${course.accent}`}>
@@ -24,12 +27,12 @@ const { course } = Astro.props;
     <p>{course.overview}</p>
 
     <div class="course-card-meta">
-      <span>{course.totalLessons} lessons</span>
+      <span>{course.totalLessons} {isChinese ? '課' : 'lessons'}</span>
       <span>{course.level}</span>
     </div>
 
-    <a class="course-link" href={withBase(`/courses/${course.slug}`)}>
-      Read this track <span aria-hidden="true">→</span>
+    <a class="course-link" href={withBase(`/courses/${course.slug}`, locale)}>
+      {isChinese ? '閱讀這條主題線' : 'Read this track'} <span aria-hidden="true">→</span>
     </a>
   </div>
 </article>

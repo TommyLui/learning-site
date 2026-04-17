@@ -2,14 +2,15 @@
 const locale = 'zh' as const;
 const localize = (path: string) => withBase(path, locale);
 import BaseLayout from '../../../../../layouts/BaseLayout.astro';
-import { courses } from '../../../../../data/courses';
+import { getCourseBySlug } from '../../../../../data/courses';
 import { getReactLessons } from '../../../../../data/reactLessonsZh';
 import type { CourseLessonArticle } from '../../../../../data/reactLessonsZh';
 import { withBase } from '../../../../../utils/paths';
 
-const course = courses.find((item) => item.slug === 'react');
+const course = getCourseBySlug('react', locale);
+const canonicalCourse = getCourseBySlug('react');
 
-if (!course) {
+if (!course || !canonicalCourse) {
   throw new Error('React course not found');
 }
 
@@ -26,9 +27,9 @@ for (const lesson of lessons) {
   lessonsBy模組.set(lesson.moduleTitle, existingLessons);
 }
 
-const note模組s = course.modules.map((module) => ({
-  title: module.title,
-  description: module.description,
+const note模組s = canonicalCourse.modules.map((module, index) => ({
+  title: course.modules[index]?.title ?? module.title,
+  description: course.modules[index]?.description ?? module.description,
   lessons: lessonsBy模組.get(module.title) ?? [],
 }));
 
@@ -65,7 +66,7 @@ const learningPromises = [
           <div class="hero-actions course-home-actions">
             {firstLesson ? (
               <a class="hero-action hero-action--primary" href={localize(`/courses/react/lessons/${firstLesson.slug}`)}>
-                從 Lesson 1 開始
+                從第 1 課開始
               </a>
             ) : null}
             {latestLesson ? (

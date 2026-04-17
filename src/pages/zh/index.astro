@@ -1,14 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CourseCard from '../../components/CourseCard.astro';
-import { courses } from '../../data/courses';
+import { getCourses } from '../../data/courses';
 
 const locale = 'zh' as const;
+const courses = getCourses(locale);
 ---
 
 <BaseLayout
-  title="Tommy's Learning Notes"
-  description="Use teaching content to record and organize the learning process for React, Spring Boot, and MySQL."
+  title="Tommy 的學習筆記"
+  description="用教學內容整理 React、Spring Boot 與 MySQL 的學習過程。"
   showPrimaryNav={false}
   locale={locale}
 >
@@ -36,7 +37,7 @@ const locale = 'zh' as const;
 
           <div class="course-grid course-grid--editorial">
             {courses.map((course) => (
-              <CourseCard course={course} />
+              <CourseCard course={course} locale={locale} />
             ))}
           </div>
         </section>
