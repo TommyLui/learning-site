@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { courses } from '../../../../data/courses';
+import { getSpringBootNotes } from '../../../../data/springbootNotes';
+import type { SpringBootNote } from '../../../../data/springbootNotes';
+
+const course = courses.find((item) => item.slug === 'spring-boot');
+
+if (!course) {
+  throw new Error('Spring Boot course not found');
+}
+
+const notes: SpringBootNote[] = await getSpringBootNotes();
+---
+
+<BaseLayout
+  title={`Spring Boot lessons · ${course.title}`}
+  description="Browse the full Spring Boot 4.x lesson notes and article drafts."
+  currentCourse={course}
+>
+  <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
+    <div class="page-intro-backdrop"></div>
+    <div class="container page-intro-inner">
+      <a href="/courses/spring-boot" class="back-link">← Back to Spring Boot track</a>
+      <div class="course-hero-grid course-hero-grid--editorial">
+        <div>
+          <p class="eyebrow">Lesson library</p>
+          <h1 class="page-title">Spring Boot 4.x 課程筆記</h1>
+          <p class="lead narrow">
+            從入門、REST API、JPA/MySQL、測試、安全性到部署，把整套 Spring Boot 4.x
+            主線整理成可持續擴寫的 lesson notes。
+          </p>
+        </div>
+
+        <aside class="course-summary-card course-summary-card--editorial">
+          <h2>Notes overview</h2>
+          <dl>
+            <div>
+              <dt>Total lessons</dt>
+              <dd>{notes.length}</dd>
+            </div>
+            <div>
+              <dt>Course focus</dt>
+              <dd>{course.focus.join(', ')}</dd>
+            </div>
+            <div>
+              <dt>Use case</dt>
+              <dd>Lesson drafting, review, and future article expansion</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="floating-panel-wrap floating-panel-wrap--page">
+    <div class="container">
+      <div class="main-panel">
+        <section class="panel-section panel-section--first">
+          <div class="section-heading section-heading--editorial">
+            <h2>全部 lessons</h2>
+            <p>每一課都保留學習目標、正文、範例、練習與官方參考資料。</p>
+          </div>
+
+          <div class="notes-list">
+            {notes.map((note) => (
+              <a class="note-card" href={`/courses/spring-boot/lessons/${note.slug}`}>
+                <div class="note-card-meta">
+                  <span class="course-pill">Lesson {note.lesson}</span>
+                  <span class="note-card-arrow" aria-hidden="true">↗</span>
+                </div>
+                <h3>{note.title.replace(/^Lesson \d+:\s*/, '')}</h3>
+                <p>{note.summary}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

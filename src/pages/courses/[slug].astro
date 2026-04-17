@@ -15,6 +15,17 @@ interface Props {
 }
 
 const { course } = Astro.props;
+const hasDedicatedNotes = course.slug === 'spring-boot';
+const noteLibraryHref = hasDedicatedNotes ? `/courses/${course.slug}/lessons` : null;
+
+function getLessonHref(lessonNumber: string) {
+  if (!hasDedicatedNotes) {
+    return null;
+  }
+
+  const match = lessonNumber.match(/(\d+)/);
+  return match ? `${noteLibraryHref}/lesson-${match[1]}` : noteLibraryHref;
+}
 ---
 
 <BaseLayout
@@ -81,6 +92,21 @@ const { course } = Astro.props;
                   <p>每個模組都代表一段有順序的學習整理。</p>
                 </div>
 
+                {hasDedicatedNotes && noteLibraryHref && (
+                  <div class="note-library-callout">
+                    <div>
+                      <p class="eyebrow">Notes library</p>
+                      <h3>這條主題線已經有獨立的 lesson notes</h3>
+                      <p>
+                        你可以先從課程地圖看整體結構，再直接進入每一課的筆記頁面閱讀正式草稿。
+                      </p>
+                    </div>
+                    <a class="course-link course-link--inline" href={noteLibraryHref}>
+                      Browse all Spring Boot lessons <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                )}
+
                 <div class="module-list">
                   {course.modules.map((module) => (
                     <article class="module-card module-card--editorial">
@@ -90,15 +116,25 @@ const { course } = Astro.props;
                       </div>
 
                       <div class="module-lessons">
-                        {module.lessons.map((lesson) => (
-                          <div class="module-lesson-row">
-                            <div>
-                              <p class="module-lesson-number">{lesson.number}</p>
-                              <h4>{lesson.title}</h4>
+                        {module.lessons.map((lesson) => {
+                          const lessonHref = getLessonHref(lesson.number);
+
+                          return (
+                            <div class="module-lesson-row">
+                              <div>
+                                <p class="module-lesson-number">{lesson.number}</p>
+                                {lessonHref ? (
+                                  <h4>
+                                    <a class="module-lesson-link" href={lessonHref}>{lesson.title}</a>
+                                  </h4>
+                                ) : (
+                                  <h4>{lesson.title}</h4>
+                                )}
+                              </div>
+                              <p>{lesson.summary}</p>
                             </div>
-                            <p>{lesson.summary}</p>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </article>
                   ))}
