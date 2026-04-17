@@ -1181,8 +1181,8 @@ h1,
 
   .hero,
   .page-intro {
-    min-height: 360px;
-    padding: 7rem 0 6rem;
+    min-height: 340px;
+    padding: 6.6rem 0 5.25rem;
   }
 
   .floating-panel-wrap,
@@ -1200,11 +1200,12 @@ h1,
   }
 
   .course-dropdown summary {
-    width: auto;
-    min-width: 48px;
-    min-height: 48px;
+    width: 44px;
+    min-width: 44px;
+    min-height: 44px;
     justify-content: center;
-    padding: 0.75rem;
+    padding: 0;
+    border-radius: 999px;
   }
 
   .course-dropdown-label {
@@ -1220,6 +1221,16 @@ h1,
   h1,
   .page-title {
     max-width: none;
-    font-size: clamp(2.15rem, 10vw, 3.2rem);
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  .home-hero-title {
+    max-width: 14ch;
+    font-size: clamp(1.95rem, 8.6vw, 2.8rem);
+  }
+
+  .lead {
+    margin-top: 0.85rem;
+    font-size: 0.98rem;
   }
 }

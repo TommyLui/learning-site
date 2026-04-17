@@ -1,5 +1,4 @@
 ---
-import { withBase } from '../utils/paths';
 import type { SiteLocale } from '../utils/paths';
 
 interface Props {
@@ -8,12 +7,10 @@ interface Props {
 
 const { locale = 'en' } = Astro.props;
 const footerCopy = locale === 'zh' ? '用教學內容整理學習過程。' : 'Use teaching content to organize the learning journey.';
-const footerCta = locale === 'zh' ? '瀏覽所有課程筆記' : 'Browse all teaching notes';
 ---
 
 <footer class="site-footer">
   <div class="container footer-inner">
     <p>{footerCopy}</p>
-    <a href={withBase('/courses', locale)}>{footerCta}</a>
   </div>
 </footer>

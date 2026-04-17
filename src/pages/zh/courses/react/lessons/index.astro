@@ -16,20 +16,20 @@ if (!course) {
 const lessons: CourseLessonArticle[] = getReactLessons();
 const firstLesson = lessons[0];
 const latestLesson = lessons[lessons.length - 1];
-const totalModules = course.modules.length;
+const total模組s = course.modules.length;
 const currentLessonCount = lessons.length;
-const lessonsByModule = new Map<string, CourseLessonArticle[]>();
+const lessonsBy模組 = new Map<string, CourseLessonArticle[]>();
 
 for (const lesson of lessons) {
-  const existingLessons = lessonsByModule.get(lesson.moduleTitle) ?? [];
+  const existingLessons = lessonsBy模組.get(lesson.moduleTitle) ?? [];
   existingLessons.push(lesson);
-  lessonsByModule.set(lesson.moduleTitle, existingLessons);
+  lessonsBy模組.set(lesson.moduleTitle, existingLessons);
 }
 
-const noteModules = course.modules.map((module) => ({
+const note模組s = course.modules.map((module) => ({
   title: module.title,
   description: module.description,
-  lessons: lessonsByModule.get(module.title) ?? [],
+  lessons: lessonsBy模組.get(module.title) ?? [],
 }));
 
 const roadmapHighlights = [
@@ -45,19 +45,19 @@ const learningPromises = [
 ---
 
 <BaseLayout
-  title={`React lessons · ${course.title}`}
-  description="Browse the formal React lesson library and article pages."
+  title={`React 課程筆記 · ${course.title}`}
+  description="瀏覽正式整理的 React 課程筆記與文章頁。"
   currentCourse={course}
   locale={locale}
 >
   <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
     <div class="page-intro-backdrop"></div>
     <div class="container page-intro-inner">
-      <a href={localize('/courses/react')} class="back-link">← Back to React track</a>
+      <a href={localize('/courses/react')} class="back-link">← 返回 React 主題</a>
       <div class="course-hero-grid course-hero-grid--editorial">
         <div>
-          <p class="eyebrow">Course home</p>
-          <h1 class="page-title">React lessons</h1>
+          <p class="eyebrow">課程首頁</p>
+          <h1 class="page-title">React 課程筆記</h1>
           <p class="lead narrow">
             把 React 主線整理成正式可閱讀的課程首頁，從 foundations、state/hooks 到 app structure，現在都能直接接到正式單課內容。
           </p>
@@ -77,22 +77,22 @@ const learningPromises = [
         </div>
 
         <aside class="course-summary-card course-summary-card--editorial course-summary-card--dense">
-          <h2>Notes overview</h2>
+          <h2>筆記總覽</h2>
           <dl>
             <div>
-              <dt>Current lessons</dt>
+              <dt>目前課數</dt>
               <dd>{currentLessonCount}</dd>
             </div>
             <div>
-              <dt>Planned lessons</dt>
+              <dt>預計課數</dt>
               <dd>{course.totalLessons}</dd>
             </div>
             <div>
-              <dt>Total modules</dt>
-              <dd>{totalModules}</dd>
+              <dt>模組總數</dt>
+              <dd>{total模組s}</dd>
             </div>
             <div>
-              <dt>Course focus</dt>
+              <dt>課程重點</dt>
               <dd>{course.focus.join(', ')}</dd>
             </div>
           </dl>
@@ -106,13 +106,13 @@ const learningPromises = [
       <div class="main-panel">
         <section class="panel-section panel-section--first">
           <div class="section-heading section-heading--editorial">
-            <h2>Start here</h2>
+            <h2>從這裡開始</h2>
             <p>這一頁現在和單課 article 共用同一份 lesson data，所以閱讀順序和內容來源是同步的。</p>
           </div>
 
           <div class="course-home-grid">
             <article class="content-panel content-panel--editorial note-panel course-home-feature">
-              <p class="eyebrow">Reading flow</p>
+              <p class="eyebrow">閱讀方式</p>
               <h3>先看模組順序，再進入正式 lesson article，最後一路把 React 主線讀完</h3>
               <p>
                 如果你想從 React 初學一路走到能整理中型 app 的結構，建議先用這頁掌握主線，再進入每一課的正式文章頁面。
@@ -125,7 +125,7 @@ const learningPromises = [
             </article>
 
             <aside class="content-panel content-panel--editorial note-panel course-home-aside">
-              <p class="eyebrow">What you will get</p>
+              <p class="eyebrow">你會整理到什麼</p>
               <h3>這條 React 主線會把常見前端核心能力串成一套可以反覆複習的內容</h3>
               <ul class="simple-list simple-list--compact">
                 {learningPromises.map((promise) => (
@@ -138,7 +138,7 @@ const learningPromises = [
 
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
-            <h2>Recommended path</h2>
+            <h2>建議閱讀順序</h2>
             <p>如果你不想自己決定順序，可以先照這條節奏讀。</p>
           </div>
 
@@ -168,11 +168,11 @@ const learningPromises = [
           </div>
 
           <div class="module-list">
-            {noteModules.map((module) => (
+            {note模組s.map((module) => (
               <article class="module-card module-card--editorial module-card--course-home">
                 <div class="module-head module-head--course-home">
                   <div>
-                    <p class="eyebrow">Module</p>
+                    <p class="eyebrow">模組</p>
                     <h3>{module.title}</h3>
                   </div>
                   <p>{module.description}</p>
@@ -182,7 +182,7 @@ const learningPromises = [
                   {module.lessons.map((lesson) => (
                     <a class="note-card note-card--course-home" href={localize(`/courses/react/lessons/${lesson.slug}`)}>
                       <div class="note-card-meta">
-                        <span class="course-pill">Lesson {lesson.lesson}</span>
+                        <span class="course-pill">第 {lesson.lesson} 課</span>
                         <span class="note-card-arrow" aria-hidden="true">↗</span>
                       </div>
                       <h3>{lesson.title}</h3>
@@ -205,7 +205,7 @@ const learningPromises = [
             {lessons.map((lesson) => (
               <a class="note-card note-card--compact" href={localize(`/courses/react/lessons/${lesson.slug}`)}>
                 <div class="note-card-meta">
-                  <span class="course-pill">Lesson {lesson.lesson}</span>
+                  <span class="course-pill">第 {lesson.lesson} 課</span>
                   <span class="note-card-arrow" aria-hidden="true">↗</span>
                 </div>
                 <h3>{lesson.title}</h3>

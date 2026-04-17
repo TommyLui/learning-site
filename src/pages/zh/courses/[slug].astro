@@ -41,7 +41,7 @@ function getLessonHref(lessonNumber: string) {
   <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
     <div class="page-intro-backdrop"></div>
     <div class="container page-intro-inner">
-      <a href={localize('/courses')} class="back-link">← Back to all tracks</a>
+      <a href={localize('/courses')} class="back-link">← 返回所有主題</a>
 
       <div class="course-hero-grid course-hero-grid--editorial">
         <div>
@@ -52,18 +52,18 @@ function getLessonHref(lessonNumber: string) {
         </div>
 
         <aside class="course-summary-card course-summary-card--editorial">
-          <h2>Track summary</h2>
+          <h2>主題摘要</h2>
           <dl>
             <div>
-              <dt>Level</dt>
+              <dt>程度</dt>
               <dd>{course.level}</dd>
             </div>
             <div>
-              <dt>Total lessons</dt>
+              <dt>總課數</dt>
               <dd>{course.totalLessons}</dd>
             </div>
             <div>
-              <dt>Focus</dt>
+              <dt>重點主線</dt>
               <dd>{course.focus.join(', ')}</dd>
             </div>
           </dl>
@@ -100,14 +100,14 @@ function getLessonHref(lessonNumber: string) {
                 {hasDedicatedNotes && noteLibraryHref && (
                   <div class="note-library-callout">
                     <div>
-                      <p class="eyebrow">Notes library</p>
+                      <p class="eyebrow">課程筆記庫</p>
                       <h3>這條主題線已經有獨立的 lesson notes</h3>
                       <p>
                         你可以先從課程地圖看整體結構，再直接進入每一課的筆記頁面閱讀正式草稿。
                       </p>
                     </div>
                     <a class="course-link course-link--inline" href={noteLibraryHref}>
-                      Browse all {course.title} lessons <span aria-hidden="true">→</span>
+                      瀏覽 {course.title} 的所有課程筆記 <span aria-hidden="true">→</span>
                     </a>
                   </div>
                 )}

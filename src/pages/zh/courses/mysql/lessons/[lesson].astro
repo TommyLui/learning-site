@@ -36,12 +36,12 @@ export function getStaticPaths() {
 
 const { lesson, previousLesson, nextLesson, allLessons } = Astro.props as Props;
 const estimatedMinutes = Math.max(4, Math.ceil((lesson.exampleCode.length + lesson.lessonNotes.join(' ').length) / 900));
-const articleSections = [
-  { id: 'learning-points', title: 'What you will learn' },
-  { id: 'lesson-notes', title: 'Lesson notes' },
-  { id: 'example', title: 'Example' },
-  { id: 'practice', title: 'Practice' },
-  { id: 'references', title: 'References' },
+const article段落s = [
+  { id: 'learning-points', title: '這一課會學到什麼' },
+  { id: 'lesson-notes', title: '課程筆記' },
+  { id: 'example', title: '範例' },
+  { id: 'practice', title: '練習' },
+  { id: 'references', title: '參考資料' },
 ];
 ---
 
@@ -54,33 +54,33 @@ const articleSections = [
   <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
     <div class="page-intro-backdrop"></div>
     <div class="container page-intro-inner">
-      <a href={localize('/courses/mysql/lessons')} class="back-link">← Back to MySQL lessons</a>
+      <a href={localize('/courses/mysql/lessons')} class="back-link">← 返回 MySQL 課程列表</a>
 
       <div class="course-hero-grid course-hero-grid--editorial">
         <div>
-          <p class="eyebrow">Lesson {lesson.lesson}</p>
+          <p class="eyebrow">第 {lesson.lesson} 課</p>
           <h1 class="page-title">{lesson.title}</h1>
           <p class="lead narrow">{lesson.summary}</p>
         </div>
 
         <aside class="course-summary-card course-summary-card--editorial">
-          <h2>Lesson summary</h2>
+          <h2>課程摘要</h2>
           <dl>
             <div>
-              <dt>Track</dt>
+              <dt>主題</dt>
               <dd>{course.title}</dd>
             </div>
             <div>
-              <dt>Module</dt>
+              <dt>模組</dt>
               <dd>{lesson.moduleTitle}</dd>
             </div>
             <div>
-              <dt>Focus</dt>
+              <dt>重點</dt>
               <dd>{lesson.learningPoints.join(', ')}</dd>
             </div>
             <div>
-              <dt>Read time</dt>
-              <dd>~{estimatedMinutes} min</dd>
+              <dt>預估閱讀</dt>
+              <dd>~{estimatedMinutes} 分鐘</dd>
             </div>
           </dl>
         </aside>
@@ -96,7 +96,7 @@ const articleSections = [
             <div class="course-main-column">
               <div class="content-panel content-panel--editorial note-panel note-article-overview">
                 <div>
-                  <p class="eyebrow">Article overview</p>
+                  <p class="eyebrow">文章導讀</p>
                   <h2>{lesson.intro}</h2>
                   <p>
                     這一課已經是正式 MySQL lesson page，從資料觀念、SQL 範例到練習與官方文件入口都已經整理好。
@@ -105,13 +105,13 @@ const articleSections = [
                 <div class="note-tag-list">
                   <span class="note-tag">MySQL</span>
                   <span class="note-tag">{lesson.moduleTitle}</span>
-                  <span class="note-tag">Lesson {lesson.lesson}</span>
+                  <span class="note-tag">第 {lesson.lesson} 課</span>
                 </div>
               </div>
 
               <div class="content-panel content-panel--editorial note-panel" id="learning-points">
                 <div class="section-heading section-heading--editorial">
-                  <h2>What you will learn</h2>
+                  <h2>這一課會學到什麼</h2>
                   <p>先抓住這一課最值得記住的資料庫核心概念。</p>
                 </div>
                 <ul class="simple-list">
@@ -123,7 +123,7 @@ const articleSections = [
 
               <div class="content-panel content-panel--editorial note-panel" id="lesson-notes">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Lesson notes</h2>
+                  <h2>課程筆記</h2>
                   <p>這一課的正式觀念整理與學習說明。</p>
                 </div>
                 <div class="article-flow">
@@ -135,7 +135,7 @@ const articleSections = [
 
               <div class="content-panel content-panel--editorial note-panel" id="example">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Example</h2>
+                  <h2>範例</h2>
                   <p>先用最小 SQL 或 schema 範例理解這一課的核心做法。</p>
                 </div>
                 <pre class="note-code-block"><code>{lesson.exampleCode}</code></pre>
@@ -143,7 +143,7 @@ const articleSections = [
 
               <div class="content-panel content-panel--editorial note-panel" id="practice">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Practice</h2>
+                  <h2>練習</h2>
                   <p>把概念轉成操作，會比只讀 SQL 語法更容易真的記住。</p>
                 </div>
                 <ul class="simple-list">
@@ -155,7 +155,7 @@ const articleSections = [
 
               <div class="content-panel content-panel--editorial note-panel" id="references">
                 <div class="section-heading section-heading--editorial">
-                  <h2>References</h2>
+                  <h2>參考資料</h2>
                   <p>想回到官方文件或延伸資料時，可以從這些入口繼續往下看。</p>
                 </div>
                 <ul class="simple-list">
@@ -174,29 +174,29 @@ const articleSections = [
                 </div>
 
                 <div class="lesson-anchor-list">
-                  {articleSections.map((section) => (
+                  {article段落s.map((section) => (
                     <a class="lesson-anchor-link" href={`#${section.id}`}>
-                      <span>Section</span>
+                      <span>段落</span>
                       <strong>{section.title}</strong>
                     </a>
                   ))}
                 </div>
 
-                <h3 class="note-side-heading">Why this matters</h3>
+                <h3 class="note-side-heading">為什麼重要</h3>
                 <ul class="simple-list simple-list--compact">
                   {lesson.reasons.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
 
-                <h3 class="note-side-heading">Common mistakes</h3>
+                <h3 class="note-side-heading">常見錯誤</h3>
                 <ul class="simple-list simple-list--compact">
                   {lesson.mistakes.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
 
-                <h3 class="note-side-heading">Key takeaway</h3>
+                <h3 class="note-side-heading">課後重點</h3>
                 <ul class="simple-list simple-list--compact">
                   {lesson.takeaways.map((item) => (
                     <li>{item}</li>
@@ -206,11 +206,11 @@ const articleSections = [
 
               <div class="content-panel content-panel--editorial note-panel note-progress-panel">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Course progress</h2>
-                  <p>快速知道你目前在第幾課，也能直接跳到其他 MySQL lessons。</p>
+                  <h2>課程進度</h2>
+                  <p>快速知道你目前在第幾課，也能直接跳到其他 MySQL 課程。</p>
                 </div>
 
-                <p class="note-progress-copy">目前閱讀：Lesson {lesson.lesson} / {allLessons.length}</p>
+                <p class="note-progress-copy">目前閱讀：第 {lesson.lesson} 課 / {allLessons.length}</p>
                 <div class="lesson-progress-bar" aria-hidden="true">
                   <span style={`width: ${(lesson.lesson / allLessons.length) * 100}%`}></span>
                 </div>
@@ -233,7 +233,7 @@ const articleSections = [
 
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
-            <h2>Lesson continuity</h2>
+            <h2>課程延續</h2>
             <p>保持學習節奏，從前一課順著接到下一課。</p>
           </div>
 
@@ -241,7 +241,7 @@ const articleSections = [
             {previousLesson && (
               <a class="note-card" href={localize(`/courses/mysql/lessons/${previousLesson.slug}`)}>
                 <div class="note-card-meta">
-                  <span class="course-pill">Previous</span>
+                  <span class="course-pill">上一課</span>
                 </div>
                 <h3>{previousLesson.title}</h3>
                 <p>{previousLesson.summary}</p>
@@ -251,7 +251,7 @@ const articleSections = [
             {nextLesson && (
               <a class="note-card" href={localize(`/courses/mysql/lessons/${nextLesson.slug}`)}>
                 <div class="note-card-meta">
-                  <span class="course-pill">Next</span>
+                  <span class="course-pill">下一課</span>
                 </div>
                 <h3>{nextLesson.title}</h3>
                 <p>{nextLesson.summary}</p>

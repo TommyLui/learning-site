@@ -44,16 +44,16 @@ const reasons = parseBulletList(note.sections['Why This Matters'] ?? '');
 const ideas = parseBulletList(note.sections['Main Ideas'] ?? '');
 const lessonNotes = parseParagraphs(note.sections['Lesson Notes'] ?? '');
 const mistakes = parseBulletList(note.sections['Common Mistakes'] ?? '');
-const practice = parseBulletList(note.sections.Practice ?? '');
+const practice = parseBulletList(note.sections.練習 ?? '');
 const takeaways = parseBulletList(note.sections['Key Takeaway'] ?? '');
 const references = parseBulletList(note.sections['Official References'] ?? '');
 const estimatedMinutes = Math.max(4, Math.ceil((note.exampleCode.length + lessonNotes.join(' ').length) / 900));
-const articleSections = [
-  { id: 'learning-points', title: 'What you will learn' },
-  { id: 'lesson-notes', title: 'Lesson notes' },
-  { id: 'example', title: 'Example' },
-  { id: 'practice', title: 'Practice' },
-  { id: 'references', title: 'Official references' },
+const article段落s = [
+  { id: 'learning-points', title: '這一課會學到什麼' },
+  { id: 'lesson-notes', title: '課程筆記' },
+  { id: 'example', title: '範例' },
+  { id: 'practice', title: '練習' },
+  { id: 'references', title: '官方參考資料' },
 ];
 ---
 
@@ -66,33 +66,33 @@ const articleSections = [
   <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
     <div class="page-intro-backdrop"></div>
     <div class="container page-intro-inner">
-      <a href={localize('/courses/spring-boot/lessons')} class="back-link">← Back to all Spring Boot lessons</a>
+      <a href={localize('/courses/spring-boot/lessons')} class="back-link">← 返回所有 Spring Boot 課程</a>
 
       <div class="course-hero-grid course-hero-grid--editorial">
         <div>
-          <p class="eyebrow">Lesson {note.lesson}</p>
+          <p class="eyebrow">第 {note.lesson} 課</p>
           <h1 class="page-title">{note.title.replace(/^Lesson \d+:\s*/, '')}</h1>
           <p class="lead narrow">{note.summary}</p>
         </div>
 
         <aside class="course-summary-card course-summary-card--editorial">
-          <h2>Lesson summary</h2>
+          <h2>課程摘要</h2>
           <dl>
             <div>
-              <dt>Track</dt>
+              <dt>主題</dt>
               <dd>{course.title}</dd>
             </div>
             <div>
-              <dt>Lesson slug</dt>
+              <dt>課程代號</dt>
               <dd>{note.slug}</dd>
             </div>
             <div>
-              <dt>Focus</dt>
+              <dt>重點</dt>
               <dd>{ideas.join(', ')}</dd>
             </div>
             <div>
-              <dt>Read time</dt>
-              <dd>~{estimatedMinutes} min</dd>
+              <dt>預估閱讀</dt>
+              <dd>~{estimatedMinutes} 分鐘</dd>
             </div>
           </dl>
         </aside>
@@ -108,10 +108,10 @@ const articleSections = [
             <div class="course-main-column">
               <div class="content-panel content-panel--editorial note-panel note-article-overview">
                 <div>
-                  <p class="eyebrow">Article overview</p>
+                  <p class="eyebrow">文章導讀</p>
                   <h2>這一課會帶你從觀念到實作</h2>
                   <p>
-                    先用學習目標抓重點，再讀正文與範例，最後用 practice 把這一課的內容轉成真正能記住的實作。
+                    先用學習目標抓重點，再讀正文與範例，最後用 練習把這一課的內容轉成真正能記住的實作。
                   </p>
                 </div>
                 <div class="note-tag-list">
@@ -123,7 +123,7 @@ const articleSections = [
 
               <div class="content-panel content-panel--editorial note-panel" id="learning-points">
                 <div class="section-heading section-heading--editorial">
-                  <h2>What you will learn</h2>
+                  <h2>這一課會學到什麼</h2>
                   <p>{note.intro}</p>
                 </div>
                 <ul class="simple-list">
@@ -135,7 +135,7 @@ const articleSections = [
 
               <div class="content-panel content-panel--editorial note-panel" id="lesson-notes">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Lesson notes</h2>
+                  <h2>課程筆記</h2>
                   <p>這一課的正式筆記內容，後續可以持續擴寫成完整教學文。</p>
                 </div>
                 <div class="article-flow">
@@ -147,15 +147,15 @@ const articleSections = [
 
               <div class="content-panel content-panel--editorial note-panel" id="example">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Example</h2>
-                  <p>保留每課的最小範例，方便後續擴充成可執行 demo。</p>
+                  <h2>範例</h2>
+                  <p>保留每課的最小範例，方便後續擴充成可執行 示範程式。</p>
                 </div>
                 <pre class="note-code-block"><code>{note.exampleCode}</code></pre>
               </div>
 
               <div class="content-panel content-panel--editorial note-panel" id="practice">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Practice</h2>
+                  <h2>練習</h2>
                   <p>把這一課的重點轉成實際操作，會比只閱讀更容易留下記憶。</p>
                 </div>
                 <ul class="simple-list">
@@ -167,7 +167,7 @@ const articleSections = [
 
               <div class="content-panel content-panel--editorial note-panel" id="references">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Official references</h2>
+                  <h2>官方參考資料</h2>
                   <p>回到官方文件時，可以把這些連結當成延伸閱讀與版本確認入口。</p>
                 </div>
                 <ul class="simple-list">
@@ -181,34 +181,34 @@ const articleSections = [
             <aside class="course-side-column note-side-column">
               <div class="content-panel content-panel--editorial sticky-panel note-panel">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Reading guide</h2>
+                  <h2>閱讀指引</h2>
                   <p>先抓這一課的閱讀順序，再決定是要快速複習還是慢慢完整讀完。</p>
                 </div>
 
                 <div class="lesson-anchor-list">
-                  {articleSections.map((section) => (
+                  {article段落s.map((section) => (
                     <a class="lesson-anchor-link" href={`#${section.id}`}>
-                      <span>Section</span>
+                      <span>段落</span>
                       <strong>{section.title}</strong>
                     </a>
                   ))}
                 </div>
 
-                <h3 class="note-side-heading">Why this matters</h3>
+                <h3 class="note-side-heading">為什麼重要</h3>
                 <ul class="simple-list simple-list--compact">
                   {reasons.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
 
-                <h3 class="note-side-heading">Common mistakes</h3>
+                <h3 class="note-side-heading">常見錯誤</h3>
                 <ul class="simple-list simple-list--compact">
                   {mistakes.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
 
-                <h3 class="note-side-heading">Key takeaway</h3>
+                <h3 class="note-side-heading">課後重點</h3>
                 <ul class="simple-list simple-list--compact">
                   {takeaways.map((item) => (
                     <li>{item}</li>
@@ -218,11 +218,11 @@ const articleSections = [
 
               <div class="content-panel content-panel--editorial note-panel note-progress-panel">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Course progress</h2>
+                  <h2>課程進度</h2>
                   <p>快速知道你目前在第幾課，也能直接跳到其他 lesson。</p>
                 </div>
 
-                <p class="note-progress-copy">目前閱讀：Lesson {note.lesson} / {allNotes.length}</p>
+                <p class="note-progress-copy">目前閱讀：第 {note.lesson} 課 / {allNotes.length}</p>
                 <div class="lesson-progress-bar" aria-hidden="true">
                   <span style={`width: ${(note.lesson / allNotes.length) * 100}%`}></span>
                 </div>
@@ -245,7 +245,7 @@ const articleSections = [
 
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
-            <h2>Lesson continuity</h2>
+            <h2>課程延續</h2>
             <p>保持學習節奏，從前一課順著接到下一課。</p>
           </div>
 
@@ -253,7 +253,7 @@ const articleSections = [
             {previousNote && (
               <a class="note-card" href={localize(`/courses/spring-boot/lessons/${previousNote.slug}`)}>
                 <div class="note-card-meta">
-                  <span class="course-pill">Previous</span>
+                  <span class="course-pill">上一課</span>
                 </div>
                 <h3>{previousNote.title.replace(/^Lesson \d+:\s*/, '')}</h3>
                 <p>{previousNote.summary}</p>
@@ -263,7 +263,7 @@ const articleSections = [
             {nextNote && (
               <a class="note-card" href={localize(`/courses/spring-boot/lessons/${nextNote.slug}`)}>
                 <div class="note-card-meta">
-                  <span class="course-pill">Next</span>
+                  <span class="course-pill">下一課</span>
                 </div>
                 <h3>{nextNote.title.replace(/^Lesson \d+:\s*/, '')}</h3>
                 <p>{nextNote.summary}</p>

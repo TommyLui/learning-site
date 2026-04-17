@@ -26,13 +26,6 @@ const dropdownLabel = currentCourse ? currentCourse.title : isChinese ? '課程�
       <span class="brand-title brand-title--compact">Tommy Notes</span>
     </a>
 
-    {showPrimaryNav && (
-      <nav class="header-nav" aria-label="Primary">
-        <a href={withBase('/courses', locale)}>{isChinese ? '文章分類' : 'Courses'}</a>
-        <a href={withBase('/#recent-lessons', locale)}>{isChinese ? '最新整理' : 'Latest updates'}</a>
-      </nav>
-    )}
-
     <div class="header-actions">
       <div class="language-switch" aria-label={isChinese ? '語言切換' : 'Language switch'}>
         <a href={englishPath} class:list={['language-link', { 'is-active': currentLocale === 'en' }]}>EN</a>
@@ -65,8 +58,6 @@ const dropdownLabel = currentCourse ? currentCourse.title : isChinese ? '課程�
               </li>
             ))}
           </ul>
-
-          <a href={withBase('/courses', locale)} class="course-menu-all">{isChinese ? '瀏覽所有課程筆記' : 'Browse all teaching notes'}</a>
         </div>
       </details>
     </div>
