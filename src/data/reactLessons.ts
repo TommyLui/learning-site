@@ -386,6 +386,293 @@ export const reactLessons: CourseLessonArticle[] = [
       { label: 'React docs · Reusing logic with custom hooks', url: 'https://react.dev/learn/reusing-logic-with-custom-hooks' },
     ],
   },
+  {
+    lesson: 10,
+    slug: 'lesson-10',
+    title: 'Fetching data in React apps',
+    summary: 'Load remote data safely and understand where fetching fits in the UI lifecycle.',
+    moduleTitle: 'Module 4 · Data fetching and async UI',
+    intro: '真正的前端很少只有靜態資料，這一課開始把畫面和 API、遠端資料來源接起來。',
+    learningPoints: [
+      '理解資料抓取在 React 畫面生命週期中的位置。',
+      '知道什麼時候該在元件內發 request。',
+      '能建立最小可理解的 fetching 流程。',
+    ],
+    lessonNotes: [
+      '前端抓資料的重點不只是成功拿到 response，而是把 loading、成功、失敗這三種狀態都納入設計。',
+      '在 React 中，fetching 常常和 effect 一起出現，因為它屬於和外部系統同步的工作。',
+      '這一課最重要的是理解資料流：何時發請求、請求回來後怎麼更新 state、畫面又應該怎麼跟著變。',
+    ],
+    exampleLanguage: 'tsx',
+    exampleCode: "import { useEffect, useState } from 'react';\n\ntype Course = {\n  id: number;\n  title: string;\n};\n\nexport default function CourseList() {\n  const [courses, setCourses] = useState<Course[]>([]);\n\n  useEffect(() => {\n    fetch('/api/courses')\n      .then((response) => response.json())\n      .then((data) => setCourses(data));\n  }, []);\n\n  return (\n    <ul>\n      {courses.map((course) => (\n        <li key={course.id}>{course.title}</li>\n      ))}\n    </ul>\n  );\n}",
+    practice: [
+      '做一個最小課程清單頁，從假 API 抓資料顯示。',
+      '把成功抓到的資料顯示在簡單的列表中。',
+      '試著說明 request 前、request 中、request 後畫面應該長什麼樣。',
+    ],
+    reasons: [
+      '真實應用的大部分畫面都要接資料，不會只靠本地常數。',
+      '不先建立正確的 async UI 心智模型，後面很容易把資料流寫亂。',
+    ],
+    mistakes: [
+      '只處理成功狀態，沒有設計 loading 與失敗情境。',
+      '把 fetching 寫得太隨便，導致 component 一大就難維護。',
+    ],
+    takeaways: [
+      '資料抓取是 UI 與外部世界接軌的起點。',
+      'fetching 要和畫面狀態一起設計，不只是把資料拿回來而已。',
+    ],
+    references: [
+      { label: 'React docs · Synchronizing with Effects', url: 'https://react.dev/learn/synchronizing-with-effects' },
+      { label: 'MDN · Fetch API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API' },
+    ],
+  },
+  {
+    lesson: 11,
+    slug: 'lesson-11',
+    title: 'Loading, error, and empty states',
+    summary: 'Design UI states that make async data feel reliable and clear to users.',
+    moduleTitle: 'Module 4 · Data fetching and async UI',
+    intro: '一個可靠的 UI，不是只有「有資料時看起來正常」，而是所有資料狀態都清楚可預期。',
+    learningPoints: [
+      '理解 loading、error、empty 是 async UI 的基本狀態。',
+      '知道這些狀態應該如何在畫面上呈現。',
+      '能避免只設計 happy path 的畫面。',
+    ],
+    lessonNotes: [
+      '很多前端頁面真正的品質差異，不在成功狀態，而是在 loading 與 error 時是否仍然讓人理解現在發生什麼事。',
+      '空資料也是一種狀態，不應該讓使用者看到空白畫面卻不知道是沒資料還是壞掉。',
+      '設計這些狀態時，重點不是炫麗動畫，而是清楚、可信、可恢復。',
+    ],
+    exampleLanguage: 'tsx',
+    exampleCode: "if (isLoading) {\n  return <p>Loading courses...</p>;\n}\n\nif (error) {\n  return <p>Something went wrong. Please try again.</p>;\n}\n\nif (courses.length === 0) {\n  return <p>No courses yet.</p>;\n}\n\nreturn <CourseGrid courses={courses} />;",
+    practice: [
+      '幫你的資料列表頁補上 loading、error、empty 三種畫面。',
+      '觀察不同狀態下，使用者應該收到什麼訊息。',
+      '試著讓 error state 有一個 retry 行為。',
+    ],
+    reasons: [
+      '使用者不會只在成功情境使用產品。',
+      'Async UI 品質會直接影響產品的可信度。',
+    ],
+    mistakes: [
+      '成功時畫面完整，失敗時整頁只剩空白。',
+      '把 empty state 誤當成 error state。',
+    ],
+    takeaways: [
+      'loading、error、empty 不是邊角案例，而是 UI 的基本部分。',
+      '好畫面不只處理 happy path，也要處理其他狀態。',
+    ],
+    references: [
+      { label: 'React docs · Conditional rendering', url: 'https://react.dev/learn/conditional-rendering' },
+      { label: 'Nielsen Norman Group · Empty state guidelines', url: 'https://www.nngroup.com/articles/empty-state/' },
+    ],
+  },
+  {
+    lesson: 12,
+    slug: 'lesson-12',
+    title: 'Custom hooks for reusable async logic',
+    summary: 'Extract repeated fetching and state patterns into reusable hooks.',
+    moduleTitle: 'Module 4 · Data fetching and async UI',
+    intro: '當同一套 fetching 與 state 邏輯重複出現時，custom hook 能幫你把重用層級拉高。',
+    learningPoints: [
+      '理解 custom hook 的價值。',
+      '知道什麼邏輯適合抽成 hook。',
+      '能把重複 async 流程整理成共用邏輯。',
+    ],
+    lessonNotes: [
+      'Custom hook 不是魔法，它只是把一段可重用的 React 邏輯包成函式，讓不同 component 能共享行為。',
+      '對 async UI 來說，資料抓取、loading、error 管理通常很適合被抽成 hook。',
+      '好的 custom hook 會讓 component 本身更聚焦在畫面呈現，而不是一直重複資料流樣板。',
+    ],
+    exampleLanguage: 'tsx',
+    exampleCode: "import { useEffect, useState } from 'react';\n\nexport function useCourses() {\n  const [courses, setCourses] = useState([]);\n  const [isLoading, setIsLoading] = useState(true);\n\n  useEffect(() => {\n    fetch('/api/courses')\n      .then((response) => response.json())\n      .then((data) => setCourses(data))\n      .finally(() => setIsLoading(false));\n  }, []);\n\n  return { courses, isLoading };\n}",
+    practice: [
+      '把一段重複的 fetching 邏輯抽成 custom hook。',
+      '讓兩個不同 component 共用同一個 hook。',
+      '確認 hook API 是否清楚易讀。',
+    ],
+    reasons: [
+      '重複的 async 邏輯很快就會讓多頁面 app 難維護。',
+      'Custom hooks 是 React 重用邏輯的重要方式之一。',
+    ],
+    mistakes: [
+      '為了抽而抽，導致 hook 比原本更難懂。',
+      '把太多不相關責任塞進同一個 hook。',
+    ],
+    takeaways: [
+      'Custom hook 的目標是重用邏輯，不是只為了把程式拆開。',
+      '畫面與資料流責任清楚後，React app 會更穩。',
+    ],
+    references: [
+      { label: 'React docs · Reusing logic with custom hooks', url: 'https://react.dev/learn/reusing-logic-with-custom-hooks' },
+      { label: 'React docs · Building your own hooks', url: 'https://react.dev/learn/reusing-logic-with-custom-hooks#extracting-your-own-custom-hook-from-a-component' },
+    ],
+  },
+  {
+    lesson: 13,
+    slug: 'lesson-13',
+    title: 'Context for shared application state',
+    summary: 'Share state across distant components without threading props through every layer.',
+    moduleTitle: 'Module 5 · State scaling and performance',
+    intro: '當 state 需要跨很多層共用時，Context 能幫你減少一層層 props drilling 的負擔。',
+    learningPoints: [
+      '理解 Context 解決的是什麼問題。',
+      '知道什麼情況適合用 Context。',
+      '能避免用 Context 解決所有事。',
+    ],
+    lessonNotes: [
+      'Context 適合處理跨多層共用、而且很多地方都需要讀取的資料，例如 theme、auth、locale。',
+      '它的價值在於不用把 props 一層層往下傳到很深的位置。',
+      '但 Context 不是全域狀態萬靈丹，若使用過度，會讓狀態依賴關係變得不清楚。',
+    ],
+    exampleLanguage: 'tsx',
+    exampleCode: "import { createContext, useContext } from 'react';\n\nconst ThemeContext = createContext('light');\n\nfunction ThemeLabel() {\n  const theme = useContext(ThemeContext);\n  return <p>Current theme: {theme}</p>;\n}\n\nexport default function App() {\n  return (\n    <ThemeContext.Provider value=\"dark\">\n      <ThemeLabel />\n    </ThemeContext.Provider>\n  );\n}",
+    practice: [
+      '做一個簡單 theme context。',
+      '把 auth user 或 locale 類型的資料改用 Context 傳遞。',
+      '分析哪些資料其實不需要用 Context。',
+    ],
+    reasons: [
+      '中型 app 很容易出現多層 props drilling。',
+      'Context 是 React 在共享狀態上的重要基本工具。',
+    ],
+    mistakes: [
+      '任何 state 都丟進 Context，讓依賴關係失控。',
+      '沒有先確認是否真的跨很多層需要共享。',
+    ],
+    takeaways: [
+      'Context 是為了解決跨層共用資料，不是代替所有 state。',
+      '先判斷共享範圍，再決定要不要用 Context。',
+    ],
+    references: [
+      { label: 'React docs · Passing data deeply with context', url: 'https://react.dev/learn/passing-data-deeply-with-context' },
+      { label: 'React docs · Scaling up with reducer and context', url: 'https://react.dev/learn/scaling-up-with-reducer-and-context' },
+    ],
+  },
+  {
+    lesson: 14,
+    slug: 'lesson-14',
+    title: 'Memoization and rendering performance',
+    summary: 'Understand when React rerenders and how to avoid unnecessary work.',
+    moduleTitle: 'Module 5 · State scaling and performance',
+    intro: '效能優化不是一開始就到處 memo，而是先理解 React 為什麼 rerender，再決定要不要優化。',
+    learningPoints: [
+      '理解 rerender 的常見來源。',
+      '知道 `memo`、`useMemo`、`useCallback` 的用途。',
+      '能分辨真正的效能問題和過度優化。',
+    ],
+    lessonNotes: [
+      'React rerender 本身不是壞事，真正的問題是昂貴計算或大量子元件在不必要時一直重跑。',
+      'memoization 工具可以在特定情境下降低不必要工作，但前提是你先知道瓶頸在哪裡。',
+      '如果不先觀察問題就到處加 memo，程式往往只會變得更複雜。',
+    ],
+    exampleLanguage: 'tsx',
+    exampleCode: "import { memo } from 'react';\n\nconst CourseRow = memo(function CourseRow({ title }: { title: string }) {\n  return <li>{title}</li>;\n});\n\nexport default function CourseList({ titles }: { titles: string[] }) {\n  return (\n    <ul>\n      {titles.map((title) => (\n        <CourseRow key={title} title={title} />\n      ))}\n    </ul>\n  );\n}",
+    practice: [
+      '找一個列表元件，觀察哪些地方會重複 rerender。',
+      '在有明確問題的地方試一次 memoization。',
+      '比較優化前後可讀性與效益。',
+    ],
+    reasons: [
+      '中型前端專案常常會碰到不必要的 rerender。',
+      '效能優化需要觀察與判斷，不是背 API。',
+    ],
+    mistakes: [
+      '沒有瓶頸就先到處加 `useMemo`、`useCallback`。',
+      '把簡單程式碼過度優化到難讀。',
+    ],
+    takeaways: [
+      '先理解 rerender，再決定是否要 memoization。',
+      '可讀性和真實效益要一起衡量。',
+    ],
+    references: [
+      { label: 'React docs · memo', url: 'https://react.dev/reference/react/memo' },
+      { label: 'React docs · useMemo', url: 'https://react.dev/reference/react/useMemo' },
+    ],
+  },
+  {
+    lesson: 15,
+    slug: 'lesson-15',
+    title: 'Testing React components and user flows',
+    summary: 'Write practical tests that verify what users can see and do.',
+    moduleTitle: 'Module 6 · Testing and shipping',
+    intro: '測試不是為了追求數字，而是確保使用者真的能看到正確畫面、做正確操作。',
+    learningPoints: [
+      '理解 React component testing 的基本目標。',
+      '知道應該測使用者行為，而不只是內部實作。',
+      '能用測試保護核心流程。',
+    ],
+    lessonNotes: [
+      '前端測試最有價值的地方，通常不是檢查某個 hook 內部值，而是確認使用者是否真的能看到畫面、按下按鈕、完成流程。',
+      '因此，好的測試通常更接近「使用者怎麼操作」而不是「實作細節長什麼樣」。',
+      '這一課的重點是把測試看成保護行為與流程，而不是增加專案形式感。',
+    ],
+    exampleLanguage: 'tsx',
+    exampleCode: "import { render, screen } from '@testing-library/react';\nimport userEvent from '@testing-library/user-event';\nimport Counter from './Counter';\n\ntest('increases the count when button is clicked', async () => {\n  const user = userEvent.setup();\n  render(<Counter />);\n\n  await user.click(screen.getByRole('button', { name: /increase/i }));\n\n  expect(screen.getByText(/count: 1/i)).toBeInTheDocument();\n});",
+    practice: [
+      '替一個簡單表單或 counter 元件補上使用者互動測試。',
+      '確認測試描述的是使用者行為，而不是元件內部實作。',
+      '挑一條你最怕壞掉的流程，先寫一個保護它的測試。',
+    ],
+    reasons: [
+      '前端功能越多，沒有測試越難安心修改。',
+      '測試可以幫你保護核心互動流程。',
+    ],
+    mistakes: [
+      '測太多實作細節，導致重構時測試大量破掉。',
+      '只把測試當作形式，沒有對準真正重要流程。',
+    ],
+    takeaways: [
+      '好的前端測試應該接近使用者視角。',
+      '測試最有價值的地方是保護重要互動流程。',
+    ],
+    references: [
+      { label: 'Testing Library docs', url: 'https://testing-library.com/docs/react-testing-library/intro/' },
+      { label: 'React docs · Testing', url: 'https://react.dev/learn/testing' },
+    ],
+  },
+  {
+    lesson: 16,
+    slug: 'lesson-16',
+    title: 'Build and deploy a React application',
+    summary: 'Prepare the app for production with a clean build and deployment workflow.',
+    moduleTitle: 'Module 6 · Testing and shipping',
+    intro: '最後一課把 React 從本機開發帶到真正可以上線的狀態：build、deploy、production checks。',
+    learningPoints: [
+      '理解 build 與 dev environment 的差別。',
+      '知道部署前應該檢查哪些項目。',
+      '能把 React app 從開發狀態推到可上線狀態。',
+    ],
+    lessonNotes: [
+      '在開發環境能跑，不代表在正式環境就一定沒問題。資產路徑、環境變數、API 位置與 build 結果都需要重新檢查。',
+      'Deploy 的重點不是把檔案丟出去，而是確認 build 成果、路由、靜態資源、環境設定與使用者流程都能在正式站點正常工作。',
+      '這一課的目標是建立一種「出貨前檢查」的習慣，讓前端專案真正具備上線品質。',
+    ],
+    exampleLanguage: 'bash',
+    exampleCode: "npm run build\n# inspect the output\n# deploy the dist folder to your hosting platform",
+    practice: [
+      '先在本機完成一次 production build。',
+      '檢查靜態資源、路由與環境變數是否在正式模式仍然正確。',
+      '列一份自己的 deployment checklist。',
+    ],
+    reasons: [
+      '真正的教學網站或產品最後都要面對部署。',
+      '很多 bug 只會在正式環境才出現。',
+    ],
+    mistakes: [
+      '只在 dev 環境驗證，沒有看 production build。',
+      '沒有先確認資產路徑與環境變數。',
+    ],
+    takeaways: [
+      'build 和 deploy 是前端開發主線的最後一段，不是額外選修。',
+      '上線品質來自事前檢查，而不是上線後再補救。',
+    ],
+    references: [
+      { label: 'Vite docs · Building for production', url: 'https://vite.dev/guide/build.html' },
+      { label: 'React docs · Production checklist', url: 'https://react.dev/learn' },
+    ],
+  },
 ];
 
 export function getReactLessons() {

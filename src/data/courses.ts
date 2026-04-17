@@ -120,6 +120,59 @@ export const courses: Course[] = [
           },
         ],
       },
+      {
+        title: 'Module 4 · Data fetching and async UI',
+        description: 'Load remote data, handle async states, and keep network logic understandable.',
+        lessons: [
+          {
+            number: 'Lesson 10',
+            title: 'Fetching data in React apps',
+            summary: 'Load remote data safely and understand where fetching fits in the UI lifecycle.',
+          },
+          {
+            number: 'Lesson 11',
+            title: 'Loading, error, and empty states',
+            summary: 'Design UI states that make async data feel reliable and clear to users.',
+          },
+          {
+            number: 'Lesson 12',
+            title: 'Custom hooks for reusable async logic',
+            summary: 'Extract repeated fetching and state patterns into reusable hooks.',
+          },
+        ],
+      },
+      {
+        title: 'Module 5 · State scaling and performance',
+        description: 'Organize shared state and optimize rendering when apps start getting larger.',
+        lessons: [
+          {
+            number: 'Lesson 13',
+            title: 'Context for shared application state',
+            summary: 'Share state across distant components without threading props through every layer.',
+          },
+          {
+            number: 'Lesson 14',
+            title: 'Memoization and rendering performance',
+            summary: 'Understand when React rerenders and how to avoid unnecessary work.',
+          },
+        ],
+      },
+      {
+        title: 'Module 6 · Testing and shipping',
+        description: 'Verify UI behavior and prepare React projects for production deployment.',
+        lessons: [
+          {
+            number: 'Lesson 15',
+            title: 'Testing React components and user flows',
+            summary: 'Write practical tests that verify what users can see and do.',
+          },
+          {
+            number: 'Lesson 16',
+            title: 'Build and deploy a React application',
+            summary: 'Prepare the app for production with a clean build and deployment workflow.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -369,6 +422,43 @@ export const courses: Course[] = [
             number: 'Lesson 9',
             title: 'Preparing MySQL for application development',
             summary: 'Create a database foundation that works well with backend frameworks.',
+          },
+        ],
+      },
+      {
+        title: 'Module 4 · Aggregation and advanced querying',
+        description: 'Summarize data and answer more complex questions with grouped and nested queries.',
+        lessons: [
+          {
+            number: 'Lesson 10',
+            title: 'GROUP BY and aggregate functions',
+            summary: 'Summarize data with COUNT, SUM, AVG, and grouped results.',
+          },
+          {
+            number: 'Lesson 11',
+            title: 'Subqueries and derived tables',
+            summary: 'Break bigger query problems into smaller steps with nested queries.',
+          },
+        ],
+      },
+      {
+        title: 'Module 5 · Transactions and practical operations',
+        description: 'Protect data consistency and prepare MySQL for safer real-world usage.',
+        lessons: [
+          {
+            number: 'Lesson 12',
+            title: 'Transactions and ACID basics',
+            summary: 'Understand how grouped operations stay safe and consistent.',
+          },
+          {
+            number: 'Lesson 13',
+            title: 'Backup, import, and export workflows',
+            summary: 'Handle common operational tasks for moving and protecting MySQL data.',
+          },
+          {
+            number: 'Lesson 14',
+            title: 'User permissions and production basics',
+            summary: 'Prepare MySQL for safer team usage and production-style environments.',
           },
         ],
       },

@@ -386,7 +386,212 @@ export const mysqlLessons: CourseLessonArticle[] = [
       { label: 'MySQL docs · Table design guidelines', url: 'https://dev.mysql.com/doc/refman/8.4/en/storage-requirements.html' },
     ],
   },
-];
+  {
+    lesson: 10,
+    slug: 'lesson-10',
+    title: 'GROUP BY and aggregate functions',
+    summary: 'Summarize data with COUNT, SUM, AVG, and grouped results.',
+    moduleTitle: 'Module 4 · Aggregation and advanced querying',
+    intro: '這一課把查詢從「找單筆資料」進一步帶到「總結整批資料」，也是報表與分析查詢的基礎。',
+    learningPoints: [
+      '理解 GROUP BY 的用途。',
+      '知道 COUNT、SUM、AVG 等 aggregate functions 怎麼用。',
+      '能用分組結果回答更像商業問題的查詢。',
+    ],
+    lessonNotes: [
+      '當你不只想看每筆資料，而是想知道每個分類有幾筆、總和多少、平均多少時，就會進入 aggregation 的世界。',
+      'GROUP BY 讓資料依某個欄位被分組，再配合 aggregate functions 計算結果。',
+      '這一課的核心是把 SQL 從明細查詢提升到摘要查詢，讓你能回答更像報表與分析的問題。',
+    ],
+    exampleLanguage: 'sql',
+    exampleCode: "SELECT level, COUNT(*) AS total_courses\nFROM courses\nGROUP BY level\nORDER BY total_courses DESC;",
+    practice: [
+      '算出每個分類有幾筆資料。',
+      '試著用 AVG 或 SUM 做一次簡單報表。',
+      '比較沒有 GROUP BY 與有 GROUP BY 的查詢差異。',
+    ],
+    reasons: [
+      '實際工作裡很多查詢不是拿明細，而是拿摘要。',
+      'Aggregation 是從 CRUD 走向分析思維的重要一步。',
+    ],
+    mistakes: [
+      'GROUP BY 後卻仍然想取出不該直接出現的欄位。',
+      '不知道自己想看的其實是摘要資料而不是明細資料。',
+    ],
+    takeaways: [
+      'GROUP BY 讓你把資料從一列列明細提升成摘要結果。',
+      'Aggregate functions 是回答「總共有多少、平均多少」這類問題的基礎。',
+    ],
+    references: [
+      { label: 'MySQL docs · GROUP BY', url: 'https://dev.mysql.com/doc/refman/8.4/en/group-by-handling.html' },
+      { label: 'MySQL docs · Aggregate functions', url: 'https://dev.mysql.com/doc/refman/8.4/en/aggregate-functions.html' },
+    ],
+  },
+  {
+    lesson: 11,
+    slug: 'lesson-11',
+    title: 'Subqueries and derived tables',
+    summary: 'Break bigger query problems into smaller steps with nested queries.',
+    moduleTitle: 'Module 4 · Aggregation and advanced querying',
+    intro: '有些查詢問題如果一次寫完會很亂，subquery 幫你把它拆成比較可理解的中間步驟。',
+    learningPoints: [
+      '理解 subquery 的基本用途。',
+      '知道什麼情況下 nested query 會更清楚。',
+      '能讀懂 derived table 的查詢結構。',
+    ],
+    lessonNotes: [
+      'Subquery 的本質是先用一個小查詢算出中間結果，再把它當作另一個查詢的輸入。',
+      '這種做法很適合處理條件依賴、排名、或先篩選再聚合的問題。',
+      '雖然 subquery 不是每次都最優，但它能幫你把大問題拆解成較容易推理的步驟。',
+    ],
+    exampleLanguage: 'sql',
+    exampleCode: "SELECT title\nFROM courses\nWHERE id IN (\n  SELECT course_id\n  FROM lessons\n  GROUP BY course_id\n  HAVING COUNT(*) >= 5\n);",
+    practice: [
+      '做一條先篩條件、再用外層查詢取資料的 subquery。',
+      '把一條太長的 SQL 試著拆成較容易理解的兩層結構。',
+      '比較 subquery 與 join 寫法在可讀性上的差異。',
+    ],
+    reasons: [
+      '進階查詢常常需要中間步驟。',
+      '拆得好的查詢會比硬寫成一條大 SQL 更容易維護。',
+    ],
+    mistakes: [
+      '看到 subquery 就排斥，而不是先判斷可讀性。',
+      '巢狀層數太深，反而讓查詢更難懂。',
+    ],
+    takeaways: [
+      'Subquery 是拆解複雜查詢的重要工具。',
+      '可讀性仍然是進階 SQL 設計的重要標準。',
+    ],
+    references: [
+      { label: 'MySQL docs · Subqueries', url: 'https://dev.mysql.com/doc/refman/8.4/en/subqueries.html' },
+      { label: 'MySQL docs · Derived tables', url: 'https://dev.mysql.com/doc/refman/8.4/en/derived-tables.html' },
+    ],
+  },
+  {
+    lesson: 12,
+    slug: 'lesson-12',
+    title: 'Transactions and ACID basics',
+    summary: 'Understand how grouped operations stay safe and consistent.',
+    moduleTitle: 'Module 5 · Transactions and practical operations',
+    intro: '當一組資料操作必須一起成功或一起失敗時，transaction 就是保護一致性的核心機制。',
+    learningPoints: [
+      '理解 transaction 的基本概念。',
+      '知道 ACID 代表什麼。',
+      '能分辨什麼情境需要 transaction。',
+    ],
+    lessonNotes: [
+      'Transaction 讓多個操作被視為同一組工作單位，避免只做一半就留下不一致資料。',
+      'ACID 代表的是這組操作在資料庫層面應該具備的可靠性特徵。',
+      '像是轉帳、庫存扣減、訂單建立等流程，如果沒有 transaction，很容易出現資料只更新一半的問題。',
+    ],
+    exampleLanguage: 'sql',
+    exampleCode: "START TRANSACTION;\nUPDATE accounts SET balance = balance - 100 WHERE id = 1;\nUPDATE accounts SET balance = balance + 100 WHERE id = 2;\nCOMMIT;",
+    practice: [
+      '找一個需要多步驟資料更新的情境，判斷是否需要 transaction。',
+      '試寫一個最小 transaction 流程。',
+      '思考如果其中一步失敗，資料會出現什麼問題。',
+    ],
+    reasons: [
+      '資料正確性常常比查詢漂亮更重要。',
+      '真實系統幾乎一定會碰到需要保證一致性的情境。',
+    ],
+    mistakes: [
+      '把多步資料更新拆開做，沒有保護一致性。',
+      '聽過 ACID，但不知道在真實系統中什麼時候會用到。',
+    ],
+    takeaways: [
+      'Transaction 的目的就是保護一組操作的一致性。',
+      'ACID 是理解資料可靠性的基本語言。',
+    ],
+    references: [
+      { label: 'MySQL docs · START TRANSACTION', url: 'https://dev.mysql.com/doc/refman/8.4/en/commit.html' },
+      { label: 'MySQL docs · InnoDB transaction model', url: 'https://dev.mysql.com/doc/refman/8.4/en/innodb-transaction-model.html' },
+    ],
+  },
+  {
+    lesson: 13,
+    slug: 'lesson-13',
+    title: 'Backup, import, and export workflows',
+    summary: 'Handle common operational tasks for moving and protecting MySQL data.',
+    moduleTitle: 'Module 5 · Transactions and practical operations',
+    intro: '資料庫不只要會查，還要能保護、搬移、還原，這些操作能力會直接影響系統安全感。',
+    learningPoints: [
+      '理解備份、匯入、匯出的基本用途。',
+      '知道什麼情況需要做 dump 或 restore。',
+      '建立資料保護與搬移的基本觀念。',
+    ],
+    lessonNotes: [
+      '備份不是發生問題後才想起來的事，而是資料系統的基本保險。',
+      '匯入與匯出也常見於環境搬移、初始化測試資料、同步資料結構等情境。',
+      '這一課的重點是建立營運思維：資料不只要能查，也要能安全保存與移動。',
+    ],
+    exampleLanguage: 'bash',
+    exampleCode: "mysqldump -u root -p learning_site > learning_site.sql\nmysql -u root -p learning_site < learning_site.sql",
+    practice: [
+      '對一個測試資料庫做一次 dump。',
+      '把 dump 檔案匯回另一個測試資料庫。',
+      '寫下備份時最需要注意的三件事。',
+    ],
+    reasons: [
+      '沒有備份策略的資料系統風險很高。',
+      '資料搬移與還原是開發和營運中都會碰到的能力。',
+    ],
+    mistakes: [
+      '以為資料只要存在資料庫裡就自然安全。',
+      '沒有先在測試環境驗證還原流程。',
+    ],
+    takeaways: [
+      '備份與還原是資料可靠性的基本底線。',
+      '匯入匯出能力是實務環境常見且必要的操作技能。',
+    ],
+    references: [
+      { label: 'MySQL docs · mysqldump', url: 'https://dev.mysql.com/doc/refman/8.4/en/mysqldump.html' },
+      { label: 'MySQL docs · mysql client', url: 'https://dev.mysql.com/doc/refman/8.4/en/mysql.html' },
+    ],
+  },
+  {
+    lesson: 14,
+    slug: 'lesson-14',
+    title: 'User permissions and production basics',
+    summary: 'Prepare MySQL for safer team usage and production-style environments.',
+    moduleTitle: 'Module 5 · Transactions and practical operations',
+    intro: '最後一課把 MySQL 拉到更接近 production 的角度：誰能做什麼、環境怎麼分、資料怎麼保護。',
+    learningPoints: [
+      '理解使用者權限為什麼重要。',
+      '知道 development 與 production 環境應該分開思考。',
+      '建立基本的 production safety mindset。',
+    ],
+    lessonNotes: [
+      '不是每個人或每個應用都應該擁有資料庫的全部權限。權限設計本身就是資料安全的一部分。',
+      'Production 環境需要更嚴格的權限、備份、變更流程與監控思維。',
+      '這一課的目標不是讓你立刻變成 DBA，而是知道資料庫進入真實環境後，思考方式必須從單機練習升級。',
+    ],
+    exampleLanguage: 'sql',
+    exampleCode: "CREATE USER 'app_user'@'localhost' IDENTIFIED BY 'strong-password';\nGRANT SELECT, INSERT, UPDATE, DELETE ON learning_site.* TO 'app_user'@'localhost';\nFLUSH PRIVILEGES;",
+    practice: [
+      '建立一個只擁有必要權限的應用帳號。',
+      '列出 production 環境中不應隨意開放的權限。',
+      '想像你要交接資料庫給團隊，會先定哪些安全規則。',
+    ],
+    reasons: [
+      '資料庫安全不只靠密碼，而是靠最小權限與環境紀律。',
+      '進 production 後，資料庫思維必須從練習模式轉成風險控管模式。',
+    ],
+    mistakes: [
+      '所有應用都用 root 或高權限帳號連線。',
+      '把 production 當成和本機一樣可以隨意操作的地方。',
+    ],
+    takeaways: [
+      '資料庫進 production 後，安全與權限管理就是基本功。',
+      '最小權限原則是實務環境的重要底線。',
+    ],
+    references: [
+      { label: 'MySQL docs · Access control and account management', url: 'https://dev.mysql.com/doc/refman/8.4/en/access-control.html' },
+      { label: 'MySQL docs · GRANT statement', url: 'https://dev.mysql.com/doc/refman/8.4/en/grant.html' },
+    ],
+  },
+ ];
 
 export function getMySQLLessons() {
   return mysqlLessons;

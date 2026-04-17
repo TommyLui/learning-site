@@ -16,9 +16,9 @@ interface Props {
 }
 
 const { course } = Astro.props;
-const hasDedicatedNotes = course.slug === 'spring-boot';
-const noteLibraryPath = hasDedicatedNotes ? `/courses/${course.slug}/lessons` : null;
-const noteLibraryHref = noteLibraryPath ? withBase(noteLibraryPath) : null;
+const hasDedicatedNotes = true;
+const noteLibraryPath = `/courses/${course.slug}/lessons`;
+const noteLibraryHref = withBase(noteLibraryPath);
 
 function getLessonHref(lessonNumber: string) {
   if (!hasDedicatedNotes) {
