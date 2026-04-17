@@ -87,6 +87,10 @@ img {
   letter-spacing: 0.04em;
 }
 
+.brand-title--compact {
+  display: none;
+}
+
 .header-nav {
   display: flex;
   align-items: center;
@@ -1125,10 +1129,14 @@ h1,
     min-width: 0;
   }
 
-  .brand-title {
+  .brand-title--full {
+    display: none;
+  }
+
+  .brand-title--compact {
     display: inline-block;
-    max-width: 17ch;
-    font-size: 0.98rem;
+    max-width: 12ch;
+    font-size: 0.95rem;
     line-height: 1.2;
   }
 
@@ -1156,15 +1164,17 @@ h1,
   .header-actions {
     justify-self: end;
     gap: 0.5rem;
-    align-items: center;
+    align-items: stretch;
   }
 
   .language-switch {
+    min-height: 48px;
     padding: 0.2rem;
   }
 
   .language-link {
     min-width: 2.35rem;
+    min-height: 100%;
     padding: 0.34rem 0.56rem;
     font-size: 0.78rem;
   }
@@ -1172,7 +1182,7 @@ h1,
   .hero,
   .page-intro {
     min-height: 360px;
-    padding: 6.1rem 0 6rem;
+    padding: 7rem 0 6rem;
   }
 
   .floating-panel-wrap,
