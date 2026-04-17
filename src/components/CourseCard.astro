@@ -1,0 +1,34 @@
+---
+import type { Course } from '../data/courses';
+
+interface Props {
+  course: Course;
+}
+
+const { course } = Astro.props;
+---
+
+<article class="course-card" style={`--course-accent: ${course.accent}`}>
+  <div class="course-card-media" aria-hidden="true">
+    <span>{course.shortLabel}</span>
+  </div>
+
+  <div class="course-card-body">
+    <div class="course-card-head">
+      <p class="course-card-category">{course.category}</p>
+      <h3>{course.title}</h3>
+    </div>
+
+    <p class="course-card-subtitle">{course.subtitle}</p>
+    <p>{course.overview}</p>
+
+    <div class="course-card-meta">
+      <span>{course.totalLessons} lessons</span>
+      <span>{course.level}</span>
+    </div>
+
+    <a class="course-link" href={`/courses/${course.slug}`}>
+      Read this track <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</article>

@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { courses } from '../../data/courses';
+import type { Course } from '../../data/courses';
+
+export function getStaticPaths() {
+  return courses.map((course) => ({
+    params: { slug: course.slug },
+    props: { course },
+  }));
+}
+
+interface Props {
+  course: Course;
+}
+
+const { course } = Astro.props;
+---
+
+<BaseLayout
+  title={`${course.title} · Tommy's Learning Notes`}
+  description={course.subtitle}
+  currentCourse={course}
+>
+  <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
+    <div class="page-intro-backdrop"></div>
+    <div class="container page-intro-inner">
+      <a href="/courses" class="back-link">← Back to all tracks</a>
+
+      <div class="course-hero-grid course-hero-grid--editorial">
+        <div>
+          <p class="eyebrow">{course.category}</p>
+          <h1 class="page-title">{course.title}</h1>
+          <p class="lead narrow">{course.subtitle}</p>
+          <p class="course-overview">{course.overview}</p>
+        </div>
+
+        <aside class="course-summary-card course-summary-card--editorial">
+          <h2>Track summary</h2>
+          <dl>
+            <div>
+              <dt>Level</dt>
+              <dd>{course.level}</dd>
+            </div>
+            <div>
+              <dt>Total lessons</dt>
+              <dd>{course.totalLessons}</dd>
+            </div>
+            <div>
+              <dt>Focus</dt>
+              <dd>{course.focus.join(', ')}</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="floating-panel-wrap floating-panel-wrap--page">
+    <div class="container">
+      <div class="main-panel">
+        <section class="panel-section panel-section--first">
+          <div class="course-layout">
+            <div class="course-main-column">
+              <div class="content-panel content-panel--editorial">
+                <div class="section-heading section-heading--editorial">
+                  <h2>這個主題會整理什麼</h2>
+                  <p>先定義學習重點，讓每篇內容都能對應到明確目標。</p>
+                </div>
+
+                <ul class="simple-list">
+                  {course.outcomes.map((outcome) => (
+                    <li>{outcome}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial">
+                <div class="section-heading section-heading--editorial">
+                  <h2>教學內容清單</h2>
+                  <p>每個模組都代表一段有順序的學習整理。</p>
+                </div>
+
+                <div class="module-list">
+                  {course.modules.map((module) => (
+                    <article class="module-card module-card--editorial">
+                      <div class="module-head">
+                        <h3>{module.title}</h3>
+                        <p>{module.description}</p>
+                      </div>
+
+                      <div class="module-lessons">
+                        {module.lessons.map((lesson) => (
+                          <div class="module-lesson-row">
+                            <div>
+                              <p class="module-lesson-number">{lesson.number}</p>
+                              <h4>{lesson.title}</h4>
+                            </div>
+                            <p>{lesson.summary}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <aside class="course-side-column">
+              <div class="content-panel content-panel--editorial sticky-panel">
+                <div class="section-heading section-heading--editorial">
+                  <h2>開始前需要</h2>
+                  <p>先備知識先列清楚，之後學習會更順。</p>
+                </div>
+
+                <ul class="simple-list simple-list--compact">
+                  {course.prerequisites.map((prerequisite) => (
+                    <li>{prerequisite}</li>
+                  ))}
+                </ul>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

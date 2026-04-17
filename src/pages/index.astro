@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CourseCard from '../components/CourseCard.astro';
+import LessonRow from '../components/LessonRow.astro';
+import { courses, recentLessons } from '../data/courses';
+---
+
+<BaseLayout
+  title="Tommy's Learning Notes"
+  description="Use teaching content to record and organize the learning process for React, Spring Boot, and MySQL."
+>
+  <section class="hero hero--home">
+    <div class="hero-backdrop"></div>
+    <div class="container hero-inner hero-inner--home">
+      <div class="hero-copy">
+        <p class="eyebrow">Personal teaching materials</p>
+        <h1>用教學內容，整理我真正學會的東西。</h1>
+        <p class="lead">
+          這個網站不是日記，而是把每次學到的觀念、範例與整理，寫成可以回頭複習的教學內容。
+          每一篇內容都是我的學習紀錄，也是未來能再次使用的知識資產。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="floating-panel-wrap">
+    <div class="container">
+      <div class="main-panel">
+        <section class="panel-section" id="site-intro">
+          <div class="section-heading section-heading--editorial">
+            <h2>網站定位</h2>
+            <p>把學習過程整理成可教、可查、可持續擴充的內容。</p>
+          </div>
+
+          <div class="intro-grid">
+            <article class="content-panel tone-panel">
+              <h3>不是流水帳筆記</h3>
+              <p>
+                我想記錄的不是今天做了什麼，而是我如何把一個主題理解到能夠重新講清楚。
+              </p>
+            </article>
+            <article class="content-panel tone-panel">
+              <h3>每篇內容都是學習成果</h3>
+              <p>
+                每學一個概念，就整理成教學內容，包含核心觀念、範例、常見錯誤與實作方向。
+              </p>
+            </article>
+            <article class="content-panel tone-panel">
+              <h3>以主題累積，不以日期堆疊</h3>
+              <p>
+                內容會依 React、Spring Boot、MySQL 分類，讓我能從基礎一路擴充成完整知識庫。
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel-section" id="recent-lessons">
+          <div class="section-heading section-heading--editorial">
+            <h2>最新整理</h2>
+            <p>最近補完或重新整理的教學內容。</p>
+          </div>
+
+          <div class="recent-list recent-list--editorial">
+            {recentLessons.map((lesson) => (
+              <LessonRow lesson={lesson} />
+            ))}
+          </div>
+        </section>
+
+        <section class="panel-section" id="course-series">
+          <div class="section-heading section-heading--editorial">
+            <h2>學習主題</h2>
+            <p>目前用三條主題線持續整理我的學習內容。</p>
+          </div>
+
+          <div class="course-grid course-grid--editorial">
+            {courses.map((course) => (
+              <CourseCard course={course} />
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

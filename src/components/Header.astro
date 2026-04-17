@@ -1,0 +1,55 @@
+---
+import { courses } from '../data/courses';
+import type { Course } from '../data/courses';
+
+interface Props {
+  currentCourse?: Course | null;
+}
+
+const { currentCourse = null } = Astro.props;
+const dropdownLabel = currentCourse ? currentCourse.title : 'Learning tracks';
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/">
+      <span class="brand-title">Tommy's Learning Notes</span>
+    </a>
+
+    <nav class="header-nav" aria-label="Primary">
+      <a href="/courses">文章分類</a>
+      <a href="/#site-intro">關於本站</a>
+    </nav>
+
+    <details class="course-dropdown">
+      <summary>
+        <span>{dropdownLabel}</span>
+        <span class="dropdown-chevron" aria-hidden="true">▾</span>
+      </summary>
+
+      <div class="course-menu">
+        <p class="menu-label">Learning tracks</p>
+
+        <ul class="course-menu-list">
+          {courses.map((course) => (
+            <li>
+              <a
+                href={`/courses/${course.slug}`}
+                class:list={['course-menu-link', { 'is-active': currentCourse?.slug === course.slug }]}
+                aria-current={currentCourse?.slug === course.slug ? 'page' : undefined}
+              >
+                <span class="course-menu-dot" style={`--course-accent: ${course.accent}`}></span>
+                <span class="course-menu-copy">
+                  <span class="course-menu-title">{course.title}</span>
+                  <span class="course-menu-subtitle">{course.category}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <a href="/courses" class="course-menu-all">Browse all teaching notes</a>
+      </div>
+    </details>
+  </div>
+</header>

@@ -1,0 +1,26 @@
+---
+import type { RecentLesson } from '../data/courses';
+
+interface Props {
+  lesson: RecentLesson;
+}
+
+const { lesson } = Astro.props;
+---
+
+<a class="lesson-row" href={lesson.href} style={`--course-accent: ${lesson.accent}`}>
+  <div class="lesson-thumb" aria-hidden="true">
+    <span>{lesson.courseTitle}</span>
+  </div>
+
+  <div class="lesson-row-copy">
+    <div class="lesson-row-meta">
+      <span class="course-pill">{lesson.courseTitle}</span>
+      <span class="lesson-number">{lesson.number}</span>
+      <span class="lesson-date">{lesson.updatedAt}</span>
+    </div>
+
+    <h3>{lesson.title}</h3>
+    <p>{lesson.summary}</p>
+  </div>
+</a>
