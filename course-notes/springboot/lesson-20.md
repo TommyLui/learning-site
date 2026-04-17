@@ -10,26 +10,34 @@ summary: "Production applications need observability, not just features."
 Production applications need observability, not just features.
 
 ## What You Will Learn
-- Learn how Spring Boot exposes operational information through Actuator.
+- Use Spring Boot Actuator to expose operational information about the application.
+- Understand the purpose of health and info endpoints.
+- Recognize why observability belongs in the application before deployment day arrives.
 
 ## Why This Matters
 - Production applications need observability, not just features.
+- Health and metrics information help operators and systems understand whether the app is running well.
+- Operational insight turns the app from code into a manageable service.
 
 ## Main Ideas
-- Health endpoint
-- Metrics and operational insight
-- Production-ready features
+- Actuator exposes production-oriented endpoints.
+- Health checks are central to deployment and orchestration workflows.
+- Observability must be balanced with security and exposure control.
 
 ## Lesson Notes
-Actuator is one of Spring Boot's most practical production features. It exposes endpoints that help you understand application health, runtime conditions, and basic operational metrics.
+A backend service is not finished just because it can handle requests. Once it is deployed, people and systems need to know whether it is healthy, what it is doing, and how it should be monitored. Spring Boot Actuator exists to support exactly that operational perspective.
 
-The health endpoint is especially important because it lets other systems or operators quickly see whether the application is functioning. This is useful in deployments, orchestration, and troubleshooting.
+Actuator adds endpoints that expose information such as application health, build info, metrics, mappings, and environment details. These endpoints are useful for developers, operators, and deployment platforms that need to evaluate whether the application is functioning correctly.
 
-Actuator can also expose information about metrics, environment, mappings, and more. Not every endpoint should be public, so security and exposure settings matter.
+The health endpoint is especially important because it acts as a quick signal of whether the application is alive and, depending on configuration, whether dependent systems such as databases are also available. This can influence load balancing, restart behavior, and deployment readiness checks.
 
-The main idea is observability. A healthy application is not only one that compiles or starts, but one whose condition can be inspected in production.
+Observability is not only about dashboards or advanced monitoring stacks. It begins with making useful application state visible in a controlled way. That means even a small Spring Boot app benefits from Actuator because it teaches you to think beyond feature code.
 
-If you learn Actuator early, you start thinking about backend systems as running services rather than just code exercises.
+At the same time, operational endpoints should not be exposed carelessly. Some of them reveal sensitive implementation details. That is why exposure settings and security rules matter. Visibility should be intentional, not accidental.
+
+A healthy practice is to decide early which operational signals are valuable and who should be allowed to see them. That decision becomes more important as the app gains more endpoints, infrastructure, and deployment complexity.
+
+By learning Actuator here, you start treating the application as a long-running service that needs to be understood and maintained, not just a set of controller methods.
 
 ## Example
 ```properties
@@ -38,13 +46,14 @@ management.endpoint.health.show-details=always
 ```
 
 ## Common Mistakes
-- Exposing too many operational endpoints publicly
-- Treating observability as optional
-- Ignoring health checks until deployment time
+- Exposing too many operational endpoints publicly.
+- Treating observability as optional until production issues appear.
+- Ignoring health checks when planning deployment behavior.
 
 ## Practice
-- Enable the health endpoint and inspect the response.
-- List which actuator endpoints should be restricted.
+- Enable the health endpoint and inspect its response.
+- Choose which Actuator endpoints you would expose internally versus publicly.
+- Explain how health checks help deployment platforms make decisions.
 
 ## Continuity
 - Previous lesson: `Lesson 19: Build and Package the Application`

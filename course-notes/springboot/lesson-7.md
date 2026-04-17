@@ -10,26 +10,34 @@ summary: "The first controller turns the project from a running process into a u
 The first controller turns the project from a running process into a useful web application.
 
 ## What You Will Learn
-- Create a working HTTP endpoint with Spring Boot 4.x.
+- Create a working HTTP endpoint with `@RestController` and mapping annotations.
+- Understand how request paths connect to Java methods.
+- Recognize the controller as the web-facing entry point of a backend app.
 
 ## Why This Matters
 - The first controller turns the project from a running process into a useful web application.
+- It is the moment where Spring Boot starts handling real HTTP traffic instead of only starting up successfully.
+- It introduces the controller layer that the rest of your API design will build on.
 
 ## Main Ideas
-- @RestController
-- @GetMapping
-- Mapping HTTP requests to Java methods
+- `@RestController` returns data directly in HTTP responses.
+- Request mapping annotations connect URLs and HTTP verbs to methods.
+- Controllers should stay thin and focused on web concerns.
 
 ## Lesson Notes
-A REST controller is the web layer entry point for many backend applications. It receives HTTP requests and returns responses, often as JSON. In Spring Boot, this is usually just a small annotated class.
+A Spring Boot application that only starts successfully is not yet doing meaningful backend work. The first real milestone comes when the app can respond to an HTTP request. That is the job of the controller layer.
 
-The @RestController annotation tells Spring that the class should handle web requests and that returned values should be written directly to the response body.
+In Spring Boot, a REST controller is usually a small class marked with `@RestController`. That annotation tells Spring two things: this class should handle web requests, and the values returned by its methods should be written directly to the response body rather than treated as view names.
 
-Method-level annotations such as @GetMapping define which URL path and HTTP method should trigger a particular handler. This makes the connection between incoming requests and Java methods explicit.
+Method-level annotations such as `@GetMapping`, `@PostMapping`, and `@RequestMapping` connect URLs and HTTP methods to Java methods. This mapping is one of the most visible parts of backend design because it defines how clients interact with your service.
 
-The first controller is an important milestone because it proves that your application can accept traffic, route requests, and return data. It also sets up the pattern you will follow for more complex APIs later.
+The first controller is usually simple by design. It may return a greeting, a health message, or a small JSON payload. That simplicity is useful because it confirms that routing, serialization, and server startup are all working together.
 
-Keep the first example simple. Once the endpoint works, you can start improving structure, input handling, and response design in later lessons.
+At this stage, the controller can contain the logic directly, but that is not the long-term goal. As the project grows, business logic should move into services so the controller stays focused on HTTP input, output, and response status.
+
+Another useful idea is that controllers are part of the public surface of your application. Their URLs, response shapes, and error behavior become the contract that clients depend on. That means clarity matters even in the first endpoint.
+
+Once your first controller works, you are ready to move from proof of life to actual API design. The next lessons build on this by handling request input, JSON payloads, validation, and persistence.
 
 ## Example
 ```java
@@ -44,13 +52,14 @@ public class GreetingController {
 ```
 
 ## Common Mistakes
-- Using @Controller when you intended to return JSON directly
-- Forgetting the request mapping path
-- Testing the wrong URL or port
+- Using `@Controller` when you really want to return JSON directly.
+- Testing the wrong path or port and assuming the controller is broken.
+- Putting unrelated business logic directly into the controller as it starts to grow.
 
 ## Practice
 - Create a GET endpoint that returns a JSON message.
-- Change the endpoint path and verify the response in a browser or API tool.
+- Change the request path and confirm the response at the new URL.
+- Explain why controllers should stay thinner as the application becomes more complex.
 
 ## Continuity
 - Previous lesson: `Lesson 6: Auto-configuration in Spring Boot 4.x`

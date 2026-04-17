@@ -10,26 +10,34 @@ summary: "Security changes how requests move through the application and is esse
 Security changes how requests move through the application and is essential for real APIs.
 
 ## What You Will Learn
-- Understand the core ideas behind security in Spring Boot applications.
+- Understand the core concepts of authentication, authorization, and the filter chain.
+- See why adding Spring Security changes request handling even before custom code exists.
+- Build a mental model for protecting endpoints intentionally rather than accidentally.
 
 ## Why This Matters
 - Security changes how requests move through the application and is essential for real APIs.
+- It protects application boundaries and shapes who can do what inside the system.
+- Without a clear security model, backend APIs are easy to expose incorrectly.
 
 ## Main Ideas
-- Authentication vs authorization
-- Security filter chain
-- Secure-by-default mindset
+- Authentication and authorization solve different problems.
+- Spring Security works at the request-processing boundary through filters.
+- Secure defaults are helpful, but they still need deliberate application design.
 
 ## Lesson Notes
-Spring Security adds a protective layer around your application by intercepting requests before they reach controllers. This makes it fundamentally different from business logic features that run only after request mapping.
+Spring Security can feel abrupt when you first add it, because it affects the application before you write much custom logic. Endpoints that were previously open may suddenly require authentication. That surprise is not a bug; it reflects the fact that security operates at the boundary of request handling.
 
-Authentication answers who the user is. Authorization answers what the user is allowed to do. These two concepts appear together often, but they solve different problems.
+The two most important concepts are authentication and authorization. Authentication answers who the user is. Authorization answers what that user is allowed to do. A secure application needs both, but they should not be confused.
 
-The security filter chain processes requests through a series of checks and behaviors. That is why adding Spring Security can immediately change how every route behaves, even before you write custom logic.
+Spring Security processes requests through a filter chain before the request reaches your controllers. This is why security is not just another service in the middle of your code. It sits in front of much of the application and decides whether a request should continue at all.
 
-A useful beginner mindset is to think of security as request control at the edges of the application. You decide which endpoints are public, which require login, and which require certain roles or permissions.
+This design is powerful because it gives you central control over access rules. You can define which endpoints are public, which require a logged-in user, and which need specific roles or permissions. That keeps security policy visible and consistent.
 
-Once these fundamentals are clear, login flows and token strategies become much easier to understand.
+For learners, the most useful mindset is to see security as traffic control at the application boundary. You are not just adding a login screen. You are deciding how every request should be evaluated before it reaches business logic.
+
+Spring Boot makes this easier by integrating Security with the rest of the application model, but that convenience should not hide the concepts underneath. If you understand the filter chain and access rules, later features such as custom login flow, JWT, or method-level security become much easier to reason about.
+
+This lesson is the point where the course shifts from building functionality to protecting functionality. That change is central to real backend development.
 
 ## Example
 ```java
@@ -45,13 +53,14 @@ SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 ```
 
 ## Common Mistakes
-- Confusing authentication with authorization
-- Adding security without expecting every endpoint to be affected
-- Treating security as only a login page feature
+- Confusing authentication with authorization.
+- Adding Spring Security without expecting every endpoint to be affected.
+- Treating security as only a UI login concern rather than an API boundary concern.
 
 ## Practice
-- Describe the difference between authentication and authorization.
-- Configure one public endpoint and one protected endpoint.
+- Define one public endpoint and one protected endpoint.
+- Explain in your own words what the filter chain does before a controller is reached.
+- List three API resources that should probably not be public by default.
 
 ## Continuity
 - Previous lesson: `Lesson 15: Common Debugging Patterns in Spring Boot Applications`

@@ -10,44 +10,53 @@ summary: "A backend is only useful when it can be built and run reliably outside
 A backend is only useful when it can be built and run reliably outside the IDE.
 
 ## What You Will Learn
-- Understand how to turn a Spring Boot project into a runnable artifact.
+- Understand how to package a Spring Boot app into a runnable artifact.
+- See how the build process supports repeatable delivery across machines and environments.
+- Verify why executable jars are such a common packaging target in Spring Boot.
 
 ## Why This Matters
 - A backend is only useful when it can be built and run reliably outside the IDE.
+- Repeatable packaging is essential for CI, deployment, and collaboration.
+- Running a packaged artifact proves the application can survive outside one local development setup.
 
 ## Main Ideas
-- Build lifecycle
-- Executable jar packaging
-- Repeatable builds
+- The build file defines how the application is compiled and packaged.
+- Executable jars simplify many deployment workflows.
+- A successful build is part of application quality, not just an afterthought.
 
 ## Lesson Notes
-At some point your project needs to move from source code to a runnable artifact. Spring Boot supports packaging the application so it can be started consistently on other machines or environments.
+Development usually begins inside an IDE, but production systems do not live there. At some point the application has to become a real artifact that another machine, pipeline, or environment can run predictably. Packaging is the step that makes that possible.
 
-In many cases, the result is an executable jar. That jar includes the application code and the dependencies needed to run it, making deployment much simpler than older server-managed approaches.
+In Spring Boot, the most common result is an executable jar. That jar bundles the application code with the dependencies needed to run it, making startup straightforward with a `java -jar` command. This is one of the reasons Boot feels so practical for modern backend development.
 
-The build file controls this packaging process. It also helps standardize Java version settings, plugins, and task execution so everyone works from the same build logic.
+The build file plays a central role here. It controls dependency resolution, plugin behavior, Java version targeting, and packaging tasks. When the build is clean and repeatable, the rest of the team can trust that the application can be compiled and executed consistently.
 
-This lesson is also where repeatability matters. If the application only runs from one developer's IDE, it is not really ready. A proper build command gives the team a shared and portable workflow.
+This is also where local convenience ends and operational discipline begins. It is not enough for the app to run in one developer's IDE. It should also build from the command line, package correctly, and start from that package in a clean environment.
 
-Packaging is therefore not just about delivery; it is about confidence that the application can be reproduced and started in a clean environment.
+Running the packaged artifact is an important verification step because it reveals assumptions you may not notice inside the IDE. Missing resources, wrong profiles, or path-related issues often become visible only when the app is launched more realistically.
+
+Packaging also connects directly to deployment automation. CI pipelines and hosting environments rarely care how you started the application in development. They care whether the build command succeeds and produces a stable output.
+
+This lesson therefore shifts attention from writing code to delivering software. A packaged app is not only easier to run elsewhere; it is a sign that the project is becoming portable and operationally serious.
 
 ## Example
 ```bash
 # Maven
 ./mvnw clean package
 
-# Run the built app
+# Run the built application
 java -jar target/learning-api-0.0.1-SNAPSHOT.jar
 ```
 
 ## Common Mistakes
-- Only running the app from the IDE
-- Not testing the packaged artifact
-- Ignoring build reproducibility across environments
+- Only verifying the app inside the IDE.
+- Not testing the packaged artifact after build.
+- Ignoring build reproducibility across machines or environments.
 
 ## Practice
-- Package your app into a jar and run it from the command line.
-- Explain why executable jars simplify Spring Boot deployment.
+- Package your project into a jar and run it from the command line.
+- Describe what changes when you run the jar instead of the IDE launcher.
+- Write down why packaging is important for CI and deployment.
 
 ## Continuity
 - Previous lesson: `Lesson 18: Session and JWT Basics`

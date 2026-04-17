@@ -10,43 +10,56 @@ summary: "Real applications need different settings for local development, testi
 Real applications need different settings for local development, testing, and production.
 
 ## What You Will Learn
-- Learn how Spring Boot reads configuration and switches behavior across environments.
+- Learn how Spring Boot reads configuration from files, environment variables, and runtime inputs.
+- Understand how profiles separate development, test, and production behavior.
+- See why externalized configuration is safer than hardcoding operational values in Java classes.
 
 ## Why This Matters
 - Real applications need different settings for local development, testing, and production.
+- Good configuration design keeps the same codebase usable across multiple environments.
+- Profiles and externalized values reduce deployment risk and improve maintainability.
 
 ## Main Ideas
-- application.properties or application.yml
-- Externalized configuration
-- Profiles for environment-specific behavior
+- `application.properties` or `application.yml` is the default configuration entry point.
+- Profiles activate environment-specific settings without duplicating the whole app.
+- Configuration should live outside business logic whenever possible.
 
 ## Lesson Notes
-Spring Boot encourages configuration outside of code. Instead of hardcoding ports, credentials, or feature flags, you keep them in configuration files and environment variables. This makes applications easier to change and safer to deploy.
+Configuration is one of the first areas where a toy project becomes a real application. Hardcoded ports, credentials, file paths, or feature toggles might feel convenient at first, but they become painful as soon as the app runs in more than one environment.
 
-The default configuration file usually lives in src/main/resources. From there, Spring Boot can also merge profile-specific files such as application-dev.properties or application-prod.yml.
+Spring Boot solves this by making configuration externalized. Instead of embedding environment-specific values directly into Java code, you place them in `application.properties`, `application.yml`, environment variables, system properties, or command-line arguments.
 
-Profiles let you activate different settings for different environments. You might use an in-memory database locally and MySQL in production, or enable extra logging during development and reduce it in production.
+The default configuration file usually lives in `src/main/resources`. That file is a good place for stable defaults, such as the application name, logging levels, or local development settings. Once environments start to differ, profiles become important.
 
-Spring Boot also supports configuration from system properties, environment variables, and command-line arguments. This layered approach is a key part of how modern applications stay portable.
+Profiles let you say, in effect, 'use this set of settings for development and that set for production.' You might connect to a local database in `dev`, enable extra logging in `test`, and rely on external secrets in `prod`. The application code stays the same, but the runtime behavior adapts to the active profile.
 
-If you keep configuration organized from the beginning, later topics like database access, security, and deployment become much easier to manage.
+This pattern matters because backend applications are rarely run in just one place. They are developed locally, tested in CI, deployed to staging, and promoted to production. Without a configuration strategy, each move between environments becomes risky and manual.
+
+Spring Boot also merges configuration from multiple sources according to a priority order. That means a value in an environment variable can override one in `application.properties`, and a command-line argument can override both. Understanding that hierarchy helps explain why an application sometimes behaves differently than expected.
+
+Another practical lesson is to separate operational concerns from business logic. A service should not know or care whether the app runs on port 8080 or 8081. It should not hardcode database hosts or API secrets. Those details belong to configuration, not domain logic.
+
+If you build this habit early, later topics become much smoother. Database connections, security settings, Actuator exposure, and deployment tuning all depend on the same foundation: clear, externalized configuration with environment-aware profiles.
 
 ## Example
-```bash
-# application.properties
-server.port=8081
+```properties
 spring.application.name=learning-api
+server.port=8081
 spring.profiles.active=dev
+
+# application-dev.properties can override dev-only values
+logging.level.com.tommy.learningapi=DEBUG
 ```
 
 ## Common Mistakes
-- Hardcoding environment-specific values in Java classes
-- Not understanding which config source wins when values conflict
-- Using one config file for every environment
+- Hardcoding credentials or ports inside Java classes.
+- Using one giant config file for every environment.
+- Not understanding which config source overrides another when values conflict.
 
 ## Practice
-- Create a dev profile and change the server port for it.
-- List three things that should usually live in configuration instead of code.
+- Create `application-dev.properties` and override the server port.
+- Move one hardcoded value into configuration and explain why it belongs there.
+- Write down three settings that should differ between development and production.
 
 ## Continuity
 - Previous lesson: `Lesson 4: Dependency Injection and Beans`
@@ -56,5 +69,5 @@ spring.profiles.active=dev
 - Real applications need different settings for local development, testing, and production.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/features/index.html
 - https://docs.spring.io/spring-boot/reference/features/external-config.html
+- https://docs.spring.io/spring-boot/reference/features/profiles.html

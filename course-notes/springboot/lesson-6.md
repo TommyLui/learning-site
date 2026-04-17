@@ -10,30 +10,39 @@ summary: "Auto-configuration explains why Spring Boot feels fast and why adding 
 Auto-configuration explains why Spring Boot feels fast and why adding dependencies can change application behavior.
 
 ## What You Will Learn
-- Understand how Spring Boot decides what to configure automatically.
+- Understand how Spring Boot decides which beans and defaults to configure automatically.
+- See how dependency choices influence application startup behavior.
+- Learn why custom configuration can override or complement Boot defaults.
 
 ## Why This Matters
 - Auto-configuration explains why Spring Boot feels fast and why adding dependencies can change application behavior.
+- It helps you reason about startup logs, unexpected beans, and framework behavior after adding starters.
+- It turns Spring Boot from black magic into a readable set of conditions and defaults.
 
 ## Main Ideas
-- Conditional configuration
-- Classpath-driven behavior
-- Override defaults when needed
+- Auto-configuration is conditional, not unconditional.
+- Classpath contents strongly influence Boot behavior.
+- Custom beans often let you refine or replace defaults.
 
 ## Lesson Notes
-Auto-configuration is one of the signature features of Spring Boot. When the framework detects certain libraries and environment conditions, it automatically prepares useful beans and settings for you.
+One of the main reasons Spring Boot feels productive is that it performs a large amount of setup work for you. This is known as auto-configuration. Instead of asking you to declare every common framework component manually, Spring Boot checks what is available and configures likely defaults.
 
-This behavior is usually conditional. Spring Boot only creates certain configurations if the right classes are on the classpath, certain beans do not already exist, or certain application types are detected.
+The word 'auto' can be misleading if you imagine random behavior. Boot is not guessing blindly. It uses conditional rules. If certain classes are present, if the application type is web-based, if no custom bean already exists, and if certain settings are enabled, then Boot applies a matching configuration.
 
-That means dependencies matter. Adding a web starter can trigger web application setup. Adding JPA can trigger data-related configuration. This is convenient, but it also means you should understand why the application behaves differently after dependency changes.
+That means your dependency list is more important than it first appears. Adding a web starter suggests that you want web support. Adding JPA and a database driver suggests that you want persistence-related setup. The more you understand this relationship, the easier it becomes to predict what startup should do.
 
-Auto-configuration is not magic. It is a set of rules and conditions. When you need custom behavior, you can supply your own beans or configuration and Spring Boot will often back off from its default choice.
+This is also why two Spring Boot projects can behave very differently even if their application classes look almost identical. The major difference often comes from what is on the classpath and which configuration properties are active.
 
-Learning this idea helps you debug startup behavior, bean conflicts, and configuration surprises later in the course.
+Auto-configuration is powerful because it reduces boilerplate, but it does not remove control. If you want custom behavior, you can define your own beans or settings. In many cases, Boot will back off when it sees that you have supplied a more specific configuration.
+
+A healthy learning habit is to treat auto-configuration as something to inspect rather than simply trust. Read startup output, notice which starters you add, and pay attention when a new dependency changes application behavior. These observations teach you more than memorizing annotation names alone.
+
+Many early debugging problems connect back to this topic. Missing datasource settings, unexpected security defaults, or web endpoints not behaving as expected often make more sense once you understand that Boot is responding to conditions, not just executing static code.
+
+The goal of this lesson is not to disable auto-configuration everywhere. The goal is to see it as a readable framework feature: a set of sensible defaults that accelerate development while still leaving room for deliberate customization.
 
 ## Example
 ```java
-// A custom bean can override a default if Spring Boot allows it
 @Configuration
 public class TimeConfig {
     @Bean
@@ -44,13 +53,14 @@ public class TimeConfig {
 ```
 
 ## Common Mistakes
-- Thinking auto-configuration means there is no configuration at all
-- Adding starters without checking what they enable
-- Fighting defaults before understanding them
+- Assuming auto-configuration means there is no configuration behind the scenes.
+- Adding starters without understanding the behavior they enable.
+- Trying to override defaults before understanding what Boot is already doing.
 
 ## Practice
-- Add a starter dependency and observe what changes in startup logs.
-- Explain what conditional configuration means in simple terms.
+- Add a new starter to a small demo app and observe what changes in the startup logs.
+- Explain in your own words what it means for configuration to be conditional.
+- List one case where you would want Boot defaults and one case where you would override them.
 
 ## Continuity
 - Previous lesson: `Lesson 5: Configuration Files and Profiles`

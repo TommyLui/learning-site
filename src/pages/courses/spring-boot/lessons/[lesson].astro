@@ -18,6 +18,7 @@ interface Props {
   note: SpringBootNote;
   previousNote: SpringBootNote | null;
   nextNote: SpringBootNote | null;
+  allNotes: SpringBootNote[];
 }
 
 export async function getStaticPaths() {
@@ -29,11 +30,12 @@ export async function getStaticPaths() {
       note,
       previousNote: index > 0 ? notes[index - 1] : null,
       nextNote: index < notes.length - 1 ? notes[index + 1] : null,
+      allNotes: notes,
     },
   }));
 }
 
-const { note, previousNote, nextNote } = Astro.props as Props;
+const { note, previousNote, nextNote, allNotes } = Astro.props as Props;
 const learningPoints = parseBulletList(note.sections['What You Will Learn'] ?? '');
 const reasons = parseBulletList(note.sections['Why This Matters'] ?? '');
 const ideas = parseBulletList(note.sections['Main Ideas'] ?? '');
@@ -162,6 +164,30 @@ const references = parseBulletList(note.sections['Official References'] ?? '');
                     <li><a href={item} target="_blank" rel="noreferrer">{item}</a></li>
                   ))}
                 </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel note-progress-panel">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Course progress</h2>
+                  <p>快速知道你目前在第幾課，也能直接跳到其他 lesson。</p>
+                </div>
+
+                <p class="note-progress-copy">目前閱讀：Lesson {note.lesson} / {allNotes.length}</p>
+                <div class="lesson-progress-bar" aria-hidden="true">
+                  <span style={`width: ${(note.lesson / allNotes.length) * 100}%`}></span>
+                </div>
+
+                <div class="lesson-mini-nav">
+                  {allNotes.map((entry) => (
+                    <a
+                      href={`/courses/spring-boot/lessons/${entry.slug}`}
+                      class:list={['lesson-mini-link', { 'is-active': entry.slug === note.slug }]}
+                    >
+                      <span>Lesson {entry.lesson}</span>
+                      <strong>{entry.title.replace(/^Lesson \d+:\s*/, '')}</strong>
+                    </a>
+                  ))}
+                </div>
               </div>
             </aside>
           </div>

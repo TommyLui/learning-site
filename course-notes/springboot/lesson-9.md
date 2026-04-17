@@ -10,26 +10,34 @@ summary: "APIs need predictable failure behavior, not only successful responses.
 APIs need predictable failure behavior, not only successful responses.
 
 ## What You Will Learn
-- Validate incoming data and return cleaner error responses.
+- Validate incoming request data with Bean Validation annotations.
+- Use `@Valid` so invalid input is rejected before business logic runs.
+- Centralize error responses with `@ControllerAdvice` and exception handlers.
 
 ## Why This Matters
 - APIs need predictable failure behavior, not only successful responses.
+- Input validation protects your domain logic from bad data at the boundaries.
+- A global error strategy gives clients a more consistent and readable API contract.
 
 ## Main Ideas
-- Bean Validation annotations
-- @Valid
-- @ControllerAdvice for centralized error handling
+- Validation belongs at the API boundary as well as in deeper business rules.
+- `@ControllerAdvice` keeps error-handling logic out of every individual controller.
+- Readable error responses are part of API quality, not just a debugging convenience.
 
 ## Lesson Notes
-A useful API should reject invalid input early and explain what went wrong. Spring Boot supports validation through Jakarta Bean Validation, which lets you describe rules directly on request DTO fields.
+A backend application is not defined only by how it behaves when everything is correct. It also has to respond well when requests are incomplete, malformed, or logically invalid. Validation is the first line of defense against these problems.
 
-When you annotate a request body with @Valid, Spring checks the input before your business logic runs. This prevents bad data from spreading deeper into the system.
+In Spring Boot, request validation is often handled with Jakarta Bean Validation annotations such as `@NotBlank`, `@Email`, `@Min`, or `@Size`. When these annotations are placed on request DTO fields and the controller uses `@Valid`, Spring checks the payload before your service logic runs.
 
-Validation alone is not enough, though. You also want consistent error responses. A global exception handler built with @ControllerAdvice can catch validation errors and domain exceptions and convert them into readable API responses.
+This boundary-level validation is important because it prevents obvious bad input from leaking deeper into the system. It also keeps the API contract clear: clients know what fields are required and what rules apply.
 
-This centralization keeps controllers smaller and gives clients a predictable contract for failures. Instead of different handlers building errors in different ways, the application responds with one consistent shape.
+Validation, however, is only half the story. Once errors occur, the API must respond in a way that clients can understand. If every controller handles exceptions differently, the application quickly becomes inconsistent and harder to maintain.
 
-Clean validation and error handling are major signs that an API is becoming production-ready.
+That is why `@ControllerAdvice` matters. It allows you to centralize error handling for validation failures, missing resources, domain-specific exceptions, and other application-level problems. Instead of repeating response-building logic everywhere, you define a common strategy once.
+
+A good global error response should be simple, predictable, and easy to extend. It might include a message, a status code, a field error list, or a timestamp. The exact shape can vary, but consistency is more important than decorative complexity.
+
+This lesson turns your API into something more trustworthy. Clients should not have to guess what happens when they send bad input, and developers should not have to reinvent error handling in every new controller.
 
 ## Example
 ```java
@@ -48,13 +56,14 @@ public class GlobalExceptionHandler {
 ```
 
 ## Common Mistakes
-- Validating too late inside service logic only
-- Returning raw stack traces to clients
-- Handling every exception separately inside each controller
+- Validating too late only inside service methods.
+- Returning raw stack traces or framework internals to API clients.
+- Copying exception-handling code into every controller.
 
 ## Practice
-- Add @NotBlank and @Email to a request DTO.
-- Create a global handler that returns a simple JSON error response.
+- Add `@NotBlank` and another validation rule to a request DTO.
+- Create a simple global exception handler for validation failures.
+- Design a small JSON error format you could reuse across multiple endpoints.
 
 ## Continuity
 - Previous lesson: `Lesson 8: Handle Requests, Responses, and JSON`
@@ -64,5 +73,5 @@ public class GlobalExceptionHandler {
 - APIs need predictable failure behavior, not only successful responses.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/web/index.html
 - https://docs.spring.io/spring-boot/reference/io/validation.html
+- https://docs.spring.io/spring-boot/reference/web/index.html

@@ -10,26 +10,34 @@ summary: "CRUD is the foundation of many backend apps, and a layered approach ke
 CRUD is the foundation of many backend apps, and a layered approach keeps that logic maintainable.
 
 ## What You Will Learn
-- Create create, read, update, and delete flows using a layered design.
+- Connect controllers, services, and repositories into a full CRUD flow.
+- Separate API contracts from persistence concerns with DTOs and services.
+- Handle common cases such as create, update, delete, and not-found behavior more cleanly.
 
 ## Why This Matters
 - CRUD is the foundation of many backend apps, and a layered approach keeps that logic maintainable.
+- Layer boundaries stop controllers from becoming overloaded with persistence and business logic.
+- This is where the application starts to look like a realistic backend service rather than a set of isolated demos.
 
 ## Main Ideas
-- Controller-service-repository separation
-- DTO to entity translation
-- Not-found and update flows
+- Controllers translate HTTP input and output.
+- Services coordinate rules and persistence actions.
+- Repositories should support CRUD flows without becoming the place where all business decisions live.
 
 ## Lesson Notes
-Once repositories are available, the next step is connecting the web layer to persistence through a service layer. This keeps controllers focused on HTTP behavior and lets services handle business rules and data coordination.
+A CRUD API is often the first full slice of a backend application that feels complete. It accepts input from clients, validates it, coordinates domain logic, persists state, and returns a useful response. That makes it a good place to practice layered design seriously.
 
-A typical CRUD flow starts with a request DTO, converts it into entity changes inside a service, and persists or fetches data through a repository. The controller then turns the result into a response DTO or status code.
+A common mistake is to put all CRUD logic in the controller because it seems faster at the beginning. The result is usually a class that handles request parsing, validation decisions, entity mapping, repository calls, and response shaping all in one place. That quickly becomes difficult to test and harder to extend.
 
-This separation matters because create, update, and delete logic tends to grow. Validation, not-found checks, mapping, and side effects are easier to reason about when they are not mixed directly into the controller.
+A service layer keeps the design cleaner. The controller should mainly handle HTTP-level work: request mappings, input objects, response status codes, and response bodies. The service should decide how create, read, update, and delete operations behave from a business perspective.
 
-It is also a good place to define application-specific rules, such as which fields can be updated, what happens when a record is missing, or how a default value is assigned.
+This separation becomes especially helpful in update and delete flows. Questions such as 'what happens if the entity does not exist?', 'which fields can be changed?', and 'what should be returned afterward?' belong more naturally in the service than in the controller.
 
-A clean CRUD structure gives you a strong base for testing and for adding security or transactions later.
+DTOs also matter here. Request DTOs help define what clients are allowed to send, while response DTOs let you decide what the API should expose back. That protects your public contract from persistence details that may change later.
+
+Repositories remain important, but they should not become the place where application rules silently accumulate. Their role is data access, not full application orchestration. The service layer is the better home for coordination and domain decisions.
+
+By the time CRUD flows are in place, you have a strong vertical slice of the application. The remaining lessons on testing, security, and deployment all become easier because there is now a realistic core to work with.
 
 ## Example
 ```java
@@ -48,13 +56,14 @@ public class NoteService {
 ```
 
 ## Common Mistakes
-- Putting all persistence logic directly in controllers
-- Skipping not-found handling
-- Updating entities without clear rules
+- Putting persistence logic directly in controllers.
+- Skipping not-found handling during updates or deletes.
+- Returning entities blindly without thinking about API contract boundaries.
 
 ## Practice
-- Build GET all, GET by id, POST, PUT, and DELETE endpoints for one entity.
-- Refactor controller logic into a service class.
+- Implement GET all, GET by id, POST, PUT, and DELETE for one entity.
+- Move shared CRUD rules out of the controller and into a service.
+- Design one response DTO instead of returning the entity directly.
 
 ## Continuity
 - Previous lesson: `Lesson 11: Entities, Repositories, and JPA Basics`

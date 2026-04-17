@@ -10,41 +10,49 @@ summary: "Choosing an auth model affects API design, client interaction, and dep
 Choosing an auth model affects API design, client interaction, and deployment behavior.
 
 ## What You Will Learn
-- Compare session-based and token-based authentication approaches for backend APIs.
+- Compare session-based and token-based authentication approaches.
+- Understand where authenticated state lives in each model.
+- Recognize the trade-offs that influence when sessions or JWTs make sense.
 
 ## Why This Matters
 - Choosing an auth model affects API design, client interaction, and deployment behavior.
+- Authentication style influences how clients send credentials and how the server manages trust.
+- The right choice depends on architecture and constraints, not on trend alone.
 
 ## Main Ideas
-- Server-side session state
-- Stateless token-based auth
-- Trade-offs between simplicity and scalability
+- Sessions keep authentication state on the server.
+- JWT-based approaches move more state to the client side through tokens.
+- Every auth model comes with trade-offs in simplicity, revocation, and scalability.
 
 ## Lesson Notes
-Authentication state has to live somewhere after login. In session-based systems, the server stores the authenticated state and the client sends a session identifier on later requests. In token-based systems, the client carries a signed token such as JWT.
+Once login basics are clear, the next architectural question is where authenticated state should live after login succeeds. This is the key difference between session-based authentication and token-based approaches such as JWT.
 
-Sessions are often easier to reason about at first because the server remains the main source of truth. JWT-based systems are popular for APIs because they can fit stateless architectures more naturally.
+In a session-based system, the server remains the source of truth for authenticated state. The client stores a session identifier, usually in a cookie, and sends it with later requests. The server looks up the session and decides whether the request belongs to an authenticated user.
 
-Neither approach is automatically better. Sessions can be simpler and safer in some applications. JWTs can work well for distributed systems and API clients, but they introduce token lifecycle concerns and require careful design.
+In a JWT-based approach, the server issues a signed token containing claims about the user or session. The client sends that token on later requests, often through the `Authorization` header. The server verifies the token instead of looking up a server-side session record in the same way.
 
-For learning, the key is to understand the trade-off: where the trust state lives, how it is verified, and what happens when access must be revoked or renewed.
+Sessions are often easier to reason about at first because revocation and central control are more direct. JWTs are attractive in stateless API scenarios because they reduce some forms of server-side session storage, but they also introduce concerns about token expiration, refresh flow, and revocation strategy.
 
-This lesson gives you enough context to decide which style fits a given project instead of choosing by trend alone.
+That is why JWT should not be chosen just because it sounds modern. It solves certain architectural needs well, but it also creates its own responsibilities. A backend team should be able to explain why a token-based model fits the client and deployment model they actually have.
+
+For a learner, the most valuable outcome is understanding the location of trust. In sessions, trust is strongly server-centered. In JWT-based systems, some trust information travels with the client in a signed artifact. The security design follows from that difference.
+
+This lesson gives you a vocabulary for comparing authentication approaches sensibly. Later, when you build a specific login system, you should be able to justify the model rather than copying it from a tutorial.
 
 ## Example
-```text
-// JWT is often sent in the Authorization header
-Authorization: Bearer ***
+```http
+Authorization: Bearer <token>
 ```
 
 ## Common Mistakes
-- Using JWT just because it sounds modern
-- Ignoring token expiration and refresh strategy
-- Assuming stateless means simpler in every case
+- Using JWT only because it is popular.
+- Ignoring token expiration and refresh strategy.
+- Assuming stateless authentication is automatically simpler in every project.
 
 ## Practice
-- Write down one advantage and one drawback of sessions.
-- Write down one advantage and one drawback of JWT-based auth.
+- Write one advantage and one drawback of sessions.
+- Write one advantage and one drawback of JWT-based auth.
+- Explain where the authenticated state is stored in each model.
 
 ## Continuity
 - Previous lesson: `Lesson 17: Login Flow, Password Encoding, and Authorization`

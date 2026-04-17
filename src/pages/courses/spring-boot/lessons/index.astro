@@ -11,6 +11,17 @@ if (!course) {
 }
 
 const notes: SpringBootNote[] = await getSpringBootNotes();
+const notesBySlug = new Map(notes.map((note) => [note.slug, note]));
+const noteModules = course.modules.map((module) => ({
+  title: module.title,
+  description: module.description,
+  lessons: module.lessons
+    .map((lesson) => {
+      const lessonNumber = lesson.number.match(/(\d+)/)?.[1];
+      return lessonNumber ? notesBySlug.get(`lesson-${lessonNumber}`) ?? null : null;
+    })
+    .filter((note): note is SpringBootNote => note !== null),
+}));
 ---
 
 <BaseLayout
@@ -58,8 +69,61 @@ const notes: SpringBootNote[] = await getSpringBootNotes();
       <div class="main-panel">
         <section class="panel-section panel-section--first">
           <div class="section-heading section-heading--editorial">
+            <h2>閱讀方式</h2>
+            <p>先看模組地圖建立全貌，再進單課閱讀與練習，最後從 continuity 接續下一課。</p>
+          </div>
+
+          <div class="notes-reading-grid">
+            <article class="content-panel content-panel--editorial note-panel">
+              <h3>從模組開始</h3>
+              <p>如果你第一次讀這套筆記，建議按模組順序看，會更容易理解每一課為什麼排在那裡。</p>
+            </article>
+            <article class="content-panel content-panel--editorial note-panel">
+              <h3>先抓主線再看細節</h3>
+              <p>每課都保留了重點摘要、練習與官方連結，適合先掌握觀念，再回來補完整例子。</p>
+            </article>
+            <article class="content-panel content-panel--editorial note-panel">
+              <h3>用 continuity 接下去</h3>
+              <p>每一課底部都有上一課與下一課，讀完後可以順著往下，維持課程節奏不斷線。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>模組地圖</h2>
+            <p>先用模組分組理解這套課程的學習階段，再進入個別 lesson。</p>
+          </div>
+
+          <div class="module-list">
+            {noteModules.map((module) => (
+              <article class="module-card module-card--editorial">
+                <div class="module-head">
+                  <h3>{module.title}</h3>
+                  <p>{module.description}</p>
+                </div>
+
+                <div class="notes-list notes-list--module">
+                  {module.lessons.map((note) => (
+                    <a class="note-card" href={`/courses/spring-boot/lessons/${note.slug}`}>
+                      <div class="note-card-meta">
+                        <span class="course-pill">Lesson {note.lesson}</span>
+                        <span class="note-card-arrow" aria-hidden="true">↗</span>
+                      </div>
+                      <h3>{note.title.replace(/^Lesson \d+:\s*/, '')}</h3>
+                      <p>{note.summary}</p>
+                    </a>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
             <h2>全部 lessons</h2>
-            <p>每一課都保留學習目標、正文、範例、練習與官方參考資料。</p>
+            <p>如果你想快速跳到指定課次，也可以直接從完整清單進入。</p>
           </div>
 
           <div class="notes-list">

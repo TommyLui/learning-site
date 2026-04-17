@@ -11,25 +11,33 @@ Persistent data is a core part of most backend systems, and correct database set
 
 ## What You Will Learn
 - Configure a Spring Boot application to connect to a MySQL database.
+- Understand the role of datasource properties and the database driver.
+- See why environment-specific database settings should stay outside source code.
 
 ## Why This Matters
 - Persistent data is a core part of most backend systems, and correct database setup is the foundation.
+- A working datasource is required before repositories, entities, and CRUD flows can behave like real application code.
+- Database configuration is one of the earliest places where deployment discipline starts to matter.
 
 ## Main Ideas
-- Datasource properties
-- MySQL driver
-- Environment-specific database configuration
+- Datasource settings define how the application reaches the database.
+- The MySQL driver and JPA dependencies work together with Boot auto-configuration.
+- Database credentials and environment details belong in configuration, not in business logic.
 
 ## Lesson Notes
-To move beyond in-memory examples, your application needs a real database connection. In Spring Boot, this usually starts with adding the MySQL driver and data access dependencies, then supplying datasource settings.
+Many early Spring Boot examples use in-memory data or return static values because that keeps the first steps simple. Eventually, though, a backend application has to persist information somewhere durable. For this course, that durable store is MySQL.
 
-The minimum setup usually includes the JDBC URL, username, password, and JPA-related properties. These values should live in configuration, not in Java code.
+Connecting Spring Boot to MySQL begins with dependencies. The application needs a driver that knows how to speak to MySQL and a data access stack such as Spring Data JPA if you plan to work through entities and repositories.
 
-When Spring Boot detects the right dependencies and datasource settings, it can prepare the database connection infrastructure automatically. That gives your repositories and JPA layer something real to work with.
+Once the dependencies are present, configuration becomes the key step. Spring Boot needs to know the database URL, username, password, and, in many cases, JPA or Hibernate-related settings that influence schema handling and SQL behavior.
 
-This lesson is also where environment management starts to matter. Local, staging, and production databases should not share the same hardcoded settings. Profiles and environment variables become especially important here.
+These values should never be buried inside Java classes. They are environmental details, not business concepts. Treating them as configuration keeps the application safer and easier to move between local development, testing, and deployment targets.
 
-A working MySQL connection prepares the project for entity mapping, repositories, CRUD flows, and schema design discussions.
+A successful database connection is more than a technical checkbox. It changes how you reason about the application. The app is no longer only a web server returning responses; it becomes a system that coordinates incoming requests with durable state.
+
+It is also worth noticing that datasource problems are often startup problems. Invalid credentials, wrong hosts, or unavailable databases usually appear before the app begins handling requests. That makes configuration accuracy especially important in the early persistence phase.
+
+Once MySQL is connected correctly, the rest of the persistence story can begin. Entities, repositories, transactions, and CRUD behavior all depend on this foundation.
 
 ## Example
 ```properties
@@ -40,13 +48,14 @@ spring.jpa.hibernate.ddl-auto=update
 ```
 
 ## Common Mistakes
-- Putting database credentials directly in source code
-- Forgetting to add the MySQL driver
-- Using production credentials in local config files
+- Putting database credentials directly into Java source files.
+- Forgetting to add the MySQL driver dependency.
+- Using one database config for every environment without profiles or overrides.
 
 ## Practice
-- Configure a local MySQL datasource in application.properties.
-- Explain what each datasource property controls.
+- Configure a local MySQL datasource and confirm the app starts with it.
+- Write down what each datasource property controls.
+- Explain why database settings should be externalized instead of hardcoded.
 
 ## Continuity
 - Previous lesson: `Lesson 9: Validation and Global Exception Handling`
@@ -56,5 +65,5 @@ spring.jpa.hibernate.ddl-auto=update
 - Persistent data is a core part of most backend systems, and correct database setup is the foundation.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/data/sql.html
 - https://docs.spring.io/spring-boot/reference/data/index.html
+- https://docs.spring.io/spring-boot/reference/data/sql.html

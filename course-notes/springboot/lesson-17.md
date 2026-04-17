@@ -10,26 +10,34 @@ summary: "A backend needs more than a login form; it needs safe credential handl
 A backend needs more than a login form; it needs safe credential handling and permission checks.
 
 ## What You Will Learn
-- Learn the basics of secure login handling and role-based access control.
+- Understand the basic server-side flow of login and authenticated access.
+- See why password encoding is mandatory rather than optional.
+- Apply simple authorization rules such as role-based access control.
 
 ## Why This Matters
 - A backend needs more than a login form; it needs safe credential handling and permission checks.
+- Credential handling mistakes can create severe security problems even in small projects.
+- Authorization rules make access control explicit and auditable instead of accidental.
 
 ## Main Ideas
-- PasswordEncoder
-- Authenticated sessions or users
-- Role-based endpoint rules
+- Passwords should be encoded before storage and comparison.
+- Authorization rules should be centralized and easy to inspect.
+- Login flow design affects both user experience and system safety.
 
 ## Lesson Notes
-A secure login flow has several pieces. The application receives credentials, verifies them, loads user details, and stores or issues some form of authenticated state. Even in a simple example, password handling must be safe.
+A login feature is really a chain of security decisions. The application receives credentials, checks whether they match a known user, determines what kind of authenticated state to establish, and then applies authorization rules on future requests.
 
-Passwords should never be stored in plain text. Spring Security uses password encoders so that stored values are one-way hashes rather than raw secrets. This is a basic but critical protection.
+One of the first non-negotiable requirements is password encoding. Raw passwords should never be stored directly. Spring Security provides encoders such as BCrypt so that the application stores one-way hashes rather than the original secret values.
 
-Authorization rules then decide what authenticated users can access. Some endpoints may be available to any logged-in user, while others may require a specific role such as ADMIN.
+This matters because the backend is responsible not just for accepting credentials, but for minimizing damage if data is leaked. Storing raw passwords would make a compromise dramatically worse. Encoding is therefore a basic security responsibility, not an advanced optimization.
 
-These rules should be deliberate and visible. If access control is scattered or inconsistent, security bugs become much easier to introduce.
+Authorization comes after successful authentication. Once the application knows who the user is, it can decide what that user can access. Some endpoints may be open to any authenticated user, while others may require a specific role such as `ADMIN`.
 
-This lesson prepares you for both session-based and token-based application designs.
+Clear authorization rules improve both safety and maintainability. If access logic is scattered through controllers and services inconsistently, it becomes difficult to review and easy to break. Centralized rules make security policy more visible.
+
+This lesson also prepares you to compare stateful and stateless login styles. Whether the application uses sessions or tokens, it still has to solve the same core concerns: credential verification, secure password storage, and explicit access rules.
+
+By learning this flow now, you make later security decisions more deliberate. The application should not only let users in; it should clearly define how they are identified and what that identity allows them to do.
 
 ## Example
 ```java
@@ -40,13 +48,14 @@ PasswordEncoder passwordEncoder() {
 ```
 
 ## Common Mistakes
-- Storing raw passwords
-- Checking roles only in the frontend
-- Applying authorization rules inconsistently
+- Storing raw passwords.
+- Checking authorization only in the frontend instead of on the backend.
+- Letting access-control rules grow in a scattered, hard-to-review way.
 
 ## Practice
-- Create a PasswordEncoder bean.
-- Protect one endpoint so that it requires a specific role.
+- Create a `PasswordEncoder` bean and explain why BCrypt is safer than plain text storage.
+- Protect one endpoint with a role requirement.
+- Describe the difference between a successful login and a successful authorization check.
 
 ## Continuity
 - Previous lesson: `Lesson 16: Spring Security Fundamentals`

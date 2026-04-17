@@ -10,26 +10,36 @@ summary: "Dependency injection is one of the core ideas behind clean, testable S
 Dependency injection is one of the core ideas behind clean, testable Spring applications.
 
 ## What You Will Learn
-- Understand how Spring manages objects and injects dependencies between them.
+- Understand how Spring manages objects as beans inside the application context.
+- Explain why constructor injection is the default choice for most application code.
+- See how dependency injection supports cleaner boundaries between controller, service, and repository layers.
 
 ## Why This Matters
 - Dependency injection is one of the core ideas behind clean, testable Spring applications.
+- It prevents classes from creating and controlling every dependency themselves.
+- It gives Spring Boot a consistent way to assemble application layers and swap implementations in tests.
 
 ## Main Ideas
-- Beans are objects managed by the Spring container
-- Constructor injection
-- Loose coupling between application layers
+- Beans are objects managed by the Spring container.
+- Constructor injection makes dependencies explicit and easier to test.
+- Layered design works best when dependencies point in clear directions.
 
 ## Lesson Notes
-In plain Java, you often create dependencies manually with new. In Spring Boot, many important objects are created and managed by the container instead. These managed objects are called beans.
+In plain Java, it is common to create objects directly with `new`, and in small programs that can be enough. In a Spring Boot application, however, many important objects are not created manually. They are created, stored, and managed by the Spring container. Once Spring is responsible for those objects, they become beans.
 
-Dependency injection means Spring provides one bean to another when it is needed. For example, a controller can depend on a service, and a service can depend on a repository. This keeps object creation centralized and reduces direct coupling between classes.
+That change matters because object creation is no longer scattered across the codebase. Instead of every class building its own dependencies, Spring can assemble the graph of objects once and inject the right collaborators where they are needed. This gives the application a more organized structure from the beginning.
 
-Constructor injection is the most common and readable approach. It makes dependencies explicit and makes testing easier because you can provide fake implementations in tests.
+Dependency injection means a class receives its collaborators from outside rather than constructing them internally. A controller can receive a service, and a service can receive a repository. The class still uses those dependencies normally, but it does not have to decide how they are created.
 
-This design matters because it supports separation of concerns. Controllers can focus on HTTP behavior, services on business logic, and repositories on persistence. Each layer depends on contracts instead of manually assembling everything itself.
+Constructor injection is the clearest version of this pattern. When dependencies appear in the constructor, anyone reading the class can immediately see what it needs to operate. It also makes the class harder to misuse, because required collaborators must be supplied up front.
 
-Once you understand beans and injection, later topics like configuration classes, repositories, and security components become much easier to follow.
+This approach is especially useful in tests. If a service depends on a repository, a unit test can pass in a mock repository without starting the whole Spring context. That is one reason constructor injection is considered more maintainable than field injection in most application code.
+
+Beans also reinforce responsibility boundaries. Controllers should mainly translate HTTP requests into application actions. Services should hold business logic. Repositories should handle persistence. Dependency injection makes these boundaries easier to preserve because each layer depends on the next one through a clear contract.
+
+Beginners sometimes think dependency injection is only a framework trick, but it is really a design principle. Spring Boot makes that principle practical at scale by providing an application context that can discover, build, and wire components automatically.
+
+Once this concept is clear, many later topics become easier. Configuration classes, repositories, filters, security components, and test doubles all rely on the same mental model: Spring manages the lifecycle of important objects and injects them where they belong.
 
 ## Example
 ```java
@@ -41,6 +51,7 @@ public class GreetingService {
 }
 
 @RestController
+@RequestMapping("/api/greetings")
 public class GreetingController {
     private final GreetingService greetingService;
 
@@ -48,21 +59,22 @@ public class GreetingController {
         this.greetingService = greetingService;
     }
 
-    @GetMapping("/hello")
-    public String hello() {
+    @GetMapping
+    public String greeting() {
         return greetingService.greet();
     }
 }
 ```
 
 ## Common Mistakes
-- Using field injection everywhere without understanding the dependency graph
-- Creating service objects manually with new inside controllers
-- Mixing responsibilities across layers
+- Creating service or repository objects manually inside controllers.
+- Hiding required dependencies through field injection everywhere.
+- Letting one layer depend on too many unrelated classes.
 
 ## Practice
-- Create a controller that depends on a service via constructor injection.
-- Explain why constructor injection is easier to test.
+- Create a controller that receives a service through constructor injection.
+- Write down which dependencies your service class really needs and which do not belong there.
+- Explain why constructor injection makes testing easier than manual object creation inside methods.
 
 ## Continuity
 - Previous lesson: `Lesson 3: Understand the Project Structure and Startup Flow`
