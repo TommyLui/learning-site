@@ -44,6 +44,14 @@ const mistakes = parseBulletList(note.sections['Common Mistakes'] ?? '');
 const practice = parseBulletList(note.sections.Practice ?? '');
 const takeaways = parseBulletList(note.sections['Key Takeaway'] ?? '');
 const references = parseBulletList(note.sections['Official References'] ?? '');
+const estimatedMinutes = Math.max(4, Math.ceil((note.exampleCode.length + lessonNotes.join(' ').length) / 900));
+const articleSections = [
+  { id: 'learning-points', title: 'What you will learn' },
+  { id: 'lesson-notes', title: 'Lesson notes' },
+  { id: 'example', title: 'Example' },
+  { id: 'practice', title: 'Practice' },
+  { id: 'references', title: 'Official references' },
+];
 ---
 
 <BaseLayout
@@ -78,6 +86,10 @@ const references = parseBulletList(note.sections['Official References'] ?? '');
               <dt>Focus</dt>
               <dd>{ideas.join(', ')}</dd>
             </div>
+            <div>
+              <dt>Read time</dt>
+              <dd>~{estimatedMinutes} min</dd>
+            </div>
           </dl>
         </aside>
       </div>
@@ -90,7 +102,22 @@ const references = parseBulletList(note.sections['Official References'] ?? '');
         <section class="panel-section panel-section--first">
           <div class="course-layout note-layout">
             <div class="course-main-column">
-              <div class="content-panel content-panel--editorial note-panel">
+              <div class="content-panel content-panel--editorial note-panel note-article-overview">
+                <div>
+                  <p class="eyebrow">Article overview</p>
+                  <h2>這一課會帶你從觀念到實作</h2>
+                  <p>
+                    先用學習目標抓重點，再讀正文與範例，最後用 practice 把這一課的內容轉成真正能記住的實作。
+                  </p>
+                </div>
+                <div class="note-tag-list">
+                  {ideas.map((idea) => (
+                    <span class="note-tag">{idea}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="learning-points">
                 <div class="section-heading section-heading--editorial">
                   <h2>What you will learn</h2>
                   <p>{note.intro}</p>
@@ -102,7 +129,7 @@ const references = parseBulletList(note.sections['Official References'] ?? '');
                 </ul>
               </div>
 
-              <div class="content-panel content-panel--editorial note-panel">
+              <div class="content-panel content-panel--editorial note-panel" id="lesson-notes">
                 <div class="section-heading section-heading--editorial">
                   <h2>Lesson notes</h2>
                   <p>這一課的正式筆記內容，後續可以持續擴寫成完整教學文。</p>
@@ -114,20 +141,53 @@ const references = parseBulletList(note.sections['Official References'] ?? '');
                 </div>
               </div>
 
-              <div class="content-panel content-panel--editorial note-panel">
+              <div class="content-panel content-panel--editorial note-panel" id="example">
                 <div class="section-heading section-heading--editorial">
                   <h2>Example</h2>
                   <p>保留每課的最小範例，方便後續擴充成可執行 demo。</p>
                 </div>
                 <pre class="note-code-block"><code>{note.exampleCode}</code></pre>
               </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="practice">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Practice</h2>
+                  <p>把這一課的重點轉成實際操作，會比只閱讀更容易留下記憶。</p>
+                </div>
+                <ul class="simple-list">
+                  {practice.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="content-panel content-panel--editorial note-panel" id="references">
+                <div class="section-heading section-heading--editorial">
+                  <h2>Official references</h2>
+                  <p>回到官方文件時，可以把這些連結當成延伸閱讀與版本確認入口。</p>
+                </div>
+                <ul class="simple-list">
+                  {references.map((item) => (
+                    <li><a href={item} target="_blank" rel="noreferrer">{item}</a></li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
             <aside class="course-side-column note-side-column">
               <div class="content-panel content-panel--editorial sticky-panel note-panel">
                 <div class="section-heading section-heading--editorial">
-                  <h2>Lesson checklist</h2>
-                  <p>課前掌握重點，課後確認練習與延伸閱讀。</p>
+                  <h2>Reading guide</h2>
+                  <p>先抓這一課的閱讀順序，再決定是要快速複習還是慢慢完整讀完。</p>
+                </div>
+
+                <div class="lesson-anchor-list">
+                  {articleSections.map((section) => (
+                    <a class="lesson-anchor-link" href={`#${section.id}`}>
+                      <span>Section</span>
+                      <strong>{section.title}</strong>
+                    </a>
+                  ))}
                 </div>
 
                 <h3 class="note-side-heading">Why this matters</h3>
@@ -144,24 +204,10 @@ const references = parseBulletList(note.sections['Official References'] ?? '');
                   ))}
                 </ul>
 
-                <h3 class="note-side-heading">Practice</h3>
-                <ul class="simple-list simple-list--compact">
-                  {practice.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-
                 <h3 class="note-side-heading">Key takeaway</h3>
                 <ul class="simple-list simple-list--compact">
                   {takeaways.map((item) => (
                     <li>{item}</li>
-                  ))}
-                </ul>
-
-                <h3 class="note-side-heading">Official references</h3>
-                <ul class="simple-list simple-list--compact">
-                  {references.map((item) => (
-                    <li><a href={item} target="_blank" rel="noreferrer">{item}</a></li>
                   ))}
                 </ul>
               </div>
