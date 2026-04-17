@@ -304,7 +304,7 @@ img {
 .hero-inner--home {
   display: grid;
   align-items: end;
-  min-height: 300px;
+  min-height: 240px;
 }
 
 .hero-copy {
@@ -1183,6 +1183,10 @@ h1,
   .page-intro {
     min-height: 340px;
     padding: 6.6rem 0 5.25rem;
+  }
+
+  .hero-inner--home {
+    min-height: 200px;
   }
 
   .floating-panel-wrap,
