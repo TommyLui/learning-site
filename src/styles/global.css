@@ -148,12 +148,20 @@ img {
   display: none;
 }
 
-.dropdown-chevron {
-  font-size: 0.9rem;
+.course-dropdown-label {
+  white-space: nowrap;
 }
 
-.course-dropdown[open] .dropdown-chevron {
-  transform: rotate(180deg);
+.course-dropdown-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.course-dropdown[open] .course-dropdown-icon {
+  transform: scale(0.96);
 }
 
 .course-menu {
@@ -1092,9 +1100,20 @@ h1,
     padding: 1.35rem;
   }
 
-  .course-dropdown,
+  .course-dropdown {
+    margin-left: auto;
+  }
+
   .course-dropdown summary {
-    width: 100%;
+    width: auto;
+    min-width: 52px;
+    min-height: 52px;
+    justify-content: center;
+    padding: 0.8rem;
+  }
+
+  .course-dropdown-label {
+    display: none;
   }
 
   .course-menu {

@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { currentCourse = null, showPrimaryNav = true } = Astro.props;
-const dropdownLabel = currentCourse ? currentCourse.title : 'Learning tracks';
+const dropdownLabel = currentCourse ? currentCourse.title : '課程選單';
 ---
 
 <header class="site-header">
@@ -26,9 +26,9 @@ const dropdownLabel = currentCourse ? currentCourse.title : 'Learning tracks';
     )}
 
     <details class="course-dropdown">
-      <summary>
-        <span>{dropdownLabel}</span>
-        <span class="dropdown-chevron" aria-hidden="true">▾</span>
+      <summary aria-label={dropdownLabel}>
+        <span class="course-dropdown-label">{dropdownLabel}</span>
+        <span class="course-dropdown-icon" aria-hidden="true">☰</span>
       </summary>
 
       <div class="course-menu">
