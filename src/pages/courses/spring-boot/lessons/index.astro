@@ -3,6 +3,7 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { courses } from '../../../../data/courses';
 import { getSpringBootNotes } from '../../../../data/springbootNotes';
 import type { SpringBootNote } from '../../../../data/springbootNotes';
+import { withBase } from '../../../../utils/paths';
 
 const course = courses.find((item) => item.slug === 'spring-boot');
 
@@ -47,7 +48,7 @@ const learningPromises = [
   <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
     <div class="page-intro-backdrop"></div>
     <div class="container page-intro-inner">
-      <a href="/courses/spring-boot" class="back-link">← Back to Spring Boot track</a>
+      <a href={withBase('/courses/spring-boot')} class="back-link">← Back to Spring Boot track</a>
       <div class="course-hero-grid course-hero-grid--editorial">
         <div>
           <p class="eyebrow">Course home</p>
@@ -59,12 +60,12 @@ const learningPromises = [
 
           <div class="hero-actions course-home-actions">
             {firstLesson ? (
-              <a class="hero-action hero-action--primary" href={`/courses/spring-boot/lessons/${firstLesson.slug}`}>
+              <a class="hero-action hero-action--primary" href={withBase(`/courses/spring-boot/lessons/${firstLesson.slug}`)}>
                 從 Lesson 1 開始
               </a>
             ) : null}
             {latestLesson ? (
-              <a class="hero-action" href={`/courses/spring-boot/lessons/${latestLesson.slug}`}>
+              <a class="hero-action" href={withBase(`/courses/spring-boot/lessons/${latestLesson.slug}`)}>
                 直接看最新一課
               </a>
             ) : null}
@@ -176,7 +177,7 @@ const learningPromises = [
 
                 <div class="notes-list notes-list--module">
                   {module.lessons.map((note) => (
-                    <a class="note-card note-card--course-home" href={`/courses/spring-boot/lessons/${note.slug}`}>
+                    <a class="note-card note-card--course-home" href={withBase(`/courses/spring-boot/lessons/${note.slug}`)}>
                       <div class="note-card-meta">
                         <span class="course-pill">Lesson {note.lesson}</span>
                         <span class="note-card-arrow" aria-hidden="true">↗</span>
@@ -199,7 +200,7 @@ const learningPromises = [
 
           <div class="notes-list notes-list--compact-cards">
             {notes.map((note) => (
-              <a class="note-card note-card--compact" href={`/courses/spring-boot/lessons/${note.slug}`}>
+              <a class="note-card note-card--compact" href={withBase(`/courses/spring-boot/lessons/${note.slug}`)}>
                 <div class="note-card-meta">
                   <span class="course-pill">Lesson {note.lesson}</span>
                   <span class="note-card-arrow" aria-hidden="true">↗</span>

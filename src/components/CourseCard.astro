@@ -1,5 +1,6 @@
 ---
 import type { Course } from '../data/courses';
+import { withBase } from '../utils/paths';
 
 interface Props {
   course: Course;
@@ -27,7 +28,7 @@ const { course } = Astro.props;
       <span>{course.level}</span>
     </div>
 
-    <a class="course-link" href={`/courses/${course.slug}`}>
+    <a class="course-link" href={withBase(`/courses/${course.slug}`)}>
       Read this track <span aria-hidden="true">→</span>
     </a>
   </div>

@@ -1,6 +1,7 @@
 ---
 import { courses } from '../data/courses';
 import type { Course } from '../data/courses';
+import { withBase } from '../utils/paths';
 
 interface Props {
   currentCourse?: Course | null;
@@ -12,13 +13,13 @@ const dropdownLabel = currentCourse ? currentCourse.title : 'Learning tracks';
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="/">
+    <a class="brand" href={withBase('/')}>
       <span class="brand-title">Tommy's Learning Notes</span>
     </a>
 
     <nav class="header-nav" aria-label="Primary">
-      <a href="/courses">文章分類</a>
-      <a href="/#site-intro">關於本站</a>
+      <a href={withBase('/courses')}>文章分類</a>
+      <a href={withBase('/#recent-lessons')}>最新整理</a>
     </nav>
 
     <details class="course-dropdown">
@@ -34,7 +35,7 @@ const dropdownLabel = currentCourse ? currentCourse.title : 'Learning tracks';
           {courses.map((course) => (
             <li>
               <a
-                href={`/courses/${course.slug}`}
+                href={withBase(`/courses/${course.slug}`)}
                 class:list={['course-menu-link', { 'is-active': currentCourse?.slug === course.slug }]}
                 aria-current={currentCourse?.slug === course.slug ? 'page' : undefined}
               >
@@ -48,7 +49,7 @@ const dropdownLabel = currentCourse ? currentCourse.title : 'Learning tracks';
           ))}
         </ul>
 
-        <a href="/courses" class="course-menu-all">Browse all teaching notes</a>
+        <a href={withBase('/courses')} class="course-menu-all">Browse all teaching notes</a>
       </div>
     </details>
   </div>

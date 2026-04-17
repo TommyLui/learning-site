@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CourseCard from '../components/CourseCard.astro';
 import LessonRow from '../components/LessonRow.astro';
 import { courses, recentLessons } from '../data/courses';
+import { withBase } from '../utils/paths';
 ---
 
 <BaseLayout
@@ -21,8 +22,8 @@ import { courses, recentLessons } from '../data/courses';
         </p>
 
         <div class="hero-actions">
-          <a class="hero-action hero-action--primary" href="/courses">Browse all tracks</a>
-          <a class="hero-action" href="/courses/spring-boot/lessons">Read Spring Boot lessons</a>
+          <a class="hero-action hero-action--primary" href={withBase('/courses')}>Browse all tracks</a>
+          <a class="hero-action" href={withBase('/courses/spring-boot/lessons')}>Read Spring Boot lessons</a>
         </div>
       </div>
     </div>
@@ -31,57 +32,7 @@ import { courses, recentLessons } from '../data/courses';
   <section class="floating-panel-wrap">
     <div class="container">
       <div class="main-panel">
-        <section class="panel-section" id="site-intro">
-          <div class="section-heading section-heading--editorial">
-            <h2>網站定位</h2>
-            <p>把學習過程整理成可教、可查、可持續擴充的內容。</p>
-          </div>
-
-          <div class="intro-grid">
-            <article class="content-panel tone-panel">
-              <h3>不是流水帳筆記</h3>
-              <p>
-                我想記錄的不是今天做了什麼，而是我如何把一個主題理解到能夠重新講清楚。
-              </p>
-            </article>
-            <article class="content-panel tone-panel">
-              <h3>每篇內容都是學習成果</h3>
-              <p>
-                每學一個概念，就整理成教學內容，包含核心觀念、範例、常見錯誤與實作方向。
-              </p>
-            </article>
-            <article class="content-panel tone-panel">
-              <h3>以主題累積，不以日期堆疊</h3>
-              <p>
-                內容會依 React、Spring Boot、MySQL 分類，讓我能從基礎一路擴充成完整知識庫。
-              </p>
-            </article>
-          </div>
-        </section>
-
-        <section class="panel-section" id="reading-flow">
-          <div class="section-heading section-heading--editorial">
-            <h2>如何使用這個網站</h2>
-            <p>從主題地圖、最近更新到完整 lesson notes，保持學習與複習的節奏。</p>
-          </div>
-
-          <div class="notes-reading-grid home-flow-grid">
-            <article class="content-panel content-panel--editorial note-panel">
-              <h3>先選主題線</h3>
-              <p>從 React、Spring Boot、MySQL 三條主題線擇一開始，先看整體課程地圖與模組順序。</p>
-            </article>
-            <article class="content-panel content-panel--editorial note-panel">
-              <h3>從最近整理切入</h3>
-              <p>如果你想直接複習近期內容，先看最新整理，再進到單一課程頁或 lesson page 深讀。</p>
-            </article>
-            <article class="content-panel content-panel--editorial note-panel">
-              <h3>保留可擴寫筆記</h3>
-              <p>每一課都不是終點，而是後續可以補上範例、測試、常見錯誤與實作心得的教學底稿。</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="panel-section" id="recent-lessons">
+        <section class="panel-section panel-section--first" id="recent-lessons">
           <div class="section-heading section-heading--editorial">
             <h2>最新整理</h2>
             <p>最近補完或重新整理的教學內容。</p>

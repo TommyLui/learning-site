@@ -7,6 +7,7 @@ import {
   parseParagraphs,
 } from '../../../../data/springbootNotes';
 import type { SpringBootNote } from '../../../../data/springbootNotes';
+import { withBase } from '../../../../utils/paths';
 
 const course = courses.find((item) => item.slug === 'spring-boot');
 
@@ -62,7 +63,7 @@ const articleSections = [
   <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
     <div class="page-intro-backdrop"></div>
     <div class="container page-intro-inner">
-      <a href="/courses/spring-boot/lessons" class="back-link">← Back to all Spring Boot lessons</a>
+      <a href={withBase('/courses/spring-boot/lessons')} class="back-link">← Back to all Spring Boot lessons</a>
 
       <div class="course-hero-grid course-hero-grid--editorial">
         <div>
@@ -226,7 +227,7 @@ const articleSections = [
                 <div class="lesson-mini-nav">
                   {allNotes.map((entry) => (
                     <a
-                      href={`/courses/spring-boot/lessons/${entry.slug}`}
+                      href={withBase(`/courses/spring-boot/lessons/${entry.slug}`)}
                       class:list={['lesson-mini-link', { 'is-active': entry.slug === note.slug }]}
                     >
                       <span>Lesson {entry.lesson}</span>
@@ -247,7 +248,7 @@ const articleSections = [
 
           <div class="notes-list notes-list--continuity">
             {previousNote && (
-              <a class="note-card" href={`/courses/spring-boot/lessons/${previousNote.slug}`}>
+              <a class="note-card" href={withBase(`/courses/spring-boot/lessons/${previousNote.slug}`)}>
                 <div class="note-card-meta">
                   <span class="course-pill">Previous</span>
                 </div>
@@ -257,7 +258,7 @@ const articleSections = [
             )}
 
             {nextNote && (
-              <a class="note-card" href={`/courses/spring-boot/lessons/${nextNote.slug}`}>
+              <a class="note-card" href={withBase(`/courses/spring-boot/lessons/${nextNote.slug}`)}>
                 <div class="note-card-meta">
                   <span class="course-pill">Next</span>
                 </div>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { courses } from '../../../../data/courses';
+import { withBase } from '../../../../utils/paths';
 
 const course = courses.find((item) => item.slug === 'mysql');
 
@@ -38,7 +39,7 @@ const { lesson } = Astro.props;
   <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
     <div class="page-intro-backdrop"></div>
     <div class="container page-intro-inner">
-      <a href="/courses/mysql/lessons" class="back-link">← Back to MySQL lessons</a>
+      <a href={withBase('/courses/mysql/lessons')} class="back-link">← Back to MySQL lessons</a>
       <p class="eyebrow">Placeholder page</p>
       <h1 class="page-title">{lesson.title}</h1>
       <p class="lead narrow">這個頁面已建立，內容之後會再補上。</p>

@@ -1,5 +1,6 @@
 ---
 import type { RecentLesson } from '../data/courses';
+import { withBase } from '../utils/paths';
 
 interface Props {
   lesson: RecentLesson;
@@ -8,7 +9,7 @@ interface Props {
 const { lesson } = Astro.props;
 ---
 
-<a class="lesson-row" href={lesson.href} style={`--course-accent: ${lesson.accent}`}>
+<a class="lesson-row" href={withBase(lesson.href)} style={`--course-accent: ${lesson.accent}`}>
   <div class="lesson-thumb" aria-hidden="true">
     <span>{lesson.courseTitle}</span>
   </div>
