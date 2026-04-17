@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { courses } from '../../../../data/courses';
+import { getMySQLLessons } from '../../../../data/mysqlLessons';
+import type { CourseLessonArticle } from '../../../../data/mysqlLessons';
 import { withBase } from '../../../../utils/paths';
 
 const course = courses.find((item) => item.slug === 'mysql');
@@ -9,36 +11,40 @@ if (!course) {
   throw new Error('MySQL course not found');
 }
 
-const lessons = course.modules.flatMap((module) =>
-  module.lessons.map((lesson) => {
-    const lessonNumber = lesson.number.match(/(\d+)/)?.[1] ?? '1';
-
-    return {
-      ...lesson,
-      slug: `lesson-${lessonNumber}`,
-    };
-  })
-);
-
+const lessons: CourseLessonArticle[] = getMySQLLessons();
 const firstLesson = lessons[0];
 const latestLesson = lessons[lessons.length - 1];
 const totalModules = course.modules.length;
 const currentLessonCount = lessons.length;
+const lessonsByModule = new Map<string, CourseLessonArticle[]>();
+
+for (const lesson of lessons) {
+  const existingLessons = lessonsByModule.get(lesson.moduleTitle) ?? [];
+  existingLessons.push(lesson);
+  lessonsByModule.set(lesson.moduleTitle, existingLessons);
+}
+
+const noteModules = course.modules.map((module) => ({
+  title: module.title,
+  description: module.description,
+  lessons: lessonsByModule.get(module.title) ?? [],
+}));
+
 const roadmapHighlights = [
   '先用 module map 看 MySQL 如何從 query basics 一路走到 schema design 與 performance。',
-  '每一課都對應到後端或資料庫開發裡常見的實務情境，方便和 app 開發串起來。',
-  '目前 lessons 頁先把主線整理好，後續可以逐課擴寫成正式教學文。',
+  '這一頁和單課內容現在讀的是同一份正式 lesson data，不再是獨立 placeholder 清單。',
+  '如果你要從頭建立資料庫主線，建議從 Lesson 1 開始一路接到最後。',
 ];
 const learningPromises = [
-  '把 SELECT、INSERT、UPDATE、DELETE 與 joins 這些核心 SQL 操作打穩。',
-  '理解關聯式資料庫的結構思維，知道 key、relationship、schema 為什麼重要。',
-  '先建立一條可讀、可補、可持續擴寫的 MySQL 學習主線。',
+  '把 SELECT、INSERT、UPDATE、DELETE、joins、keys 與 schema 設計串成一條清楚主線。',
+  '理解關聯式資料庫的結構思維，而不只是零散記幾條 SQL。',
+  '每一課都可以直接進正式 lesson article 深讀與複習。',
 ];
 ---
 
 <BaseLayout
   title={`MySQL lessons · ${course.title}`}
-  description="Browse the MySQL course home and current lesson placeholders."
+  description="Browse the formal MySQL lesson library and article pages."
   currentCourse={course}
 >
   <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
@@ -50,8 +56,7 @@ const learningPromises = [
           <p class="eyebrow">Course home</p>
           <h1 class="page-title">MySQL lessons</h1>
           <p class="lead narrow">
-            把 MySQL 主線整理成真正可以閱讀的課程首頁，從 query basics、joins 到 schema design 與 performance
-            建立一路往下學的節奏。
+            把 MySQL 主線整理成正式可閱讀的課程首頁，從 query basics、relationships 到 schema design 與 performance，現在都能直接接到正式單課內容。
           </p>
 
           <div class="hero-actions course-home-actions">
@@ -62,7 +67,7 @@ const learningPromises = [
             ) : null}
             {latestLesson ? (
               <a class="hero-action" href={withBase(`/courses/mysql/lessons/${latestLesson.slug}`)}>
-                直接看目前最後一課
+                直接看最後一課
               </a>
             ) : null}
           </div>
@@ -99,7 +104,7 @@ const learningPromises = [
         <section class="panel-section panel-section--first">
           <div class="section-heading section-heading--editorial">
             <h2>Start here</h2>
-            <p>這頁先把 MySQL lessons 從 placeholder 提升成真正可讀的課程首頁。</p>
+            <p>這一頁現在和單課 article 共用同一份 lesson data，所以課程首頁和正式內容已經同步。</p>
           </div>
 
           <div class="course-home-grid">
@@ -107,7 +112,7 @@ const learningPromises = [
               <p class="eyebrow">Reading flow</p>
               <h3>先看 query 主線，再進 joins，最後建立 schema 與 performance 思維</h3>
               <p>
-                如果你想把資料庫知識整理成穩定可重複使用的主線，建議先用這頁掌握整體架構，再進 lesson 頁面逐課往下讀。
+                如果你想把資料庫知識整理成穩定可重複使用的主線，建議先用這頁掌握整體架構，再進正式 lesson 頁面逐課往下讀。
               </p>
               <ul class="simple-list simple-list--compact">
                 {roadmapHighlights.map((highlight) => (
@@ -118,7 +123,7 @@ const learningPromises = [
 
             <aside class="content-panel content-panel--editorial note-panel course-home-aside">
               <p class="eyebrow">What you will get</p>
-              <h3>這條 MySQL 主線會幫你把查詢、關聯與資料設計串成一體</h3>
+              <h3>這條 MySQL 主線會把查詢、關聯與資料設計串成真正可複習的資料庫課程</h3>
               <ul class="simple-list simple-list--compact">
                 {learningPromises.map((promise) => (
                   <li>{promise}</li>
@@ -160,7 +165,7 @@ const learningPromises = [
           </div>
 
           <div class="module-list">
-            {course.modules.map((module) => (
+            {noteModules.map((module) => (
               <article class="module-card module-card--editorial module-card--course-home">
                 <div class="module-head module-head--course-home">
                   <div>
@@ -171,21 +176,16 @@ const learningPromises = [
                 </div>
 
                 <div class="notes-list notes-list--module">
-                  {module.lessons.map((lesson) => {
-                    const lessonNumber = lesson.number.match(/(\d+)/)?.[1] ?? '1';
-                    const lessonHref = withBase(`/courses/mysql/lessons/lesson-${lessonNumber}`);
-
-                    return (
-                      <a class="note-card note-card--course-home" href={lessonHref}>
-                        <div class="note-card-meta">
-                          <span class="course-pill">{lesson.number}</span>
-                          <span class="note-card-arrow" aria-hidden="true">↗</span>
-                        </div>
-                        <h3>{lesson.title}</h3>
-                        <p>{lesson.summary}</p>
-                      </a>
-                    );
-                  })}
+                  {module.lessons.map((lesson) => (
+                    <a class="note-card note-card--course-home" href={withBase(`/courses/mysql/lessons/${lesson.slug}`)}>
+                      <div class="note-card-meta">
+                        <span class="course-pill">Lesson {lesson.lesson}</span>
+                        <span class="note-card-arrow" aria-hidden="true">↗</span>
+                      </div>
+                      <h3>{lesson.title}</h3>
+                      <p>{lesson.summary}</p>
+                    </a>
+                  ))}
                 </div>
               </article>
             ))}
@@ -194,15 +194,15 @@ const learningPromises = [
 
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
-            <h2>目前可讀 lessons</h2>
-            <p>這些 lesson pages 已經先建立好入口，之後可以逐課補成正式教學內容。</p>
+            <h2>全部 lessons</h2>
+            <p>這裡列出的每一課都已經有對應的正式 lesson article page。</p>
           </div>
 
           <div class="notes-list notes-list--compact-cards">
             {lessons.map((lesson) => (
               <a class="note-card note-card--compact" href={withBase(`/courses/mysql/lessons/${lesson.slug}`)}>
                 <div class="note-card-meta">
-                  <span class="course-pill">{lesson.number}</span>
+                  <span class="course-pill">Lesson {lesson.lesson}</span>
                   <span class="note-card-arrow" aria-hidden="true">↗</span>
                 </div>
                 <h3>{lesson.title}</h3>

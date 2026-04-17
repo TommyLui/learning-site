@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { courses } from '../../../../data/courses';
+import { getReactLessons } from '../../../../data/reactLessons';
+import type { CourseLessonArticle } from '../../../../data/reactLessons';
 import { withBase } from '../../../../utils/paths';
 
 const course = courses.find((item) => item.slug === 'react');
@@ -9,36 +11,40 @@ if (!course) {
   throw new Error('React course not found');
 }
 
-const lessons = course.modules.flatMap((module) =>
-  module.lessons.map((lesson) => {
-    const lessonNumber = lesson.number.match(/(\d+)/)?.[1] ?? '1';
-
-    return {
-      ...lesson,
-      slug: `lesson-${lessonNumber}`,
-    };
-  })
-);
-
+const lessons: CourseLessonArticle[] = getReactLessons();
 const firstLesson = lessons[0];
 const latestLesson = lessons[lessons.length - 1];
 const totalModules = course.modules.length;
 const currentLessonCount = lessons.length;
+const lessonsByModule = new Map<string, CourseLessonArticle[]>();
+
+for (const lesson of lessons) {
+  const existingLessons = lessonsByModule.get(lesson.moduleTitle) ?? [];
+  existingLessons.push(lesson);
+  lessonsByModule.set(lesson.moduleTitle, existingLessons);
+}
+
+const noteModules = course.modules.map((module) => ({
+  title: module.title,
+  description: module.description,
+  lessons: lessonsByModule.get(module.title) ?? [],
+}));
+
 const roadmapHighlights = [
-  '先用 module map 了解 React 如何從元件思維一路走到 hooks 與 routing。',
-  '每一課都會對應到實際 UI 開發情境，方便你把觀念轉成畫面與互動。',
-  '目前 lessons 頁已先建立閱讀入口，後續可以直接往正式教學文章擴寫。',
+  '先用 module map 了解 React 如何從 component thinking 一路走到 hooks、forms 與 routing。',
+  '這一頁與單課內容現在讀的是同一份正式 lesson data，不再是兩套分開維護的 placeholder。',
+  '如果你要沿著主線讀，建議從 Lesson 1 開始，再用 continuity 一路往下。',
 ];
 const learningPromises = [
-  '建立 component thinking，知道 UI 要怎麼拆、怎麼組、怎麼重用。',
-  '理解 state、effect、form、routing 在中型前端專案裡各自扮演什麼角色。',
-  '先有一條可持續擴寫的 React 主線，再逐步補齊更多 lessons。',
+  '建立 component、props、state、effect 之間的前端主線心智模型。',
+  '把表單、routing、專案結構等中型應用常見問題串成可重複複習的課程。',
+  '每一課都可以直接進 article page 深讀，不只是跳到空白 placeholder。',
 ];
 ---
 
 <BaseLayout
   title={`React lessons · ${course.title}`}
-  description="Browse the React course home and current lesson placeholders."
+  description="Browse the formal React lesson library and article pages."
   currentCourse={course}
 >
   <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
@@ -50,8 +56,7 @@ const learningPromises = [
           <p class="eyebrow">Course home</p>
           <h1 class="page-title">React lessons</h1>
           <p class="lead narrow">
-            把 React 主線整理成可以持續往下擴寫的課程首頁，先建立從 foundations、state/hooks 到 app structure
-            的閱讀路徑。
+            把 React 主線整理成正式可閱讀的課程首頁，從 foundations、state/hooks 到 app structure，現在都能直接接到正式單課內容。
           </p>
 
           <div class="hero-actions course-home-actions">
@@ -62,7 +67,7 @@ const learningPromises = [
             ) : null}
             {latestLesson ? (
               <a class="hero-action" href={withBase(`/courses/react/lessons/${latestLesson.slug}`)}>
-                直接看目前最後一課
+                直接看最後一課
               </a>
             ) : null}
           </div>
@@ -99,15 +104,15 @@ const learningPromises = [
         <section class="panel-section panel-section--first">
           <div class="section-heading section-heading--editorial">
             <h2>Start here</h2>
-            <p>這頁先把 React 主線整理成真正可閱讀的課程首頁，而不是只留空白 placeholder。</p>
+            <p>這一頁現在和單課 article 共用同一份 lesson data，所以閱讀順序和內容來源是同步的。</p>
           </div>
 
           <div class="course-home-grid">
             <article class="content-panel content-panel--editorial note-panel course-home-feature">
               <p class="eyebrow">Reading flow</p>
-              <h3>先看模組順序，再進 lesson，最後一路補齊這條前端主線</h3>
+              <h3>先看模組順序，再進入正式 lesson article，最後一路把 React 主線讀完</h3>
               <p>
-                如果你想從 React 初學一路走到能整理中型 app 的結構，建議先用這頁掌握主線，再進入單課頁面吸收當前內容。
+                如果你想從 React 初學一路走到能整理中型 app 的結構，建議先用這頁掌握主線，再進入每一課的正式文章頁面。
               </p>
               <ul class="simple-list simple-list--compact">
                 {roadmapHighlights.map((highlight) => (
@@ -118,7 +123,7 @@ const learningPromises = [
 
             <aside class="content-panel content-panel--editorial note-panel course-home-aside">
               <p class="eyebrow">What you will get</p>
-              <h3>這條 React 主線會幫你把前端常見核心能力串起來</h3>
+              <h3>這條 React 主線會把常見前端核心能力串成一套可以反覆複習的內容</h3>
               <ul class="simple-list simple-list--compact">
                 {learningPromises.map((promise) => (
                   <li>{promise}</li>
@@ -138,7 +143,7 @@ const learningPromises = [
             <article class="course-step-card">
               <span class="course-step-number">01</span>
               <h3>先建立元件思維</h3>
-              <p>先把 JSX、components、props 讀順，之後學 state 和 hooks 會更穩。</p>
+              <p>先把 JSX、components、props 讀順，後面 state 和 hooks 會更穩。</p>
             </article>
             <article class="course-step-card">
               <span class="course-step-number">02</span>
@@ -160,7 +165,7 @@ const learningPromises = [
           </div>
 
           <div class="module-list">
-            {course.modules.map((module) => (
+            {noteModules.map((module) => (
               <article class="module-card module-card--editorial module-card--course-home">
                 <div class="module-head module-head--course-home">
                   <div>
@@ -171,21 +176,16 @@ const learningPromises = [
                 </div>
 
                 <div class="notes-list notes-list--module">
-                  {module.lessons.map((lesson) => {
-                    const lessonNumber = lesson.number.match(/(\d+)/)?.[1] ?? '1';
-                    const lessonHref = withBase(`/courses/react/lessons/lesson-${lessonNumber}`);
-
-                    return (
-                      <a class="note-card note-card--course-home" href={lessonHref}>
-                        <div class="note-card-meta">
-                          <span class="course-pill">{lesson.number}</span>
-                          <span class="note-card-arrow" aria-hidden="true">↗</span>
-                        </div>
-                        <h3>{lesson.title}</h3>
-                        <p>{lesson.summary}</p>
-                      </a>
-                    );
-                  })}
+                  {module.lessons.map((lesson) => (
+                    <a class="note-card note-card--course-home" href={withBase(`/courses/react/lessons/${lesson.slug}`)}>
+                      <div class="note-card-meta">
+                        <span class="course-pill">Lesson {lesson.lesson}</span>
+                        <span class="note-card-arrow" aria-hidden="true">↗</span>
+                      </div>
+                      <h3>{lesson.title}</h3>
+                      <p>{lesson.summary}</p>
+                    </a>
+                  ))}
                 </div>
               </article>
             ))}
@@ -194,15 +194,15 @@ const learningPromises = [
 
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
-            <h2>目前可讀 lessons</h2>
-            <p>這些 lesson pages 已經先建立好入口，後續可以逐課擴寫。</p>
+            <h2>全部 lessons</h2>
+            <p>這裡列出的每一課都已經有對應的正式 lesson article page。</p>
           </div>
 
           <div class="notes-list notes-list--compact-cards">
             {lessons.map((lesson) => (
               <a class="note-card note-card--compact" href={withBase(`/courses/react/lessons/${lesson.slug}`)}>
                 <div class="note-card-meta">
-                  <span class="course-pill">{lesson.number}</span>
+                  <span class="course-pill">Lesson {lesson.lesson}</span>
                   <span class="note-card-arrow" aria-hidden="true">↗</span>
                 </div>
                 <h3>{lesson.title}</h3>
