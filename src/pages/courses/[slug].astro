@@ -77,8 +77,8 @@ function getLessonHref(lessonNumber: string) {
             <div class="course-main-column">
               <div class="content-panel content-panel--editorial">
                 <div class="section-heading section-heading--editorial">
-                  <h2>這個主題會整理什麼</h2>
-                  <p>先定義學習重點，讓每篇內容都能對應到明確目標。</p>
+                  <h2>What this track covers</h2>
+                  <p>Start by defining the learning goals so each lesson stays tied to a clear outcome.</p>
                 </div>
 
                 <ul class="simple-list">
@@ -90,17 +90,17 @@ function getLessonHref(lessonNumber: string) {
 
               <div class="content-panel content-panel--editorial">
                 <div class="section-heading section-heading--editorial">
-                  <h2>教學內容清單</h2>
-                  <p>每個模組都代表一段有順序的學習整理。</p>
+                  <h2>Lesson map</h2>
+                  <p>Each module represents a structured stage in the learning sequence.</p>
                 </div>
 
                 {hasDedicatedNotes && noteLibraryHref && (
                   <div class="note-library-callout">
                     <div>
                       <p class="eyebrow">Notes library</p>
-                      <h3>這條主題線已經有獨立的 lesson notes</h3>
+                      <h3>This track already has a dedicated lesson library</h3>
                       <p>
-                        你可以先從課程地圖看整體結構，再直接進入每一課的筆記頁面閱讀正式草稿。
+                        You can start with the course map to understand the structure, then move directly into each lesson page to read the formal article draft.
                       </p>
                     </div>
                     <a class="course-link course-link--inline" href={noteLibraryHref}>
@@ -147,8 +147,8 @@ function getLessonHref(lessonNumber: string) {
             <aside class="course-side-column">
               <div class="content-panel content-panel--editorial sticky-panel">
                 <div class="section-heading section-heading--editorial">
-                  <h2>開始前需要</h2>
-                  <p>先備知識先列清楚，之後學習會更順。</p>
+                  <h2>Before you begin</h2>
+                  <p>List the prerequisites clearly first so the rest of the track feels smoother.</p>
                 </div>
 
                 <ul class="simple-list simple-list--compact">

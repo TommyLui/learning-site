@@ -106,9 +106,9 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel note-article-overview">
                 <div>
                   <p class="eyebrow">Article overview</p>
-                  <h2>這一課會帶你從觀念到實作</h2>
+                  <h2>This lesson takes you from concept to implementation</h2>
                   <p>
-                    先用學習目標抓重點，再讀正文與範例，最後用 practice 把這一課的內容轉成真正能記住的實作。
+                    Start with the learning goals, move through the main explanation and example, then use the practice section to turn the lesson into something you can actually remember and apply.
                   </p>
                 </div>
                 <div class="note-tag-list">
@@ -133,7 +133,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="lesson-notes">
                 <div class="section-heading section-heading--editorial">
                   <h2>Lesson notes</h2>
-                  <p>這一課的正式筆記內容，後續可以持續擴寫成完整教學文。</p>
+                  <p>This is the main written lesson content and can keep growing into a fuller teaching article later.</p>
                 </div>
                 <div class="article-flow">
                   {lessonNotes.map((paragraph) => (
@@ -145,7 +145,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="example">
                 <div class="section-heading section-heading--editorial">
                   <h2>Example</h2>
-                  <p>保留每課的最小範例，方便後續擴充成可執行 demo。</p>
+                  <p>Each lesson keeps a minimal example so it can later expand into a runnable demo.</p>
                 </div>
                 <pre class="note-code-block"><code>{note.exampleCode}</code></pre>
               </div>
@@ -153,7 +153,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="practice">
                 <div class="section-heading section-heading--editorial">
                   <h2>Practice</h2>
-                  <p>把這一課的重點轉成實際操作，會比只閱讀更容易留下記憶。</p>
+                  <p>Turning the key ideas into real actions will help the lesson stay with you better than reading alone.</p>
                 </div>
                 <ul class="simple-list">
                   {practice.map((item) => (
