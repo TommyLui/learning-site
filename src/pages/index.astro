@@ -3,8 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CourseCard from '../components/CourseCard.astro';
 import LessonRow from '../components/LessonRow.astro';
 import { courses, recentLessons } from '../data/courses';
-
-const springBootCourse = courses.find((course) => course.slug === 'spring-boot');
 ---
 
 <BaseLayout
@@ -82,34 +80,6 @@ const springBootCourse = courses.find((course) => course.slug === 'spring-boot')
             </article>
           </div>
         </section>
-
-        {springBootCourse && (
-          <section class="panel-section" id="featured-notes">
-            <div class="section-heading section-heading--editorial">
-              <h2>目前最完整的課程線</h2>
-              <p>Spring Boot 4.x 已經有完整 lesson library，可直接順著 lesson 逐課閱讀。</p>
-            </div>
-
-            <div class="featured-note-callout">
-              <div>
-                <p class="eyebrow">Featured lesson library</p>
-                <h3>{springBootCourse.title}</h3>
-                <p>
-                  已整理完整的 lesson notes、閱讀 continuity、lesson progress 與模組地圖，適合當主要閱讀入口。
-                </p>
-              </div>
-
-              <div class="featured-note-actions">
-                <a class="hero-action hero-action--primary" href="/courses/spring-boot/lessons">
-                  Open lesson library
-                </a>
-                <a class="hero-action" href="/courses/spring-boot/lessons/lesson-1">
-                  Start from lesson 1
-                </a>
-              </div>
-            </div>
-          </section>
-        )}
 
         <section class="panel-section" id="recent-lessons">
           <div class="section-heading section-heading--editorial">

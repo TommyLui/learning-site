@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { courses } from '../../../../data/courses';
+
+const course = courses.find((item) => item.slug === 'react');
+
+if (!course) {
+  throw new Error('React course not found');
+}
+
+export function getStaticPaths() {
+  const lessonPlaceholders = [
+    { slug: 'lesson-1', title: 'Lesson 1' },
+    { slug: 'lesson-2', title: 'Lesson 2' },
+    { slug: 'lesson-3', title: 'Lesson 3' },
+    { slug: 'lesson-4', title: 'Lesson 4' },
+    { slug: 'lesson-5', title: 'Lesson 5' },
+    { slug: 'lesson-6', title: 'Lesson 6' },
+    { slug: 'lesson-7', title: 'Lesson 7' },
+    { slug: 'lesson-8', title: 'Lesson 8' },
+    { slug: 'lesson-9', title: 'Lesson 9' },
+  ];
+
+  return lessonPlaceholders.map((lesson) => ({
+    params: { lesson: lesson.slug },
+    props: { lesson },
+  }));
+}
+
+const { lesson } = Astro.props;
+---
+
+<BaseLayout
+  title={`${lesson.title} · ${course.title}`}
+  description="React lesson placeholder page."
+  currentCourse={course}
+>
+  <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
+    <div class="page-intro-backdrop"></div>
+    <div class="container page-intro-inner">
+      <a href="/courses/react/lessons" class="back-link">← Back to React lessons</a>
+      <p class="eyebrow">Placeholder page</p>
+      <h1 class="page-title">{lesson.title}</h1>
+      <p class="lead narrow">這個頁面已建立，內容之後會再補上。</p>
+    </div>
+  </section>
+</BaseLayout>

@@ -385,7 +385,7 @@ export const recentLessons: RecentLesson[] = [
     title: 'Props and component reuse',
     summary: 'Learn how to pass data into components and build reusable UI patterns.',
     updatedAt: 'Updated Apr 2026',
-    href: '/courses/react',
+    href: '/courses/react/lessons/lesson-3',
   },
   {
     courseSlug: 'spring-boot',
@@ -395,7 +395,7 @@ export const recentLessons: RecentLesson[] = [
     title: 'Connect Spring Boot 4.x to MySQL',
     summary: 'Configure the datasource and prepare the project for relational data access with MySQL.',
     updatedAt: 'Updated Apr 2026',
-    href: '/courses/spring-boot',
+    href: '/courses/spring-boot/lessons/lesson-10',
   },
   {
     courseSlug: 'mysql',
@@ -405,7 +405,7 @@ export const recentLessons: RecentLesson[] = [
     title: 'Understanding INNER JOIN and LEFT JOIN',
     summary: 'Combine data from multiple tables with common join patterns.',
     updatedAt: 'Updated Apr 2026',
-    href: '/courses/mysql',
+    href: '/courses/mysql/lessons/lesson-4',
   },
   {
     courseSlug: 'spring-boot',
@@ -415,6 +415,6 @@ export const recentLessons: RecentLesson[] = [
     title: 'Spring Security fundamentals',
     summary: 'Understand authentication, authorization, and the security filter chain in Spring Boot 4.x apps.',
     updatedAt: 'Updated Apr 2026',
-    href: '/courses/spring-boot',
+    href: '/courses/spring-boot/lessons/lesson-16',
   },
 ];
