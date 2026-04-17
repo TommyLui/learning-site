@@ -165,7 +165,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel" id="references">
                 <div class="section-heading section-heading--editorial">
                   <h2>Official references</h2>
-                  <p>回到官方文件時，可以把這些連結當成延伸閱讀與版本確認入口。</p>
+                  <p>Use these links when you want to return to the official documentation for deeper reading or version checks.</p>
                 </div>
                 <ul class="simple-list">
                   {references.map((item) => (
@@ -179,7 +179,7 @@ const articleSections = [
               <div class="content-panel content-panel--editorial sticky-panel note-panel">
                 <div class="section-heading section-heading--editorial">
                   <h2>Reading guide</h2>
-                  <p>先抓這一課的閱讀順序，再決定是要快速複習還是慢慢完整讀完。</p>
+                  <p>Get the reading order first, then decide whether to review quickly or read the entire lesson carefully.</p>
                 </div>
 
                 <div class="lesson-anchor-list">
@@ -216,10 +216,10 @@ const articleSections = [
               <div class="content-panel content-panel--editorial note-panel note-progress-panel">
                 <div class="section-heading section-heading--editorial">
                   <h2>Course progress</h2>
-                  <p>快速知道你目前在第幾課，也能直接跳到其他 lesson。</p>
+                  <p>See where you are in the track and jump directly to other lessons.</p>
                 </div>
 
-                <p class="note-progress-copy">目前閱讀：Lesson {note.lesson} / {allNotes.length}</p>
+                <p class="note-progress-copy">Current lesson: Lesson {note.lesson} / {allNotes.length}</p>
                 <div class="lesson-progress-bar" aria-hidden="true">
                   <span style={`width: ${(note.lesson / allNotes.length) * 100}%`}></span>
                 </div>
@@ -243,7 +243,7 @@ const articleSections = [
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
             <h2>Lesson continuity</h2>
-            <p>保持學習節奏，從前一課順著接到下一課。</p>
+            <p>Keep the learning flow moving smoothly from the previous lesson to the next one.</p>
           </div>
 
           <div class="notes-list notes-list--continuity">

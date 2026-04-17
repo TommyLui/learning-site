@@ -32,11 +32,6 @@ const dropdownLabel = currentCourse ? currentCourse.title : isChinese ? '課程�
       </nav>
     )}
 
-    <div class="language-switch" aria-label={isChinese ? '語言切換' : 'Language switch'}>
-      <a href={englishPath} class:list={['language-link', { 'is-active': currentLocale === 'en' }]}>EN</a>
-      <a href={chinesePath} class:list={['language-link', { 'is-active': currentLocale === 'zh' }]}>中文</a>
-    </div>
-
     <details class="course-dropdown">
       <summary aria-label={dropdownLabel}>
         <span class="course-dropdown-label">{dropdownLabel}</span>
@@ -45,6 +40,11 @@ const dropdownLabel = currentCourse ? currentCourse.title : isChinese ? '課程�
 
       <div class="course-menu">
         <p class="menu-label">{isChinese ? '課程選單' : 'Course menu'}</p>
+
+        <div class="language-switch language-switch--menu" aria-label={isChinese ? '語言切換' : 'Language switch'}>
+          <a href={englishPath} class:list={['language-link', { 'is-active': currentLocale === 'en' }]}>EN</a>
+          <a href={chinesePath} class:list={['language-link', { 'is-active': currentLocale === 'zh' }]}>中文</a>
+        </div>
 
         <ul class="course-menu-list">
           {courses.map((course) => (

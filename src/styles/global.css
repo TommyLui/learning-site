@@ -98,7 +98,6 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  margin-left: 1rem;
   padding: 0.3rem;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 999px;
@@ -121,6 +120,22 @@ img {
 .language-link.is-active {
   background: rgba(255, 247, 235, 0.94);
   color: #3f2a1e;
+}
+
+.language-switch--menu {
+  margin-top: 0.75rem;
+  border-color: var(--line);
+  background: var(--surface-soft);
+  backdrop-filter: none;
+}
+
+.language-switch--menu .language-link {
+  color: var(--muted);
+}
+
+.language-switch--menu .language-link.is-active {
+  background: #3f2a1e;
+  color: #fff7eb;
 }
 
 .header-nav a,
@@ -1100,22 +1115,51 @@ h1,
 }
 
 @media (max-width: 720px) {
-  .header-inner,
   .footer-inner,
   .section-heading {
     align-items: start;
     flex-direction: column;
   }
 
-  .header-nav {
-    order: 3;
-    margin-left: 0;
-    flex-wrap: wrap;
-    gap: 0.8rem;
+  .header-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 0.85rem 0.9rem;
+    min-height: auto;
+    padding-top: 0.9rem;
   }
 
-  .language-switch {
-    margin-left: auto;
+  .brand {
+    min-width: 0;
+    padding-top: 0.2rem;
+  }
+
+  .brand-title {
+    display: inline-block;
+    max-width: 14ch;
+    line-height: 1.2;
+  }
+
+  .header-nav {
+    order: 3;
+    grid-column: 1 / -1;
+    margin-left: 0;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    width: 100%;
+    padding-top: 0.25rem;
+  }
+
+  .header-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 0.68rem 0.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
   }
 
   .hero,
@@ -1134,7 +1178,8 @@ h1,
   }
 
   .course-dropdown {
-    margin-left: auto;
+    margin-left: 0;
+    justify-self: end;
   }
 
   .course-dropdown summary {
@@ -1153,6 +1198,11 @@ h1,
     width: 100%;
     right: auto;
     left: 0;
+  }
+
+  .language-switch--menu {
+    width: fit-content;
+    max-width: 100%;
   }
 
   h1,

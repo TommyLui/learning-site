@@ -29,14 +29,14 @@ const latestLesson = notes[notes.length - 1];
 const totalModules = noteModules.length;
 const averageLessonsPerModule = Math.round(notes.length / totalModules);
 const roadmapHighlights = [
-  '先用 module map 了解整套課程如何從基礎概念一路走到部署。',
-  '每一課都保留摘要、正文、練習與官方 references，方便從閱讀切進實作。',
-  '如果你要連續學，建議從 Lesson 1 開始，順著 continuity 一路往下。',
+  'Use the module map first to see how the course moves from core concepts all the way to deployment.',
+  'Every lesson keeps its summary, full notes, practice, and official references so you can move from reading into real implementation.',
+  'If you want to follow the track in order, start from Lesson 1 and continue straight through the continuity flow.',
 ];
 const learningPromises = [
-  '理解 Spring Boot 專案怎麼從啟動、Controller、Service 一路組起來。',
-  '把 REST API、JPA/MySQL、Validation、Testing 串成可實作的開發主線。',
-  '知道安全性、部署與 production thinking 要在什麼階段開始補進來。',
+  'Understand how a Spring Boot project is assembled from startup and controllers through services and deployment.',
+  'Connect REST APIs, JPA and MySQL, validation, and testing into one practical development path.',
+  'See when security, deployment, and production thinking should enter the learning flow.',
 ];
 ---
 
@@ -60,12 +60,12 @@ const learningPromises = [
           <div class="hero-actions course-home-actions">
             {firstLesson ? (
               <a class="hero-action hero-action--primary" href={withBase(`/courses/spring-boot/lessons/${firstLesson.slug}`)}>
-                從 Lesson 1 開始
+                Start from Lesson 1
               </a>
             ) : null}
             {latestLesson ? (
               <a class="hero-action" href={withBase(`/courses/spring-boot/lessons/${latestLesson.slug}`)}>
-                直接看最新一課
+                Jump to the latest lesson
               </a>
             ) : null}
           </div>
@@ -108,10 +108,9 @@ const learningPromises = [
           <div class="course-home-grid">
             <article class="content-panel content-panel--editorial note-panel course-home-feature">
               <p class="eyebrow">Reading flow</p>
-              <h3>先看整張地圖，再進單課，最後用 continuity 接到下一課</h3>
+              <h3>Read the whole map first, then move into each lesson, and keep going with lesson continuity</h3>
               <p>
-                如果你是第一次學 Spring Boot，建議先把這頁當成課程入口：用模組地圖確認主線，再進入 lesson
-                文章頁，最後順著每課底部的 continuity 繼續往下。
+                If this is your first time learning Spring Boot, use this page as the course entry point: confirm the full path with the module map, then enter the lesson articles and continue with the continuity links at the bottom of each page.
               </p>
               <ul class="simple-list simple-list--compact">
                 {roadmapHighlights.map((highlight) => (
@@ -122,7 +121,7 @@ const learningPromises = [
 
             <aside class="content-panel content-panel--editorial note-panel course-home-aside">
               <p class="eyebrow">What you will get</p>
-              <h3>讀完這條主線後，你會更清楚 Spring Boot 專案是怎麼被一步步建起來的</h3>
+              <h3>By the end of this path, you will have a much clearer picture of how a Spring Boot project is built step by step</h3>
               <ul class="simple-list simple-list--compact">
                 {learningPromises.map((promise) => (
                   <li>{promise}</li>
@@ -135,32 +134,32 @@ const learningPromises = [
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
             <h2>Recommended path</h2>
-            <p>如果你不想自己決定順序，可以先照這條閱讀節奏走。</p>
+            <p>If you do not want to choose the order yourself, follow this reading sequence first.</p>
           </div>
 
           <div class="course-home-steps">
             <article class="course-step-card">
               <span class="course-step-number">01</span>
-              <h3>先理解模組順序</h3>
-              <p>從基礎建置、Web API、資料存取、測試、安全到部署，先建立整體脈絡。</p>
+              <h3>Understand the module order first</h3>
+              <p>Start by seeing the full flow from project setup and web APIs to data access, testing, security, and deployment.</p>
             </article>
             <article class="course-step-card">
               <span class="course-step-number">02</span>
-              <h3>進單課吸收實作細節</h3>
-              <p>每課都有 summary、article body、example、practice，適合一路讀一路練。</p>
+              <h3>Use each lesson to absorb implementation details</h3>
+              <p>Every lesson includes a summary, article body, example, and practice, so you can read and apply the ideas as you go.</p>
             </article>
             <article class="course-step-card">
               <span class="course-step-number">03</span>
-              <h3>用 continuity 維持節奏</h3>
-              <p>讀完一課後不要跳掉，直接順著上一課 / 下一課把主線串起來。</p>
+              <h3>Keep the rhythm with continuity</h3>
+              <p>Do not stop after finishing one lesson. Use the previous and next links to keep the whole track connected.</p>
             </article>
           </div>
         </section>
 
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
-            <h2>模組地圖</h2>
-            <p>先用模組分組理解這套課程的學習階段，再進入個別 lesson。</p>
+            <h2>Module map</h2>
+            <p>Use the module groups to understand the stages of the course before opening individual lessons.</p>
           </div>
 
           <div class="module-list">
@@ -193,8 +192,8 @@ const learningPromises = [
 
         <section class="panel-section">
           <div class="section-heading section-heading--editorial">
-            <h2>全部 lessons</h2>
-            <p>如果你想快速跳到指定課次，也可以直接從完整清單進入。</p>
+            <h2>All lessons</h2>
+            <p>If you want to jump to a specific lesson quickly, use the full list here.</p>
           </div>
 
           <div class="notes-list notes-list--compact-cards">
