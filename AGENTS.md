@@ -23,6 +23,7 @@
 ## Content Wiring
 
 - `src/data/courses.ts` is the shared course catalog for homepages and course landing pages in both locales.
+- `src/data/lessonRegistry.ts` is the shared resolver for generic data-backed tracks. If you add another data-backed course, update it together with `src/utils/paths.ts` and the `/courses/<slug>/index.astro` + `/zh/courses/<slug>/index.astro` redirect pages.
 - React lessons come from `src/data/reactLessons.ts` and `src/data/reactLessonsZh.ts`.
 - MySQL lessons come from `src/data/mysqlLessons.ts` and `src/data/mysqlLessonsZh.ts`.
 - Go lessons come from `src/data/goLessons.ts` and `src/data/goLessonsZh.ts`.
@@ -30,6 +31,8 @@
 - C# lessons come from `src/data/csharpLessons.ts` and `src/data/csharpLessonsZh.ts`.
 - Next.js lessons come from `src/data/nextjsLessons.ts` and `src/data/nextjsLessonsZh.ts`.
 - TypeScript lessons come from `src/data/typescriptLessons.ts` and `src/data/typescriptLessonsZh.ts`.
+- `src/pages/courses/[slug]/lessons/**` and `src/pages/zh/courses/[slug]/lessons/**` currently own the generic data-backed tracks: Go, Rust, C#, Next.js, and TypeScript.
+- React and MySQL still use dedicated per-track lesson pages under `src/pages/courses/react/**`, `src/pages/courses/mysql/**`, and their zh mirrors.
 - Spring Boot lessons are filesystem-backed markdown loaded by `src/data/springbootNotes.ts` from `course-notes/springboot/` and `course-notes/springboot-zh/`.
 
 ## Spring Boot Notes
@@ -42,7 +45,8 @@
 ## Linking Gotcha
 
 - `src/pages/courses/[slug].astro` and `src/pages/zh/courses/[slug].astro` no longer own Spring Boot, React, MySQL, Go, Rust, C#, Next.js, or TypeScript. Those tracks land on their `/lessons` index pages, while the generic route only applies to any future non-dedicated course pages.
-- If the numbering in `src/data/courses.ts` stops matching the actual lesson slugs in the lesson libraries, course landing page links break.
+- For any data-backed track, the locale-specific `course.modules[].title` values in `src/data/courses.ts` must match each lesson's `moduleTitle` in that locale, or the lesson hub renders empty module sections.
+- Keep EN and zh lesson libraries in lockstep for lesson count, order, and slugs. If they drift, route generation and locale parity break.
 
 ## UI
 
