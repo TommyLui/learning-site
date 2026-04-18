@@ -1,0 +1,60 @@
+import type { Course, CourseLocale } from './courses';
+import { getCourseBySlug } from './courses';
+import type { CourseLessonArticle } from './goLessons';
+import { getGoLessons as getGoLessonsEn } from './goLessons';
+import { getGoLessons as getGoLessonsZh } from './goLessonsZh';
+import { getRustLessons as getRustLessonsEn } from './rustLessons';
+import { getRustLessons as getRustLessonsZh } from './rustLessonsZh';
+import { getCSharpLessons as getCSharpLessonsEn } from './csharpLessons';
+import { getCSharpLessons as getCSharpLessonsZh } from './csharpLessonsZh';
+
+export type { CourseLessonArticle } from './goLessons';
+
+export const DATA_BACKED_TRACK_SLUGS = ['go', 'rust', 'csharp'] as const;
+
+export type DataBackedTrackSlug = (typeof DATA_BACKED_TRACK_SLUGS)[number];
+
+const dataBackedTrackSet = new Set<string>(DATA_BACKED_TRACK_SLUGS);
+
+export type DataBackedTrack = {
+  slug: DataBackedTrackSlug;
+  course: Course;
+  lessons: CourseLessonArticle[];
+};
+
+export function isDataBackedTrackSlug(slug: string): slug is DataBackedTrackSlug {
+  return dataBackedTrackSet.has(slug);
+}
+
+export function getDataBackedTrackSlugs() {
+  return [...DATA_BACKED_TRACK_SLUGS];
+}
+
+function getLessonsBySlug(slug: DataBackedTrackSlug, locale: CourseLocale): CourseLessonArticle[] {
+  switch (slug) {
+    case 'go':
+      return locale === 'zh' ? getGoLessonsZh() : getGoLessonsEn();
+    case 'rust':
+      return locale === 'zh' ? getRustLessonsZh() : getRustLessonsEn();
+    case 'csharp':
+      return locale === 'zh' ? getCSharpLessonsZh() : getCSharpLessonsEn();
+  }
+}
+
+export function getDataBackedTrack(slug: string, locale: CourseLocale = 'en'): DataBackedTrack | null {
+  if (!isDataBackedTrackSlug(slug)) {
+    return null;
+  }
+
+  const course = getCourseBySlug(slug, locale);
+
+  if (!course) {
+    return null;
+  }
+
+  return {
+    slug,
+    course,
+    lessons: getLessonsBySlug(slug, locale),
+  };
+}

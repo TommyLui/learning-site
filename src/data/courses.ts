@@ -13,7 +13,7 @@ export type CourseModule = {
 };
 
 export type Course = {
-  slug: 'react' | 'spring-boot' | 'mysql';
+  slug: 'react' | 'spring-boot' | 'mysql' | 'go' | 'rust' | 'csharp';
   title: string;
   zhTitle?: string;
   shortLabel: string;
@@ -537,6 +537,406 @@ export const courses: Course[] = [
       },
     ],
   },
+  {
+    slug: 'go',
+    title: 'Go',
+    shortLabel: 'GO',
+    category: 'Backend and systems development',
+    zhCategory: '後端與系統開發',
+    accent: '#00ADD8',
+    subtitle: 'Learn Go fundamentals, concurrency patterns, and practical HTTP service design.',
+    zhSubtitle: '學習 Go 基礎、並行模式與實務 HTTP 服務設計。',
+    overview:
+      'This course teaches Go from core syntax to small service delivery, with a strong focus on clear code, testing, and idiomatic concurrency.',
+    zhOverview: '這套課程從語法到小型服務交付，帶你建立 Go 的核心能力，重點放在可讀程式碼、測試與慣用並行模式。',
+    level: 'Beginner to intermediate',
+    zhLevel: '初階到中階',
+    totalLessons: 13,
+    focus: ['tooling and workflow', 'slices and maps', 'error handling and testing', 'goroutines and HTTP'],
+    zhFocus: ['工具鏈與開發流程', 'slices 與 maps', '錯誤處理與測試', 'goroutines 與 HTTP'],
+    prerequisites: ['Basic programming experience', 'Comfort with command-line tools', 'General backend curiosity'],
+    zhPrerequisites: ['具備基本程式設計經驗', '能使用命令列工具', '對後端開發有基本興趣'],
+    outcomes: [
+      'Write readable Go code with functions, structs, and interfaces',
+      'Build and test a small HTTP service using standard Go packages',
+      'Use goroutines and channels to coordinate concurrent tasks safely',
+    ],
+    zhOutcomes: ['寫出具可讀性的 Go 程式，並熟悉 functions、structs、interfaces', '用標準套件建立並測試小型 HTTP 服務', '用 goroutines 與 channels 安全協調並行工作'],
+    modules: [
+      {
+        title: 'Module 1 · Go setup and syntax basics',
+        zhTitle: '模組 1 · Go 安裝與語法基礎',
+        description: 'Set up your environment and build confidence with Go syntax and core data structures.',
+        zhDescription: '先完成環境建置，並熟悉 Go 語法與核心資料結構。',
+        lessons: [
+          {
+            number: 'Lesson 1',
+            title: 'Install Go, use the toolchain, and run your first program',
+            summary: 'Set up Go locally and understand the go run and go build workflow.',
+          },
+          {
+            number: 'Lesson 2',
+            title: 'Variables, control flow, and functions in Go',
+            summary: 'Write readable Go functions with clear types, conditions, and loops.',
+          },
+          {
+            number: 'Lesson 3',
+            title: 'Arrays, slices, and maps for everyday data work',
+            summary: 'Manage grouped data with Go’s most common collection types.',
+          },
+        ],
+      },
+      {
+        title: 'Module 2 · Data structures and type design',
+        zhTitle: '模組 2 · 資料結構與型別設計',
+        description: 'Model business data and behavior with structs, methods, and interfaces.',
+        zhDescription: '用 structs、methods、interfaces 建立資料模型與行為抽象。',
+        lessons: [
+          {
+            number: 'Lesson 4',
+            title: 'Structs and methods for domain modeling',
+            summary: 'Model data with structs and attach behavior through methods.',
+          },
+          {
+            number: 'Lesson 5',
+            title: 'Interfaces and implicit implementation',
+            summary: 'Design flexible code by programming to behavior instead of concrete types.',
+          },
+          {
+            number: 'Lesson 6',
+            title: 'Packages and modules for project organization',
+            summary: 'Organize code with packages and manage dependencies using Go modules.',
+          },
+        ],
+      },
+      {
+        title: 'Module 3 · Errors, testing, and data I/O',
+        zhTitle: '模組 3 · 錯誤處理、測試與資料 I/O',
+        description: 'Strengthen reliability with clear error handling, tests, and file or JSON processing.',
+        zhDescription: '用錯誤處理、測試與檔案或 JSON 處理建立更可靠的程式。',
+        lessons: [
+          {
+            number: 'Lesson 7',
+            title: 'Error handling patterns and custom errors',
+            summary: 'Return, wrap, and inspect errors in a predictable way.',
+          },
+          {
+            number: 'Lesson 8',
+            title: 'Testing with the standard testing package',
+            summary: 'Write table-driven tests and run focused test workflows.',
+          },
+          {
+            number: 'Lesson 9',
+            title: 'Reading files and encoding JSON data',
+            summary: 'Handle common file input and output plus JSON serialization tasks.',
+          },
+        ],
+      },
+      {
+        title: 'Module 4 · Concurrency and HTTP fundamentals',
+        zhTitle: '模組 4 · 並行與 HTTP 基礎',
+        description: 'Apply goroutines, channels, and net/http to build responsive backend features.',
+        zhDescription: '把 goroutines、channels 與 net/http 套用到可回應的後端功能。',
+        lessons: [
+          {
+            number: 'Lesson 10',
+            title: 'Goroutines, channels, and basic concurrency design',
+            summary: 'Coordinate concurrent tasks safely with goroutines and channels.',
+          },
+          {
+            number: 'Lesson 11',
+            title: 'Build HTTP handlers with net/http',
+            summary: 'Create routes and handlers with Go’s standard HTTP library.',
+          },
+        ],
+      },
+      {
+        title: 'Module 5 · Build a small Go service',
+        zhTitle: '模組 5 · 建立小型 Go 服務',
+        description: 'Combine everything into a small service and prepare it for practical usage.',
+        zhDescription: '整合前面能力，完成小型服務並準備實際使用。',
+        lessons: [
+          {
+            number: 'Lesson 12',
+            title: 'Design a small CRUD-style service flow',
+            summary: 'Plan request models, validation, and in-memory storage for a simple service.',
+          },
+          {
+            number: 'Lesson 13',
+            title: 'Run, test, and refine the service',
+            summary: 'Add basic logging, configuration, and test coverage before shipping.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'rust',
+    title: 'Rust',
+    shortLabel: 'RS',
+    category: 'Systems programming',
+    zhCategory: '系統程式設計',
+    accent: '#B46A3A',
+    subtitle: 'Learn Rust ownership, type-driven design, and practical CLI workflows.',
+    zhSubtitle: '學習 Rust 的所有權模型、型別導向設計與實務 CLI 開發流程。',
+    overview:
+      'This course builds Rust fundamentals from Cargo setup to a small command-line project, with emphasis on ownership, safety, and maintainable abstractions.',
+    zhOverview: '這套課程從 Cargo 建置一路帶到小型命令列專案，重點放在所有權、安全性與可維護抽象能力。',
+    level: 'Beginner to intermediate',
+    zhLevel: '初階到中階',
+    totalLessons: 13,
+    focus: ['ownership and borrowing', 'enums and pattern matching', 'error handling', 'traits and iterators'],
+    zhFocus: ['所有權與借用', 'enums 與模式比對', '錯誤處理', 'traits 與 iterators'],
+    prerequisites: ['Basic programming experience', 'Comfort reading command-line output', 'Interest in strongly typed languages'],
+    zhPrerequisites: ['具備基本程式設計經驗', '能閱讀命令列輸出', '對強型別語言有興趣'],
+    outcomes: [
+      'Understand Rust ownership, borrowing, and lifetime basics',
+      'Build reusable Rust code with traits, generics, and modules',
+      'Ship a small CLI workflow with testing and concurrency foundations',
+    ],
+    zhOutcomes: ['理解 Rust 的所有權、借用與生命週期基礎', '用 traits、generics、modules 建立可重用程式碼', '完成具測試與並行基礎的小型 CLI 工作流'],
+    modules: [
+      {
+        title: 'Module 1 · Rust setup and core syntax',
+        zhTitle: '模組 1 · Rust 安裝與核心語法',
+        description: 'Install Rust and get comfortable with Cargo and everyday language syntax.',
+        zhDescription: '完成 Rust 安裝，並熟悉 Cargo 與日常語法。',
+        lessons: [
+          {
+            number: 'Lesson 1',
+            title: 'Install Rust, rustup, and create your first Cargo project',
+            summary: 'Set up the toolchain and run a clean Cargo-based workflow.',
+          },
+          {
+            number: 'Lesson 2',
+            title: 'Variables, functions, and control flow in Rust',
+            summary: 'Write clear Rust programs with immutable defaults and explicit control flow.',
+          },
+        ],
+      },
+      {
+        title: 'Module 2 · Ownership and data modeling',
+        zhTitle: '模組 2 · 所有權與資料建模',
+        description: 'Build the key Rust mental model around ownership, borrowing, and expressive types.',
+        zhDescription: '建立 Rust 的核心心智模型：所有權、借用與可表達的型別設計。',
+        lessons: [
+          {
+            number: 'Lesson 3',
+            title: 'Ownership and move semantics',
+            summary: 'Understand how ownership keeps memory usage safe and predictable.',
+          },
+          {
+            number: 'Lesson 4',
+            title: 'Borrowing and references without data races',
+            summary: 'Share data safely with references and clear borrowing rules.',
+          },
+          {
+            number: 'Lesson 5',
+            title: 'Structs, enums, and match for expressive models',
+            summary: 'Represent domain states clearly with enums and pattern matching.',
+          },
+        ],
+      },
+      {
+        title: 'Module 3 · Error handling and project structure',
+        zhTitle: '模組 3 · 錯誤處理與專案結構',
+        description: 'Learn collections, robust error flows, and package organization for real projects.',
+        zhDescription: '學會 collections、穩健的錯誤流程與專案分層。',
+        lessons: [
+          {
+            number: 'Lesson 6',
+            title: 'Collections and UTF-8 string handling',
+            summary: 'Work with vectors, hash maps, and Rust string types in practical scenarios.',
+          },
+          {
+            number: 'Lesson 7',
+            title: 'Option and Result for reliable error flows',
+            summary: 'Model missing values and recoverable failures explicitly.',
+          },
+          {
+            number: 'Lesson 8',
+            title: 'Modules, crates, and package layout with Cargo',
+            summary: 'Split growing codebases into maintainable modules and crates.',
+          },
+        ],
+      },
+      {
+        title: 'Module 4 · Abstractions and functional patterns',
+        zhTitle: '模組 4 · 抽象能力與函式式模式',
+        description: 'Use traits, generics, lifetimes, iterators, and closures to write reusable Rust code.',
+        zhDescription: '用 traits、generics、lifetimes、iterators、closures 寫出可重用程式碼。',
+        lessons: [
+          {
+            number: 'Lesson 9',
+            title: 'Traits and generics for reusable APIs',
+            summary: 'Create abstractions that stay type-safe without repeating logic.',
+          },
+          {
+            number: 'Lesson 10',
+            title: 'Lifetime basics for borrowed data',
+            summary: 'Express reference lifetimes in function signatures without overcomplicating design.',
+          },
+          {
+            number: 'Lesson 11',
+            title: 'Iterators and closures for data pipelines',
+            summary: 'Transform and filter data with composable iterator chains.',
+          },
+        ],
+      },
+      {
+        title: 'Module 5 · Testing, concurrency, and a small CLI',
+        zhTitle: '模組 5 · 測試、並行與小型 CLI',
+        description: 'Validate behavior, introduce concurrency, and finish with a practical CLI flow.',
+        zhDescription: '驗證程式行為、導入並行觀念，最後完成實務 CLI 流程。',
+        lessons: [
+          {
+            number: 'Lesson 12',
+            title: 'Testing and documentation workflow in Rust projects',
+            summary: 'Use unit tests, integration tests, and docs to keep code trustworthy.',
+          },
+          {
+            number: 'Lesson 13',
+            title: 'Concurrency and async intro through a small CLI tool',
+            summary: 'Apply threads or async-style thinking to build a practical command-line tool.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'csharp',
+    title: 'C#',
+    zhTitle: 'C#',
+    shortLabel: 'C#',
+    category: 'Backend and application development',
+    zhCategory: '後端與應用程式開發',
+    accent: '#68217A',
+    subtitle: 'Learn modern C# with .NET CLI, async workflows, and ASP.NET Core basics.',
+    zhSubtitle: '使用 .NET CLI 學習現代 C#，掌握非同步流程與 ASP.NET Core 基礎。',
+    overview:
+      'This course introduces practical C# development from language fundamentals to a small ASP.NET Core API, emphasizing maintainable project structure and real-world workflows.',
+    zhOverview: '這套課程從語言基礎帶到小型 ASP.NET Core API，重點放在可維護的專案結構與實務開發流程。',
+    level: 'Beginner to intermediate',
+    zhLevel: '初階到中階',
+    totalLessons: 13,
+    focus: ['.NET CLI workflow', 'OOP and interfaces', 'LINQ and async', 'ASP.NET Core fundamentals'],
+    zhFocus: ['.NET CLI 工作流', 'OOP 與 interfaces', 'LINQ 與 async', 'ASP.NET Core 基礎'],
+    prerequisites: ['Basic programming experience', 'Comfort with command-line tools', 'General understanding of web APIs'],
+    zhPrerequisites: ['具備基本程式設計經驗', '能使用命令列工具', '對 Web API 有基本理解'],
+    outcomes: [
+      'Write modern C# with nullability, collections, and object modeling',
+      'Use LINQ and async or await patterns for common app workflows',
+      'Build a small ASP.NET Core API with practical project organization',
+    ],
+    zhOutcomes: ['用 nullability、collections、物件建模寫出現代 C# 程式', '在常見流程中運用 LINQ 與 async / await', '以實務分層方式完成小型 ASP.NET Core API'],
+    modules: [
+      {
+        title: 'Module 1 · .NET setup and C# fundamentals',
+        zhTitle: '模組 1 · .NET 安裝與 C# 基礎',
+        description: 'Set up .NET tooling and build a solid base in C# syntax and program flow.',
+        zhDescription: '完成 .NET 工具安裝，建立 C# 語法與程式流程基礎。',
+        lessons: [
+          {
+            number: 'Lesson 1',
+            title: 'Install .NET SDK and use the dotnet CLI',
+            summary: 'Create, run, and manage C# projects with a clean command-line workflow.',
+          },
+          {
+            number: 'Lesson 2',
+            title: 'C# syntax, types, and expressions',
+            summary: 'Understand variables, operators, and type-safe expression building.',
+          },
+          {
+            number: 'Lesson 3',
+            title: 'Methods and control flow in practical programs',
+            summary: 'Structure logic with reusable methods and clear branching rules.',
+          },
+        ],
+      },
+      {
+        title: 'Module 2 · Types, nullability, and OOP design',
+        zhTitle: '模組 2 · 型別、可空性與 OOP 設計',
+        description: 'Learn core C# type modeling tools for maintainable object-oriented code.',
+        zhDescription: '掌握 C# 的型別建模能力，寫出可維護的物件導向程式。',
+        lessons: [
+          {
+            number: 'Lesson 4',
+            title: 'Collections and nullable reference types',
+            summary: 'Use common collections and avoid null-related runtime issues.',
+          },
+          {
+            number: 'Lesson 5',
+            title: 'Classes, records, and object-oriented basics',
+            summary: 'Model data and behavior with classes, records, and encapsulation.',
+          },
+          {
+            number: 'Lesson 6',
+            title: 'Interfaces and composition over deep inheritance',
+            summary: 'Design flexible systems by combining interfaces with composition.',
+          },
+        ],
+      },
+      {
+        title: 'Module 3 · Project organization and data access patterns',
+        zhTitle: '模組 3 · 專案組織與資料處理模式',
+        description: 'Improve reliability through exception handling, packages, and query-style data transforms.',
+        zhDescription: '用例外處理、套件管理與查詢式資料轉換提升專案可靠性。',
+        lessons: [
+          {
+            number: 'Lesson 7',
+            title: 'Exceptions, logging, and debugging habits',
+            summary: 'Handle failures clearly and investigate issues with practical debugging steps.',
+          },
+          {
+            number: 'Lesson 8',
+            title: 'Namespaces, projects, and NuGet packages',
+            summary: 'Organize larger codebases and add dependencies in a controlled way.',
+          },
+          {
+            number: 'Lesson 9',
+            title: 'LINQ for querying in-memory data',
+            summary: 'Filter, project, and group data with readable LINQ expressions.',
+          },
+        ],
+      },
+      {
+        title: 'Module 4 · Async programming and application I/O',
+        zhTitle: '模組 4 · 非同步程式設計與應用 I/O',
+        description: 'Use asynchronous patterns and practical file or JSON handling in everyday C# apps.',
+        zhDescription: '在日常 C# 應用中運用非同步模式與檔案或 JSON 處理。',
+        lessons: [
+          {
+            number: 'Lesson 10',
+            title: 'Async and await with Task-based workflows',
+            summary: 'Write responsive code by awaiting asynchronous operations correctly.',
+          },
+          {
+            number: 'Lesson 11',
+            title: 'Files, JSON serialization, and app configuration',
+            summary: 'Read files, serialize data, and manage settings with configuration APIs.',
+          },
+        ],
+      },
+      {
+        title: 'Module 5 · ASP.NET Core and a small API project',
+        zhTitle: '模組 5 · ASP.NET Core 與小型 API 專案',
+        description: 'Learn minimal API basics, then package a small service with clear boundaries.',
+        zhDescription: '先掌握 minimal API 基礎，再完成具清楚邊界的小型服務。',
+        lessons: [
+          {
+            number: 'Lesson 12',
+            title: 'ASP.NET Core minimal API fundamentals',
+            summary: 'Create routes, bind request data, and return consistent API responses.',
+          },
+          {
+            number: 'Lesson 13',
+            title: 'Build and organize a small Web API application',
+            summary: 'Assemble a practical API with validation, structure, and a production-minded checklist.',
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 function localizeModule(module: CourseModule, locale: CourseLocale): CourseModule {
@@ -619,5 +1019,25 @@ export const recentLessons: RecentLesson[] = [
     summary: 'Understand authentication, authorization, and SecurityFilterChain-based API protection in Spring Boot 3.x apps.',
     updatedAt: 'Updated Apr 2026',
     href: '/courses/spring-boot/lessons/lesson-16',
+  },
+  {
+    courseSlug: 'go',
+    courseTitle: 'Go',
+    accent: '#00ADD8',
+    number: 'Lesson 10',
+    title: 'Goroutines, channels, and basic concurrency design',
+    summary: 'Coordinate concurrent tasks safely with goroutines and channels.',
+    updatedAt: 'Updated Apr 2026',
+    href: '/courses/go/lessons/lesson-10',
+  },
+  {
+    courseSlug: 'csharp',
+    courseTitle: 'C#',
+    accent: '#68217A',
+    number: 'Lesson 12',
+    title: 'ASP.NET Core minimal API fundamentals',
+    summary: 'Create routes, bind request data, and return consistent API responses.',
+    updatedAt: 'Updated Apr 2026',
+    href: '/courses/csharp/lessons/lesson-12',
   },
 ];

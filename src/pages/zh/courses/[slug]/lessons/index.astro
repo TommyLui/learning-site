@@ -1,0 +1,248 @@
+---
+const locale = 'zh' as const;
+const localize = (path: string) => withBase(path, locale);
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import type { Course } from '../../../../../data/courses';
+import {
+  getDataBackedTrack,
+  getDataBackedTrackSlugs,
+  type CourseLessonArticle,
+  type DataBackedTrackSlug,
+} from '../../../../../data/lessonRegistry';
+import { withBase } from '../../../../../utils/paths';
+
+interface Props {
+  slug: DataBackedTrackSlug;
+  course: Course;
+  lessons: CourseLessonArticle[];
+}
+
+export function getStaticPaths() {
+  return getDataBackedTrackSlugs().map((slug) => {
+    const track = getDataBackedTrack(slug, 'zh');
+
+    if (!track) {
+      throw new Error(`Data-backed track not found for slug: ${slug}`);
+    }
+
+    return {
+      params: { slug },
+      props: {
+        slug,
+        course: track.course,
+        lessons: track.lessons,
+      },
+    };
+  });
+}
+
+const { slug, course, lessons } = Astro.props as Props;
+const firstLesson = lessons[0];
+const latestLesson = lessons[lessons.length - 1];
+const totalModules = course.modules.length;
+const currentLessonCount = lessons.length;
+const lessonsByModule = new Map<string, CourseLessonArticle[]>();
+
+for (const lesson of lessons) {
+  const existingLessons = lessonsByModule.get(lesson.moduleTitle) ?? [];
+  existingLessons.push(lesson);
+  lessonsByModule.set(lesson.moduleTitle, existingLessons);
+}
+
+const noteModules = course.modules.map((module) => ({
+  title: module.title,
+  description: module.description,
+  lessons: lessonsByModule.get(module.title) ?? [],
+}));
+
+const firstModule = course.modules[0];
+const middleModule = course.modules[Math.min(2, course.modules.length - 1)] ?? firstModule;
+const finalModule = course.modules[course.modules.length - 1] ?? middleModule;
+
+const roadmapHighlights = [
+  `先用模組地圖理解 ${course.title} 如何從基礎一路走到實務應用。`,
+  '先把這頁當作學習地圖，再依需求進入每課文章深入閱讀。',
+  '如果你要沿著主線讀，建議從第 1 課開始，再順著課程延續一路往下。',
+];
+
+const learningPromises = [
+  `把 ${course.focus.join('、')} 串成一條可重複複習的學習主線。`,
+  '每一課都可直接進入完整文章，搭配範例、練習與延伸參考。',
+  `把 ${course.title} 主題整理成可快速回顧，也能深入重讀的筆記庫。`,
+];
+---
+
+<BaseLayout
+  title={`${course.title} 課程筆記 · ${course.title}`}
+  description={`瀏覽正式整理的 ${course.title} 課程筆記與文章頁。`}
+  currentCourse={course}
+  locale={locale}
+>
+  <section class="page-intro page-intro--course page-intro--editorial" style={`--course-accent: ${course.accent}`}>
+    <div class="page-intro-backdrop"></div>
+    <div class="container page-intro-inner">
+      <a href={localize('/courses')} class="back-link">← 返回所有主題</a>
+      <div class="course-hero-grid course-hero-grid--editorial">
+        <div>
+          <p class="eyebrow">課程首頁</p>
+          <h1 class="page-title">{course.title} 課程筆記</h1>
+          <p class="lead narrow">
+            把 {course.title} 主線整理成正式可閱讀的課程首頁，從基礎觀念到實務應用，現在都能直接接到正式單課內容。
+          </p>
+
+          <div class="hero-actions course-home-actions">
+            {firstLesson ? (
+              <a class="hero-action hero-action--primary" href={localize(`/courses/${slug}/lessons/${firstLesson.slug}`)}>
+                從第 1 課開始
+              </a>
+            ) : null}
+            {latestLesson ? (
+              <a class="hero-action" href={localize(`/courses/${slug}/lessons/${latestLesson.slug}`)}>
+                直接看最後一課
+              </a>
+            ) : null}
+          </div>
+        </div>
+
+        <aside class="course-summary-card course-summary-card--editorial course-summary-card--dense">
+          <h2>筆記總覽</h2>
+          <dl>
+            <div>
+              <dt>目前課數</dt>
+              <dd>{currentLessonCount}</dd>
+            </div>
+            <div>
+              <dt>預計課數</dt>
+              <dd>{course.totalLessons}</dd>
+            </div>
+            <div>
+              <dt>模組總數</dt>
+              <dd>{totalModules}</dd>
+            </div>
+            <div>
+              <dt>課程重點</dt>
+              <dd>{course.focus.join('、')}</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="floating-panel-wrap floating-panel-wrap--page">
+    <div class="container">
+      <div class="main-panel">
+        <section class="panel-section panel-section--first">
+          <div class="section-heading section-heading--editorial">
+            <h2>從這裡開始</h2>
+            <p>先用這一頁掌握整體學習順序與重點，再進入各課文章逐步深入。</p>
+          </div>
+
+          <div class="course-home-grid">
+            <article class="content-panel content-panel--editorial note-panel course-home-feature">
+              <p class="eyebrow">閱讀方式</p>
+              <h3>先看模組順序，再進入正式單課頁一路讀完整條主線</h3>
+              <p>
+                如果你想穩定地走完這個主題，建議先用這頁掌握架構，再進入每一課的正式文章頁面逐課閱讀。
+              </p>
+              <ul class="simple-list simple-list--compact">
+                {roadmapHighlights.map((highlight) => (
+                  <li>{highlight}</li>
+                ))}
+              </ul>
+            </article>
+
+            <aside class="content-panel content-panel--editorial note-panel course-home-aside">
+              <p class="eyebrow">你會整理到什麼</p>
+              <h3>這條主線會把核心能力串成一套可以反覆複習的內容</h3>
+              <ul class="simple-list simple-list--compact">
+                {learningPromises.map((promise) => (
+                  <li>{promise}</li>
+                ))}
+              </ul>
+            </aside>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>建議閱讀順序</h2>
+            <p>如果你不想自己決定順序，可以先照這條節奏讀。</p>
+          </div>
+
+          <div class="course-home-steps">
+            <article class="course-step-card">
+              <span class="course-step-number">01</span>
+              <h3>先從 {firstModule?.title ?? '基礎內容'} 開始</h3>
+              <p>先把核心概念讀穩，後續實作決策會更順。</p>
+            </article>
+            <article class="course-step-card">
+              <span class="course-step-number">02</span>
+              <h3>再進入 {middleModule?.title ?? '中段實作'} 主線</h3>
+              <p>把中段模組當作銜接區，將觀念轉成可操作的實務模式。</p>
+            </article>
+            <article class="course-step-card">
+              <span class="course-step-number">03</span>
+              <h3>最後完成 {finalModule?.title ?? '收尾整理'} 內容</h3>
+              <p>把最後模組當作整體收斂，完成這條主題線的交付與複習節奏。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>模組地圖</h2>
+            <p>先用模組分組看主線，再從個別課程深入。</p>
+          </div>
+
+          <div class="module-list">
+            {noteModules.map((module) => (
+              <article class="module-card module-card--editorial module-card--course-home">
+                <div class="module-head module-head--course-home">
+                  <div>
+                    <p class="eyebrow">模組</p>
+                    <h3>{module.title}</h3>
+                  </div>
+                  <p>{module.description}</p>
+                </div>
+
+                <div class="notes-list notes-list--module">
+                  {module.lessons.map((lesson) => (
+                    <a class="note-card note-card--course-home" href={localize(`/courses/${slug}/lessons/${lesson.slug}`)}>
+                      <div class="note-card-meta">
+                        <span class="course-pill">第 {lesson.lesson} 課</span>
+                        <span class="note-card-arrow" aria-hidden="true">↗</span>
+                      </div>
+                      <h3>{lesson.title}</h3>
+                      <p>{lesson.summary}</p>
+                    </a>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading section-heading--editorial">
+            <h2>全部課程</h2>
+            <p>這裡列出的每一課都已經有對應的正式單課頁。</p>
+          </div>
+
+          <div class="notes-list notes-list--compact-cards">
+            {lessons.map((lesson) => (
+              <a class="note-card note-card--compact" href={localize(`/courses/${slug}/lessons/${lesson.slug}`)}>
+                <div class="note-card-meta">
+                  <span class="course-pill">第 {lesson.lesson} 課</span>
+                  <span class="note-card-arrow" aria-hidden="true">↗</span>
+                </div>
+                <h3>{lesson.title}</h3>
+                <p>{lesson.summary}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
