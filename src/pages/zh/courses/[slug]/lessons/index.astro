@@ -56,8 +56,6 @@ const noteModules = course.modules.map((module) => ({
 }));
 
 const firstModule = course.modules[0];
-const middleModule = course.modules[Math.min(2, course.modules.length - 1)] ?? firstModule;
-const finalModule = course.modules[course.modules.length - 1] ?? middleModule;
 
 const roadmapHighlights = [
   `先用模組地圖理解 ${course.title} 如何從基礎一路走到實務應用。`,
@@ -161,31 +159,6 @@ const learningPromises = [
                 ))}
               </ul>
             </aside>
-          </div>
-        </section>
-
-        <section class="panel-section">
-          <div class="section-heading section-heading--editorial">
-            <h2>建議閱讀順序</h2>
-            <p>如果你不想自己決定順序，可以先照這條節奏讀。</p>
-          </div>
-
-          <div class="course-home-steps">
-            <article class="course-step-card">
-              <span class="course-step-number">01</span>
-              <h3>先從 {firstModule?.title ?? '基礎內容'} 開始</h3>
-              <p>先把核心概念讀穩，後續實作決策會更順。</p>
-            </article>
-            <article class="course-step-card">
-              <span class="course-step-number">02</span>
-              <h3>再進入 {middleModule?.title ?? '中段實作'} 主線</h3>
-              <p>把中段模組當作銜接區，將觀念轉成可操作的實務模式。</p>
-            </article>
-            <article class="course-step-card">
-              <span class="course-step-number">03</span>
-              <h3>最後完成 {finalModule?.title ?? '收尾整理'} 內容</h3>
-              <p>把最後模組當作整體收斂，完成這條主題線的交付與複習節奏。</p>
-            </article>
           </div>
         </section>
 

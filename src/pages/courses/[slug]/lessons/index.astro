@@ -54,8 +54,6 @@ const noteModules = course.modules.map((module) => ({
 }));
 
 const firstModule = course.modules[0];
-const middleModule = course.modules[Math.min(2, course.modules.length - 1)] ?? firstModule;
-const finalModule = course.modules[course.modules.length - 1] ?? middleModule;
 
 const roadmapHighlights = [
   `Use the module map first to see how ${course.title} moves from foundations into practical implementation work.`,
@@ -158,31 +156,6 @@ const learningPromises = [
                 ))}
               </ul>
             </aside>
-          </div>
-        </section>
-
-        <section class="panel-section">
-          <div class="section-heading section-heading--editorial">
-            <h2>Recommended path</h2>
-            <p>If you do not want to decide the order yourself, start with this suggested sequence.</p>
-          </div>
-
-          <div class="course-home-steps">
-            <article class="course-step-card">
-              <span class="course-step-number">01</span>
-              <h3>Start with {firstModule?.title ?? 'foundations'}</h3>
-              <p>Build confidence with the core concepts first so later implementation decisions feel steadier.</p>
-            </article>
-            <article class="course-step-card">
-              <span class="course-step-number">02</span>
-              <h3>Then move into {middleModule?.title ?? 'core implementation'}</h3>
-              <p>Use the middle modules to connect concepts into practical coding patterns and reliable workflows.</p>
-            </article>
-            <article class="course-step-card">
-              <span class="course-step-number">03</span>
-              <h3>Finish with {finalModule?.title ?? 'delivery and review'}</h3>
-              <p>Use the final module as your delivery and refinement stage so the full track feels complete.</p>
-            </article>
           </div>
         </section>
 
