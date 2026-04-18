@@ -330,7 +330,7 @@ export const goLessons: CourseLessonArticle[] = [
     ],
     reasons: [
       '測試能降低功能擴充時的回歸風險。',
-      'table-driven 是 Go 團隊常見的測試語言。',
+      'table-driven 是 Go 團隊常見的測試慣例。',
     ],
     mistakes: [
       '失敗訊息太模糊，無法快速定位問題。',
@@ -505,7 +505,7 @@ export const goLessons: CourseLessonArticle[] = [
       '今天的簡潔分層會降低明天的重寫成本。',
     ],
     references: [
-      { label: 'Go docs · Developing a RESTful API with Go and Gin', url: 'https://go.dev/doc/tutorial/web-service-gin' },
+      { label: 'Go docs · Writing Web Applications', url: 'https://go.dev/doc/articles/wiki/' },
       { label: 'Go package docs · net/http', url: 'https://pkg.go.dev/net/http' },
     ],
   },

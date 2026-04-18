@@ -486,7 +486,7 @@ export const rustLessons: CourseLessonArticle[] = [
       'Good tests and docs make refactoring safer and onboarding faster.',
     ],
     exampleLanguage: 'rust',
-    exampleCode: "/// Adds two numbers.\n///\n/// # Examples\n///\n/// ```\n/// assert_eq!(add(2, 3), 5);\n/// ```\nfn add(a: i32, b: i32) -> i32 {\n    a + b\n}\n\n#[cfg(test)]\nmod tests {\n    use super::*;\n\n    #[test]\n    fn add_works() {\n        assert_eq!(add(1, 2), 3);\n    }\n}",
+    exampleCode: "/// Returns a progress label for completed lessons.\n///\n/// # Examples\n///\n/// ```\n/// use learning_track::progress_label;\n///\n/// assert_eq!(progress_label(0), \"not started\");\n/// assert_eq!(progress_label(3), \"in progress\");\n/// assert_eq!(progress_label(10), \"completed\");\n/// ```\npub fn progress_label(completed: u32) -> &'static str {\n    match completed {\n        0 => \"not started\",\n        1..=9 => \"in progress\",\n        _ => \"completed\",\n    }\n}\n\n#[cfg(test)]\nmod tests {\n    use super::progress_label;\n\n    #[test]\n    fn progress_label_transitions() {\n        assert_eq!(progress_label(0), \"not started\");\n        assert_eq!(progress_label(5), \"in progress\");\n        assert_eq!(progress_label(12), \"completed\");\n    }\n}",
     practice: [
       'Add one unit test and one integration test for a small module.',
       'Write documentation comments for a public function.',

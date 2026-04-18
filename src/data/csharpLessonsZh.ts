@@ -240,7 +240,7 @@ export const csharpLessons: CourseLessonArticle[] = [
       '繼承仍有價值，但深層階層常帶來維護負擔。',
     ],
     exampleLanguage: 'csharp',
-    exampleCode: "public interface INotifier\n{\n    void Send(string message);\n}\n\npublic class ConsoleNotifier : INotifier\n{\n    public void Send(string message) => Console.WriteLine(message);\n}",
+    exampleCode: "public interface INotifier\n{\n    void Send(string message);\n}\n\npublic class ConsoleNotifier : INotifier\n{\n    public void Send(string message) => Console.WriteLine(message);\n}\n\npublic class WelcomeService\n{\n    private readonly INotifier _notifier;\n\n    public WelcomeService(INotifier notifier)\n    {\n        _notifier = notifier;\n    }\n\n    public void SendWelcome(string userName)\n    {\n        _notifier.Send($\"Welcome, {userName}!\");\n    }\n}\n\nvar service = new WelcomeService(new ConsoleNotifier());\nservice.SendWelcome(\"Tommy\");",
     practice: [
       '為通知或儲存行為定義一個介面。',
       '替換不同實作並保持呼叫端不變。',

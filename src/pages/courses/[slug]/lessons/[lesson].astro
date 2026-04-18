@@ -42,6 +42,9 @@ export function getStaticPaths() {
 
 const { slug, course, lesson, previousLesson, nextLesson, allLessons } = Astro.props as Props;
 const estimatedMinutes = Math.max(4, Math.ceil((lesson.exampleCode.length + lesson.lessonNotes.join(' ').length) / 900));
+const currentLessonIndex = allLessons.findIndex((entry) => entry.slug === lesson.slug);
+const currentLessonNumber = currentLessonIndex >= 0 ? currentLessonIndex + 1 : 1;
+const lessonProgressPercent = allLessons.length > 0 ? (currentLessonNumber / allLessons.length) * 100 : 0;
 const articleSections = [
   { id: 'learning-points', title: 'What you will learn' },
   { id: 'lesson-notes', title: 'Lesson notes' },
@@ -181,7 +184,6 @@ const articleSections = [
                 <div class="lesson-anchor-list">
                   {articleSections.map((section) => (
                     <a class="lesson-anchor-link" href={`#${section.id}`}>
-                      <span>Section</span>
                       <strong>{section.title}</strong>
                     </a>
                   ))}
@@ -215,9 +217,9 @@ const articleSections = [
                   <p>See where you are in the track and jump directly to other lessons.</p>
                 </div>
 
-                <p class="note-progress-copy">Current lesson: Lesson {lesson.lesson} / {allLessons.length}</p>
+                <p class="note-progress-copy">Lesson {currentLessonNumber} of {allLessons.length}</p>
                 <div class="lesson-progress-bar" aria-hidden="true">
-                  <span style={`width: ${(lesson.lesson / allLessons.length) * 100}%`}></span>
+                  <span style={`width: ${lessonProgressPercent}%`}></span>
                 </div>
 
                 <div class="lesson-mini-nav">

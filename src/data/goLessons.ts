@@ -505,7 +505,7 @@ export const goLessons: CourseLessonArticle[] = [
       'Simple boundaries now make future persistence upgrades easier.',
     ],
     references: [
-      { label: 'Go docs · Developing a RESTful API with Go and Gin', url: 'https://go.dev/doc/tutorial/web-service-gin' },
+      { label: 'Go docs · Writing Web Applications', url: 'https://go.dev/doc/articles/wiki/' },
       { label: 'Go package docs · net/http', url: 'https://pkg.go.dev/net/http' },
     ],
   },

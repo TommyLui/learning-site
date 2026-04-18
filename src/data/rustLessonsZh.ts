@@ -92,7 +92,7 @@ cargo build`,
 fn main() {
     let scores = [70, 88, 95];
     for score in scores {
-        let _ = next_score(score);
+        println!("{} -> {}", score, next_score(score));
     }
 }`,
     practice: [
@@ -135,13 +135,12 @@ fn main() {
       '重點不是消除錯誤訊息，而是理解資料擁有關係。',
     ],
     exampleLanguage: 'rust',
-    exampleCode: `fn take_value(values: Vec<i32>) -> Vec<i32> {
-    values
-}
+    exampleCode: `fn main() {
+    let title = String::from("Rust 課程");
+    let moved_title = title;
 
-fn main() {
-    let numbers = vec![1, 2, 3];
-    let _owned = take_value(numbers);
+    // println!("{}", title); // 編譯錯誤：值已經被 move
+    println!("可使用的新擁有者：{}", moved_title);
 }`,
     practice: [
       '寫一個函式接收所有權並回傳資料。',
@@ -430,11 +429,21 @@ fn divide(a: i32, b: i32) -> Result<i32, MathError> {
     ],
     exampleLanguage: 'rust',
     exampleCode: `trait Summary {
-    fn score(&self) -> i32;
+    fn summary(&self) -> String;
 }
 
-fn total<T: Summary>(items: &[T]) -> i32 {
-    items.iter().map(|item| item.score()).sum()
+struct Course {
+    title: String,
+}
+
+impl Summary for Course {
+    fn summary(&self) -> String {
+        format!("課程：{}", self.title)
+    }
+}
+
+fn print_summary<T: Summary>(item: &T) {
+    println!("{}", item.summary());
 }`,
     practice: [
       '建立一個 trait 表示可計分行為。',
@@ -570,19 +579,34 @@ fn total<T: Summary>(items: &[T]) -> i32 {
       '測試與文件一起做，重構風險會更低。',
     ],
     exampleLanguage: 'rust',
-    exampleCode: `/// # Examples
-/// assert_eq!(add(2, 3), 5);
-fn add(a: i32, b: i32) -> i32 {
-    a + b
+    exampleCode: `/// 回傳已完成課數對應的進度標籤。
+///
+/// # Examples
+///
+/// \`\`\`
+/// use learning_track::progress_label;
+///
+/// assert_eq!(progress_label(0), "not started");
+/// assert_eq!(progress_label(3), "in progress");
+/// assert_eq!(progress_label(10), "completed");
+/// \`\`\`
+pub fn progress_label(completed: u32) -> &'static str {
+    match completed {
+        0 => "not started",
+        1..=9 => "in progress",
+        _ => "completed",
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::progress_label;
 
     #[test]
-    fn add_works() {
-        assert_eq!(add(1, 2), 3);
+    fn progress_label_transitions() {
+        assert_eq!(progress_label(0), "not started");
+        assert_eq!(progress_label(5), "in progress");
+        assert_eq!(progress_label(12), "completed");
     }
 }`,
     practice: [
