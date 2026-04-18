@@ -13,7 +13,7 @@ export type CourseModule = {
 };
 
 export type Course = {
-  slug: 'react' | 'spring-boot' | 'mysql' | 'go' | 'rust' | 'csharp';
+  slug: 'react' | 'spring-boot' | 'mysql' | 'go' | 'rust' | 'csharp' | 'nextjs' | 'typescript';
   title: string;
   zhTitle?: string;
   shortLabel: string;
@@ -532,6 +532,284 @@ export const courses: Course[] = [
             number: 'Lesson 14',
             title: 'User permissions and production basics',
             summary: 'Prepare MySQL for safer team usage and production-style environments.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'nextjs',
+    title: 'Next.js',
+    zhTitle: 'Next.js',
+    shortLabel: 'NX',
+    category: 'Full-stack web development',
+    zhCategory: '全端網站開發',
+    accent: '#1B4DFF',
+    subtitle: 'Build production-ready React apps with the App Router, server rendering, and practical deployment workflows.',
+    zhSubtitle: '用 App Router、伺服器渲染與實務部署流程，建立可上線的 React 應用。',
+    overview:
+      'This course introduces modern Next.js through the App Router model, helping you move from project setup into routing, data fetching, mutations, and deployment.',
+    zhOverview: '這套課程以 App Router 為主軸帶你學習現代 Next.js，從專案啟動一路走到路由、資料取得、資料更新與部署。',
+    level: 'Beginner to intermediate',
+    zhLevel: '初階到中階',
+    totalLessons: 14,
+    focus: ['App Router mental model', 'Server and Client Components', 'data fetching and caching', 'deployment readiness'],
+    zhFocus: ['App Router 心智模型', 'Server / Client Components', '資料取得與快取', '部署準備'],
+    prerequisites: ['React fundamentals', 'JavaScript basics', 'Comfort reading TypeScript examples'],
+    zhPrerequisites: ['React 基礎', 'JavaScript 基礎', '可閱讀 TypeScript 範例'],
+    outcomes: [
+      'Understand how Next.js structures pages, layouts, and nested routes',
+      'Build data-driven features with server components, route handlers, and server actions',
+      'Deploy a small Next.js app with clear performance and caching decisions',
+    ],
+    zhOutcomes: ['理解 Next.js 如何組織 pages、layouts 與巢狀路由', '用 server components、route handlers、server actions 建立資料驅動功能', '完成小型 Next.js 專案部署，並做出清楚的快取與效能決策'],
+    modules: [
+      {
+        title: 'Module 1 · Next.js foundations and setup',
+        zhTitle: '模組 1 · Next.js 基礎與專案啟動',
+        description: 'Start with what Next.js solves and set up an App Router project with a clear folder structure.',
+        zhDescription: '先理解 Next.js 解決的問題，並完成 App Router 專案與資料夾結構建立。',
+        lessons: [
+          {
+            number: 'Lesson 1',
+            title: 'What Next.js is and when to use it',
+            summary: 'Understand where Next.js fits compared with plain React and why the framework is popular for production apps.',
+          },
+          {
+            number: 'Lesson 2',
+            title: 'Project setup and App Router folder structure',
+            summary: 'Create a project with create-next-app and learn the role of app, public, and configuration files.',
+          },
+          {
+            number: 'Lesson 3',
+            title: 'Pages, layouts, and route segments',
+            summary: 'Build your first route tree with page.tsx and layout.tsx and understand nested rendering.',
+          },
+        ],
+      },
+      {
+        title: 'Module 2 · Routing and UI composition',
+        zhTitle: '模組 2 · 路由與介面組合',
+        description: 'Move from basic pages to navigation, styling, and component-boundary decisions.',
+        zhDescription: '從基本頁面進階到導覽、樣式與元件邊界決策。',
+        lessons: [
+          {
+            number: 'Lesson 4',
+            title: 'Linking, navigation, and route params',
+            summary: 'Use Link, useRouter, and dynamic params for predictable navigation flows.',
+          },
+          {
+            number: 'Lesson 5',
+            title: 'Styling basics in Next.js projects',
+            summary: 'Apply global CSS, CSS Modules, and utility-first options without overcomplicating structure.',
+          },
+          {
+            number: 'Lesson 6',
+            title: 'Server Components vs Client Components',
+            summary: 'Choose rendering boundaries intentionally and use the use client directive only where needed.',
+          },
+        ],
+      },
+      {
+        title: 'Module 3 · Data flow and runtime states',
+        zhTitle: '模組 3 · 資料流程與執行狀態',
+        description: 'Fetch and render data, then handle loading and failure states clearly for users.',
+        zhDescription: '取得並渲染資料，並清楚處理 loading 與失敗狀態。',
+        lessons: [
+          {
+            number: 'Lesson 7',
+            title: 'Data fetching in Server Components',
+            summary: 'Fetch backend data in async components and understand where server-side data work belongs.',
+          },
+          {
+            number: 'Lesson 8',
+            title: 'Dynamic routes and nested layouts',
+            summary: 'Model content-driven paths with nested route segments and shared layout shells.',
+          },
+          {
+            number: 'Lesson 9',
+            title: 'Loading, error, and not-found states',
+            summary: 'Add loading.tsx, error.tsx, and not-found.tsx to improve resilience and user clarity.',
+          },
+        ],
+      },
+      {
+        title: 'Module 4 · Mutations and platform features',
+        zhTitle: '模組 4 · 資料更新與平台能力',
+        description: 'Handle forms and metadata while using built-in image and font optimizations.',
+        zhDescription: '處理表單與 metadata，並使用內建圖片與字型最佳化能力。',
+        lessons: [
+          {
+            number: 'Lesson 10',
+            title: 'Forms and Server Actions',
+            summary: 'Submit data with progressive enhancement and server-first mutation logic.',
+          },
+          {
+            number: 'Lesson 11',
+            title: 'Metadata, images, and fonts',
+            summary: 'Improve SEO and performance with the Metadata API, next/image, and next/font.',
+          },
+          {
+            number: 'Lesson 12',
+            title: 'Caching and revalidation basics',
+            summary: 'Understand static, dynamic, and revalidated data behavior in the App Router model.',
+          },
+        ],
+      },
+      {
+        title: 'Module 5 · APIs and shipping',
+        zhTitle: '模組 5 · API 與上線交付',
+        description: 'Finish with route handlers and deployment basics in a practical capstone flow.',
+        zhDescription: '最後用 route handlers 與部署基礎，完成實務 capstone 流程。',
+        lessons: [
+          {
+            number: 'Lesson 13',
+            title: 'Route Handlers and simple API endpoints',
+            summary: 'Create server-side endpoints inside app/api and return consistent JSON responses.',
+          },
+          {
+            number: 'Lesson 14',
+            title: 'Deploying a Next.js app and capstone checklist',
+            summary: 'Prepare environment variables, run a production build, and ship a small end-to-end project.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'typescript',
+    title: 'TypeScript',
+    zhTitle: 'TypeScript',
+    shortLabel: 'TS',
+    category: 'Programming language fundamentals',
+    zhCategory: '程式語言基礎',
+    accent: '#3178C6',
+    subtitle: 'Learn static typing for JavaScript and build safer frontend and backend code with practical TypeScript patterns.',
+    zhSubtitle: '學習 JavaScript 的靜態型別能力，並用實務 TypeScript 模式寫出更安全的前後端程式。',
+    overview:
+      'This course follows a handbook-first TypeScript progression, from setup and core types to generics, modules, migration, and a practical capstone.',
+    zhOverview: '這套課程採用 handbook-first 路線，從環境設定與核心型別一路到 generics、modules、遷移策略與實務 capstone。',
+    level: 'Beginner to intermediate',
+    zhLevel: '初階到中階',
+    totalLessons: 14,
+    focus: ['type inference and modeling', 'narrowing and guards', 'generics and utility types', 'migration workflows'],
+    zhFocus: ['型別推斷與建模', 'narrowing 與 type guards', 'generics 與 utility types', '遷移流程'],
+    prerequisites: ['JavaScript fundamentals', 'Functions and objects in JS', 'Basic module import and export concepts'],
+    zhPrerequisites: ['JavaScript 基礎', '理解 JS 的函式與物件', '具備基本 module import / export 概念'],
+    outcomes: [
+      'Model application data and APIs with explicit, readable TypeScript types',
+      'Use narrowing, interfaces, type aliases, and generics to reduce runtime mistakes',
+      'Migrate JavaScript files to TypeScript with a practical incremental strategy',
+    ],
+    zhOutcomes: ['用清楚可讀的 TypeScript 型別建模應用資料與 API', '運用 narrowing、interfaces、type aliases、generics 降低執行期錯誤', '用漸進式策略把 JavaScript 檔案遷移到 TypeScript'],
+    modules: [
+      {
+        title: 'Module 1 · TypeScript foundations and setup',
+        zhTitle: '模組 1 · TypeScript 基礎與環境設定',
+        description: 'Understand why TypeScript exists and prepare a clean local workflow.',
+        zhDescription: '理解 TypeScript 的定位，並建立乾淨可重複的本機流程。',
+        lessons: [
+          {
+            number: 'Lesson 1',
+            title: 'What TypeScript adds to JavaScript',
+            summary: 'Learn the value of static types and the compile-time feedback loop.',
+          },
+          {
+            number: 'Lesson 2',
+            title: 'Setup, Playground, and tsconfig basics',
+            summary: 'Run TypeScript locally, explore the Playground, and understand essential tsconfig options.',
+          },
+          {
+            number: 'Lesson 3',
+            title: 'Basic types and type inference',
+            summary: 'Work with primitive types and let TypeScript infer safe defaults where appropriate.',
+          },
+        ],
+      },
+      {
+        title: 'Module 2 · Core type modeling',
+        zhTitle: '模組 2 · 核心型別建模',
+        description: 'Model structured values and function contracts for everyday coding tasks.',
+        zhDescription: '為日常程式需求建立結構化資料與函式型別契約。',
+        lessons: [
+          {
+            number: 'Lesson 4',
+            title: 'Objects, arrays, tuples, and literal types',
+            summary: 'Define richer value shapes and encode fixed choices with literal types.',
+          },
+          {
+            number: 'Lesson 5',
+            title: 'Functions, parameters, and return types',
+            summary: 'Write explicit function signatures that make behavior easier to understand and test.',
+          },
+          {
+            number: 'Lesson 6',
+            title: 'Unions and intersections',
+            summary: 'Combine type alternatives and shared capabilities without losing readability.',
+          },
+        ],
+      },
+      {
+        title: 'Module 3 · Narrowing and reusable contracts',
+        zhTitle: '模組 3 · Narrowing 與可重用契約',
+        description: 'Use control-flow narrowing and reusable type contracts to keep larger codebases clear.',
+        zhDescription: '用控制流程 narrowing 與可重用型別契約維持大型程式可讀性。',
+        lessons: [
+          {
+            number: 'Lesson 7',
+            title: 'Narrowing and type guards',
+            summary: 'Use runtime checks to safely narrow union types in branching logic.',
+          },
+          {
+            number: 'Lesson 8',
+            title: 'Interfaces vs type aliases',
+            summary: 'Choose the right abstraction for object contracts and composable type definitions.',
+          },
+          {
+            number: 'Lesson 9',
+            title: 'Optional, readonly, and indexed access types',
+            summary: 'Model optional fields, immutable contracts, and property-level type access safely.',
+          },
+        ],
+      },
+      {
+        title: 'Module 4 · Generics, modules, and async types',
+        zhTitle: '模組 4 · Generics、模組與非同步型別',
+        description: 'Scale reusable type design with generics, module boundaries, and async utility helpers.',
+        zhDescription: '用 generics、模組邊界與非同步工具型別擴展可重用設計。',
+        lessons: [
+          {
+            number: 'Lesson 10',
+            title: 'Generics for reusable components and helpers',
+            summary: 'Create type-safe reusable functions and data containers without duplication.',
+          },
+          {
+            number: 'Lesson 11',
+            title: 'Modules with imports and exports',
+            summary: 'Split code into maintainable files and keep shared types predictable across modules.',
+          },
+          {
+            number: 'Lesson 12',
+            title: 'Async functions, Promises, and utility types',
+            summary: 'Type asynchronous workflows and apply utility types to reduce repetitive type boilerplate.',
+          },
+        ],
+      },
+      {
+        title: 'Module 5 · Migration and practical delivery',
+        zhTitle: '模組 5 · 遷移流程與實務交付',
+        description: 'Move existing JavaScript incrementally and finish with an end-to-end practical capstone.',
+        zhDescription: '把既有 JavaScript 逐步遷移，最後完成端到端實務 capstone。',
+        lessons: [
+          {
+            number: 'Lesson 13',
+            title: 'Migrating JavaScript to TypeScript',
+            summary: 'Adopt TypeScript incrementally with low-risk project settings and clear migration priorities.',
+          },
+          {
+            number: 'Lesson 14',
+            title: 'Practical TypeScript capstone',
+            summary: 'Ship a small typed feature from data model to API call with validation and maintainable type boundaries.',
           },
         ],
       },

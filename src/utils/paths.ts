@@ -2,7 +2,7 @@ const BASE_URL = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_UR
 
 export type SiteLocale = 'en' | 'zh';
 
-const LESSON_HUB_TRACKS = new Set(['spring-boot', 'react', 'mysql', 'go', 'rust', 'csharp']);
+const LESSON_HUB_TRACKS = new Set(['spring-boot', 'react', 'mysql', 'go', 'rust', 'csharp', 'nextjs', 'typescript']);
 
 function isExternalPath(path: string) {
   return /^(?:[a-z]+:)?\/\//i.test(path) || path.startsWith('mailto:') || path.startsWith('tel:');

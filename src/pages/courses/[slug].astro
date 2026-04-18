@@ -5,7 +5,7 @@ import type { Course } from '../../data/courses';
 import { withBase } from '../../utils/paths';
 
 export function getStaticPaths() {
-  return courses.filter((course) => !['spring-boot', 'react', 'mysql', 'go', 'rust', 'csharp'].includes(course.slug)).map((course) => ({
+  return courses.filter((course) => !['spring-boot', 'react', 'mysql', 'go', 'rust', 'csharp', 'nextjs', 'typescript'].includes(course.slug)).map((course) => ({
     params: { slug: course.slug },
     props: { course },
   }));

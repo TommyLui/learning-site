@@ -7,10 +7,14 @@ import { getRustLessons as getRustLessonsEn } from './rustLessons';
 import { getRustLessons as getRustLessonsZh } from './rustLessonsZh';
 import { getCSharpLessons as getCSharpLessonsEn } from './csharpLessons';
 import { getCSharpLessons as getCSharpLessonsZh } from './csharpLessonsZh';
+import { getNextjsLessons as getNextjsLessonsEn } from './nextjsLessons';
+import { getNextjsLessons as getNextjsLessonsZh } from './nextjsLessonsZh';
+import { getTypeScriptLessons as getTypeScriptLessonsEn } from './typescriptLessons';
+import { getTypeScriptLessons as getTypeScriptLessonsZh } from './typescriptLessonsZh';
 
 export type { CourseLessonArticle } from './goLessons';
 
-export const DATA_BACKED_TRACK_SLUGS = ['go', 'rust', 'csharp'] as const;
+export const DATA_BACKED_TRACK_SLUGS = ['go', 'rust', 'csharp', 'nextjs', 'typescript'] as const;
 
 export type DataBackedTrackSlug = (typeof DATA_BACKED_TRACK_SLUGS)[number];
 
@@ -38,6 +42,10 @@ function getLessonsBySlug(slug: DataBackedTrackSlug, locale: CourseLocale): Cour
       return locale === 'zh' ? getRustLessonsZh() : getRustLessonsEn();
     case 'csharp':
       return locale === 'zh' ? getCSharpLessonsZh() : getCSharpLessonsEn();
+    case 'nextjs':
+      return locale === 'zh' ? getNextjsLessonsZh() : getNextjsLessonsEn();
+    case 'typescript':
+      return locale === 'zh' ? getTypeScriptLessonsZh() : getTypeScriptLessonsEn();
   }
 }
 

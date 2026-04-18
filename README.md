@@ -1,22 +1,22 @@
 # Learning Site
 
-繁中：這是一個以教學內容為主的 Astro 學習網站，整理三條主線課程：React、Spring Boot、MySQL。
+繁中：這是一個以教學內容為主的 Astro 學習網站，整理多條技術主線：React、Spring Boot、MySQL、Go、Rust、C#、Next.js、TypeScript。
 
-English: This is a content-first Astro learning site for three teaching tracks: React, Spring Boot, and MySQL.
+English: This is a content-first Astro learning site for multiple teaching tracks: React, Spring Boot, MySQL, Go, Rust, C#, Next.js, and TypeScript.
 
 ## Current Status / 目前狀態
 
 - English-first routes at `/`
 - Traditional Chinese routes at `/zh`
-- Course landing pages for all three tracks
-- Lesson library pages and single-lesson pages for React, Spring Boot, and MySQL
+- Course landing pages for all dedicated tracks
+- Lesson library pages and single-lesson pages for React, Spring Boot, MySQL, Go, Rust, C#, Next.js, and TypeScript
 - Header locale switcher
 - GitHub Pages deployment support with the `/learning-site` base path
 
 - 英文預設路由在 `/`
 - 繁中路由在 `/zh`
-- 三條課程主線都有獨立課程首頁
-- React、Spring Boot、MySQL 都有 lessons 列表頁與單課頁
+- 目前主題線都有獨立課程首頁
+- React、Spring Boot、MySQL、Go、Rust、C#、Next.js、TypeScript 都有 lessons 列表頁與單課頁
 - Header 內建語言切換
 - 已支援 GitHub Pages 的 `/learning-site` base path
 
@@ -93,10 +93,10 @@ Astro config: `astro.config.mjs`
 
 - English is the default route.
 - Chinese pages live under `/zh`.
-- React and MySQL lesson data are split into English and Chinese sources.
+- React, MySQL, Go, Rust, C#, Next.js, and TypeScript lesson data are split into English and Chinese sources.
 - Spring Boot content uses markdown-backed lesson notes with locale-aware loading.
 
 - 英文是預設路由。
 - 中文頁面都在 `/zh`。
-- React 與 MySQL 已拆成英中兩套資料來源。
+- React、MySQL、Go、Rust、C#、Next.js、TypeScript 已拆成英中兩套資料來源。
 - Spring Boot 使用 markdown 課程筆記，並以 locale-aware 方式載入。
