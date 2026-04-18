@@ -55,8 +55,6 @@ const noteModules = course.modules.map((module) => ({
   lessons: lessonsByModule.get(module.title) ?? [],
 }));
 
-const firstModule = course.modules[0];
-
 const roadmapHighlights = [
   `先用模組地圖理解 ${course.title} 如何從基礎一路走到實務應用。`,
   '先把這頁當作學習地圖，再依需求進入每課文章深入閱讀。',

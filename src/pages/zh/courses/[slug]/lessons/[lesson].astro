@@ -42,11 +42,8 @@ export function getStaticPaths() {
   });
 }
 
-const { slug, course, lesson, previousLesson, nextLesson, allLessons } = Astro.props as Props;
+const { slug, course, lesson, previousLesson, nextLesson } = Astro.props as Props;
 const estimatedMinutes = Math.max(4, Math.ceil((lesson.exampleCode.length + lesson.lessonNotes.join(' ').length) / 900));
-const currentLessonIndex = allLessons.findIndex((entry) => entry.slug === lesson.slug);
-const currentLessonNumber = currentLessonIndex >= 0 ? currentLessonIndex + 1 : 1;
-const lessonProgressPercent = allLessons.length > 0 ? (currentLessonNumber / allLessons.length) * 100 : 0;
 const articleSections = [
   { id: 'learning-points', title: '這一課會學到什麼' },
   { id: 'lesson-notes', title: '課程筆記' },
@@ -214,29 +211,6 @@ const articleSections = [
                 </ul>
               </div>
 
-              <div class="content-panel content-panel--editorial note-panel note-progress-panel">
-                <div class="section-heading section-heading--editorial">
-                  <h2>課程進度</h2>
-                  <p>快速知道你目前在第幾課，也能直接跳到其他課程。</p>
-                </div>
-
-                <p class="note-progress-copy">目前閱讀：第 {currentLessonNumber} 課 / 共 {allLessons.length} 課</p>
-                <div class="lesson-progress-bar" aria-hidden="true">
-                  <span style={`width: ${lessonProgressPercent}%`}></span>
-                </div>
-
-                <div class="lesson-mini-nav">
-                  {allLessons.map((entry) => (
-                    <a
-                      href={localize(`/courses/${slug}/lessons/${entry.slug}`)}
-                      class:list={['lesson-mini-link', { 'is-active': entry.slug === lesson.slug }]}
-                    >
-                      <span>第 {entry.lesson} 課</span>
-                      <strong>{entry.title}</strong>
-                    </a>
-                  ))}
-                </div>
-              </div>
             </aside>
           </div>
         </section>

@@ -35,7 +35,7 @@ export function getStaticPaths() {
   }));
 }
 
-const { lesson, previousLesson, nextLesson, allLessons } = Astro.props as Props;
+const { lesson, previousLesson, nextLesson } = Astro.props as Props;
 const estimatedMinutes = Math.max(4, Math.ceil((lesson.exampleCode.length + lesson.lessonNotes.join(' ').length) / 900));
 const localizedModuleTitle =
   course.modules[canonicalCourse.modules.findIndex((module) => module.title === lesson.moduleTitle)]?.title ?? lesson.moduleTitle;
@@ -207,29 +207,6 @@ const article段落s = [
                 </ul>
               </div>
 
-              <div class="content-panel content-panel--editorial note-panel note-progress-panel">
-                <div class="section-heading section-heading--editorial">
-                  <h2>課程進度</h2>
-                  <p>快速知道你目前在第幾課，也能直接跳到其他 React 課程。</p>
-                </div>
-
-                <p class="note-progress-copy">目前閱讀：第 {lesson.lesson} 課 / {allLessons.length}</p>
-                <div class="lesson-progress-bar" aria-hidden="true">
-                  <span style={`width: ${(lesson.lesson / allLessons.length) * 100}%`}></span>
-                </div>
-
-                <div class="lesson-mini-nav">
-                  {allLessons.map((entry) => (
-                    <a
-                      href={localize(`/courses/react/lessons/${entry.slug}`)}
-                      class:list={['lesson-mini-link', { 'is-active': entry.slug === lesson.slug }]}
-                    >
-                      <span>第 {entry.lesson} 課</span>
-                      <strong>{entry.title}</strong>
-                    </a>
-                  ))}
-                </div>
-              </div>
             </aside>
           </div>
         </section>

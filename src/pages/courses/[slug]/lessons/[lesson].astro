@@ -40,11 +40,8 @@ export function getStaticPaths() {
   });
 }
 
-const { slug, course, lesson, previousLesson, nextLesson, allLessons } = Astro.props as Props;
+const { slug, course, lesson, previousLesson, nextLesson } = Astro.props as Props;
 const estimatedMinutes = Math.max(4, Math.ceil((lesson.exampleCode.length + lesson.lessonNotes.join(' ').length) / 900));
-const currentLessonIndex = allLessons.findIndex((entry) => entry.slug === lesson.slug);
-const currentLessonNumber = currentLessonIndex >= 0 ? currentLessonIndex + 1 : 1;
-const lessonProgressPercent = allLessons.length > 0 ? (currentLessonNumber / allLessons.length) * 100 : 0;
 const articleSections = [
   { id: 'learning-points', title: 'What you will learn' },
   { id: 'lesson-notes', title: 'Lesson notes' },
@@ -211,29 +208,6 @@ const articleSections = [
                 </ul>
               </div>
 
-              <div class="content-panel content-panel--editorial note-panel note-progress-panel">
-                <div class="section-heading section-heading--editorial">
-                  <h2>Course progress</h2>
-                  <p>See where you are in the track and jump directly to other lessons.</p>
-                </div>
-
-                <p class="note-progress-copy">Lesson {currentLessonNumber} of {allLessons.length}</p>
-                <div class="lesson-progress-bar" aria-hidden="true">
-                  <span style={`width: ${lessonProgressPercent}%`}></span>
-                </div>
-
-                <div class="lesson-mini-nav">
-                  {allLessons.map((entry) => (
-                    <a
-                      href={withBase(`/courses/${slug}/lessons/${entry.slug}`)}
-                      class:list={['lesson-mini-link', { 'is-active': entry.slug === lesson.slug }]}
-                    >
-                      <span>Lesson {entry.lesson}</span>
-                      <strong>{entry.title}</strong>
-                    </a>
-                  ))}
-                </div>
-              </div>
             </aside>
           </div>
         </section>

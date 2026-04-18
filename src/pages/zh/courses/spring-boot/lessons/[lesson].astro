@@ -38,7 +38,7 @@ export async function getStaticPaths() {
   }));
 }
 
-const { note, previousNote, nextNote, allNotes } = Astro.props as Props;
+const { note, previousNote, nextNote } = Astro.props as Props;
 const getSectionContent = (...keys: string[]) => {
   for (const key of keys) {
     const value = note.sections[key];
@@ -225,29 +225,6 @@ const article段落s = [
                 </ul>
               </div>
 
-              <div class="content-panel content-panel--editorial note-panel note-progress-panel">
-                <div class="section-heading section-heading--editorial">
-                  <h2>課程進度</h2>
-                  <p>快速知道你目前在第幾課，也能直接跳到其他課程。</p>
-                </div>
-
-                <p class="note-progress-copy">目前閱讀：第 {note.lesson} 課 / {allNotes.length}</p>
-                <div class="lesson-progress-bar" aria-hidden="true">
-                  <span style={`width: ${(note.lesson / allNotes.length) * 100}%`}></span>
-                </div>
-
-                <div class="lesson-mini-nav">
-                  {allNotes.map((entry) => (
-                    <a
-                      href={localize(`/courses/spring-boot/lessons/${entry.slug}`)}
-                      class:list={['lesson-mini-link', { 'is-active': entry.slug === note.slug }]}
-                    >
-                      <span>第 {entry.lesson} 課</span>
-                      <strong>{trimLessonTitle(entry.title)}</strong>
-                    </a>
-                  ))}
-                </div>
-              </div>
             </aside>
           </div>
         </section>

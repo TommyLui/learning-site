@@ -10,7 +10,7 @@ interface Props {
   locale?: SiteLocale;
 }
 
-const { currentCourse = null, showPrimaryNav = true, locale = 'en' } = Astro.props;
+const { currentCourse = null, locale = 'en' } = Astro.props;
 const isChinese = locale === 'zh';
 const courses = getCourses(locale);
 const pathname = Astro.url.pathname;
