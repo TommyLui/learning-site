@@ -14,6 +14,17 @@ import { getTypeScriptLessons as getTypeScriptLessonsZh } from './typescriptLess
 
 export type { CourseLessonArticle } from './goLessons';
 
+export const DEDICATED_TRACK_SLUGS = [
+  'spring-boot',
+  'react',
+  'mysql',
+  'go',
+  'rust',
+  'csharp',
+  'nextjs',
+  'typescript',
+] as const;
+
 export const DATA_BACKED_TRACK_SLUGS = ['go', 'rust', 'csharp', 'nextjs', 'typescript'] as const;
 
 export type DataBackedTrackSlug = (typeof DATA_BACKED_TRACK_SLUGS)[number];

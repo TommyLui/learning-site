@@ -8,9 +8,8 @@ import type { CourseLessonArticle } from '../../../../../data/mysqlLessonsZh';
 import { withBase } from '../../../../../utils/paths';
 
 const course = getCourseBySlug('mysql', locale);
-const canonicalCourse = getCourseBySlug('mysql');
 
-if (!course || !canonicalCourse) {
+if (!course) {
   throw new Error('MySQL course not found');
 }
 
@@ -37,8 +36,7 @@ export function getStaticPaths() {
 
 const { lesson, previousLesson, nextLesson } = Astro.props as Props;
 const estimatedMinutes = Math.max(4, Math.ceil((lesson.exampleCode.length + lesson.lessonNotes.join(' ').length) / 900));
-const localizedModuleTitle =
-  course.modules[canonicalCourse.modules.findIndex((module) => module.title === lesson.moduleTitle)]?.title ?? lesson.moduleTitle;
+const localizedModuleTitle = lesson.moduleTitle;
 const article段落s = [
   { id: 'learning-points', title: '這一課會學到什麼' },
   { id: 'lesson-notes', title: '課程筆記' },

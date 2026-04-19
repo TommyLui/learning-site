@@ -2,10 +2,12 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { courses } from '../../data/courses';
 import type { Course } from '../../data/courses';
+import { DEDICATED_TRACK_SLUGS } from '../../data/lessonRegistry';
 import { withBase } from '../../utils/paths';
 
 export function getStaticPaths() {
-  return courses.filter((course) => !['spring-boot', 'react', 'mysql', 'go', 'rust', 'csharp', 'nextjs', 'typescript'].includes(course.slug)).map((course) => ({
+  const dedicatedTrackSet = new Set<string>(DEDICATED_TRACK_SLUGS);
+  return courses.filter((course) => !dedicatedTrackSet.has(course.slug)).map((course) => ({
     params: { slug: course.slug },
     props: { course },
   }));
