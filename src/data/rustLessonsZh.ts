@@ -584,6 +584,7 @@ fn print_summary<T: Summary>(item: &T) {
 /// # Examples
 ///
 /// \`\`\`
+/// // 將 learning_track 換成你自己的 crate 名稱。
 /// use learning_track::progress_label;
 ///
 /// assert_eq!(progress_label(0), "not started");

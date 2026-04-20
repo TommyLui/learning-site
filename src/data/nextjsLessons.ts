@@ -221,7 +221,7 @@ export default function LessonsPage() {
     lesson: 5,
     slug: 'lesson-5',
     title: 'Styling basics in Next.js projects',
-    summary: 'Apply global CSS, CSS Modules, and utility-first options without overcomplicating structure.',
+    summary: 'Apply global CSS and CSS Modules without overcomplicating project styling structure.',
     moduleTitle: 'Module 2 · Routing and UI composition',
     intro: 'Styling choices are easier when you know where global rules stop and component-scoped styles begin.',
     learningPoints: [

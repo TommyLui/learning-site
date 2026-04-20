@@ -3,7 +3,7 @@
 ## Scope
 
 - Work in the repo root app. `gullible-gamma/` is gitignored scaffold, not the active project.
-- This is a static Astro teaching site with separate tracks: React, Spring Boot, MySQL, Go, Rust, C#, Next.js, and TypeScript. Keep the tracks separate unless the user explicitly asks to restructure them.
+- This is a static Astro teaching site with separate tracks: React, Spring Boot, MySQL, Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite. Keep the tracks separate unless the user explicitly asks to restructure them.
 
 ## Commands
 
@@ -15,7 +15,7 @@
 
 - The deployed site lives under the GitHub Pages base path `/learning-site` from `astro.config.mjs`.
 - Do not hardcode root-relative links or asset paths. Use `src/utils/paths.ts`, especially `withBase()` and `localizePath()`.
-- Spring Boot, React, MySQL, Go, Rust, C#, Next.js, and TypeScript are exceptions to the generic course route: their canonical landing pages are `/courses/<slug>/lessons` and `/zh/courses/<slug>/lessons`. The old `/courses/<slug>` routes redirect there.
+- Spring Boot, React, MySQL, Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite are exceptions to the generic course route: their canonical landing pages are `/courses/<slug>/lessons` and `/zh/courses/<slug>/lessons`. The old `/courses/<slug>` routes redirect there.
 - English pages live under `src/pages/**`; Traditional Chinese pages mirror them under `src/pages/zh/**`.
 - `src/components/Header.astro` switches locale by rewriting the current pathname with or without `/zh`. Keep English and Chinese route structures parallel or the switcher will lead to missing pages.
 - For new Chinese pages, follow the existing page pattern: define `const locale = 'zh' as const`, use a local `withBase()` wrapper for links, and pass `locale={locale}` into `BaseLayout` so `<html lang>` and shared navigation stay correct.
@@ -31,7 +31,9 @@
 - C# lessons come from `src/data/csharpLessons.ts` and `src/data/csharpLessonsZh.ts`.
 - Next.js lessons come from `src/data/nextjsLessons.ts` and `src/data/nextjsLessonsZh.ts`.
 - TypeScript lessons come from `src/data/typescriptLessons.ts` and `src/data/typescriptLessonsZh.ts`.
-- `src/pages/courses/[slug]/lessons/**` and `src/pages/zh/courses/[slug]/lessons/**` currently own the generic data-backed tracks: Go, Rust, C#, Next.js, and TypeScript.
+- PostgreSQL lessons come from `src/data/postgresqlLessons.ts` and `src/data/postgresqlLessonsZh.ts`.
+- SQLite lessons come from `src/data/sqliteLessons.ts` and `src/data/sqliteLessonsZh.ts`.
+- `src/pages/courses/[slug]/lessons/**` and `src/pages/zh/courses/[slug]/lessons/**` currently own the generic data-backed tracks: Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite.
 - React and MySQL still use dedicated per-track lesson pages under `src/pages/courses/react/**`, `src/pages/courses/mysql/**`, and their zh mirrors.
 - Spring Boot lessons are filesystem-backed markdown loaded by `src/data/springbootNotes.ts` from `course-notes/springboot/` and `course-notes/springboot-zh/`.
 
@@ -44,7 +46,7 @@
 
 ## Linking Gotcha
 
-- `src/pages/courses/[slug].astro` and `src/pages/zh/courses/[slug].astro` no longer own Spring Boot, React, MySQL, Go, Rust, C#, Next.js, or TypeScript. Those tracks land on their `/lessons` index pages, while the generic route only applies to any future non-dedicated course pages.
+- `src/pages/courses/[slug].astro` and `src/pages/zh/courses/[slug].astro` no longer own Spring Boot, React, MySQL, Go, Rust, C#, Next.js, TypeScript, PostgreSQL, or SQLite. Those tracks land on their `/lessons` index pages, while the generic route only applies to any future non-dedicated course pages.
 - For any data-backed track, the locale-specific `course.modules[].title` values in `src/data/courses.ts` must match each lesson's `moduleTitle` in that locale, or the lesson hub renders empty module sections.
 - Keep EN and zh lesson libraries in lockstep for lesson count, order, and slugs. If they drift, route generation and locale parity break.
 

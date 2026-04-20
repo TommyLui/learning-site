@@ -13,7 +13,7 @@ export type CourseModule = {
 };
 
 export type Course = {
-  slug: 'react' | 'spring-boot' | 'mysql' | 'go' | 'rust' | 'csharp' | 'nextjs' | 'typescript';
+  slug: 'react' | 'spring-boot' | 'mysql' | 'postgresql' | 'sqlite' | 'go' | 'rust' | 'csharp' | 'nextjs' | 'typescript';
   title: string;
   zhTitle?: string;
   shortLabel: string;
@@ -538,6 +538,279 @@ export const courses: Course[] = [
     ],
   },
   {
+    slug: 'postgresql',
+    title: 'PostgreSQL',
+    zhTitle: 'PostgreSQL',
+    shortLabel: 'PG',
+    category: 'Database development',
+    zhCategory: '資料庫開發',
+    accent: '#336791',
+    subtitle: 'Learn PostgreSQL foundations, SQL workflows, relational design, and practical performance habits.',
+    zhSubtitle: '學習 PostgreSQL 基礎、SQL 實作、關聯設計與實用效能習慣。',
+    overview:
+      'This course teaches PostgreSQL from setup to a small app-ready schema, covering querying, constraints, transactions, and query-planning basics.',
+    zhOverview: '這套課程從安裝一路帶到小型可交付 schema，重點涵蓋查詢、約束、交易與查詢計畫基礎。',
+    level: 'Beginner to intermediate',
+    zhLevel: '初階到中階',
+    totalLessons: 14,
+    focus: ['psql workflow', 'SQL querying and writes', 'constraints and relational modeling', 'transactions and query planning'],
+    zhFocus: ['psql 工作流', 'SQL 查詢與寫入', '約束與關聯建模', '交易與查詢計畫'],
+    prerequisites: ['Basic programming logic', 'Comfort using terminal commands', 'General understanding of tabular data'],
+    zhPrerequisites: ['基本程式邏輯', '能使用終端機指令', '對表格資料有基本理解'],
+    outcomes: [
+      'Use PostgreSQL and psql confidently for everyday schema and query tasks',
+      'Design relational tables with constraints and joins that keep data consistent',
+      'Read query plans and apply practical indexing or transaction habits in small apps',
+    ],
+    zhOutcomes: ['能熟練使用 PostgreSQL 與 psql 完成日常 schema 與查詢工作', '能以約束與 joins 設計維持資料一致性的關聯結構', '能讀懂查詢計畫，並在小型應用中做出實用的索引與交易決策'],
+    modules: [
+      {
+        title: 'Module 1 · PostgreSQL foundations and setup',
+        zhTitle: '模組 1 · PostgreSQL 基礎與環境建置',
+        description: 'Build core PostgreSQL mental models and prepare a reliable local psql workflow.',
+        zhDescription: '建立 PostgreSQL 核心觀念，並完成穩定的本機 psql 工作流。',
+        lessons: [
+          {
+            number: 'Lesson 1',
+            title: 'What PostgreSQL is and when to use it',
+            summary: 'Understand PostgreSQL strengths, common workloads, and when another database may be a better fit.',
+          },
+          {
+            number: 'Lesson 2',
+            title: 'Install PostgreSQL and connect with psql',
+            summary: 'Install PostgreSQL, create a local database, and run commands in psql with confidence.',
+          },
+          {
+            number: 'Lesson 3',
+            title: 'Databases, schemas, tables, rows, and columns',
+            summary: 'Learn how databases, schemas, tables, rows, and columns organize data in PostgreSQL.',
+          },
+        ],
+      },
+      {
+        title: 'Module 2 · Querying and writing data',
+        zhTitle: '模組 2 · 查詢與資料寫入',
+        description: 'Retrieve, filter, and modify data using practical SQL patterns you will use daily.',
+        zhDescription: '用日常會用到的 SQL 模式完成查詢、篩選與資料寫入。',
+        lessons: [
+          {
+            number: 'Lesson 4',
+            title: 'SELECT, WHERE, ORDER BY, and LIMIT',
+            summary: 'Retrieve focused result sets with SELECT, WHERE, ORDER BY, and LIMIT.',
+          },
+          {
+            number: 'Lesson 5',
+            title: 'INSERT, UPDATE, DELETE, and RETURNING',
+            summary: 'Write safer data changes with INSERT, UPDATE, DELETE, and RETURNING.',
+          },
+          {
+            number: 'Lesson 6',
+            title: 'Data types and choosing the right columns',
+            summary: 'Choose practical PostgreSQL data types that keep data clean and queries clear.',
+          },
+        ],
+      },
+      {
+        title: 'Module 3 · Relationships and data integrity',
+        zhTitle: '模組 3 · 關聯與資料完整性',
+        description: 'Model relationships with constraints so your data stays consistent as the app grows.',
+        zhDescription: '用關聯與約束建立可擴充結構，讓資料在應用成長時仍保持一致。',
+        lessons: [
+          {
+            number: 'Lesson 7',
+            title: 'Primary keys, unique constraints, and not null rules',
+            summary: 'Use primary keys, unique constraints, and NOT NULL rules to protect core data quality.',
+          },
+          {
+            number: 'Lesson 8',
+            title: 'Foreign keys and relational integrity',
+            summary: 'Connect tables with foreign keys and enforce consistent relationships.',
+          },
+          {
+            number: 'Lesson 9',
+            title: 'JOINs and multi-table querying',
+            summary: 'Query across related tables using common join patterns and clear join conditions.',
+          },
+          {
+            number: 'Lesson 10',
+            title: 'Grouping, aggregation, and HAVING',
+            summary: 'Summarize data with GROUP BY, aggregate functions, and HAVING filters.',
+          },
+        ],
+      },
+      {
+        title: 'Module 4 · Transactions and performance',
+        zhTitle: '模組 4 · 交易與效能',
+        description: 'Keep data changes safe and build practical intuition for query speed.',
+        zhDescription: '保護資料一致性，並建立查詢效能的實務判斷能力。',
+        lessons: [
+          {
+            number: 'Lesson 11',
+            title: 'Transactions with BEGIN, COMMIT, and ROLLBACK',
+            summary: 'Keep multi-step changes consistent with BEGIN, COMMIT, and ROLLBACK.',
+          },
+          {
+            number: 'Lesson 12',
+            title: 'Indexes and when they help',
+            summary: 'Understand when indexes speed up reads and when they add unnecessary write cost.',
+          },
+          {
+            number: 'Lesson 13',
+            title: 'Reading query plans with EXPLAIN',
+            summary: 'Read EXPLAIN output to understand why a query is fast or slow.',
+          },
+        ],
+      },
+      {
+        title: 'Module 5 · Practical delivery',
+        zhTitle: '模組 5 · 實務交付',
+        description: 'Combine schema design, constraints, and query habits into a small practical project.',
+        zhDescription: '把 schema 設計、約束與查詢習慣整合成小型實務專案。',
+        lessons: [
+          {
+            number: 'Lesson 14',
+            title: 'Build a small PostgreSQL-backed app schema',
+            summary: 'Design a small app-ready PostgreSQL schema with constraints and query needs in mind.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'sqlite',
+    title: 'SQLite',
+    zhTitle: 'SQLite',
+    shortLabel: 'SQ',
+    category: 'Database development',
+    zhCategory: '資料庫開發',
+    accent: '#0F80CC',
+    subtitle: 'Learn SQLite foundations for file-based apps, safe writes, and practical embedded database design.',
+    zhSubtitle: '學習 SQLite 檔案型資料庫基礎、安全寫入與嵌入式應用資料設計。',
+    overview:
+      'This course teaches SQLite as a lightweight relational database for desktop, mobile, and local-first workflows, from CLI basics to practical schema delivery.',
+    zhOverview: '這套課程把 SQLite 當作輕量關聯式資料庫來學習，從 CLI 操作一路到可落地的嵌入式 schema 設計。',
+    level: 'Beginner to intermediate',
+    zhLevel: '初階到中階',
+    totalLessons: 13,
+    focus: ['SQLite CLI and file workflow', 'querying and writes', 'constraints and relationships', 'transactions and indexes'],
+    zhFocus: ['SQLite CLI 與檔案工作流', '查詢與寫入', '約束與關聯', '交易與索引'],
+    prerequisites: ['Basic programming logic', 'Comfort using terminal commands', 'General understanding of tabular data'],
+    zhPrerequisites: ['基本程式邏輯', '能使用終端機指令', '對表格資料有基本理解'],
+    outcomes: [
+      'Use SQLite confidently in file-based local development workflows',
+      'Model practical tables with constraints, keys, and joins for embedded apps',
+      'Apply safe-write and basic query-planning habits before shipping small projects',
+    ],
+    zhOutcomes: ['能在檔案型本機開發流程中熟練使用 SQLite', '能為嵌入式應用設計含約束、鍵值與 joins 的實用資料表', '能在小型專案交付前實踐安全寫入與基礎查詢規劃習慣'],
+    modules: [
+      {
+        title: 'Module 1 · SQLite foundations',
+        zhTitle: '模組 1 · SQLite 基礎',
+        description: 'Understand SQLite positioning and build confidence with its file-based CLI workflow.',
+        zhDescription: '理解 SQLite 定位，並熟悉檔案型資料庫與 CLI 基本流程。',
+        lessons: [
+          {
+            number: 'Lesson 1',
+            title: 'What SQLite is and when to use it',
+            summary: 'Understand SQLite strengths, tradeoffs, and the use cases where it shines.',
+          },
+          {
+            number: 'Lesson 2',
+            title: 'Working with a file-based database and the SQLite CLI',
+            summary: 'Create, open, and inspect a SQLite database file through the command-line shell.',
+          },
+          {
+            number: 'Lesson 3',
+            title: 'Tables, rowid, columns, and primary keys',
+            summary: 'Learn SQLite table structure basics and how primary keys relate to rowid behavior.',
+          },
+        ],
+      },
+      {
+        title: 'Module 2 · Querying and writing data',
+        zhTitle: '模組 2 · 查詢與資料寫入',
+        description: 'Write clear read and write queries with the SQL patterns used most often in apps.',
+        zhDescription: '用實務最常見的 SQL 模式完成讀寫查詢。',
+        lessons: [
+          {
+            number: 'Lesson 4',
+            title: 'SELECT, WHERE, ORDER BY, and LIMIT',
+            summary: 'Filter and sort result sets clearly with SQLite query basics.',
+          },
+          {
+            number: 'Lesson 5',
+            title: 'INSERT, UPDATE, and DELETE',
+            summary: 'Modify rows safely and understand how write operations change table state.',
+          },
+          {
+            number: 'Lesson 6',
+            title: 'Type affinity and how SQLite handles data types',
+            summary: 'Understand SQLite type affinity so stored values behave predictably.',
+          },
+        ],
+      },
+      {
+        title: 'Module 3 · Structure and relationships',
+        zhTitle: '模組 3 · 結構與關聯',
+        description: 'Use constraints and table relationships to keep embedded app data consistent.',
+        zhDescription: '用約束與資料表關聯維持嵌入式應用資料一致性。',
+        lessons: [
+          {
+            number: 'Lesson 7',
+            title: 'Constraints: NOT NULL, UNIQUE, and CHECK',
+            summary: 'Add practical constraints to prevent invalid data from entering your tables.',
+          },
+          {
+            number: 'Lesson 8',
+            title: 'Foreign keys and relationship modeling in SQLite',
+            summary: 'Model related tables and enforce parent-child relationships with foreign keys.',
+          },
+          {
+            number: 'Lesson 9',
+            title: 'JOINs and multi-table queries',
+            summary: 'Combine rows from related tables to answer practical app questions.',
+          },
+        ],
+      },
+      {
+        title: 'Module 4 · Safe writes and performance',
+        zhTitle: '模組 4 · 安全寫入與效能',
+        description: 'Protect data during writes and build basic performance awareness with indexes and plans.',
+        zhDescription: '在寫入時保護資料一致性，並用索引與查詢計畫建立效能基礎。',
+        lessons: [
+          {
+            number: 'Lesson 10',
+            title: 'Aggregation and grouped reports',
+            summary: 'Use grouped queries and aggregate functions to produce compact reports.',
+          },
+          {
+            number: 'Lesson 11',
+            title: 'Transactions and safe write operations',
+            summary: 'Use transactions to keep multi-step writes consistent when failures happen.',
+          },
+          {
+            number: 'Lesson 12',
+            title: 'Indexes and basic query planning',
+            summary: 'Add indexes intentionally and inspect query plans with EXPLAIN QUERY PLAN.',
+          },
+        ],
+      },
+      {
+        title: 'Module 5 · Practical app usage',
+        zhTitle: '模組 5 · 實務應用',
+        description: 'Apply SQLite design and query skills to a small embedded app database.',
+        zhDescription: '把 SQLite 設計與查詢能力整合到小型嵌入式應用資料庫。',
+        lessons: [
+          {
+            number: 'Lesson 13',
+            title: 'Build a small embedded app database with SQLite',
+            summary: 'Design and validate a small SQLite schema ready for an embedded application.',
+          },
+        ],
+      },
+    ],
+  },
+  {
     slug: 'nextjs',
     title: 'Next.js',
     zhTitle: 'Next.js',
@@ -601,7 +874,7 @@ export const courses: Course[] = [
           {
             number: 'Lesson 5',
             title: 'Styling basics in Next.js projects',
-            summary: 'Apply global CSS, CSS Modules, and utility-first options without overcomplicating structure.',
+            summary: 'Apply global CSS and CSS Modules without overcomplicating project styling structure.',
           },
           {
             number: 'Lesson 6',

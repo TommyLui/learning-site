@@ -404,7 +404,7 @@ export const csharpLessons: CourseLessonArticle[] = [
       'A reliable async flow still needs clear exception and cancellation handling.',
     ],
     exampleLanguage: 'csharp',
-    exampleCode: "public static async Task<string> LoadMessageAsync()\n{\n    await Task.Delay(200);\n    return \"done\";\n}\n\nstring message = await LoadMessageAsync();\nConsole.WriteLine(message);",
+    exampleCode: "async Task<string> LoadMessageAsync()\n{\n    await Task.Delay(200);\n    return \"done\";\n}\n\nstring message = await LoadMessageAsync();\nConsole.WriteLine(message);",
     practice: [
       'Convert one synchronous method into Task-based async style.',
       'Await two independent tasks and compare sequence behavior.',
@@ -445,7 +445,7 @@ export const csharpLessons: CourseLessonArticle[] = [
       'Configuration management is essential for environment differences between local, staging, and production.',
     ],
     exampleLanguage: 'csharp',
-    exampleCode: "using System.Text.Json;\n\npublic record LessonItem(string Title, int Duration);\n\nvar item = new LessonItem(\"C# Async\", 35);\nstring json = JsonSerializer.Serialize(item);\nawait File.WriteAllTextAsync(\"lesson.json\", json);\n\nstring raw = await File.ReadAllTextAsync(\"lesson.json\");\nvar restored = JsonSerializer.Deserialize<LessonItem>(raw);",
+    exampleCode: "using System.Text.Json;\n\npublic class Program\n{\n    public static async Task Main()\n    {\n        var item = new LessonItem(\"C# Async\", 35);\n        string json = JsonSerializer.Serialize(item);\n        await File.WriteAllTextAsync(\"lesson.json\", json);\n\n        string raw = await File.ReadAllTextAsync(\"lesson.json\");\n        var restored = JsonSerializer.Deserialize<LessonItem>(raw);\n    }\n}\n\npublic record LessonItem(string Title, int Duration);",
     practice: [
       'Serialize one model to JSON and write it to disk.',
       'Read the file back and deserialize into a typed model.',

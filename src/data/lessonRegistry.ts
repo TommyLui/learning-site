@@ -11,6 +11,10 @@ import { getNextjsLessons as getNextjsLessonsEn } from './nextjsLessons';
 import { getNextjsLessons as getNextjsLessonsZh } from './nextjsLessonsZh';
 import { getTypeScriptLessons as getTypeScriptLessonsEn } from './typescriptLessons';
 import { getTypeScriptLessons as getTypeScriptLessonsZh } from './typescriptLessonsZh';
+import { getPostgreSQLLessons as getPostgreSQLLessonsEn } from './postgresqlLessons';
+import { getPostgreSQLLessons as getPostgreSQLLessonsZh } from './postgresqlLessonsZh';
+import { getSQLiteLessons as getSQLiteLessonsEn } from './sqliteLessons';
+import { getSQLiteLessons as getSQLiteLessonsZh } from './sqliteLessonsZh';
 
 export type { CourseLessonArticle } from './goLessons';
 
@@ -23,9 +27,11 @@ export const DEDICATED_TRACK_SLUGS = [
   'csharp',
   'nextjs',
   'typescript',
+  'postgresql',
+  'sqlite',
 ] as const;
 
-export const DATA_BACKED_TRACK_SLUGS = ['go', 'rust', 'csharp', 'nextjs', 'typescript'] as const;
+export const DATA_BACKED_TRACK_SLUGS = ['go', 'rust', 'csharp', 'nextjs', 'typescript', 'postgresql', 'sqlite'] as const;
 
 export type DataBackedTrackSlug = (typeof DATA_BACKED_TRACK_SLUGS)[number];
 
@@ -57,6 +63,10 @@ function getLessonsBySlug(slug: DataBackedTrackSlug, locale: CourseLocale): Cour
       return locale === 'zh' ? getNextjsLessonsZh() : getNextjsLessonsEn();
     case 'typescript':
       return locale === 'zh' ? getTypeScriptLessonsZh() : getTypeScriptLessonsEn();
+    case 'postgresql':
+      return locale === 'zh' ? getPostgreSQLLessonsZh() : getPostgreSQLLessonsEn();
+    case 'sqlite':
+      return locale === 'zh' ? getSQLiteLessonsZh() : getSQLiteLessonsEn();
   }
 }
 

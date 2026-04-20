@@ -404,7 +404,7 @@ export const csharpLessons: CourseLessonArticle[] = [
       '可靠的非同步流程仍需清楚的錯誤與取消策略。',
     ],
     exampleLanguage: 'csharp',
-    exampleCode: "public static async Task<string> LoadMessageAsync()\n{\n    await Task.Delay(200);\n    return \"done\";\n}\n\nstring message = await LoadMessageAsync();\nConsole.WriteLine(message);",
+    exampleCode: "async Task<string> LoadMessageAsync()\n{\n    await Task.Delay(200);\n    return \"done\";\n}\n\nstring message = await LoadMessageAsync();\nConsole.WriteLine(message);",
     practice: [
       '把一個同步方法改為 Task-based async。',
       '等待兩個非同步操作並比較行為差異。',
@@ -445,7 +445,7 @@ export const csharpLessons: CourseLessonArticle[] = [
       '設定管理是區分本機與正式環境的重要基礎。',
     ],
     exampleLanguage: 'csharp',
-    exampleCode: "using System.Text.Json;\n\npublic record LessonItem(string Title, int Duration);\n\nvar item = new LessonItem(\"C# Async\", 35);\nstring json = JsonSerializer.Serialize(item);\nawait File.WriteAllTextAsync(\"lesson.json\", json);\n\nstring raw = await File.ReadAllTextAsync(\"lesson.json\");\nvar restored = JsonSerializer.Deserialize<LessonItem>(raw);",
+    exampleCode: "using System.Text.Json;\n\npublic class Program\n{\n    public static async Task Main()\n    {\n        var item = new LessonItem(\"C# Async\", 35);\n        string json = JsonSerializer.Serialize(item);\n        await File.WriteAllTextAsync(\"lesson.json\", json);\n\n        string raw = await File.ReadAllTextAsync(\"lesson.json\");\n        var restored = JsonSerializer.Deserialize<LessonItem>(raw);\n    }\n}\n\npublic record LessonItem(string Title, int Duration);",
     practice: [
       '把一個模型序列化為 JSON 並寫入檔案。',
       '再讀回檔案並反序列化成強型別模型。',
