@@ -1,57 +1,76 @@
 # AGENTS.md
 
+## Agents 工作守則
+### 首要原則
+-本節是最高優先規則；若後文與本節衝突，以本節為準。
+-除非使用者明確要求其他語言，代理人的所有回覆應使用繁體中文。
+-程式碼、指令、錯誤訊息、API 名稱、套件名稱與專有名詞可保留原文，避免翻譯造成歧義。
+-先理解使用者目標、限制、現有程式碼與專案慣例，再提出或實作方案。
+-優先做最小、清楚、可驗證、可回滾的正確變更；避免無關重構與範圍擴張。
+-對使用者描述的觀察、斷言、歸因與方案保持驗證意識，不把未確認內容當成事實。
+
 ## Scope
 
 - Work in the repo root app. `gullible-gamma/` is gitignored scaffold, not the active project.
-- This is a static Astro teaching site with separate tracks: React, Spring Boot, MySQL, Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite. Keep the tracks separate unless the user explicitly asks to restructure them.
+- This is a static Astro teaching site. Keep React, Spring Boot, MySQL, Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite as separate course tracks unless explicitly asked to restructure them.
 
 ## Commands
 
-- Use Node `>=22.12.0`. `package.json` requires it and `.github/workflows/deploy.yml` builds with `22.12.0`.
-- Main commands: `npm install`, `npm run dev`, `npm run check`, `npm run build`, `npm run preview`.
+- Use Node `>=22.12.0`; `package.json` requires it and GitHub Pages CI builds with `22.12.0`.
+- Install with `npm install`; the repo uses `package-lock.json` and has no pnpm/yarn workspace.
+- Dev/verify commands: `npm run dev`, `npm run check`, `npm run build`, `npm run preview`.
 - There is no lint or test script. Normal verification is `npm run check` then `npm run build`.
 
-## Routing And Locale
+## Routing And Links
 
-- The deployed site lives under the GitHub Pages base path `/learning-site` from `astro.config.mjs`.
-- Do not hardcode root-relative links or asset paths. Use `src/utils/paths.ts`, especially `withBase()` and `localizePath()`.
-- Spring Boot, React, MySQL, Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite are exceptions to the generic course route: their canonical landing pages are `/courses/<slug>/lessons` and `/zh/courses/<slug>/lessons`. The old `/courses/<slug>` routes redirect there.
-- English pages live under `src/pages/**`; Traditional Chinese pages mirror them under `src/pages/zh/**`.
-- `src/components/Header.astro` switches locale by rewriting the current pathname with or without `/zh`. Keep English and Chinese route structures parallel or the switcher will lead to missing pages.
-- For new Chinese pages, follow the existing page pattern: define `const locale = 'zh' as const`, use a local `withBase()` wrapper for links, and pass `locale={locale}` into `BaseLayout` so `<html lang>` and shared navigation stay correct.
+- `astro.config.mjs` sets the GitHub Pages base path to `/learning-site`; never hardcode root-relative links or asset paths.
+- Use `src/utils/paths.ts` helpers: `withBase()` for links/assets, `localizePath()` for locale switching, and `getCoursePath()` for course links.
+- English routes live under `src/pages/**`; Traditional Chinese mirrors live under `src/pages/zh/**`.
+- `Header.astro` switches locale by rewriting the current pathname with or without `/zh`, so route structures must stay parallel.
+- Dedicated tracks land on `/courses/<slug>/lessons` and `/zh/courses/<slug>/lessons`; their `/courses/<slug>/index.astro` pages are meta-refresh redirects.
+- `src/pages/courses/[slug].astro` and `src/pages/zh/courses/[slug].astro` exclude all current tracks via `DEDICATED_TRACK_SLUGS`; they are only for future non-dedicated course pages.
+- For new Chinese pages, follow the existing pattern: `const locale = 'zh' as const`, a local `localize = (path) => withBase(path, locale)`, and `locale={locale}` on `BaseLayout`.
 
-## Content Wiring
+## Course Content
 
-- `src/data/courses.ts` is the shared course catalog for homepages and course landing pages in both locales.
-- `src/data/lessonRegistry.ts` is the shared resolver for generic data-backed tracks. If you add another data-backed course, update it together with `src/utils/paths.ts` and the `/courses/<slug>/index.astro` + `/zh/courses/<slug>/index.astro` redirect pages.
-- React lessons come from `src/data/reactLessons.ts` and `src/data/reactLessonsZh.ts`.
-- MySQL lessons come from `src/data/mysqlLessons.ts` and `src/data/mysqlLessonsZh.ts`.
-- Go lessons come from `src/data/goLessons.ts` and `src/data/goLessonsZh.ts`.
-- Rust lessons come from `src/data/rustLessons.ts` and `src/data/rustLessonsZh.ts`.
-- C# lessons come from `src/data/csharpLessons.ts` and `src/data/csharpLessonsZh.ts`.
-- Next.js lessons come from `src/data/nextjsLessons.ts` and `src/data/nextjsLessonsZh.ts`.
-- TypeScript lessons come from `src/data/typescriptLessons.ts` and `src/data/typescriptLessonsZh.ts`.
-- PostgreSQL lessons come from `src/data/postgresqlLessons.ts` and `src/data/postgresqlLessonsZh.ts`.
-- SQLite lessons come from `src/data/sqliteLessons.ts` and `src/data/sqliteLessonsZh.ts`.
-- `src/pages/courses/[slug]/lessons/**` and `src/pages/zh/courses/[slug]/lessons/**` currently own the generic data-backed tracks: Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite.
-- React and MySQL still use dedicated per-track lesson pages under `src/pages/courses/react/**`, `src/pages/courses/mysql/**`, and their zh mirrors.
-- Spring Boot lessons are filesystem-backed markdown loaded by `src/data/springbootNotes.ts` from `course-notes/springboot/` and `course-notes/springboot-zh/`.
+- `src/data/courses.ts` is the shared course catalog for homepages, course menus, and module maps in both locales.
+- `src/data/lessonRegistry.ts` owns dedicated track slugs and the generic data-backed resolver.
+- Generic data-backed tracks are Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite; their routes are `src/pages/courses/[slug]/lessons/**` and `src/pages/zh/courses/[slug]/lessons/**`.
+- React and MySQL have dedicated lesson routes under `src/pages/courses/react/**`, `src/pages/courses/mysql/**`, and zh mirrors.
+- Spring Boot lesson routes are dedicated, but content is loaded from markdown in `course-notes/springboot/` and `course-notes/springboot-zh/` by `src/data/springbootNotes.ts`.
+- When adding or renaming a data-backed track, update `src/data/lessonRegistry.ts`, `src/utils/paths.ts`, `src/data/courses.ts`, and both locale redirect pages for `/courses/<slug>/index.astro`.
+- For data-backed tracks, locale-specific `course.modules[].title` values must exactly match each lesson's `moduleTitle`, or module sections render empty.
+- Keep English and zh lesson data in lockstep for lesson count, order, and slugs; route generation and locale switching assume parity.
 
 ## Spring Boot Notes
 
 - `src/data/springbootNotes.ts` only loads files matching `lesson-<number>.md`; `lesson-template.md` is ignored.
-- Each Spring Boot note must keep frontmatter keys `title`, `lesson`, `slug`, and `summary`.
-- The loader normalizes both English and Traditional Chinese `##` headings. English notes use labels like `What You Will Learn`, `Why This Matters`, `Main Ideas`, `Lesson Notes`, `Example`, `Common Mistakes`, `Practice`, `Continuity`, `Key Takeaway`, and `Official References`; zh notes can use `這一課會學到什麼`, `為什麼重要`, `主要觀念`, `課程筆記`, `範例`, `常見錯誤`, `練習`, `延續閱讀`, `課後重點`, and `官方參考資料`.
-- If you rename the `course-notes/springboot*` folders or change those heading labels, update `src/data/springbootNotes.ts` and the Spring Boot lesson pages in both locales so the aliases stay in sync.
-
-## Linking Gotcha
-
-- `src/pages/courses/[slug].astro` and `src/pages/zh/courses/[slug].astro` no longer own Spring Boot, React, MySQL, Go, Rust, C#, Next.js, TypeScript, PostgreSQL, or SQLite. Those tracks land on their `/lessons` index pages, while the generic route only applies to any future non-dedicated course pages.
-- For any data-backed track, the locale-specific `course.modules[].title` values in `src/data/courses.ts` must match each lesson's `moduleTitle` in that locale, or the lesson hub renders empty module sections.
-- Keep EN and zh lesson libraries in lockstep for lesson count, order, and slugs. If they drift, route generation and locale parity break.
+- Spring Boot note frontmatter must keep `title`, `lesson`, `slug`, and `summary`.
+- The loader normalizes specific English and Traditional Chinese `##` headings. If headings or `course-notes/springboot*` folders change, update `SECTION_KEY_ALIASES`, `getNotesDirectory()`, and both locale Spring Boot lesson pages.
 
 ## UI
 
-- Shared shell lives in `src/layouts/BaseLayout.astro` with navigation in `src/components/Header.astro` and footer in `src/components/Footer.astro`.
+- Shared shell is `src/layouts/BaseLayout.astro`; navigation is `src/components/Header.astro`; footer is `src/components/Footer.astro`; global styling is `src/styles/global.css`.
 - Keep changes Astro-first and CSS-first. This site uses plain `.astro` pages/components, not framework islands.
-- Preserve the existing editorial, content-first layout style rather than turning pages into app-like dashboards unless the user asks for that.
+- Preserve the editorial, content-first layout style unless the user asks for an app-like redesign.
+<!-- TRELLIS:START -->
+# Trellis Instructions
+
+These instructions are for AI assistants working in this project.
+
+This project is managed by Trellis. The working knowledge you need lives under `.trellis/`:
+
+- `.trellis/workflow.md` — development phases, when to create tasks, skill routing
+- `.trellis/spec/` — package- and layer-scoped coding guidelines (read before writing code in a given layer)
+- `.trellis/workspace/` — per-developer journals and session traces
+- `.trellis/tasks/` — active and archived tasks (PRDs, research, jsonl context)
+
+If a Trellis command is available on your platform (e.g. `/trellis:finish-work`, `/trellis:continue`), prefer it over manual steps. Not every platform exposes every command.
+
+If you're using Codex or another agent-capable tool, additional project-scoped helpers may live in:
+- `.agents/skills/` — reusable Trellis skills
+- `.codex/agents/` — optional custom subagents
+
+Managed by Trellis. Edits outside this block are preserved; edits inside may be overwritten by a future `trellis update`.
+
+<!-- TRELLIS:END -->
