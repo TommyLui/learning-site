@@ -38,3 +38,36 @@ Populated Trellis frontend guidelines from AGENTS.md and the Astro codebase, ver
 ### Next Steps
 
 - None - task complete
+
+
+## Session 2: Add Maven course track
+
+**Date**: 2026-04-30
+**Task**: Add Maven course track
+**Branch**: `main`
+
+### Summary
+
+Added a full Maven data-backed course with English and Traditional Chinese lessons, updated course routing/docs/specs, and verified with npm run check and npm run build.
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `e38cd73243e1f99b40e26fb85f589c1be08f2e7d` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
