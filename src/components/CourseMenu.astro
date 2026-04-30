@@ -1,0 +1,46 @@
+---
+import { getCourses } from '../data/courses';
+import type { Course } from '../data/courses';
+import { getCoursePath, withBase } from '../utils/paths';
+import type { SiteLocale } from '../utils/paths';
+
+interface Props {
+  currentCourse?: Course | null;
+  locale?: SiteLocale;
+}
+
+const { currentCourse = null, locale = 'en' } = Astro.props;
+const isChinese = locale === 'zh';
+const courses = getCourses(locale);
+const menuLabel = isChinese ? '課程選單' : 'Course menu';
+const dropdownLabel = currentCourse ? currentCourse.title : menuLabel;
+---
+
+<details class="course-dropdown">
+  <summary aria-label={dropdownLabel}>
+    <span class="course-dropdown-label">{dropdownLabel}</span>
+    <span class="course-dropdown-icon" aria-hidden="true">☰</span>
+  </summary>
+
+  <div class="course-menu">
+    <p class="menu-label">{menuLabel}</p>
+
+    <ul class="course-menu-list">
+      {courses.map((course) => (
+        <li>
+          <a
+            href={withBase(getCoursePath(course.slug), locale)}
+            class:list={['course-menu-link', { 'is-active': currentCourse?.slug === course.slug }]}
+            aria-current={currentCourse?.slug === course.slug ? 'page' : undefined}
+          >
+            <span class="course-menu-dot" style={`--course-accent: ${course.accent}`}></span>
+            <span class="course-menu-copy">
+              <span class="course-menu-title">{course.title}</span>
+              <span class="course-menu-subtitle">{course.category}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</details>
