@@ -1,72 +1,70 @@
 ---
-title: "Lesson 19: Build and Package the Application"
+title: "Lesson 19: Build Executable Jars and Container-friendly Artifacts"
 lesson: 19
 slug: "lesson-19"
-summary: "A backend is only useful when it can be built and run reliably outside the IDE."
+summary: "Boot 4 applications still package cleanly as executable jars, and container-friendly delivery benefits from layers and jarmode tools rather than removed launch-script habits."
 ---
 
-# Lesson 19: Build and Package the Application
+# Lesson 19: Build Executable Jars and Container-friendly Artifacts
 
-A backend is only useful when it can be built and run reliably outside the IDE.
+Boot 4 applications still package cleanly as executable jars, and container-friendly delivery benefits from layers and jarmode tools rather than removed launch-script habits.
 
 ## What You Will Learn
-- Understand how to package a Spring Boot app into a runnable artifact.
-- See how the build process supports repeatable delivery across machines and environments.
-- Verify why executable jars are such a common packaging target in Spring Boot.
-- Recognize why Docker-friendly packaging and layered images matter in modern delivery workflows.
+- Build a Boot 4 application artifact with Maven or Gradle.
+- Run the packaged application with `java -jar`.
+- Understand layered and extracted jar workflows for container images.
 
 ## Why This Matters
-- A backend is only useful when it can be built and run reliably outside the IDE.
-- Repeatable packaging is essential for CI, deployment, and collaboration.
-- Running a packaged artifact proves the application can survive outside one local development setup.
+- Packaging turns local code into something a deployment platform can run.
+- Boot 4 removes older embedded launch-script support while keeping executable jars and plugin-built artifacts.
+- Container images work better when dependencies, application code, and generated assets can be layered intentionally.
 
 ## Main Ideas
-- The build file defines how the application is compiled and packaged.
-- Executable jars simplify many deployment workflows.
-- A successful build is part of application quality, not just an afterthought.
+- The Spring Boot build plugin creates an executable jar that can run with `java -jar`.
+- Do not rely on older fully executable launch-script patterns in Boot 4 examples.
+- Jarmode tools can extract an archive for efficient container layering.
 
 ## Lesson Notes
-Development usually begins inside an IDE, but production systems do not live there. At some point the application has to become a real artifact that another machine, pipeline, or environment can run predictably. Packaging is the step that makes that possible.
+Building the application is a different milestone from running it in your IDE. A packaged artifact proves that source code, resources, dependencies, and the Boot launcher can be assembled into a runnable unit.
 
-In Spring Boot, the most common result is an executable jar. That jar bundles the application code with the dependencies needed to run it, making startup straightforward with a `java -jar` command. This is one of the reasons Boot feels so practical for modern backend development.
+For Maven projects, `./mvnw package` is the typical command. The Boot Maven plugin repackages the jar so it includes application classes and dependencies in a layout that `java -jar` can run. Gradle has equivalent Boot plugin behavior.
 
-The build file plays a central role here. It controls dependency resolution, plugin behavior, Java version targeting, and packaging tasks. When the build is clean and repeatable, the rest of the team can trust that the application can be compiled and executed consistently.
+Boot 4 still supports executable jars, but course examples should avoid older fully executable jar launch-script instructions. The migration guidance removes embedded executable uber-jar launch scripts. Use `java -jar` or platform-specific service/container mechanisms instead.
 
-This is also where local convenience ends and operational discipline begins. It is not enough for the app to run in one developer's IDE. It should also build from the command line, package correctly, and start from that package in a clean environment.
+Container delivery introduces another concern: layers. Dependencies change less frequently than application classes, so container builds can be faster when those parts are separated. Boot's packaging tools support layered jars, and current docs show jarmode tools for extracting an archive into a layout useful for container images.
 
-Running the packaged artifact is an important verification step because it reveals assumptions you may not notice inside the IDE. Missing resources, wrong profiles, or path-related issues often become visible only when the app is launched more realistically.
+A simple beginner path is still valid: build the jar, run it locally with the right environment variables, and later copy it into a container image. As the app grows, learn layered extraction and buildpacks so image builds become faster and more repeatable.
 
-Packaging also connects directly to deployment automation. CI pipelines and hosting environments rarely care how you started the application in development. They care whether the build command succeeds and produces a stable output. In modern Spring Boot workflows, that output may later become a Docker image or a layered container build rather than only a jar copied by hand.
-
-This lesson therefore shifts attention from writing code to delivering software. A packaged app is not only easier to run elsewhere; it is a sign that the project is becoming portable and operationally serious.
+Packaging is also where configuration discipline returns. The artifact should not contain production secrets. Runtime settings such as database URLs, credentials, and exposed Actuator endpoints should come from the deployment environment.
 
 ## Example
 ```bash
-# Build the project
-./mvnw clean package
-
-# Run the packaged application
+./mvnw package
 java -jar target/learning-api-0.0.1-SNAPSHOT.jar
+
+# Container-friendly extraction example from the Boot 4 packaging model:
+java -Djarmode=tools -jar target/learning-api-0.0.1-SNAPSHOT.jar extract
 ```
 
 ## Common Mistakes
-- Only verifying the app inside the IDE.
-- Not testing the packaged artifact after build.
-- Ignoring build reproducibility across machines or environments.
+- Shipping an app that only runs from the IDE.
+- Baking production secrets into the packaged artifact.
+- Copying removed fully executable launch-script instructions into Boot 4 deployment notes.
+- Ignoring layers and rebuilding every dependency on every container change.
 
 ## Practice
-- Package your project into a jar and run it from the command line.
-- Describe what changes when you run the jar instead of the IDE launcher.
-- Write down why packaging is important for CI and deployment.
-- Describe one reason layered container images can be useful even if you still start by learning executable jars.
+- Package the app and run it with `java -jar`.
+- Pass one runtime setting through an environment variable.
+- Explain why dependency layers and application layers should be separated in container builds.
 
 ## Continuity
-- Previous lesson: `Lesson 18: Session, JWT, and Resource Server Basics`
-- Next lesson: `Lesson 20: Use Actuator for Health Checks and Monitoring`
+- Previous lesson: `Lesson 18: Session, JWT, Resource-server, and Authorization-server Basics`
+- Next lesson: `Lesson 20: Use Actuator for Health, Probes, Metrics, and Observability`
 
 ## Key Takeaway
-- A backend is only useful when it can be built and run reliably outside the IDE.
+- Boot 4 packaging keeps `java -jar` simple while pushing container-friendly workflows toward layered extraction and current tooling.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/packaging/index.html
-- https://docs.spring.io/spring-boot/reference/packaging/container-images/index.html
+- https://docs.spring.io/spring-boot/reference/packaging/efficient.html
+- https://docs.spring.io/spring-boot/reference/packaging/container-images/dockerfiles.html
+- https://docs.spring.io/spring-boot/maven-plugin/packaging.html

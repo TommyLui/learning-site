@@ -1,93 +1,98 @@
 ---
-title: "Lesson 11: Entities, Repositories, and JPA Basics"
+title: "Lesson 11: Entities, Repositories, Transactions, and JPA Basics"
 lesson: 11
 slug: "lesson-11"
-summary: "This is the bridge between domain objects in code and rows in the database."
+summary: "Entities, repositories, and transactions form the core persistence model for many Boot 4 relational applications."
 ---
 
-# Lesson 11: Entities, Repositories, and JPA Basics
+# Lesson 11: Entities, Repositories, Transactions, and JPA Basics
 
-This is the bridge between domain objects in code and rows in the database.
+Entities, repositories, and transactions form the core persistence model for many Boot 4 relational applications.
 
 ## What You Will Learn
-- Model database tables with JPA entities.
-- Use repository interfaces to read and write data with less boilerplate.
-- Understand why object-relational mapping changes how backend code is structured.
+- Map Java classes to database tables with Jakarta Persistence annotations.
+- Use Spring Data repositories to read and write entities.
+- Understand why transactions define the boundary of safe persistence changes.
 
 ## Why This Matters
-- This is the bridge between domain objects in code and rows in the database.
-- Entities and repositories let you move from raw connection setup to meaningful persistence design.
-- JPA introduces patterns and constraints that affect how data should be represented in code.
+- Persistence code needs structure so database access does not leak into every controller.
+- Boot 4 continues the Jakarta Persistence line, so examples should use `jakarta.persistence.*` imports.
+- Transactions protect multi-step data changes from partial failure.
 
 ## Main Ideas
-- Entities represent persistent domain objects.
-- Repositories provide a higher-level persistence API on top of JPA.
-- ORM convenience still requires careful data modeling and clear boundaries.
+- Entities represent persistent data, not every API response shape.
+- Repositories provide focused access to persistence operations.
+- Service methods are often a good place to define transaction boundaries.
 
 ## Lesson Notes
-Once the datasource is working, the next step is to give the application a domain model. JPA entities do that by representing database rows as Java objects. Instead of passing raw SQL strings around from the beginning, you start with typed domain data.
+With the datasource working, the next step is modeling persistent data. JPA entities describe how Java objects relate to database tables. In Boot 4 examples, imports should use `jakarta.persistence`, such as `jakarta.persistence.Entity`, `Id`, and `GeneratedValue`.
 
-An entity is more than a plain class. It participates in persistence rules. It has an identity, it maps fields to columns, and it is tracked by the persistence layer. That means entity design affects how the application reads, updates, and stores state.
+Entities are not the same as DTOs. An entity is shaped by persistence needs: identifiers, relationships, table constraints, and lifecycle behavior. A response DTO is shaped by the API contract. Keeping those models separate prevents accidental exposure of persistence details.
 
-The identifier field is especially important. Without a properly defined `@Id`, JPA does not know how to distinguish one record from another. This is why identity is a central concept in persistence and not just an implementation detail.
+Spring Data repositories reduce repetitive persistence code. Extending a repository interface gives you common operations such as save, find by id, and delete. You can also add query methods when the naming stays readable. Complex queries may still deserve explicit query definitions or a more specialized persistence design.
 
-Repositories sit on top of entities and provide the access layer. Through interfaces such as `JpaRepository`, you gain operations like save, findAll, findById, and delete without implementing all the standard boilerplate by hand.
+Transactions matter whenever multiple persistence actions must succeed or fail together. A service method that creates a parent record and several child records should not leave the database half-written. In Spring, `@Transactional` is commonly placed on service-layer methods that define a unit of work.
 
-This is very productive, but it can lead to shallow understanding if you treat repositories as magic boxes. Underneath the convenience is still a relational database, and your entities still reflect design decisions about naming, constraints, and relationships.
+Hibernate 7 is the Boot 4-managed ORM implementation behind many of these behaviors. You do not need to learn every Hibernate feature in a beginner lesson, but you should know that lazy loading, dirty checking, SQL generation, and entity state are ORM concerns, not magic repository behavior.
 
-A useful habit is to keep asking two questions: what does this object represent in the domain, and how does that concept map to the table structure underneath? That habit keeps your model meaningful instead of turning persistence into a purely mechanical task.
-
-This lesson also prepares you for later complexity. Once entity basics are clear, CRUD APIs and relationship mapping become much easier to reason about.
+The best habit is to keep persistence behind a service boundary. Controllers ask services to do application work. Services coordinate rules and transactions. Repositories handle database access.
 
 ## Example
 ```java
 package com.tommy.learningapi.notes;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
-@Table(name = "notes")
 public class Note {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
-
-    @Column(nullable = false)
     private String title;
-
-    @Column(nullable = false, length = 2000)
     private String content;
 }
 
-public interface NoteRepository extends JpaRepository<Note, Long> {
-    List<Note> findByTitleContainingIgnoreCase(String keyword);
+interface NoteRepository extends JpaRepository<Note, Long> {}
+
+@Service
+class NoteService {
+    private final NoteRepository repository;
+
+    NoteService(NoteRepository repository) {
+        this.repository = repository;
+    }
+
+    @Transactional
+    Note save(Note note) {
+        return repository.save(note);
+    }
 }
 ```
 
 ## Common Mistakes
-- Treating entities as if they were only DTOs with no persistence behavior.
-- Forgetting to define a proper identifier field.
-- Packing business logic directly into repository interfaces.
+- Importing `javax.persistence.*` in a Boot 4 project.
+- Returning entities directly from every API endpoint.
+- Putting transaction boundaries randomly on controllers.
+- Assuming repositories remove the need to think about database constraints and relationships.
 
 ## Practice
-- Create an entity with an id and two domain fields.
-- Create a `JpaRepository` for that entity and call `findAll()` from a service.
-- Explain how an entity differs from a request DTO.
+- Create one entity with an id, title, and content field.
+- Create a repository interface for that entity.
+- Write down which service methods should be transactional and why.
 
 ## Continuity
-- Previous lesson: `Lesson 10: Connect Spring Boot 3.x to MySQL`
+- Previous lesson: `Lesson 10: Connect Spring Boot 4.x to MySQL and Hibernate 7`
 - Next lesson: `Lesson 12: Build CRUD APIs With Service and Repository Layers`
 
 ## Key Takeaway
-- This is the bridge between domain objects in code and rows in the database.
+- Boot 4 persistence stays understandable when entities, repositories, and transactions have clear responsibilities.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/data/sql.html
-- https://docs.spring.io/spring-data/jpa/reference/
+- https://docs.spring.io/spring-data/jpa/reference/jpa/getting-started.html
+- https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative.html
+- https://jakarta.ee/specifications/persistence/

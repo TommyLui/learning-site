@@ -1,52 +1,49 @@
 ---
-title: "Lesson 3: Understand the Project Structure and Startup Flow"
+title: "Lesson 3: Understand Project Structure, Startup, and Embedded Servers"
 lesson: 3
 slug: "lesson-3"
-summary: "A clear mental model of startup and structure makes later topics like controllers, repositories, and configuration much easier to understand."
+summary: "A clear mental model of project layout, Boot startup, and the embedded server stack makes later controllers, repositories, and configuration easier to reason about."
 ---
 
-# Lesson 3: Understand the Project Structure and Startup Flow
+# Lesson 3: Understand Project Structure, Startup, and Embedded Servers
 
-A clear mental model of startup and structure makes later topics like controllers, repositories, and configuration much easier to understand.
+A clear mental model of project layout, Boot startup, and the embedded server stack makes later controllers, repositories, and configuration easier to reason about.
 
 ## What You Will Learn
-- Understand the main folders in a Spring Boot project and how the application starts.
-- Explain the role of `@SpringBootApplication` and `SpringApplication.run(...)`.
-- See why package structure affects component scanning, bean discovery, and debugging.
+- Understand the main folders in a Boot project and how the application starts.
+- Explain the role of `@SpringBootApplication`, component scanning, and `SpringApplication.run(...)`.
+- Recognize the Boot 4 servlet baseline with Servlet 6.1 and embedded Tomcat 11 for Spring MVC applications.
 
 ## Why This Matters
-- A clear mental model of startup and structure makes later topics like controllers, repositories, and configuration much easier to understand.
-- Many common errors in Spring Boot come from package placement, configuration loading, or startup assumptions.
-- Understanding the default project shape helps you grow the application without losing readability.
+- Many beginner errors come from misplaced packages, ignored resources, or incorrect startup assumptions.
+- Boot startup is where configuration loading, auto-configuration, bean creation, and web server startup meet.
+- Knowing the embedded server model helps you avoid old external-container habits.
 
 ## Main Ideas
-- `src/main/java`, `src/main/resources`, and `src/test/java` each serve a distinct role.
-- `@SpringBootApplication` defines the main entry point and enables core Boot behavior.
-- `SpringApplication.run(...)` triggers bootstrapping, configuration loading, bean creation, and server startup.
+- `src/main/java`, `src/main/resources`, and `src/test/java` each have distinct responsibilities.
+- Boot scans downward from the main application package unless you customize scanning.
+- A Boot 4 servlet web app normally runs on an embedded Servlet 6.1-compatible server such as Tomcat 11.
 
 ## Lesson Notes
-After generating a project with Spring Initializr, the next useful step is not writing more code right away. It is understanding the shape of the codebase you have been given. Spring Boot projects follow a structure that is simple enough for beginners but strong enough to support real application growth.
+After generating a project, pause before writing features. The folder layout is the first design lesson. Application code belongs under `src/main/java`, configuration files belong under `src/main/resources`, and tests belong under `src/test/java`. This structure is simple, but it gives your application room to grow without becoming chaotic.
 
-The build file is the first important piece. In Maven projects this is usually `pom.xml`; in Gradle projects it will be a build script. This file is where dependencies, plugins, Java version settings, and packaging behavior live. Every time you add a new starter or change the build process, you are touching part of the project's backbone.
+The main application class is the center of startup. It contains the Java `main` method and calls `SpringApplication.run(...)`. That call starts the Spring application context, loads configuration, evaluates auto-configuration, creates beans, and starts the embedded web server when the project is a web application.
 
-Inside `src/main/java` you place the main application code. This is where controllers, services, repositories, configuration classes, and domain models are usually organized into packages. Even when the project is still small, this folder represents the long-term structure of the backend.
+The `@SpringBootApplication` annotation combines configuration, auto-configuration, and component scanning. By default, components are discovered below the package that contains the main class. If a controller or service is placed outside that tree, Spring may not find it, which often appears as a missing bean or unmapped endpoint.
 
-Inside `src/main/resources` you keep application configuration such as `application.properties` or `application.yml`. This folder becomes increasingly important once you add database settings, profiles, custom ports, or feature flags. Learning to treat configuration as a first-class concern early will save you many problems later.
+Boot 4 also updates the default runtime stack. For a Spring MVC project, the servlet baseline is Servlet 6.1 and the supported embedded Tomcat line is Tomcat 11. Jetty 12.1 is another supported servlet-container path. Undertow is not the Boot 4 servlet teaching path because the required Servlet 6.1 baseline changed the support story.
 
-Inside `src/test/java` you place tests. Spring Boot creates this test structure from the start because testing is not meant to be bolted on at the end. It is part of the application design. Even if your first project only has a few tests, the structure reminds you that verification belongs in the project from day one.
+This does not mean you have to manually manage Tomcat in a beginner API. The embedded server is pulled in through the web MVC starter and starts with the application. You should still know it exists because request handling, ports, error pages, headers, and deployment behavior all pass through that web server layer.
 
-The most important single class in the generated project is the main application class. It contains the Java `main` method, which is where the JVM starts, and it calls `SpringApplication.run(...)`, which is where Spring Boot begins its own startup sequence.
-
-That startup sequence does more than run a method. It loads configuration, determines the type of application being created, evaluates auto-configuration conditions, scans for components, creates beans, and starts the embedded web server if the application is a web app. This is why the startup phase feels so rich: many framework decisions happen in one place.
-
-The `@SpringBootApplication` annotation matters because it combines several responsibilities into one clear entry point. It marks the class as a configuration source, enables auto-configuration, and turns on component scanning. The combination is what makes the generated application so compact while still being powerful.
-
-Package placement becomes important here. Spring Boot generally scans downward from the package of the main application class. If your controller or service sits outside that tree, Spring may never discover it automatically. Beginners often experience this as a mysterious missing bean problem when it is really a package structure issue.
-
-This lesson also introduces the idea that structure and startup are connected. You are not only learning where files go; you are learning how Spring Boot finds and wires those files at runtime. Once you understand that connection, later lessons on controllers, dependency injection, and configuration feel much less magical.
+Once you connect structure and startup, later topics become less magical. Controllers are discovered because of component scanning. Configuration is loaded because resources are part of startup. Auto-configuration reacts to starters. Tests can start parts of this same context when needed.
 
 ## Example
 ```java
+package com.tommy.learningapi;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 @SpringBootApplication
 public class LearningApiApplication {
     public static void main(String[] args) {
@@ -56,24 +53,24 @@ public class LearningApiApplication {
 ```
 
 ## Common Mistakes
-- Not knowing what the startup class does.
-- Putting Spring components outside the scanned package structure.
-- Ignoring the role of `src/main/resources` and scattering configuration elsewhere.
-- Treating the project folder layout as cosmetic instead of architectural.
+- Placing controllers or services outside the package tree scanned from the main application class.
+- Treating `src/main/resources` as an afterthought instead of the default configuration home.
+- Assuming a Boot MVC app needs an external servlet container to run locally.
+- Forgetting that the embedded server version is managed by Boot's dependency management.
 
 ## Practice
-- Locate the main application class in your generated project and explain each line.
-- Draw a folder map that labels `src/main/java`, `src/main/resources`, and `src/test/java`.
-- Move one component outside the main package tree in a small practice project and observe what changes.
+- Draw the generated project folder tree and label the role of each main folder.
+- Move a small component outside the scanned package in a practice branch and observe the failure.
+- Find the embedded server dependency brought in by the web MVC starter.
 
 ## Continuity
-- Previous lesson: `Lesson 2: Create a Project With Spring Initializr`
+- Previous lesson: `Lesson 2: Create a Boot 4 Project With Spring Initializr`
 - Next lesson: `Lesson 4: Dependency Injection and Beans`
 
 ## Key Takeaway
-- A clear mental model of startup and structure makes later topics like controllers, repositories, and configuration much easier to understand.
+- Boot startup connects project structure, component scanning, auto-configuration, and the embedded server into one application runtime.
 
 ## Official References
 - https://docs.spring.io/spring-boot/reference/features/spring-application.html
 - https://docs.spring.io/spring-boot/reference/using/using-the-springbootapplication-annotation.html
-- https://docs.spring.io/spring-boot/reference/using/structuring-your-code.html
+- https://docs.spring.io/spring-boot/system-requirements.html

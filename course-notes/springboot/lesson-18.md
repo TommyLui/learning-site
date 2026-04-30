@@ -1,79 +1,75 @@
 ---
-title: "Lesson 18: Session, JWT, and Resource Server Basics"
+title: "Lesson 18: Session, JWT, Resource-server, and Authorization-server Basics"
 lesson: 18
 slug: "lesson-18"
-summary: "Choosing an auth model affects API design, client interaction, and deployment behavior."
+summary: "Boot 4 API security often requires choosing between session-based authentication, JWT resource-server behavior, and external or Spring Authorization Server identity flows."
 ---
 
-# Lesson 18: Session, JWT, and Resource Server Basics
+# Lesson 18: Session, JWT, Resource-server, and Authorization-server Basics
 
-Choosing an auth model affects API design, client interaction, and deployment behavior.
+Boot 4 API security often requires choosing between session-based authentication, JWT resource-server behavior, and external or Spring Authorization Server identity flows.
 
 ## What You Will Learn
-- Compare session-based and token-based authentication approaches.
-- Understand where authenticated state lives in each model.
-- Recognize the trade-offs that influence when sessions or JWTs make sense.
-- See where Spring Security resource-server support fits into JWT-based APIs.
+- Compare session-based authentication and token-based API authentication.
+- Understand what a resource server does when validating JWTs.
+- Recognize the role of authorization servers and why Spring Authorization Server is part of the modern Spring Security story.
 
 ## Why This Matters
-- Choosing an auth model affects API design, client interaction, and deployment behavior.
-- Authentication style influences how clients send credentials and how the server manages trust.
-- The right choice depends on architecture and constraints, not on trend alone.
+- Authentication architecture affects clients, scaling, logout behavior, testing, and deployment.
+- JWTs are common, but they are not a universal replacement for every session-based system.
+- Resource servers should validate tokens rather than invent custom token parsing logic.
 
 ## Main Ideas
-- Sessions keep authentication state on the server.
-- JWT-based approaches move more state to the client side through tokens.
-- Every auth model comes with trade-offs in simplicity, revocation, and scalability.
+- Sessions keep authentication state on the server side.
+- JWT resource servers validate signed tokens issued by a trusted authorization server.
+- Authorization server responsibilities should be separated from business API responsibilities unless you deliberately own identity infrastructure.
 
 ## Lesson Notes
-Once login basics are clear, the next architectural question is where authenticated state should live after login succeeds. This is the key difference between session-based authentication and token-based approaches such as JWT.
+Security architecture becomes more important once the API needs real clients. A server-rendered or browser-first app can often use session authentication. The server stores authentication state and the browser carries a session cookie. This model is mature and works well when the app and login experience are closely connected.
 
-In a session-based system, the server remains the source of truth for authenticated state. The client stores a session identifier, usually in a cookie, and sends it with later requests. The server looks up the session and decides whether the request belongs to an authenticated user.
+Many API systems use bearer tokens instead. A JWT is a signed token that can carry claims such as subject, issuer, expiration, and authorities. The API does not trust the token because it looks like JSON; it trusts the token only after validating the signature, issuer, audience, expiration, and related rules.
 
-In a JWT-based approach, the server issues a signed token containing claims about the user or session. The client sends that token on later requests, often through the `Authorization` header. The server verifies the token instead of looking up a server-side session record in the same way.
+In Spring Security, an API that accepts JWTs is commonly a resource server. Its job is to protect resources by validating tokens issued by a trusted authorization server. That server may be a cloud identity provider, an enterprise identity system, or a Spring Authorization Server deployment.
 
-Sessions are often easier to reason about at first because revocation and central control are more direct. JWTs are attractive in stateless API scenarios because they reduce some forms of server-side session storage, but they also introduce concerns about token expiration, refresh flow, and revocation strategy.
+Spring Authorization Server is now part of the Spring Security portfolio. That does not mean every beginner project should build its own identity platform. It means the official Spring story has an authorization-server option when a team truly needs to own token issuance.
 
-That is why JWT should not be chosen just because it sounds modern. It solves certain architectural needs well, but it also creates its own responsibilities. A backend team should be able to explain why a token-based model fits the client and deployment model they actually have.
+For course purposes, focus on the distinction. Your application might be a session-based app, a JWT resource server, or part of a larger OAuth2/OIDC system. Each choice affects dependencies, configuration, tests, and operational responsibilities.
 
-For a learner, the most valuable outcome is understanding the location of trust. In sessions, trust is strongly server-centered. In JWT-based systems, some trust information travels with the client in a signed artifact. The security design follows from that difference.
-
-This lesson gives you a vocabulary for comparing authentication approaches sensibly. In Spring Boot 3.x, JWT-based API protection is often expressed through Spring Security's resource-server support, where the application validates bearer tokens rather than inventing a token parser from scratch. Later, when you build a specific login system, you should be able to justify the model rather than copying it from a tutorial.
+Avoid hand-rolled token security. Custom token formats, homegrown signature checks, and skipping expiration or issuer validation are common ways to create serious vulnerabilities.
 
 ## Example
-```http
-POST /api/login HTTP/1.1
-Content-Type: application/json
-
-{
-  "username": "tommy",
-  "password": "secret123"
+```java
+@Bean
+SecurityFilterChain apiSecurity(HttpSecurity http) throws Exception {
+    return http
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/api/public/**").permitAll()
+            .anyRequest().authenticated()
+        )
+        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+        .build();
 }
 ```
 
-```http
-GET /api/messages HTTP/1.1
-Authorization: Bearer <jwt-token>
-```
-
 ## Common Mistakes
-- Using JWT only because it is popular.
-- Ignoring token expiration and refresh strategy.
-- Assuming stateless authentication is automatically simpler in every project.
+- Calling a random string a JWT without validating it as a signed token.
+- Treating sessions and JWTs as interchangeable implementation details.
+- Building an authorization server inside a business API without understanding the responsibility.
+- Ignoring token expiration, issuer, audience, and key rotation.
 
 ## Practice
-- Write one advantage and one drawback of sessions.
-- Write one advantage and one drawback of JWT-based auth.
-- Explain where the authenticated state is stored in each model.
-- Explain when a Spring Security resource server is a better fit than a session-based login flow.
+- Describe when you would choose sessions for a simple app.
+- Describe when an API should behave as a JWT resource server.
+- List the responsibilities of an authorization server versus a resource server.
 
 ## Continuity
 - Previous lesson: `Lesson 17: Login Flow, Password Encoding, and Authorization`
-- Next lesson: `Lesson 19: Build and Package the Application`
+- Next lesson: `Lesson 19: Build Executable Jars and Container-friendly Artifacts`
 
 ## Key Takeaway
-- Choosing an auth model affects API design, client interaction, and deployment behavior.
+- Boot 4 security design should choose the right authentication architecture instead of treating sessions, JWTs, and authorization servers as the same thing.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/web/spring-security.html
-- https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html
+- https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/index.html
+- https://docs.spring.io/spring-security/reference/servlet/oauth2/authorization-server/index.html
+- https://docs.spring.io/spring-security/reference/servlet/authentication/session-management.html

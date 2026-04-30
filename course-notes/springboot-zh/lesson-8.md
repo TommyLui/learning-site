@@ -1,57 +1,50 @@
 ---
-title: "第 8 課：處理請求、回應與 JSON"
+title: "第 8 課：用 Jackson 3 處理 Requests、Responses 與 JSON"
 lesson: 8
 slug: "lesson-8"
-summary: "大多數後端工作，都是把 HTTP 輸入轉成應用程式動作，並回傳有用的回應資料。"
+summary: "Boot 4 使用 Jackson 3 作為偏好的 JSON generation，因此 DTO design 與 JSON boundaries 應以這個世代為前提。"
 ---
 
-# 第 8 課：處理請求、回應與 JSON
+# 第 8 課：用 Jackson 3 處理 Requests、Responses 與 JSON
 
-大多數後端工作，都是把 HTTP 輸入轉成應用程式動作，並回傳有用的回應資料。
+Boot 4 使用 Jackson 3 作為偏好的 JSON generation，因此 DTO design 與 JSON boundaries 應以這個世代為前提。
 
 ## 這一課會學到什麼
-- 在 Spring Boot 端點中接收查詢參數、路徑變數與 JSON 請求主體。
-- 使用 DTO 更清楚地定義 API 的輸入與輸出。
-- 了解 Spring Boot 如何把 Java 物件序列化為 JSON 回應。
+- 使用 path variables、query parameters、request bodies、response bodies 與 DTOs。
+- 理解 JSON serialization 與 deserialization 在 Spring MVC API 中的位置。
+- 認識 Boot 4 轉向 Jackson 3，避免依賴過時 Jackson 2 customizations。
 
 ## 為什麼重要
-- 大多數後端工作，都是把 HTTP 輸入轉成應用程式動作，並回傳有用的回應資料。
-- 良好的請求與回應設計，能讓 API 更容易閱讀、修改與測試。
-- DTO 有助於把公開 API 契約與持久層細節、內部模型分開。
+- JSON 是多數 frontend clients 與 API consumers 會看到的 contract。
+- DTOs 讓 HTTP-facing shapes 與 persistence entities、internal domain choices 分離。
+- Jackson 3 對 advanced customization 的 package 與 module details 有改變，即使基本 JSON handling 仍很熟悉。
 
 ## 主要觀念
-- 不同類型的 HTTP 輸入，會對應到不同的 Spring 註解。
-- DTO 能保護 API，避免不小心暴露內部結構。
-- JSON 序列化雖然是自動的，但回應長什麼樣仍然是你的設計責任。
+- Controllers 應接受與回傳明確的 request/response models。
+- Records 是建立許多 immutable DTOs 的簡潔方式。
+- 基本 JSON examples 可以保持簡單，但 advanced Jackson annotations 與 customizers 應對照 Boot 4 docs。
 
 ## 課程筆記
-當第一個端點可以運作後，下一步就是學會真實世界中的 API 輸入是怎麼進來的。請求可以在好幾個地方攜帶資料：查詢參數、路徑變數、標頭，以及請求主體。Spring Boot 提供了專用註解，讓每一種輸入都能被清楚地映射。
+第一個 controller 能運作後，下一步是處理真實 request 與 response shapes。Client 可能送 path variables、query parameters、headers 或 JSON body。Controller 的工作是把這些 HTTP inputs map 成清楚的 Java shape，再回傳可預測的 response。
 
-`@RequestParam` 適合用於小型的篩選或搜尋值。`@PathVariable` 常見於 URL 用來識別某個特定資源的情境。`@RequestBody` 則是在用戶端送出結構化 JSON 時使用，例如建立或更新資料所需的內容。
+對許多 APIs 來說，request 與 response DTOs 比直接 expose entities 更好。Request DTO 可以描述 client 被允許送什麼；response DTO 可以描述 API 保證回傳什麼。這個分離能保護 application 其他部分不被意外 API changes 影響。
 
-一開始你可能會想直接把這些資料放進實體，或重複使用同一個類別處理所有事情。但這通常很快就會變得混亂。DTO 是更好的選擇，因為它能在 API 層精確定義輸入與輸出的形狀，而不必把內部模型的所有細節都暴露出去。
+Spring MVC 使用 HTTP message converters 讀寫 JSON。Boot 4 中，Jackson 3 是偏好的 JSON library。對簡單 DTOs 來說，你仍然寫 records 或 classes，讓 framework serialize。差異主要出現在你 customize Jackson、使用特殊 modules，或複製引用舊 Jackson package names 的範例時。
 
-這種分離在之後會很有價值。如果你的資料庫模型改變了，通常仍然可以維持公開 API 的穩定性。如果 API 持續擴大，你也能有意識地新增或移除欄位，而不是因為實體被序列化而意外洩漏資料。
+不要把所有 concerns 混在一個 controller method 中。Bind request，讓下一課的 validation 處理 input rules，呼叫 service，然後回傳 response model。這能讓 JSON boundary 可讀且可測試。
 
-當正確的 Web 依賴存在時，Spring Boot 會自動處理 JSON 轉換。這種便利很強大，但不代表你就不需要設計。你仍然要決定哪些欄位該出現在回應中、哪些輸入值是必填，以及成功與失敗的 payload 應該如何組織。
+命名也很重要。使用 API consumers 能理解的欄位，而不只是 database 欄位。如果 internal entity 有不該 expose 的欄位，不要直接回傳 entity；建立代表 API contract 的 response DTO。
 
-良好的請求與回應處理，也能提升其他開發者閱讀程式碼時的理解效率。當有人看到控制器方法搭配清楚的 DTO 類型時，就更容易知道這個端點預期什麼輸入，以及它會回傳什麼。
-
-這一課會讓後端開發開始變得更貼近真實情境。應用程式不再只是回傳靜態訊息，而是開始接收結構化的客戶端輸入，並塑造可預期的回應契約。
+這個階段的 Jackson 3 awareness 主要是一種紀律：有意識地使用簡單 JSON，並在教 advanced custom serializers、mixins 或 module configuration 前檢查目前 Boot 4 documentation。
 
 ## 範例
 ```java
 package com.tommy.learningapi.notes;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-public record CreateNoteRequest(String title, String content) {}
-public record NoteResponse(Long id, String title, String content) {}
 
 @RestController
 @RequestMapping("/api/notes")
@@ -61,30 +54,30 @@ public class NoteController {
         return new NoteResponse(1L, request.title(), request.content());
     }
 
-    @GetMapping("/{id}")
-    public NoteResponse findById(@PathVariable Long id) {
-        return new NoteResponse(id, "Spring Boot", "Request and response example");
-    }
+    public record CreateNoteRequest(String title, String content) {}
+    public record NoteResponse(Long id, String title, String content) {}
 }
 ```
 
 ## 常見錯誤
-- 太早直接把實體當成公開的請求與回應模型使用。
-- 把路徑變數和查詢參數搞混。
-- 在應該輸出有意義 JSON 的端點中，卻回傳沒有結構的字串。
+- 每個 endpoint 都直接回傳 JPA entities。
+- 把 DTO field names 當成不重要的 implementation details。
+- 沒檢查 Boot 4 與 Jackson 3 package names，就複製舊 Jackson customization examples。
+- 在一個 long method 中混合 request binding、business rules、persistence 與 response shaping。
 
 ## 練習
-- 新增一個 POST 端點，從請求主體接收 JSON。
-- 建立一個以路徑為基礎的端點，例如 `/api/notes/{id}`。
-- 設計一個小型回應 DTO，而不是直接回傳原始實體或字串。
+- 為 note creation endpoint 建立分開的 request 與 response records。
+- 為 read endpoint 加上一個 query parameter 與一個 path variable。
+- 搜尋範例中的 Jackson-specific imports，確認它們符合 current Boot 4 guidance 再使用。
 
 ## 延續閱讀
-- 上一課：`第 7 課：建立你的第一個 REST Controller`
-- 下一課：`第 9 課：驗證與全域例外處理`
+- 上一課：`第 7 課：使用 Spring MVC 建立第一個 REST Controller`
+- 下一課：`第 9 課：Validation 與 Global Exception Handling`
 
 ## 課後重點
-- 大多數後端工作，都是把 HTTP 輸入轉成應用程式動作，並回傳有用的回應資料。
+- Boot 4 JSON work 仍從清楚 DTOs 開始，但 advanced Jackson examples 應對齊 Jackson 3 世代。
 
 ## 官方參考資料
 - https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/requestbody.html
-- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/responsebody.html
+- https://docs.spring.io/spring-boot/reference/features/json.html
+- https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide

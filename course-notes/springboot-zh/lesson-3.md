@@ -1,52 +1,49 @@
 ---
-title: "第 3 課：理解專案結構與啟動流程"
+title: "第 3 課：理解專案結構、啟動流程與 Embedded Servers"
 lesson: 3
 slug: "lesson-3"
-summary: "對啟動流程與專案結構有清楚的心智模型，會讓之後像 controller、repository 與 configuration 這些主題更容易理解。"
+summary: "清楚理解 project layout、Boot startup 與 embedded server stack，能讓後續 controllers、repositories 與 configuration 更容易推理。"
 ---
 
-# 第 3 課：理解專案結構與啟動流程
+# 第 3 課：理解專案結構、啟動流程與 Embedded Servers
 
-對啟動流程與專案結構有清楚的心智模型，會讓之後像 controller、repository 與 configuration 這些主題更容易理解。
+清楚理解 project layout、Boot startup 與 embedded server stack，能讓後續 controllers、repositories 與 configuration 更容易推理。
 
 ## 這一課會學到什麼
-- 理解 Spring Boot 專案中的主要資料夾，以及應用程式如何啟動。
-- 說明 `@SpringBootApplication` 與 `SpringApplication.run(...)` 的角色。
-- 看見 package 結構為什麼會影響 component scanning、bean discovery 與除錯。
+- 理解 Boot project 的主要 folders，以及 application 如何啟動。
+- 說明 `@SpringBootApplication`、component scanning 與 `SpringApplication.run(...)` 的角色。
+- 認識 Boot 4 servlet baseline：Spring MVC application 使用 Servlet 6.1 與 embedded Tomcat 11。
 
 ## 為什麼重要
-- 對啟動流程與專案結構有清楚的心智模型，會讓之後像 controller、repository 與 configuration 這些主題更容易理解。
-- Spring Boot 中很多常見錯誤，都來自 package 擺放位置、設定載入方式，或對啟動流程的錯誤假設。
-- 理解預設的專案形狀，能幫助你在擴充應用程式時，仍然維持可讀性。
+- 許多初學者錯誤來自 package 放錯、resources 被忽略，或對 startup 有錯誤假設。
+- Boot startup 是 configuration loading、auto-configuration、bean creation 與 web server startup 交會的地方。
+- 理解 embedded server model 能避免沿用舊式 external-container 習慣。
 
 ## 主要觀念
-- `src/main/java`、`src/main/resources` 與 `src/test/java` 各自有不同的角色。
-- `@SpringBootApplication` 定義了主要進入點，並啟用 Boot 的核心行為。
-- `SpringApplication.run(...)` 會觸發啟動流程、設定載入、bean 建立與伺服器啟動。
+- `src/main/java`、`src/main/resources` 與 `src/test/java` 各自有不同責任。
+- 除非你自訂 scanning，Boot 會從 main application package 往下掃描。
+- Boot 4 servlet web app 通常跑在 embedded Servlet 6.1-compatible server，例如 Tomcat 11。
 
 ## 課程筆記
-用 Spring Initializr 產生專案之後，下一個有價值的步驟，不是立刻再多寫幾行程式，而是先理解你手上這個程式碼庫的形狀。Spring Boot 專案遵循一種結構：它對初學者來說夠簡單，但也足夠強大，能支撐真實應用程式的成長。
+產生專案後，先不要急著寫功能。Folder layout 是第一堂 design lesson。Application code 放在 `src/main/java`，configuration files 放在 `src/main/resources`，tests 放在 `src/test/java`。這個結構很簡單，但足以支撐 application 成長而不混亂。
 
-建置檔是第一個重要部分。在 Maven 專案裡，通常會是 `pom.xml`；在 Gradle 專案裡，則會是建置 script。這個檔案決定了相依套件、plugin、Java 版本設定與封裝行為。每當你加入新的 starter，或改變建置流程時，你都在動到這個專案的骨幹。
+Main application class 是 startup 中心。它包含 Java `main` method，並呼叫 `SpringApplication.run(...)`。這個呼叫會啟動 Spring application context、載入 configuration、評估 auto-configuration、建立 beans，並在 project 是 web application 時啟動 embedded web server。
 
-在 `src/main/java` 裡，你會放主要的應用程式程式碼。controller、service、repository、configuration class 與 domain model，通常都會在這裡依照 package 組織起來。即使專案還很小，這個資料夾也代表了後端長期的結構。
+`@SpringBootApplication` annotation 合併了 configuration、auto-configuration 與 component scanning。預設情況下，components 會在 main class 所在 package 底下被發現。如果 controller 或 service 放到這個 tree 之外，Spring 可能找不到它，最後就會出現 missing bean 或 endpoint 沒有 mapping 的問題。
 
-在 `src/main/resources` 裡，你會放像 `application.properties` 或 `application.yml` 這樣的應用程式設定。當你加入資料庫設定、profile、自訂 port 或 feature flag 後，這個資料夾會變得越來越重要。越早把設定當成一級公民來對待，之後就越能少掉許多問題。
+Boot 4 也更新了預設 runtime stack。Spring MVC project 的 servlet baseline 是 Servlet 6.1，supported embedded Tomcat line 是 Tomcat 11。Jetty 12.1 也是另一條 supported servlet-container path。Undertow 不是 Boot 4 servlet 教學主線，因為 Servlet 6.1 baseline 改變了 support story。
 
-在 `src/test/java` 裡，你會放測試。Spring Boot 從一開始就建立了這個測試結構，因為測試不該等到最後才補上，它本來就是應用程式設計的一部分。即使你的第一個專案只有幾個測試，這個結構仍然提醒你：驗證從第一天開始就屬於這個專案。
+這不代表你在 beginner API 裡要手動管理 Tomcat。Embedded server 會透過 web MVC starter 帶入，並跟 application 一起啟動。你仍然應該知道它存在，因為 request handling、ports、error pages、headers 與 deployment behavior 都會經過這一層。
 
-產生出的專案中，最重要的單一 class 是主要應用程式 class。它包含 Java 的 `main` method，也就是 JVM 的啟動點；同時它會呼叫 `SpringApplication.run(...)`，這就是 Spring Boot 啟動自己整個流程的地方。
-
-那個啟動流程不只是執行一個 method。它會載入設定、判斷建立的是哪種類型的應用程式、評估自動設定條件、掃描 component、建立 bean，並在它是 Web 應用程式時啟動內嵌伺服器。這就是為什麼啟動階段看起來很豐富：許多 framework 的決策都在這裡一次完成。
-
-`@SpringBootApplication` 很重要，因為它把多個責任整合成一個清楚的進入點。它把這個 class 標記成設定來源、啟用自動設定，並打開 component scanning。正是這種組合，讓產生出的應用程式既精簡又強大。
-
-package 的擺放位置在這裡也變得重要。Spring Boot 通常會從主要應用程式 class 所在的 package 往下掃描。如果你的 controller 或 service 在那棵樹之外，Spring 可能永遠不會自動發現它。初學者常把這種情況感受到為神祕的 missing bean 問題，但其實它往往只是 package 結構出了問題。
-
-這一課也引入了一個觀念：結構與啟動是連在一起的。你不只是在學檔案該放哪裡；你是在學 Spring Boot 如何在執行時找到並組裝那些檔案。一旦你理解了這個連結，之後關於 controller、依賴注入與設定的課題，就不會再那麼像魔法。
+當你把 structure 與 startup 串起來，後續 topics 就比較不神祕。Controllers 因為 component scanning 被發現，configuration 因為 resources 參與 startup 被載入，auto-configuration 因為 starters 作出反應，tests 也可以在需要時啟動這個 context 的部分內容。
 
 ## 範例
 ```java
+package com.tommy.learningapi;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 @SpringBootApplication
 public class LearningApiApplication {
     public static void main(String[] args) {
@@ -56,24 +53,24 @@ public class LearningApiApplication {
 ```
 
 ## 常見錯誤
-- 不知道啟動 class 到底在做什麼。
-- 把 Spring component 放在被掃描 package 結構之外。
-- 忽略 `src/main/resources` 的角色，把設定分散在其他地方。
-- 把專案資料夾配置當成外觀問題，而不是架構問題。
+- 把 controllers 或 services 放到 main application class 掃描 package tree 外面。
+- 把 `src/main/resources` 當成次要資料夾，而不是預設 configuration home。
+- 以為 Boot MVC app 需要 external servlet container 才能在本機執行。
+- 忘記 embedded server version 由 Boot dependency management 管理。
 
 ## 練習
-- 在你產生出的專案中找到主要應用程式 class，並解釋每一行在做什麼。
-- 畫出一張資料夾地圖，標示 `src/main/java`、`src/main/resources` 與 `src/test/java`。
-- 在一個小型練習專案裡，把某個 component 移到主要 package 樹之外，並觀察會發生什麼變化。
+- 畫出 generated project folder tree，並標註每個 main folder 的角色。
+- 在 practice branch 中把一個小 component 移到 scanned package 外，觀察 failure。
+- 找出 web MVC starter 帶入的 embedded server dependency。
 
 ## 延續閱讀
-- 上一課：`第 2 課：使用 Spring Initializr 建立專案`
-- 下一課：`第 4 課：依賴注入與 Bean`
+- 上一課：`第 2 課：使用 Spring Initializr 建立 Boot 4 專案`
+- 下一課：`第 4 課：Dependency Injection 與 Beans`
 
 ## 課後重點
-- 對啟動流程與專案結構有清楚的心智模型，會讓之後像 controller、repository 與 configuration 這些主題更容易理解。
+- Boot startup 把 project structure、component scanning、auto-configuration 與 embedded server 串成一個 application runtime。
 
 ## 官方參考資料
 - https://docs.spring.io/spring-boot/reference/features/spring-application.html
 - https://docs.spring.io/spring-boot/reference/using/using-the-springbootapplication-annotation.html
-- https://docs.spring.io/spring-boot/reference/using/structuring-your-code.html
+- https://docs.spring.io/spring-boot/system-requirements.html

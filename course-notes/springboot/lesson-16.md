@@ -1,44 +1,42 @@
 ---
-title: "Lesson 16: Spring Security 6 Fundamentals"
+title: "Lesson 16: Spring Security 7 Fundamentals"
 lesson: 16
 slug: "lesson-16"
-summary: "Security changes how requests move through the application and is essential for real APIs."
+summary: "Spring Security 7 protects Boot 4 applications through a filter-chain model that separates authentication, authorization, and application logic."
 ---
 
-# Lesson 16: Spring Security 6 Fundamentals
+# Lesson 16: Spring Security 7 Fundamentals
 
-Security changes how requests move through the application and is essential for real APIs.
+Spring Security 7 protects Boot 4 applications through a filter-chain model that separates authentication, authorization, and application logic.
 
 ## What You Will Learn
-- Understand the core concepts of authentication, authorization, and the filter chain.
-- See why adding Spring Security changes request handling even before custom code exists.
-- Build a mental model for protecting endpoints intentionally rather than accidentally.
-- Recognize why Spring Boot 3.x uses `SecurityFilterChain` configuration instead of `WebSecurityConfigurerAdapter`.
+- Understand authentication, authorization, and the security filter chain.
+- See why adding Spring Security changes request handling even before custom application code exists.
+- Configure access rules with a `SecurityFilterChain` bean.
+- Recognize Spring Security 7 as the security generation aligned with Spring Boot 4.x.
 
 ## Why This Matters
-- Security changes how requests move through the application and is essential for real APIs.
-- It protects application boundaries and shapes who can do what inside the system.
-- Without a clear security model, backend APIs are easy to expose incorrectly.
+- Security changes how every request reaches the application.
+- Secure defaults are useful, but production APIs still need deliberate access rules.
+- Spring Security 7 remains centered on filter-chain configuration rather than the removed `WebSecurityConfigurerAdapter` style.
 
 ## Main Ideas
-- Authentication and authorization solve different problems.
-- Spring Security works at the request-processing boundary through filters.
-- Secure defaults are helpful, but they still need deliberate application design.
+- Authentication asks who the caller is; authorization asks what that caller may do.
+- Spring Security evaluates requests before they reach most controller logic.
+- `SecurityFilterChain` configuration keeps rules explicit and reviewable.
 
 ## Lesson Notes
-Spring Security can feel abrupt when you first add it, because it affects the application before you write much custom logic. Endpoints that were previously open may suddenly require authentication. That surprise is not a bug; it reflects the fact that security operates at the boundary of request handling.
+Spring Security can feel abrupt because it affects an application as soon as it is added. Endpoints that were public may now require authentication. That is not accidental; security sits at the request boundary and evaluates traffic before the controller receives it.
 
-The two most important concepts are authentication and authorization. Authentication answers who the user is. Authorization answers what that user is allowed to do. A secure application needs both, but they should not be confused.
+Authentication and authorization solve different problems. Authentication identifies the caller. Authorization decides whether that caller can access a specific resource or action. A secure API needs both ideas, but mixing them up leads to confusing rules.
 
-Spring Security processes requests through a filter chain before the request reaches your controllers. This is why security is not just another service in the middle of your code. It sits in front of much of the application and decides whether a request should continue at all.
+The filter chain is the core request-processing model. Security filters can read credentials, create an authenticated principal, reject unauthenticated requests, enforce role or authority rules, and prepare security context for downstream code. This is why security is not just a service method you call manually.
 
-This design is powerful because it gives you central control over access rules. You can define which endpoints are public, which require a logged-in user, and which need specific roles or permissions. That keeps security policy visible and consistent.
+In Spring Security 7, the modern configuration style is still to register a `SecurityFilterChain` bean and describe the access rules explicitly. Do not reintroduce `WebSecurityConfigurerAdapter`; that older inheritance model is not the path for modern Boot applications.
 
-For learners, the most useful mindset is to see security as traffic control at the application boundary. You are not just adding a login screen. You are deciding how every request should be evaluated before it reaches business logic.
+Boot 4 also has security-specific starter and test starter changes. Keep dependencies intentional: add the security starter when you are ready to protect endpoints, and add the security test starter when tests need security support such as mock users or request post-processors.
 
-Spring Boot makes this easier by integrating Security with the rest of the application model, but that convenience should not hide the concepts underneath. In Spring Security 6, the modern style is to register a `SecurityFilterChain` bean and configure rules explicitly rather than extending the old `WebSecurityConfigurerAdapter`. Method-level security also moved to `@EnableMethodSecurity`, which matches the same newer configuration model. If you understand the filter chain and access rules, later features such as custom login flow, JWT, or method-level security become much easier to reason about.
-
-This lesson is the point where the course shifts from building functionality to protecting functionality. That change is central to real backend development.
+This lesson is the transition from building functionality to protecting functionality. Once the filter-chain model is clear, login flows, password encoding, JWT resource servers, and method security become easier to reason about.
 
 ## Example
 ```java
@@ -69,21 +67,23 @@ public class SecurityConfig {
 
 ## Common Mistakes
 - Confusing authentication with authorization.
-- Adding Spring Security without expecting every endpoint to be affected.
-- Treating security as only a UI login concern rather than an API boundary concern.
+- Adding Security without expecting existing endpoints to require authentication.
+- Copying `WebSecurityConfigurerAdapter` examples into a modern Security 7 project.
+- Testing secured endpoints without the security test support needed for the chosen test style.
 
 ## Practice
 - Define one public endpoint and one protected endpoint.
-- Explain in your own words what the filter chain does before a controller is reached.
-- List three API resources that should probably not be public by default.
+- Explain in your own words what happens before a controller sees a secured request.
+- Add a test that verifies an unauthenticated request is rejected.
 
 ## Continuity
-- Previous lesson: `Lesson 15: Common Debugging Patterns in Spring Boot Applications`
+- Previous lesson: `Lesson 15: Common Debugging Patterns in Boot 4 Applications`
 - Next lesson: `Lesson 17: Login Flow, Password Encoding, and Authorization`
 
 ## Key Takeaway
-- Security changes how requests move through the application and is essential for real APIs.
+- Spring Security 7 protects Boot 4 APIs through explicit filter-chain rules that separate identity, permission, and business logic.
 
 ## Official References
 - https://docs.spring.io/spring-security/reference/servlet/architecture.html
+- https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html
 - https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html

@@ -2,109 +2,103 @@
 title: "Lesson 9: Validation and Global Exception Handling"
 lesson: 9
 slug: "lesson-9"
-summary: "APIs need predictable failure behavior, not only successful responses."
+summary: "Validation and centralized error handling turn raw controller methods into a more reliable API contract."
 ---
 
 # Lesson 9: Validation and Global Exception Handling
 
-APIs need predictable failure behavior, not only successful responses.
+Validation and centralized error handling turn raw controller methods into a more reliable API contract.
 
 ## What You Will Learn
-- Validate incoming request data with Jakarta Validation annotations.
-- Use `@Valid` so invalid input is rejected before business logic runs.
-- Centralize error responses with `@ControllerAdvice` and exception handlers.
+- Validate request DTOs with Jakarta Validation annotations.
+- Use `@Valid` to trigger validation at the HTTP boundary.
+- Centralize API error responses with `@RestControllerAdvice` and exception handlers.
 
 ## Why This Matters
-- APIs need predictable failure behavior, not only successful responses.
-- Input validation protects your domain logic from bad data at the boundaries.
-- A global error strategy gives clients a more consistent and readable API contract.
+- APIs need predictable input rules and predictable failure responses.
+- Boot 4 remains on the Jakarta API line, so validation imports should use `jakarta.validation.*`.
+- Clear error handling improves client experience and keeps controllers focused.
 
 ## Main Ideas
-- Validation belongs at the API boundary as well as in deeper business rules.
-- `@ControllerAdvice` keeps error-handling logic out of every individual controller.
-- Readable error responses are part of API quality, not just a debugging convenience.
+- Validate external input before it enters business logic.
+- Do not scatter ad-hoc error response code across every endpoint.
+- Error responses are part of the API contract and should be shaped deliberately.
 
 ## Lesson Notes
-A backend application is not defined only by how it behaves when everything is correct. It also has to respond well when requests are incomplete, malformed, or logically invalid. Validation is the first line of defense against these problems.
+Once controllers receive JSON bodies, they need input rules. A note title may be required, a page size may need a maximum, and an email field may need email-shaped text. Those rules belong near the request boundary so invalid data does not travel deeply into the application.
 
-In Spring Boot 3.x, request validation is often handled with Jakarta Validation annotations such as `@NotBlank`, `@Email`, `@Min`, or `@Size`. In practice, that means keeping a Bean Validation implementation on the classpath, usually through `spring-boot-starter-validation`. When these annotations are placed on request DTO fields and the controller uses `@Valid`, Spring checks the payload before your service logic runs.
+Spring Boot 4 uses the Jakarta Validation generation. That means examples should import annotations from `jakarta.validation`, such as `jakarta.validation.Valid`, `jakarta.validation.constraints.NotBlank`, and `jakarta.validation.constraints.Size`. Do not fall back to old `javax.validation` imports.
 
-This boundary-level validation is important because it prevents obvious bad input from leaking deeper into the system. It also keeps the API contract clear: clients know what fields are required and what rules apply.
+Validation annotations belong well on request DTOs because they document the contract clients must satisfy. When a controller parameter is annotated with `@Valid`, Spring MVC validates the object after binding the JSON body and before the controller method continues.
 
-Validation, however, is only half the story. Once errors occur, the API must respond in a way that clients can understand. If every controller handles exceptions differently, the application quickly becomes inconsistent and harder to maintain.
+Validation failure is only half the story. Clients also need consistent error responses. `@RestControllerAdvice` lets you centralize exception handling across controllers so errors have a predictable shape. You can decide what fields to include, such as a message, field errors, a path, or a timestamp.
 
-That is why `@ControllerAdvice` matters. It allows you to centralize error handling for validation failures, missing resources, domain-specific exceptions, and other application-level problems. Instead of repeating response-building logic everywhere, you define a common strategy once.
+Keep the first error model simple. The goal is not to design a perfect enterprise error format on day one. The goal is to stop returning inconsistent or confusing responses and to avoid duplicating error handling in every controller.
 
-A good global error response should be simple, predictable, and easy to extend. It might include a message, a status code, a field error list, or a timestamp. The exact shape can vary, but consistency is more important than decorative complexity.
-
-This lesson turns your API into something more trustworthy. Clients should not have to guess what happens when they send bad input, and developers should not have to reinvent error handling in every new controller.
+This lesson prepares the course for persistence and security because both areas produce failures that should be translated into useful API responses rather than raw stack traces.
 
 ## Example
 ```java
-package com.tommy.learningapi.common;
+package com.tommy.learningapi.notes;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.Valid;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import org.springframework.http.ResponseEntity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-record CreateUserRequest(
-    @NotBlank(message = "name is required") String name,
-    @Email(message = "email must be valid") String email
+@RestController
+class NoteController {
+    @PostMapping("/api/notes")
+    NoteResponse create(@Valid @RequestBody CreateNoteRequest request) {
+        return new NoteResponse(1L, request.title(), request.content());
+    }
+}
+
+record CreateNoteRequest(
+    @NotBlank String title,
+    @Size(max = 2_000) String content
 ) {}
 
-@RestController
-class UserController {
-    @PostMapping("/api/users")
-    ResponseEntity<Void> create(@Valid @RequestBody CreateUserRequest request) {
-        return ResponseEntity.status(201).build();
+record NoteResponse(Long id, String title, String content) {}
+
+@RestControllerAdvice
+class ApiExceptionHandler {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    ErrorResponse handleValidation(MethodArgumentNotValidException ex) {
+        return new ErrorResponse("Validation failed");
     }
 }
 
-@RestControllerAdvice
-class GlobalExceptionHandler {
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("error", "Validation failed");
-        body.put("status", 400);
-        body.put("fieldErrors", ex.getBindingResult().getFieldErrors().stream()
-            .collect(java.util.stream.Collectors.toMap(
-                fieldError -> fieldError.getField(),
-                fieldError -> fieldError.getDefaultMessage(),
-                (first, second) -> first,
-                LinkedHashMap::new
-            )));
-        return ResponseEntity.badRequest().body(body);
-    }
-}
+record ErrorResponse(String message) {}
 ```
 
 ## Common Mistakes
-- Validating too late only inside service methods.
-- Returning raw stack traces or framework internals to API clients.
-- Copying exception-handling code into every controller.
+- Importing `javax.validation.*` in a modern Boot course.
+- Adding validation annotations but forgetting `@Valid` where the request is received.
+- Returning raw exception messages or stack traces to clients.
+- Making every controller build its own error response shape.
 
 ## Practice
-- Add `@NotBlank` and another validation rule to a request DTO.
-- Create a simple global exception handler for validation failures.
-- Design a small JSON error format you could reuse across multiple endpoints.
+- Add `@NotBlank` and `@Size` to a request DTO.
+- Trigger a validation failure and inspect the response.
+- Create one centralized exception handler for a domain-specific exception.
 
 ## Continuity
-- Previous lesson: `Lesson 8: Handle Requests, Responses, and JSON`
-- Next lesson: `Lesson 10: Connect Spring Boot 3.x to MySQL`
+- Previous lesson: `Lesson 8: Handle Requests, Responses, and JSON With Jackson 3`
+- Next lesson: `Lesson 10: Connect Spring Boot 4.x to MySQL and Hibernate 7`
 
 ## Key Takeaway
-- APIs need predictable failure behavior, not only successful responses.
+- Boot 4 APIs should validate input with Jakarta Validation and return consistent errors from a central boundary.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/io/validation.html
-- https://docs.spring.io/spring-boot/reference/web/index.html
+- https://docs.spring.io/spring-framework/reference/core/validation/beanvalidation.html
+- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-validation.html
+- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-advice.html

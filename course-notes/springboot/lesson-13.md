@@ -1,87 +1,83 @@
 ---
-title: "Lesson 13: Write Unit Tests for Service Logic"
+title: "Lesson 13: Write Unit Tests and Focused Spring Tests"
 lesson: 13
 slug: "lesson-13"
-summary: "Unit tests help verify rules quickly and make service code safer to change."
+summary: "Good tests start with fast unit coverage and add Spring context only when framework behavior is part of what you need to verify."
 ---
 
-# Lesson 13: Write Unit Tests for Service Logic
+# Lesson 13: Write Unit Tests and Focused Spring Tests
 
-Unit tests help verify rules quickly and make service code safer to change.
+Good tests start with fast unit coverage and add Spring context only when framework behavior is part of what you need to verify.
 
 ## What You Will Learn
-- Write focused unit tests for service-layer behavior.
-- Use mocks or stubs to isolate the service from repository dependencies.
-- Understand what a unit test should and should not try to prove.
+- Separate plain unit tests from Spring-backed tests.
+- Test service logic without starting the full application context.
+- Use focused Spring test slices when you need MVC, JSON, JPA, or configuration behavior.
 
 ## Why This Matters
-- Unit tests help verify rules quickly and make service code safer to change.
-- They provide fast feedback for business logic without requiring the full application to start.
-- They make refactoring easier because important decisions are protected by repeatable checks.
+- Not every test needs the cost and complexity of `@SpringBootTest`.
+- Fast service tests help you verify business rules before integration details distract you.
+- Boot 4's testing model is more modular, so choosing the right test dependency and scope matters.
 
 ## Main Ideas
-- Unit tests should isolate one class or behavior at a time.
-- Mocks are useful when the dependency is not the thing being tested.
-- Good tests describe business behavior rather than re-implementing method internals.
+- Unit tests verify plain Java behavior with minimal framework involvement.
+- Test slices verify a focused part of the Spring stack.
+- Full application tests should be reserved for behavior that really needs the assembled context.
 
 ## Lesson Notes
-Once your service layer starts holding real rules, it deserves direct verification. Unit tests are the fastest way to do that because they focus on one class in isolation rather than starting the full application.
+Testing a Spring Boot application does not mean every test must start Spring. Many important rules live in services, mappers, validators, and small helper classes. Those can often be tested as plain Java objects with JUnit and Mockito.
 
-A service unit test typically replaces repository dependencies with mocks or stubs. This matters because the goal is not to prove that the database works. The goal is to prove that the service behaves correctly when the repository returns certain results or throws certain conditions.
+This distinction keeps feedback fast. If a service depends on a repository interface, a unit test can pass a mock or fake repository and verify the service rule directly. You do not need an embedded server or database just to check a calculation or branch.
 
-For example, you may want to verify that a service returns all notes, throws a not-found exception when an id is missing, or maps a request into an entity correctly before saving it. These are business-level behaviors, not framework-level wiring concerns.
+Spring-backed tests are still important. A controller test may need request mapping, JSON conversion, validation, and error handling. A repository test may need JPA mapping and database behavior. The key is to start only the slice that matches the question you are asking.
 
-Well-written unit tests are fast, expressive, and focused. They should tell you what rule failed, not just that 'something somewhere is wrong.' If the test is difficult to understand, the service design itself may also need improvement.
+Boot 4 also makes test dependencies more explicit through technology-specific test starters. For a Spring MVC controller test, use the web MVC test support. For JPA integration, use the JPA test support. This avoids assuming that one broad starter gives every technology all test behavior automatically.
 
-A common trap is over-mocking or testing implementation details. If your assertions are too tightly coupled to how the method is written instead of what it guarantees, small refactors will break tests for the wrong reason.
+Keep test names behavior-oriented. A test should explain what rule is protected, not only repeat the method name. Good tests become documentation for the service boundary and make refactoring safer.
 
-Another trap is using full `@SpringBootTest` startup for simple service verification. That makes tests slower and blurs the line between unit and integration testing. There is a place for broader tests, but service rules often deserve a much smaller testing scope.
-
-In a Spring Boot 3.x codebase, this distinction matters even more because integration tests can also cover real framework wiring, configuration properties, security rules, and container-backed dependencies. Keep unit tests narrow so those broader checks remain purposeful instead of accidental.
-
-The best reason to learn service unit tests early is not just correctness. It is confidence. As the application grows, being able to change service behavior without fear becomes a major productivity advantage.
+The right testing habit is layered: many fast unit tests, focused slice tests for framework boundaries, and fewer full-context integration tests for assembled behavior.
 
 ## Example
 ```java
-package com.tommy.learningapi.notes;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 class NoteServiceTest {
+    private final NoteRepository repository = Mockito.mock(NoteRepository.class);
+    private final NoteService service = new NoteService(repository);
+
     @Test
-    void create_shouldSaveMappedNote() {
-        NoteRepository repository = mock(NoteRepository.class);
-        NoteService service = new NoteService(repository);
-        CreateNoteRequest request = new CreateNoteRequest("DI", "constructor injection");
+    void createsNoteWithTrimmedTitle() {
+        when(repository.save(Mockito.any(Note.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        service.create(request);
+        service.create(new CreateNoteRequest("  API notes  ", "content"));
 
-        verify(repository).save(any(Note.class));
+        verify(repository).save(Mockito.argThat(note -> note.getTitle().equals("API notes")));
     }
 }
 ```
 
 ## Common Mistakes
-- Using full application startup for simple service tests.
-- Testing repository or controller behavior inside a service unit test.
-- Writing assertions that only mirror private implementation details.
+- Using `@SpringBootTest` for every small service rule.
+- Mocking so much that the test no longer verifies real behavior.
+- Forgetting to add the focused test starter for the technology being tested.
+- Writing tests that only mirror implementation details.
 
 ## Practice
-- Write a unit test for a service method that reads from a mocked repository.
-- Add a test for a missing entity or invalid input scenario.
-- Explain why a service unit test should not need a real database.
+- Write one unit test for a service method without starting Spring.
+- Identify one controller behavior that deserves a Spring MVC slice test.
+- Categorize your current tests as unit, slice, or full-context.
 
 ## Continuity
 - Previous lesson: `Lesson 12: Build CRUD APIs With Service and Repository Layers`
-- Next lesson: `Lesson 14: Write Integration Tests for Controllers and Repositories`
+- Next lesson: `Lesson 14: Write Boot 4 Integration Tests for Web and Persistence`
 
 ## Key Takeaway
-- Unit tests help verify rules quickly and make service code safer to change.
+- Boot 4 test design should start small and add Spring context only when the framework boundary is part of the behavior under test.
 
 ## Official References
 - https://docs.spring.io/spring-boot/reference/testing/index.html
-- https://docs.spring.io/spring-security/reference/servlet/test/method.html
+- https://docs.spring.io/spring-boot/reference/testing/spring-boot-applications.html

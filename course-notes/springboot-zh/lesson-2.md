@@ -1,79 +1,73 @@
 ---
-title: "第 2 課：使用 Spring Initializr 建立專案"
+title: "第 2 課：使用 Spring Initializr 建立 Boot 4 專案"
 lesson: 2
 slug: "lesson-2"
-summary: "從官方產生器開始，可以減少設定錯誤，並讓你的專案更符合 Spring Boot 慣例。"
+summary: "從 Spring Initializr 開始，可以得到乾淨的 Boot 4 baseline，並讓 Java、build tool、starter 與 plugin 選擇保持相容。"
 ---
 
-# 第 2 課：使用 Spring Initializr 建立專案
+# 第 2 課：使用 Spring Initializr 建立 Boot 4 專案
 
-從官方產生器開始，可以減少設定錯誤，並讓你的專案更符合 Spring Boot 慣例。
+從 Spring Initializr 開始，可以得到乾淨的 Boot 4 baseline，並讓 Java、build tool、starter 與 plugin 選擇保持相容。
 
 ## 這一課會學到什麼
-- 學會如何使用官方 Initializr 流程建立乾淨的 Spring Boot 3.x 專案。
-- 理解 Initializr 主要欄位的意義，以及它們如何影響產生出的專案。
-- 以支援漸進式學習而不是意外複雜度的方式選擇相依套件。
+- 用官方 Initializr workflow 建立 Spring Boot 4.x 專案。
+- 有意識地選擇 Java、Maven 或 Gradle、packaging、group、artifact 與 dependencies。
+- 認識 Boot 4 starter 命名變化，尤其是 Spring MVC path 對應的 `spring-boot-starter-webmvc`。
 
 ## 為什麼重要
-- 從官方產生器開始，可以減少設定錯誤，並讓你的專案更符合 Spring Boot 慣例。
-- 第一次的專案設定會影響 package 命名、建置工具、Java 相容性，以及後續的可維護性。
-- 乾淨的起點會讓後面的課程更容易，因為你知道這個專案是從一個已知可靠的基準產生出來的。
+- 第一個 generated project 會決定 package layout、build file、dependency management 與 local run workflow。
+- Boot 4 modular starters 比舊習慣更聚焦，所以 dependency choices 要更有意識。
+- 已知健康的 generated baseline 能降低後續除錯時的不確定性。
 
 ## 主要觀念
-- 像 group、artifact、packaging 這類專案中繼資料，會成為專案識別的一部分。
-- 選對 Spring Boot 與 Java 版本，可以避免本來就能避開的相容性問題。
-- 逐步選擇相依套件，能讓學習曲線維持在可控制的範圍。
+- Spring Initializr 是新 Boot project 最安全的起點。
+- Java 17+ 是必要條件，而 Maven 仍是適合初學者的簡單 build path。
+- UI 裡的 friendly dependency labels 會映射到 generated build file 中實際的 starter artifacts。
 
 ## 課程筆記
-Spring Initializr 是開始 Spring Boot 專案的官方方式，而這件事比一開始看起來更重要。你不需要手動組裝建置檔，也不用猜哪些相依套件應該搭配在一起；你是從一個依照 Spring 團隊預期慣例所產生的專案開始。
+Spring Initializr 是新 Spring Boot 專案的官方入口。它能避免初學者常見問題：手動組合不相容 dependencies，或忘記讓 Boot packaging 運作所需的 build plugin。
 
-`start.spring.io` 這個頁面看起來很簡單，但每個欄位都控制著有意義的內容。Project 會決定建置工具，通常是 Maven 或 Gradle。Language 會決定產生的是 Java、Kotlin 還是 Groovy 程式碼。Spring Boot 則會選定你要對齊的 framework 版本。對這條學習路線來說，它應該和 Spring Boot 3.x 以及受支援的 Java 17+ 執行環境保持一致。Java 21 在許多 Spring Boot 3 版本中也能使用，但這門課反覆回到的安全基線仍然是 Java 17。
+在這套課中，Maven 與 Java 是實用的預設值。選擇 Spring Boot 4.x 版本，Java 保持在 17 或更新版本，API service 使用 Jar packaging。Jar packaging 與 Boot embedded server model 搭配自然，也比傳統外部 application server workflow 更簡單。
 
-中繼資料區塊很容易被低估。Group 通常對應像 `com.tommy` 這樣的 package namespace，而 artifact 則是專案識別名稱，例如 `learning-api`。這些值會影響產生出的 package 名稱、建置輸出，以及應用程式在團隊或作品集情境中的辨識方式。好的名稱，能讓專案在成長時仍然保持可讀性。
+Boot 4 的 dependency section 值得更多注意。Initializr UI 可能使用 Spring Web 這類友善標籤，但 Boot 4 的 focused Spring MVC starter 是 `spring-boot-starter-webmvc`。這個 starter 會帶入 controllers、request mapping 與 JSON responses 所需的 servlet MVC stack；等開始 testing 時，companion `spring-boot-starter-webmvc-test` starter 才提供聚焦的 MockMvc-style test support。
 
-Packaging 是另一個早期選擇，而且會帶來實際影響。對大多數以 API 為主的 Spring Boot 應用程式來說，`Jar` 是最自然的預設值，因為 Spring Boot 會使用內嵌伺服器。這讓部署更單純，也符合許多現代後端服務的建立與散布方式。
+不要一次加入所有看似有用的 starters。如果目前 lesson 是第一個 controller，就先從 web MVC starter 開始。需要 request rules 時加入 Validation，進入 persistence 時加入 Data JPA 與 MySQL Driver，開始 protection 時加入 Security，開始 operational visibility 時加入 Actuator。分階段能讓行為變化更容易解釋。
 
-Java 版本欄位不是形式上的選項。Spring Boot 版本依賴特定的 Java 支援範圍，所以如果選錯 JDK，你甚至還沒寫出 controller，就可能遇到啟動失敗或函式庫不相容的問題。這就是為什麼檢查系統需求是健康設定流程的一部分，而不是可有可無的細節。
+Generated `pom.xml` 或 Gradle build file 不只是 dependency list。它編碼了 Boot parent 或 plugin、Java version、dependency management 與 packaging behavior。寫 application code 前先讀它，知道你實際使用的是哪個 platform。
 
-相依套件，是初學者最容易不小心製造混亂的地方。你可能很想一次把 Spring Web、Security、Data JPA、Validation、Actuator、Lombok 等等都加進去，因為它們看起來都很有用。問題在於，每一個 starter 都會改變產生出來的專案行為。如果你在第一天就把所有東西都加上去，你會在還沒理解每個部分作用之前，就先建立出一個更龐大的系統。
-
-更好的做法，是只加入當前學習目標真正需要的內容。如果你要開始建立第一個 endpoint，就先選 Spring Web。當課程走到持久化時，再加入 Spring Data JPA 與 MySQL Driver。到了輸入規則時，再加入 Validation。到了驗證機制時，再加入 Spring Security。這種分階段方式，會讓除錯與理解都容易得多。
-
-當 Initializr 產生完專案後，請把第一次成功啟動當成一個里程碑。在新增檔案或改動結構之前，先確認專案能乾淨地啟動。這能證明你的本機 Java 環境、建置工具與選定的 Spring Boot 版本，彼此之間都能正常合作。
-
-這一課真正要建立的，是一種可重複的起手習慣。當你每次都從相同的官方入口開始，並理解每個設定選擇背後的原因，之後的每個 Spring Boot 專案都會更容易開始。
+下載專案後，先 run 一次再加入自訂檔案。第一次成功啟動可以驗證 JDK、build tool、Boot version 與 selected dependencies 都能一起運作。後續如果出錯，你會知道 generated baseline 本身是健康的。
 
 ## 範例
 ```text
 Project: Maven
 Language: Java
-Spring Boot: 3.x
+Spring Boot: 4.x
 Group: com.tommy
 Artifact: learning-api
 Packaging: Jar
 Java: 17
-Dependencies: Spring Web
+Dependencies: Spring Web (Spring MVC), Validation
 ```
 
 ## 常見錯誤
-- 第一天就加入太多相依套件。
-- 選擇了不符合 Spring Boot 要求的 Java 版本。
-- 跳過第一次啟動驗證。
-- 把 group 與 artifact 當成隨便取的名字，而不是專案結構的一部分。
+- 還不知道每個 starter 會改變什麼，就先加入 Security、JPA、Actuator 與所有 test dependencies。
+- 選擇與 Boot line 不相容的 Java version。
+- 以為 Initializr label 一定與 Maven artifact name 完全相同。
+- 編輯專案前跳過第一次乾淨啟動。
 
 ## 練習
-- 建立一個只選擇 `Spring Web` 的 Spring Boot 3.x 新專案。
-- 在下載專案之前，先寫下每個 Initializr 欄位控制的是什麼。
-- 打開產生出的專案，辨認哪些 Initializr 選擇會反映在資料夾結構或建置檔中。
+- 建立一個 Boot 4 專案，使用 Maven、Java 17、Jar packaging、Spring Web 與 Validation。
+- 打開 build file，找出實際的 starter artifact names。
+- 在加入第一個 controller 前，先 run 一次 application。
 
 ## 延續閱讀
-- 上一課：`第 1 課：什麼是 Spring Boot 3.x，以及它為什麼重要`
-- 下一課：`第 3 課：理解專案結構與啟動流程`
+- 上一課：`第 1 課：什麼是 Spring Boot 4.x，以及它為什麼重要`
+- 下一課：`第 3 課：理解專案結構、啟動流程與 embedded servers`
 
 ## 課後重點
-- 從官方產生器開始，可以減少設定錯誤，並讓你的專案更符合 Spring Boot 慣例。
+- 乾淨的 Initializr project 會在你加入 application complexity 前，先提供可信任的 Boot 4 baseline。
 
 ## 官方參考資料
 - https://start.spring.io/
-- https://docs.spring.io/spring-boot/installing.html
 - https://docs.spring.io/spring-boot/system-requirements.html
+- https://docs.spring.io/spring-boot/reference/getting-started/index.html

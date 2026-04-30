@@ -1,68 +1,69 @@
 ---
-title: "Lesson 15: Common Debugging Patterns in Spring Boot Applications"
+title: "Lesson 15: Common Debugging Patterns in Boot 4 Applications"
 lesson: 15
 slug: "lesson-15"
-summary: "Debugging is a daily backend skill, and Spring Boot apps often fail in recognizable patterns."
+summary: "Debugging Boot 4 applications becomes easier when you read logs, condition reports, configuration sources, request flow, and dependency boundaries systematically."
 ---
 
-# Lesson 15: Common Debugging Patterns in Spring Boot Applications
+# Lesson 15: Common Debugging Patterns in Boot 4 Applications
 
-Debugging is a daily backend skill, and Spring Boot apps often fail in recognizable patterns.
+Debugging Boot 4 applications becomes easier when you read logs, condition reports, configuration sources, request flow, and dependency boundaries systematically.
 
 ## What You Will Learn
-- Build a repeatable debugging approach for startup, configuration, and request-flow issues.
-- Recognize common categories of Spring Boot failures and where to inspect first.
-- Use logs, smaller repro cases, and layer awareness to debug more efficiently.
+- Diagnose startup failures, missing beans, configuration issues, and HTTP request problems.
+- Use logs and auto-configuration condition information to understand what Boot did.
+- Separate dependency, configuration, web, persistence, and security causes when debugging.
 
 ## Why This Matters
-- Debugging is a daily backend skill, and Spring Boot apps often fail in recognizable patterns.
-- A methodical workflow is faster and more reliable than random trial and error.
-- The sooner you identify the failing layer, the easier it becomes to fix the actual cause.
+- Spring applications can fail for many different reasons that look similar at first.
+- Guessing often creates extra changes without fixing the root cause.
+- Boot 4 modular starters make it especially important to verify which dependency actually provides a feature.
 
 ## Main Ideas
-- Most failures belong to a layer: startup, web, persistence, security, or configuration.
-- Logs usually reveal the first useful symptom if you read them carefully.
-- Reducing a problem to a smaller reproducible case is one of the most effective debugging moves.
+- Read the first meaningful error, not only the final stack-trace line.
+- Confirm dependencies, properties, profiles, and bean discovery before changing code.
+- Reproduce the smallest failing path before applying a fix.
 
 ## Lesson Notes
-Spring Boot applications can feel intimidating to debug because many things happen during startup and request processing. A single request may involve configuration loading, bean wiring, validation, service logic, persistence, and security. The key is to stop treating every problem as one giant mystery.
+Debugging Spring Boot is mostly about narrowing the category of failure. A missing endpoint is different from a validation error. A missing bean is different from a disabled auto-configuration. A database connection failure is different from a repository query problem. Start by naming the category.
 
-A useful first question is simple: where does the failure happen? If the application never starts, focus on startup logs, dependency conditions, and configuration values. If it starts but one endpoint fails, the problem is more likely in request mapping, serialization, service logic, or persistence behavior.
+Startup logs are often the best first tool. They show active profiles, server port, failures during bean creation, datasource connection problems, and sometimes configuration binding errors. Read from the first cause upward rather than only looking at the last exception wrapper.
 
-Logs are often the fastest route to clarity. Spring Boot startup output can reveal missing beans, port conflicts, invalid datasource settings, and auto-configuration conditions. Runtime logs and stack traces can reveal exactly where a request failed.
+Auto-configuration debugging is also valuable. If a feature was expected but not configured, ask which starter provides it, which classes are on the classpath, which properties are set, and whether your own bean caused Boot to back off. Condition reports can turn mystery into a checklist.
 
-Another important skill is reading the first meaningful error instead of the last visible line. Long stack traces often contain many secondary failures after the main cause. Good debugging means finding the earliest specific message that explains what went wrong.
+For HTTP issues, trace the request path. Confirm the URL, method, controller mapping, security filters, validation, service call, repository call, and response translation. A 404, 400, 401, 403, and 500 each point to a different part of the request flow.
 
-Simplification is another strong technique. Disable unrelated features, reduce the request payload, isolate one controller, or reproduce the issue in a smaller test. The smaller the failing case, the easier it is to see the actual mechanism behind the bug.
+For configuration issues, print or inspect the active profile and property source. A value may be overridden by an environment variable, command-line argument, or profile-specific file. Do not assume the value in `application.properties` is the value the app actually uses.
 
-Understanding application layers also improves debugging. If a bean is missing, think about scanning and configuration. If an endpoint returns the wrong JSON, think about controller mapping and serialization. If writes fail, think about transactions, entity mappings, and database constraints.
-
-The goal of debugging is not only to solve the current issue. It is to build a mental library of patterns. Over time, startup failures, security mismatches, validation problems, and database errors start to look familiar rather than random.
+Good debugging leaves behind a clearer project. After fixing the issue, consider whether a test, a property default, or a more explicit error message would prevent the same confusion from returning.
 
 ## Example
 ```properties
-logging.level.org.springframework=INFO
+# Helpful during focused local debugging, not a permanent production default.
+debug=true
+logging.level.org.springframework.boot.autoconfigure=DEBUG
 logging.level.com.tommy.learningapi=DEBUG
-logging.level.org.hibernate.SQL=DEBUG
 ```
 
 ## Common Mistakes
-- Changing many things at once and losing track of the cause.
-- Ignoring the first useful exception in the log.
-- Assuming the framework is broken before checking your own configuration.
+- Changing several unrelated things before identifying the failure category.
+- Ignoring active profiles and property override order.
+- Forgetting that a missing focused starter can look like a missing framework feature.
+- Treating a security 401 or 403 as if the controller mapping were broken.
 
 ## Practice
-- Break one datasource property on purpose and read the startup error carefully.
-- Turn on debug logging for your package and inspect one request flow.
-- Write down how you would localize a bug to the web layer versus the persistence layer.
+- Trigger a missing-bean error in a practice branch and identify the first useful stack-trace cause.
+- Enable condition-report debugging locally and find one auto-configuration that matched.
+- Trace one failing request from route to response status.
 
 ## Continuity
-- Previous lesson: `Lesson 14: Write Integration Tests for Controllers and Repositories`
-- Next lesson: `Lesson 16: Spring Security 6 Fundamentals`
+- Previous lesson: `Lesson 14: Write Boot 4 Integration Tests for Web and Persistence`
+- Next lesson: `Lesson 16: Spring Security 7 Fundamentals`
 
 ## Key Takeaway
-- Debugging is a daily backend skill, and Spring Boot apps often fail in recognizable patterns.
+- Systematic debugging in Boot 4 starts by classifying the failure, then checking dependencies, configuration, bean wiring, and request flow with evidence.
 
 ## Official References
+- https://docs.spring.io/spring-boot/reference/using/devtools.html
 - https://docs.spring.io/spring-boot/reference/features/logging.html
-- https://docs.spring.io/spring-boot/reference/features/spring-application.html#features.spring-application.startup-failure
+- https://docs.spring.io/spring-boot/reference/using/auto-configuration.html

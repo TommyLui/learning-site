@@ -1,45 +1,41 @@
 ---
-title: "第 4 課：依賴注入與 Bean"
+title: "第 4 課：Dependency Injection 與 Beans"
 lesson: 4
 slug: "lesson-4"
-summary: "依賴注入是建立乾淨且可測試的 Spring 應用程式時，最核心的觀念之一。"
+summary: "Dependency injection 是乾淨、可測試 Spring Boot 4 application 背後穩定不變的核心觀念之一。"
 ---
 
-# 第 4 課：依賴注入與 Bean
+# 第 4 課：Dependency Injection 與 Beans
 
-依賴注入是建立乾淨且可測試的 Spring 應用程式時，最核心的觀念之一。
+Dependency injection 是乾淨、可測試 Spring Boot 4 application 背後穩定不變的核心觀念之一。
 
 ## 這一課會學到什麼
-- 理解 Spring 如何把物件作為 bean 管理在 application context 裡。
-- 說明為什麼 constructor injection 是大多數應用程式程式碼的預設選擇。
-- 看見依賴注入如何幫助 controller、service 與 repository 層之間維持更乾淨的邊界。
+- 理解 Spring 如何在 application context 中把 objects 管理成 beans。
+- 說明為什麼 constructor injection 是 application code 的預設選擇。
+- 看懂 dependency injection 如何支援 controller、service、repository、security 與 test boundaries。
 
 ## 為什麼重要
-- 依賴注入是建立乾淨且可測試的 Spring 應用程式時，最核心的觀念之一。
-- 它避免 class 什麼都自己建立、自己控制。
-- 它讓 Spring Boot 能以一致的方式組裝應用程式分層，並在測試中替換實作。
+- Boot 4 更新的是 platform，但 dependency injection 仍是 Spring application design 的基礎。
+- 明確 dependencies 會讓 code 更容易閱讀、測試與 refactor。
+- 好的 bean boundaries 能避免 framework 變成隱藏模糊架構的地方。
 
 ## 主要觀念
-- Bean 是由 Spring container 管理的物件。
-- Constructor injection 讓依賴更明確，也更容易測試。
-- 當依賴方向清楚時，分層式設計會運作得最好。
+- Beans 是由 Spring container 管理的 objects。
+- Constructor injection 讓必要 collaborators 變得可見。
+- Layered design 最適合讓每一層透過清楚 contract 依賴下一層。
 
 ## 課程筆記
-在一般 Java 裡，直接用 `new` 建立物件是很常見的，而在小型程式中這樣可能也足夠。但在 Spring Boot 應用程式裡，許多重要物件不是手動建立的。它們會被 Spring container 建立、保存並管理。一旦 Spring 對這些物件負責，它們就成為 bean。
+在 plain Java 中，直接用 `new` 建立 objects 很常見。Spring application 中，許多重要 objects 會由 Spring container 建立與管理。只要 Spring 管理一個 object，它就成為 bean。
 
-這個改變之所以重要，是因為物件建立不再散落在整個程式碼庫中。與其讓每個 class 自己建出依賴，Spring 可以先把整張物件關係圖組裝好，然後把正確的協作者注入到需要它們的地方。這會讓應用程式從一開始就更有組織。
+Dependency injection 的意思是 class 接收自己需要的 collaborators，而不是在內部自己建立它們。Controller 接收 service，service 接收 repository，security configuration 接收 authentication 或 authorization 所需的 components。Class 照常使用 collaborators，但 application context 負責組裝。
 
-依賴注入的意思是：class 從外部接收它需要合作的物件，而不是在內部自己把它們建出來。controller 可以接收 service，service 可以接收 repository。class 依然會像平常那樣使用這些依賴，但它不需要決定它們是怎麼被建立的。
+Constructor injection 通常最清楚。它把 required dependencies 顯示在 class 上方，支援 `final` fields 的 immutability，也讓 tests 更直覺，因為 test 可以傳入 fake 或 mock collaborator，而不必啟動完整 Spring context。
 
-Constructor injection 是這個模式裡最清楚的形式。當依賴出現在 constructor 裡時，任何閱讀這個 class 的人都能立刻看出它運作時需要什麼。它也能讓 class 更不容易被誤用，因為必要的協作者必須一開始就提供進來。
+這個概念跨 Boot 世代都很穩定。Spring Boot 4 改變了 managed dependency versions 與一些 starter/test details，但沒有替換 dependency-injection mental model。現在把 beans 學好，後面理解 configuration properties、repositories、security filters、test slices 與 custom auto-configuration 都會更容易。
 
-這種方式在測試中特別有幫助。如果一個 service 依賴 repository，單元測試就可以傳入一個 mock repository，而不需要啟動整個 Spring context。這也是為什麼在大多數應用程式程式碼裡，相較於 field injection，constructor injection 通常被視為更容易維護。
+最重要的 design habit 是保持 dependencies 有意義。Controller 不應直接依賴 database driver。Service 除非真的需要，否則不應知道 HTTP request objects。Dependency injection 讓新增 dependencies 很容易，所以你仍然要判斷哪些 dependencies 真正屬於這裡。
 
-Bean 也會強化責任邊界。controller 應該主要負責把 HTTP 請求轉換成應用程式動作。service 應該承載商業邏輯。repository 應該處理持久化。依賴注入讓這些邊界更容易被維持，因為每一層都透過清楚的契約依賴下一層。
-
-初學者有時會覺得依賴注入只是 framework 的小技巧，但它其實是一種設計原則。Spring Boot 透過提供 application context，讓這個原則能在大型系統中實際運作，並自動發現、建立與組裝 component。
-
-一旦這個概念清楚了，後面很多主題都會變得更容易。configuration class、repository、filter、安全性元件與測試替身，全都依賴同一個心智模型：Spring 會管理重要物件的生命週期，並把它們注入到正確的位置。
+當 bean boundaries 乾淨之後，課程其他部分會更容易。Auto-configuration 可以提供 infrastructure beans，你的 application 可以提供 domain beans，而 tests 可以替換特定 collaborators，同時保留 code shape。
 
 ## 範例
 ```java
@@ -81,21 +77,22 @@ public class NoteController {
 ```
 
 ## 常見錯誤
-- 在 controller 裡手動建立 service 或 repository 物件。
-- 到處用 field injection，把必要依賴藏起來。
-- 讓某一層依賴太多彼此無關的 class。
+- 在 controllers 裡手動建立 services 或 repositories。
+- 用 field injection 隱藏 required dependencies。
+- 讓一個 class 依賴來自每一層、彼此無關的 infrastructure。
+- 以為 Boot 4 auto-configuration 會移除清楚 application design 的需求。
 
 ## 練習
 - 建立一個透過 constructor injection 接收 service 的 controller。
-- 寫下你的 service class 真正需要哪些依賴，以及哪些東西其實不該放在裡面。
-- 說明為什麼與在 method 裡手動建立物件相比，constructor injection 會讓測試更容易。
+- 寫下 service 真正需要的 dependencies，移除不相關項目。
+- 不啟動 Spring，用 fake repository 測試一個 service。
 
 ## 延續閱讀
-- 上一課：`第 3 課：理解專案結構與啟動流程`
-- 下一課：`第 5 課：設定檔與 Profile`
+- 上一課：`第 3 課：理解專案結構、啟動流程與 Embedded Servers`
+- 下一課：`第 5 課：Configuration Files、Profiles 與 Type-Safe Settings`
 
 ## 課後重點
-- 依賴注入是建立乾淨且可測試的 Spring 應用程式時，最核心的觀念之一。
+- 正確使用 dependency injection，能讓 Spring Boot 4 code 保持明確、模組化與可測試。
 
 ## 官方參考資料
 - https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html

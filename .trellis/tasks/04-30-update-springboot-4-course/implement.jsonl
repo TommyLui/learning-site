@@ -1,0 +1,5 @@
+{"file":".trellis/spec/frontend/index.md","reason":"Frontend overview, routing/link checklist, and normal verification commands."}
+{"file":".trellis/spec/frontend/directory-structure.md","reason":"Spring Boot markdown-backed course organization, route parity, and content ownership rules."}
+{"file":".trellis/spec/frontend/type-safety.md","reason":"Course slug, route props, strict TypeScript, and markdown loader typing conventions."}
+{"file":".trellis/spec/frontend/quality-guidelines.md","reason":"Required verification, forbidden patterns, and course data consistency checklist."}
+{"file":".trellis/tasks/04-30-update-springboot-4-course/research/spring-boot-4.md","reason":"Official Spring Boot 4.x research, baselines, migration notes, starter/testing/Actuator/packaging changes."}

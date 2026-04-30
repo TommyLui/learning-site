@@ -1,44 +1,42 @@
 ---
-title: "第 16 課：Spring Security 6 基礎"
+title: "第 16 課：Spring Security 7 基礎"
 lesson: 16
 slug: "lesson-16"
-summary: "安全性會改變請求在應用程式中的流動方式，並且是實際 API 不可或缺的一部分。"
+summary: "Spring Security 7 透過 filter-chain model 保護 Boot 4 applications，並分離 authentication、authorization 與 application logic。"
 ---
 
-# 第 16 課：Spring Security 6 基礎
+# 第 16 課：Spring Security 7 基礎
 
-安全性會改變請求在應用程式中的流動方式，並且是實際 API 不可或缺的一部分。
+Spring Security 7 透過 filter-chain model 保護 Boot 4 applications，並分離 authentication、authorization 與 application logic。
 
 ## 這一課會學到什麼
-- 理解驗證、授權與 filter chain 的核心概念。
-- 看見為什麼即使還沒有自訂程式碼，加入 Spring Security 也會改變請求處理方式。
-- 建立一個心智模型，讓你有意識地保護 endpoint，而不是無意間放任它們暴露。
-- 認識為什麼 Spring Boot 3.x 會以 `SecurityFilterChain` 設定取代 `WebSecurityConfigurerAdapter`。
+- 理解 authentication、authorization 與 security filter chain。
+- 看懂為什麼加入 Spring Security 後，即使還沒寫 custom application code，也會改變 request handling。
+- 用 `SecurityFilterChain` bean 設定 access rules。
+- 認識 Spring Security 7 是對齊 Spring Boot 4.x 的 security generation。
 
 ## 為什麼重要
-- 安全性會改變請求在應用程式中的流動方式，並且是實際 API 不可或缺的一部分。
-- 它保護應用程式的邊界，並決定系統內誰能做什麼。
-- 如果沒有清楚的安全性模型，後端 API 很容易被錯誤地暴露出去。
+- Security 會改變每個 request 到達 application 的方式。
+- Secure defaults 很有用，但 production APIs 仍需要 deliberate access rules。
+- Spring Security 7 仍以 filter-chain configuration 為中心，而不是已移除的 `WebSecurityConfigurerAdapter` style。
 
 ## 主要觀念
-- 驗證與授權解決的是不同問題。
-- Spring Security 透過 filter 在請求處理邊界上運作。
-- 安全的預設值很有幫助，但仍然需要有意識的應用程式設計。
+- Authentication 問 caller 是誰；authorization 問 caller 可以做什麼。
+- Spring Security 會在 request 到達大多數 controller logic 前先評估。
+- `SecurityFilterChain` configuration 讓 rules 明確且可 review。
 
 ## 課程筆記
-第一次加入 Spring Security 時，它常讓人覺得很突然，因為即使你還沒寫多少自訂邏輯，它就已經開始影響應用程式。原本開放的 endpoint 可能會突然需要驗證。這種驚訝不是 bug；它反映出安全性本來就是在請求處理邊界上運作。
+Spring Security 一開始可能感覺很突然，因為它一加入 application 就會產生影響。原本 public 的 endpoints 可能開始需要 authentication。這不是意外；security 位在 request boundary，會在 controller 收到 request 前先評估 traffic。
 
-最重要的兩個概念是驗證與授權。驗證回答的是使用者是誰。授權回答的是該使用者被允許做什麼。一個安全的應用程式兩者都需要，但不應把它們混為一談。
+Authentication 與 authorization 解決不同問題。Authentication 識別 caller；authorization 決定那個 caller 是否能 access 特定 resource 或 action。安全 API 需要兩者，但混淆它們會導致 rules 很難理解。
 
-Spring Security 會在請求抵達 controller 之前，先透過一條 filter chain 來處理請求。這也是為什麼安全性不只是你程式中間的另一個 service。它位在應用程式的前方，決定某個請求是否應該繼續往下走。
+Filter chain 是核心 request-processing model。Security filters 可以讀取 credentials、建立 authenticated principal、拒絕 unauthenticated requests、執行 role 或 authority rules，並為 downstream code 準備 security context。這就是為什麼 security 不只是你手動呼叫的一個 service method。
 
-這種設計很強大，因為它讓你能集中控制存取規則。你可以定義哪些 endpoint 是公開的、哪些需要登入使用者、哪些需要特定角色或權限。這讓安全性政策更清楚也更一致。
+在 Spring Security 7 中，現代 configuration style 仍然是註冊 `SecurityFilterChain` bean，並明確描述 access rules。不要重新引入 `WebSecurityConfigurerAdapter`；那個舊 inheritance model 不是 modern Boot applications 的路線。
 
-對學習者來說，最有用的心態是把安全性看成應用程式邊界上的交通控管。你不只是加上一個登入畫面，而是在決定每一個請求在進入商業邏輯之前，應該如何被評估。
+Boot 4 也有 security-specific starter 與 test starter changes。Dependencies 要保持 intentional：準備保護 endpoints 時才加入 security starter；tests 需要 mock users 或 request post-processors 這類 security support 時，才加入 security test starter。
 
-Spring Boot 透過把 Security 與整體應用程式模型整合，讓這件事更容易，但這份便利不應掩蓋底層概念。在 Spring Security 6 裡，現代寫法是註冊 `SecurityFilterChain` bean 並明確設定規則，而不是延伸舊的 `WebSecurityConfigurerAdapter`。方法層級安全性也改為以 `@EnableMethodSecurity` 為主，和這套較新的設定模型一致。如果你理解 filter chain 與存取規則，之後像自訂登入流程、JWT 或方法層級安全性這些功能，就會更容易推理。
-
-這一課是課程從建立功能轉向保護功能的轉折點。這個改變，是真實後端開發的核心。
+這一課是從建立功能轉向保護功能的轉折。Filter-chain model 清楚後，login flows、password encoding、JWT resource servers 與 method security 都會更容易推理。
 
 ## 範例
 ```java
@@ -68,22 +66,24 @@ public class SecurityConfig {
 ```
 
 ## 常見錯誤
-- 把驗證與授權混為一談。
-- 加入 Spring Security 時，沒有預期每個 endpoint 都會受到影響。
-- 把安全性只當成 UI 登入問題，而不是 API 邊界問題。
+- 混淆 authentication 與 authorization。
+- 加入 Security 卻沒預期既有 endpoints 會要求 authentication。
+- 把 `WebSecurityConfigurerAdapter` examples 複製到 modern Security 7 project。
+- 測試 secured endpoints 時沒有加入該 test style 需要的 security test support。
 
 ## 練習
-- 定義一個公開 endpoint 與一個受保護的 endpoint。
-- 用你自己的話解釋 filter chain 在 controller 被呼叫前做了什麼。
-- 列出三個預設情況下不應公開的 API 資源。
+- 定義一個 public endpoint 與一個 protected endpoint。
+- 用自己的話說明 secured request 到達 controller 前會發生什麼。
+- 加入一個 test，驗證 unauthenticated request 會被拒絕。
 
 ## 延續閱讀
-- 上一課：`第 15 課：Spring Boot 應用程式中的常見除錯模式`
-- 下一課：`第 17 課：登入流程、密碼編碼與授權`
+- 上一課：`第 15 課：Boot 4 Applications 常見 Debugging Patterns`
+- 下一課：`第 17 課：Login Flow、Password Encoding 與 Authorization`
 
 ## 課後重點
-- 安全性會改變請求在應用程式中的流動方式，並且是實際 API 不可或缺的一部分。
+- Spring Security 7 透過明確 filter-chain rules 保護 Boot 4 APIs，並分離 identity、permission 與 business logic。
 
 ## 官方參考資料
 - https://docs.spring.io/spring-security/reference/servlet/architecture.html
+- https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html
 - https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html

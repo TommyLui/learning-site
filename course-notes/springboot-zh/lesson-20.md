@@ -1,68 +1,69 @@
 ---
-title: "第 20 課：使用 Actuator 進行健康檢查與監控"
+title: "第 20 課：使用 Actuator 處理 Health、Probes、Metrics 與 Observability"
 lesson: 20
 slug: "lesson-20"
-summary: "正式環境中的應用程式不只需要功能，還需要可觀測性。"
+summary: "Actuator 為 Boot 4 services 提供 health、readiness、liveness、metrics 與 observability signals 等 operational endpoints。"
 ---
 
-# 第 20 課：使用 Actuator 進行健康檢查與監控
+# 第 20 課：使用 Actuator 處理 Health、Probes、Metrics 與 Observability
 
-正式環境中的應用程式不只需要功能，還需要可觀測性。
+Actuator 為 Boot 4 services 提供 health、readiness、liveness、metrics 與 observability signals 等 operational endpoints。
 
 ## 這一課會學到什麼
-- 使用 Spring Boot Actuator 來暴露應用程式的營運資訊。
-- 理解 health、info 與 metrics endpoint 的用途。
-- 辨認為什麼可觀測性應該在部署日到來前，就成為應用程式的一部分。
+- 加入 Actuator，並安全 expose selected operational endpoints。
+- 理解 Boot 4 中的 health contributors、readiness 與 liveness groups。
+- 將 metrics、Micrometer 與 OpenTelemetry 定位為 production observability 的一部分。
 
 ## 為什麼重要
-- 正式環境中的應用程式不只需要功能，還需要可觀測性。
-- 健康狀態與指標資訊能幫助操作人員與系統判斷應用程式是否運作良好。
-- 營運洞察能把應用程式從一段程式碼，轉變成可管理的服務。
+- Deployed services 不只要成功啟動；platforms 也需要知道它們是否 alive 與 ready。
+- Health 與 metrics 能幫助 teams 在 users 回報前診斷問題。
+- Observability choices 應被設計，而不是意外 expose。
 
 ## 主要觀念
-- Actuator 會暴露面向正式環境的 endpoint。
-- 健康檢查是部署與編排工作流程中的核心。
-- 可觀測性必須與安全性與暴露範圍控制取得平衡。
+- Actuator endpoints expose health、info 與 metrics 這類 operational information。
+- Boot 4 預設啟用 liveness 與 readiness health groups。
+- 當設定正確 dependencies 與 exporters 時，metrics 與 traces 可以透過 Micrometer 與 OpenTelemetry 流出。
 
 ## 課程筆記
-一個後端服務，不會因為它能處理請求就算完成。部署之後，人與系統都需要知道它是否健康、正在做什麼，以及應該如何監控它。Spring Boot Actuator 的存在，正是為了支援這樣的營運視角。
+Actuator 是 Spring Boot 的 production-ready operational endpoints feature set。它可以 expose health、info、metrics、environment details、mappings 等資訊。第一條規則是只 expose 你需要的內容。Operational visibility 不應變成意外資訊洩漏。
 
-Actuator 會新增一些 endpoint，暴露像是應用程式健康狀態、建置資訊、指標、映射、loggers 與環境細節等資訊。這些 endpoint 對開發者、操作人員，以及需要評估應用程式是否正常運作的部署平台都很有用。
+Health checks 回答不同問題。Liveness 問 process 是否應被視為 alive。Readiness 問它是否 ready to receive traffic。Boot 4 預設 expose liveness 與 readiness health groups，符合現代 platform 與 Kubernetes-style probe thinking。
 
-其中 health endpoint 特別重要，因為它能快速傳達應用程式是否存活，以及依設定而定，像資料庫這類相依系統是否也可用。這會影響負載平衡、重新啟動行為與部署就緒檢查。
+Health 由 contributors 組成。Datasource health contributor 可以回報 database connectivity。Disk space 與其他 infrastructure indicators 可以提供自己的 statuses。如果你在 Boot 4 建立 custom health indicators，使用 Boot docs 中目前的 health contributor packages。
 
-可觀測性不只是 dashboard 或進階監控堆疊。它始於以受控方式讓有用的應用程式狀態變得可見。也因此，就算是小型 Spring Boot 應用程式，也能從 Actuator 獲益，因為它訓練你把思考範圍延伸到功能程式碼之外。
+Metrics 提供隨時間變化的數值 signals：request counts、latencies、JVM memory、datasource pool activity 等。Micrometer 是 Spring ecosystem 使用的 metrics facade。對 traces 與 exporting signals，Boot 4 提供更清楚的 OpenTelemetry starter path，支援 OTLP-style observability。
 
-同時，營運 endpoint 也不該被草率地暴露出去。其中一些會揭露敏感的實作細節。這就是為什麼暴露設定與安全規則很重要。可見性應該是有意識的，而不是意外產生的。
+不要公開 expose 所有 Actuator endpoints。常見 production pattern 是把 health probes expose 給 platform，把 metrics expose 給 monitoring infrastructure，敏感 endpoints 則只允許 internal access controls 或完全停用。
 
-良好的做法，是及早決定哪些營運訊號有價值，以及誰應該被允許看到它們。隨著應用程式增加更多 endpoint、基礎設施與部署複雜度，這個決定會變得更加重要。在 Spring Boot 裡，這通常代表只暴露真正需要的 Actuator endpoints，並且對完整的 health 詳細資訊或環境資訊保持保守。
-
-透過在這裡學習 Actuator，你會開始把應用程式視為需要被理解與維護的長期運行服務，而不只是一些 controller method 的集合。
+這一課把 development 連到 operations。Service 不會只因為 API 能在本機運作就 production-ready；它還需要向周圍環境傳達 runtime health 與 behavior。
 
 ## 範例
 ```properties
 management.endpoints.web.exposure.include=health,info,metrics
-# 只有在受信任的對象面前才顯示更完整的細節。
-management.endpoint.health.show-details=when-authorized
+management.endpoint.health.probes.enabled=true
+management.health.livenessstate.enabled=true
+management.health.readinessstate.enabled=true
 ```
 
 ## 常見錯誤
-- 對外公開太多營運 endpoint。
-- 直到正式環境出現問題時，才把可觀測性當回事。
-- 在規劃部署行為時忽略健康檢查。
+- 把所有 Actuator endpoints expose 到 public internet。
+- 把 liveness 與 readiness 當成同一個 signal。
+- 等到 production incident 後才開始重視 metrics。
+- 用 outdated Boot packages 撰寫 custom health code。
 
 ## 練習
-- 啟用 health endpoint 並檢查它的回應。
-- 選擇你會內部暴露哪些 Actuator endpoint，以及哪些可以公開。
-- 解釋健康檢查如何幫助部署平台做決策。
+- 加入 Actuator，並在本機只 expose `health`、`info` 與 `metrics`。
+- 造訪 health endpoint，找出 liveness/readiness information。
+- 寫一個短 policy，定義哪些 Actuator endpoints 應 public、internal 或 disabled。
 
 ## 延續閱讀
-- 上一課：`第 19 課：建置並封裝應用程式`
-- 下一課：`第 21 課：為部署做好 Spring Boot 3.x 準備`
+- 上一課：`第 19 課：建立 Executable Jars 與 Container-friendly Artifacts`
+- 下一課：`第 21 課：為 Spring Boot 4.x Deployment 與 Migration 做準備`
 
 ## 課後重點
-- 正式環境中的應用程式不只需要功能，還需要可觀測性。
+- Boot 4 Actuator 讓 runtime health、probes、metrics 與 observability 成為 first-class deployment concerns。
 
 ## 官方參考資料
-- https://docs.spring.io/spring-boot/reference/actuator/index.html
 - https://docs.spring.io/spring-boot/reference/actuator/endpoints.html
+- https://docs.spring.io/spring-boot/reference/actuator/metrics.html
+- https://docs.spring.io/spring-boot/reference/actuator/tracing.html

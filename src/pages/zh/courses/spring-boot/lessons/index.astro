@@ -30,21 +30,22 @@ const firstLesson = notes[0];
 const latestLesson = notes[notes.length - 1];
 const total模組s = note模組s.length;
 const averageLessonsPer模組 = Math.round(notes.length / total模組s);
+const trimLessonTitle = (title: string) => title.replace(/^(?:Lesson \d+:\s*|第\s*\d+\s*課：\s*)/, '');
 const roadmapHighlights = [
   '先用模組地圖了解整套課程如何從基礎概念一路走到部署。',
-  '每一課都保留摘要、正文、練習與官方參考資料，方便從閱讀切進真正的 Spring Boot 3.x 實作。',
+  '每一課都保留摘要、正文、練習與官方參考資料，方便從閱讀切進真正的 Spring Boot 4.x 實作。',
   '如果你要連續學，建議從第 1 課開始，順著 延續閱讀 一路往下。',
 ];
 const learningPromises = [
-  '理解 Spring Boot 3.x 專案怎麼從 Java 17+ 啟動、Controller、Service 一路組起來。',
-  '把 REST API、Jakarta Validation、JPA/MySQL 與 Testing 串成可實作的開發主線。',
-  '知道 Spring Security 6、Actuator、Docker 與部署思維要在什麼階段補進來。',
+  '理解 Spring Boot 4.x 專案如何從 Java 17+、Spring Framework 7、模組化 starters、Controller、Service 一路組到部署。',
+  '把 Spring MVC、Jackson 3、Jakarta Validation、JPA/Hibernate 7、MySQL 與 Boot 4 Testing 串成可實作的開發主線。',
+  '知道 Spring Security 7、Actuator readiness/liveness probes、observability、Docker 與 AOT-aware 部署思維要在什麼階段補進來。',
 ];
 ---
 
 <BaseLayout
   title={`Spring Boot 課程筆記 · ${course.title}`}
-  description="瀏覽完整整理的 Spring Boot 3.x 課程筆記與文章草稿。"
+  description="瀏覽完整整理的 Spring Boot 4.x 課程筆記與文章草稿。"
   currentCourse={course}
   locale={locale}
 >
@@ -55,9 +56,9 @@ const learningPromises = [
       <div class="course-hero-grid course-hero-grid--editorial">
         <div>
           <p class="eyebrow">課程首頁</p>
-          <h1 class="page-title">Spring Boot 3.x 課程筆記</h1>
+          <h1 class="page-title">Spring Boot 4.x 課程筆記</h1>
           <p class="lead narrow">
-            從 Java 17+ 入門、REST API、JPA/MySQL、Spring Security 6、測試到部署，把整套 Spring Boot 3.x
+            從 Java 17+、Spring Framework 7、Spring MVC、Jackson 3、JPA/MySQL 與 Hibernate 7，到 Spring Security 7、測試、可觀測性與部署，把整套 Spring Boot 4.x
             主線整理成真正可以一路往下讀、往下做的課程閱讀首頁。
           </p>
 
@@ -159,7 +160,7 @@ const learningPromises = [
                         <span class="course-pill">第 {note.lesson} 課</span>
                         <span class="note-card-arrow" aria-hidden="true">↗</span>
                       </div>
-                      <h3>{note.title.replace(/^Lesson \d+:\s*/, '')}</h3>
+                      <h3>{trimLessonTitle(note.title)}</h3>
                       <p>{note.summary}</p>
                     </a>
                   ))}
@@ -182,7 +183,7 @@ const learningPromises = [
                   <span class="course-pill">第 {note.lesson} 課</span>
                   <span class="note-card-arrow" aria-hidden="true">↗</span>
                 </div>
-                <h3>{note.title.replace(/^Lesson \d+:\s*/, '')}</h3>
+                <h3>{trimLessonTitle(note.title)}</h3>
                 <p>{note.summary}</p>
               </a>
             ))}

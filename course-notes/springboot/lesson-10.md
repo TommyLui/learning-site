@@ -1,49 +1,48 @@
 ---
-title: "Lesson 10: Connect Spring Boot 3.x to MySQL"
+title: "Lesson 10: Connect Spring Boot 4.x to MySQL and Hibernate 7"
 lesson: 10
 slug: "lesson-10"
-summary: "Persistent data is a core part of most backend systems, and correct database setup is the foundation."
+summary: "Persistent data becomes realistic when a Boot 4 application connects to MySQL through Spring Data JPA and Hibernate 7."
 ---
 
-# Lesson 10: Connect Spring Boot 3.x to MySQL
+# Lesson 10: Connect Spring Boot 4.x to MySQL and Hibernate 7
 
-Persistent data is a core part of most backend systems, and correct database setup is the foundation.
+Persistent data becomes realistic when a Boot 4 application connects to MySQL through Spring Data JPA and Hibernate 7.
 
 ## What You Will Learn
-- Configure a Spring Boot application to connect to a MySQL database.
-- Understand the role of datasource properties and the database driver.
-- See why environment-specific database settings should stay outside source code.
+- Configure a Boot 4 application to connect to MySQL.
+- Understand the roles of the MySQL driver, datasource properties, Spring Data JPA, and Hibernate 7.
+- Keep database credentials and environment-specific settings outside source code.
 
 ## Why This Matters
-- Persistent data is a core part of most backend systems, and correct database setup is the foundation.
-- A working datasource is required before repositories, entities, and CRUD flows can behave like real application code.
-- Database configuration is one of the earliest places where deployment discipline starts to matter.
+- Most backend systems need durable data, and datasource setup is the foundation for repositories and CRUD APIs.
+- Boot 4 manages a newer persistence stack, including Jakarta Persistence 3.2 and Hibernate ORM 7.
+- Database configuration is one of the first places where local, test, and production settings diverge.
 
 ## Main Ideas
-- Datasource settings define how the application reaches the database.
-- The MySQL driver and JPA dependencies work together with Boot auto-configuration.
-- Database credentials and environment details belong in configuration, not in business logic.
+- Datasource properties tell the app how to reach the database.
+- Spring Data JPA provides repository abstractions, while Hibernate implements the ORM behavior.
+- Schema management shortcuts are useful locally but should not replace migrations in production.
 
 ## Lesson Notes
-Many early Spring Boot examples use in-memory data or return static values because that keeps the first steps simple. Eventually, though, a backend application has to persist information somewhere durable. For this course, that durable store is MySQL.
+Early API examples often use fixed in-memory values because that keeps the first lessons focused. Real services eventually need durable state. In this course, MySQL is the relational database used to teach that transition.
 
-Connecting Spring Boot to MySQL begins with dependencies. The application needs a driver that knows how to speak to MySQL and a data access stack such as Spring Data JPA if you plan to work through entities and repositories.
+The dependency set has several parts. The MySQL driver knows how to connect to MySQL. Spring Data JPA provides repository abstractions and integration with Spring transactions. Hibernate 7 is the Boot 4-managed ORM implementation that maps entities to relational tables through Jakarta Persistence annotations.
 
-Once the dependencies are present, configuration becomes the key step. Spring Boot 3.x needs to know the database URL, username, password, and, in many cases, JPA or Hibernate-related settings that influence schema handling and SQL behavior. In practice, this usually means Spring Data JPA on top of Hibernate 6 with a MySQL driver.
+Configuration is the next step. The application needs a JDBC URL, username, password, and JPA-related settings. These details should be externalized through properties, profiles, environment variables, or deployment configuration. They should not be hidden in Java source code.
 
-These values should never be buried inside Java classes. They are environmental details, not business concepts. Treating them as configuration keeps the application safer and easier to move between local development, testing, and deployment targets.
+Boot auto-configuration creates a datasource when it sees the database driver and datasource properties. It also configures JPA infrastructure when the JPA starter is present. If the database is unavailable or credentials are wrong, the failure usually appears at startup, before the app handles requests.
 
-A successful database connection is more than a technical checkbox. It changes how you reason about the application. The app is no longer only a web server returning responses; it becomes a system that coordinates incoming requests with durable state.
+For local learning, `spring.jpa.hibernate.ddl-auto=update` can help you see tables appear quickly. Treat it as a convenience, not a production migration strategy. Real teams usually use a migration tool such as Flyway or Liquibase so schema changes are reviewed, ordered, and repeatable.
 
-It is also worth noticing that datasource problems are often startup problems. Invalid credentials, wrong hosts, or unavailable databases usually appear before the app begins handling requests. That makes configuration accuracy especially important in the early persistence phase.
-
-Once MySQL is connected correctly, the rest of the persistence story can begin. Entities, repositories, transactions, and CRUD behavior all depend on this foundation. It is also worth building a healthy habit here: convenience settings such as `spring.jpa.hibernate.ddl-auto=update` can be acceptable in local development, but production systems usually move schema changes into a dedicated migration tool such as Flyway or Liquibase.
+Once MySQL is connected, later lessons can map entities, write repositories, and build CRUD APIs on a real persistence foundation.
 
 ## Example
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/learning_db
-spring.datasource.username=root
-spring.datasource.password=secret
+spring.datasource.username=learning_user
+spring.datasource.password=${MYSQL_PASSWORD}
+
 # Local development convenience only; production usually prefers migrations.
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
@@ -51,22 +50,24 @@ spring.jpa.properties.hibernate.format_sql=true
 ```
 
 ## Common Mistakes
-- Putting database credentials directly into Java source files.
-- Forgetting to add the MySQL driver dependency.
-- Using one database config for every environment without profiles or overrides.
+- Putting database credentials directly into Java source files or committed config.
+- Forgetting the MySQL driver dependency.
+- Assuming local schema auto-update is a production migration plan.
+- Debugging repositories before confirming the datasource starts successfully.
 
 ## Practice
-- Configure a local MySQL datasource and confirm the app starts with it.
-- Write down what each datasource property controls.
-- Explain why database settings should be externalized instead of hardcoded.
+- Configure a local MySQL datasource and confirm the Boot 4 app starts.
+- Identify which dependency provides the MySQL driver and which provides JPA support.
+- Explain why database credentials should be supplied by environment-specific configuration.
 
 ## Continuity
 - Previous lesson: `Lesson 9: Validation and Global Exception Handling`
-- Next lesson: `Lesson 11: Entities, Repositories, and JPA Basics`
+- Next lesson: `Lesson 11: Entities, Repositories, Transactions, and JPA Basics`
 
 ## Key Takeaway
-- Persistent data is a core part of most backend systems, and correct database setup is the foundation.
+- Boot 4 persistence starts with a correctly configured datasource and a clear understanding of Spring Data JPA plus Hibernate 7.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/data/index.html
 - https://docs.spring.io/spring-boot/reference/data/sql.html
+- https://docs.spring.io/spring-boot/reference/data/spring-data.html
+- https://docs.spring.io/spring-boot/appendix/dependency-versions/properties.html

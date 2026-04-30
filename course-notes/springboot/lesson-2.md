@@ -1,79 +1,73 @@
 ---
-title: "Lesson 2: Create a Project With Spring Initializr"
+title: "Lesson 2: Create a Boot 4 Project With Spring Initializr"
 lesson: 2
 slug: "lesson-2"
-summary: "Starting from the official generator reduces setup mistakes and keeps your project aligned with Spring Boot conventions."
+summary: "Starting from Spring Initializr gives you a clean Boot 4 baseline with compatible Java, build tool, starter, and plugin choices."
 ---
 
-# Lesson 2: Create a Project With Spring Initializr
+# Lesson 2: Create a Boot 4 Project With Spring Initializr
 
-Starting from the official generator reduces setup mistakes and keeps your project aligned with Spring Boot conventions.
+Starting from Spring Initializr gives you a clean Boot 4 baseline with compatible Java, build tool, starter, and plugin choices.
 
 ## What You Will Learn
-- Learn how to create a clean Spring Boot 3.x project using the official Initializr workflow.
-- Understand what the main Initializr fields mean and how they affect the generated project.
-- Choose dependencies in a way that supports gradual learning instead of accidental complexity.
+- Create a Spring Boot 4.x project from the official Initializr workflow.
+- Choose Java, Maven or Gradle, packaging, group, artifact, and dependencies deliberately.
+- Recognize the Boot 4 starter naming shift, especially the Spring MVC path through `spring-boot-starter-webmvc`.
 
 ## Why This Matters
-- Starting from the official generator reduces setup mistakes and keeps your project aligned with Spring Boot conventions.
-- The first project setup affects package naming, build tooling, Java compatibility, and later maintainability.
-- A clean starting point makes later lessons easier because you know the project was generated from a known-good baseline.
+- The first generated project determines your package layout, build file, dependency management, and local run workflow.
+- Boot 4 modular starters are more focused than earlier starter habits, so dependency choices should be intentional.
+- A known-good generated baseline makes later debugging easier because setup uncertainty is reduced.
 
 ## Main Ideas
-- Project metadata such as group, artifact, and packaging becomes part of the project identity.
-- Choosing the correct Spring Boot and Java versions prevents avoidable compatibility problems.
-- Selecting dependencies gradually keeps the learning curve under control.
+- Spring Initializr is the safest starting point for a new Boot project.
+- Java 17+ is required, and Maven remains a simple beginner-friendly build path.
+- Friendly dependency labels in the UI map to actual starter artifacts in the generated build file.
 
 ## Lesson Notes
-Spring Initializr is the official way to start a Spring Boot project, and that matters more than it might seem at first. Instead of assembling a build file manually and guessing which dependencies belong together, you begin with a project generated from the same conventions the Spring team expects.
+Spring Initializr is the official entry point for new Spring Boot projects. It prevents a common beginner problem: manually combining dependencies that do not belong together or forgetting the build plugin that makes Boot packaging work.
 
-The page at `start.spring.io` looks simple, but each field controls something meaningful. Project chooses the build tool, usually Maven or Gradle. Language chooses whether the generated code is Java, Kotlin, or Groovy. Spring Boot selects the framework version you want to target. For this learning path, that should stay aligned with Spring Boot 3.x and a supported Java 17+ runtime. Java 21 also works for many Spring Boot 3 releases, but Java 17 is the safe baseline this course keeps returning to.
+For this course, Maven and Java are a practical default. Choose a Spring Boot 4.x version, keep Java at 17 or newer, and use Jar packaging for an API service. Jar packaging works naturally with Boot's embedded server model and keeps deployment simpler than a traditional external application-server workflow.
 
-The metadata section is easy to underestimate. Group usually reflects a package namespace such as `com.tommy`, while artifact is the project identifier, such as `learning-api`. Those values influence generated package names, build outputs, and how the application identifies itself in a team or portfolio context. Good names keep the project readable as it grows.
+The dependency section deserves more attention in Boot 4. The Initializr UI may use friendly labels such as Spring Web, but Boot 4's focused Spring MVC starter is `spring-boot-starter-webmvc`. That starter brings the servlet MVC stack you will use for controllers, request mapping, and JSON responses; the companion `spring-boot-starter-webmvc-test` starter provides focused MockMvc-style test support when testing begins.
 
-Packaging is another early choice with practical consequences. For most API-focused Spring Boot applications, `Jar` is the natural default because Spring Boot runs with an embedded server. That keeps deployment simpler and matches how many modern backend services are built and distributed.
+Do not add every useful starter at once. If the current lesson is about the first controller, start with the web MVC starter. Add Validation when request rules matter, Data JPA and MySQL Driver when persistence begins, Security when protection begins, and Actuator when operational visibility begins. This staged approach keeps behavior changes explainable.
 
-The Java version field is not a formality. Spring Boot versions depend on specific Java support windows, so choosing the wrong JDK can lead to startup failures or incompatible libraries before you even write a controller. That is why checking system requirements is part of a healthy setup workflow, not an optional detail.
+The generated `pom.xml` or Gradle build file is not just a dependency list. It encodes the Boot parent or plugin, Java version, dependency management, and packaging behavior. Read it before writing application code so you know which platform you are actually using.
 
-Dependencies are where beginners most often create accidental confusion. It is tempting to add Spring Web, Security, Data JPA, Validation, Actuator, Lombok, and more all at once because they sound useful. The problem is that each starter changes the behavior of the generated project. If you add everything on day one, you create a much larger system before you understand what each part is doing.
-
-A better approach is to add only what supports the current learning goal. If you are about to build your first endpoint, start with Spring Web. When the course reaches persistence, add Spring Data JPA and MySQL Driver. When the course reaches input rules, add Validation. When it reaches authentication, add Spring Security. This staged approach makes debugging and understanding much easier.
-
-Once Initializr generates the project, treat the first successful run as a milestone. Before adding new files or changing the structure, verify that the project starts cleanly. That confirms your local Java environment, build tool, and selected Spring Boot version are all working together.
-
-This lesson is really about adopting a repeatable starting habit. Every future Spring Boot project becomes easier when you begin from the same official entry point and understand why each setup choice was made.
+After downloading the project, run it before adding custom files. A successful first startup verifies the JDK, build tool, Boot version, and selected dependencies. If something fails later, you will know the generated baseline itself was healthy.
 
 ## Example
 ```text
 Project: Maven
 Language: Java
-Spring Boot: 3.x
+Spring Boot: 4.x
 Group: com.tommy
 Artifact: learning-api
 Packaging: Jar
 Java: 17
-Dependencies: Spring Web
+Dependencies: Spring Web (Spring MVC), Validation
 ```
 
 ## Common Mistakes
-- Adding too many dependencies on day one.
-- Choosing a Java version that does not match Spring Boot requirements.
-- Skipping the first startup verification.
-- Treating group and artifact values as disposable names instead of part of project structure.
+- Adding Security, JPA, Actuator, and every test dependency before you know what each one changes.
+- Selecting a Java version that is not supported by the chosen Boot line.
+- Assuming the Initializr label is always identical to the Maven artifact name.
+- Skipping the first clean startup before editing the project.
 
 ## Practice
-- Create a new Spring Boot 3.x project with only `Spring Web` selected.
-- Write down what each Initializr field controls before downloading the project.
-- Open the generated project and identify which choices from Initializr are visible in the folder structure or build file.
+- Generate a Boot 4 project with Maven, Java 17, Jar packaging, Spring Web, and Validation.
+- Open the build file and identify the actual starter artifact names.
+- Run the application once before adding your first controller.
 
 ## Continuity
-- Previous lesson: `Lesson 1: What Spring Boot 3.x Is and Why It Matters`
-- Next lesson: `Lesson 3: Understand the Project Structure and Startup Flow`
+- Previous lesson: `Lesson 1: What Spring Boot 4.x Is and Why It Matters`
+- Next lesson: `Lesson 3: Understand Project Structure, Startup, and Embedded Servers`
 
 ## Key Takeaway
-- Starting from the official generator reduces setup mistakes and keeps your project aligned with Spring Boot conventions.
+- A clean Initializr project gives you a trustworthy Boot 4 baseline before you add application complexity.
 
 ## Official References
 - https://start.spring.io/
-- https://docs.spring.io/spring-boot/installing.html
 - https://docs.spring.io/spring-boot/system-requirements.html
+- https://docs.spring.io/spring-boot/reference/getting-started/index.html

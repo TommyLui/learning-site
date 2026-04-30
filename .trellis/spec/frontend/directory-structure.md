@@ -119,6 +119,20 @@ Use data modules as the source of truth rather than duplicating course metadata 
 - Data-backed lesson files use paired English/Chinese files such as `src/data/goLessons.ts` and `src/data/goLessonsZh.ts`.
 - Spring Boot loads markdown notes from `course-notes/springboot/` and `course-notes/springboot-zh/` through `src/data/springbootNotes.ts`.
 
+### Spring Boot markdown-backed track contract
+
+Spring Boot is a dedicated track with catalog metadata in `src/data/courses.ts` and lesson bodies in markdown, not a generic data-backed track. Preserve this contract unless the task explicitly asks for a content architecture migration.
+
+Concrete contract:
+
+- English files live at `course-notes/springboot/lesson-<number>.md`; Traditional Chinese files live at `course-notes/springboot-zh/lesson-<number>.md`.
+- `src/data/springbootNotes.ts` only loads files matching `lesson-<number>.md`; helper/template files such as `lesson-template.md` are ignored by route generation.
+- Each note frontmatter must include `title`, `lesson`, `slug`, and `summary`.
+- English and Chinese notes must stay aligned for lesson count, numeric order, and slug values so locale switching and generated routes remain predictable.
+- The Spring Boot lesson hubs map `course.modules[].lessons[].number` to markdown slugs as `lesson-${number}`. If Spring Boot ever moves to non-numbered lesson slugs, update both English and Chinese hub mapping logic and add compatibility redirects for previous URLs.
+- Hub card titles should trim locale-specific lesson prefixes before display. English titles commonly start with `Lesson <number>:`; Chinese titles commonly start with `第 <number> 課：`.
+- Section headings must either use the existing English/Chinese names recognized by `SECTION_KEY_ALIASES` in `src/data/springbootNotes.ts` or that alias map and both locale pages must be updated together.
+
 When adding or renaming a data-backed track, update all of these together:
 
 1. `src/data/lessonRegistry.ts`

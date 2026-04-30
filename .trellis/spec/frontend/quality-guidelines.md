@@ -50,6 +50,8 @@ Course and lesson changes must keep the relevant source files synchronized:
 
 For data-backed tracks, module titles must match lesson `moduleTitle` exactly in each locale. The grouping in `src/pages/courses/[slug]/lessons/index.astro` depends on that equality.
 
+For the dedicated Spring Boot track, keep `src/data/courses.ts`, `course-notes/springboot/lesson-<number>.md`, `course-notes/springboot-zh/lesson-<number>.md`, and both Spring Boot lesson hub pages synchronized. Spring Boot markdown notes must keep `title`, `lesson`, `slug`, and `summary` frontmatter, and English/Chinese notes must preserve matching lesson count, order, and slugs.
+
 ### Astro-first, CSS-first UI
 
 Use `.astro` pages/components and `src/styles/global.css`. Preserve the editorial, teaching-content layout unless the user asks for a redesign.
@@ -114,6 +116,7 @@ Before considering a change complete, verify:
 - [ ] Shared course data is updated in `src/data/courses.ts` rather than duplicated in pages.
 - [ ] Data-backed track changes update `src/data/lessonRegistry.ts`, route redirects, and both locale lesson files.
 - [ ] `course.modules[].title` matches lesson `moduleTitle` for data-backed tracks.
+- [ ] Spring Boot markdown-backed changes preserve `lesson-<number>.md` filenames, required frontmatter, English/Chinese slug parity, and hub title trimming for `Lesson N:` / `第 N 課：` prefixes.
 - [ ] UI changes reuse `src/styles/global.css` and existing visual patterns where possible.
 - [ ] `npm run check` and `npm run build` results are recorded.
 
@@ -126,3 +129,4 @@ Before considering a change complete, verify:
 - A module section renders empty because localized module titles and lesson `moduleTitle` values drifted.
 - A new dedicated track is added to the catalog but not to `DEDICATED_TRACK_SLUGS`, redirect pages, or `getCoursePath()` behavior.
 - Build-time markdown expectations change without updating `SECTION_KEY_ALIASES`, `getNotesDirectory()`, and Spring Boot lesson pages.
+- A Spring Boot Chinese lesson hub leaves `第 N 課：` in card titles because only the English `Lesson N:` prefix was trimmed.

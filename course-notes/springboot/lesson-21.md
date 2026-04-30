@@ -1,75 +1,72 @@
 ---
-title: "Lesson 21: Prepare Spring Boot 3.x for Deployment"
+title: "Lesson 21: Prepare Spring Boot 4.x for Deployment and Migration"
 lesson: 21
 slug: "lesson-21"
-summary: "Deployment readiness combines packaging, configuration, security, monitoring, and environment discipline."
+summary: "A Boot 4 service is deployment-ready when configuration, security, observability, packaging, AOT awareness, and migration risks are reviewed together."
 ---
 
-# Lesson 21: Prepare Spring Boot 3.x for Deployment
+# Lesson 21: Prepare Spring Boot 4.x for Deployment and Migration
 
-Deployment readiness combines packaging, configuration, security, monitoring, and environment discipline.
+A Boot 4 service is deployment-ready when configuration, security, observability, packaging, AOT awareness, and migration risks are reviewed together.
 
 ## What You Will Learn
-- Review the practical pieces needed to move a Spring Boot app toward deployment.
-- Connect configuration, packaging, logging, health checks, and security into one operational picture.
-- Build a deployment mindset instead of treating production as an afterthought.
+- Review a practical deployment checklist for a Boot 4 API.
+- Understand where AOT and GraalVM native images fit as advanced deployment options.
+- Recognize the safest migration sequence for teams moving from the previous major line to Boot 4.
 
 ## Why This Matters
-- Deployment readiness combines packaging, configuration, security, monitoring, and environment discipline.
-- Production problems often come from operational gaps rather than coding mistakes alone.
-- A deployment checklist helps convert development progress into a maintainable running service.
+- Production readiness is a combination of many earlier decisions, not a final command.
+- Boot 4 includes important major-version changes in starters, tests, JSON, security, persistence, and packaging.
+- Migration work should be deliberate so teams do not mix application bugs with platform-upgrade issues.
 
 ## Main Ideas
-- Deployment is the moment where multiple engineering decisions meet at once.
-- Externalized configuration and secrets management are non-negotiable.
-- Operational readiness includes startup reliability, logs, health checks, and access control.
+- Externalized configuration, secrets, logging, health probes, metrics, and security rules must be checked before deployment.
+- AOT and native images can improve startup and memory in some cases, but they require closed-world awareness and extra testing.
+- Existing applications should move to the latest stable previous major release before upgrading to Boot 4.
 
 ## Lesson Notes
-Deployment is often described as the final step, but in practice it is the point where the whole application design is tested together. If configuration is weak, deployment exposes it. If logging is unclear, deployment exposes it. If health checks are missing, deployment exposes that too.
+Deployment readiness is a checklist across the whole application. The packaged jar must run outside the IDE. Configuration must come from the environment. Secrets must not be committed. Database connections must use the right profile. Security rules must protect sensitive endpoints. Actuator exposure must be intentional. Logs, metrics, health, and readiness checks must be useful to the platform.
 
-A deployment-ready Spring Boot application should avoid assumptions that only work on a developer laptop. Paths, ports, credentials, database hosts, and runtime profiles should be configurable from the outside. If the app depends on local defaults too heavily, it becomes fragile the moment it leaves local development.
+Boot 4 also brings AOT and native-image considerations into modern deployment conversations. Spring AOT can generate assets that help native-image builds. GraalVM native images can reduce startup time and memory for some workloads, but they use a closed-world model. Reflection, dynamic proxies, resources, and runtime discovery need extra care. Treat native images as an advanced deployment option, not a beginner requirement.
 
-Secrets deserve particular care. Database passwords, API keys, and other sensitive values should not live in source control or inside Java classes. Production deployment depends on an environment strategy that keeps those values external and controlled.
+Container deployment should build on the packaging lesson. Use `java -jar`, buildpacks, or a Dockerfile with current layered extraction patterns. Avoid removed fully executable launch-script instructions. Keep runtime configuration separate from image content.
 
-Startup behavior is another deployment concern. The application should fail clearly when it cannot reach required infrastructure, and its logs should make those failures understandable. A confusing startup process turns deployment into guesswork.
+For teams migrating an existing app, the safest path is not to jump blindly. Move first to the latest Spring Boot 3.5.x line, remove deprecated APIs, update tests, and confirm behavior. Then migrate to Boot 4 and address major changes such as focused starters, test starter choices, `@MockitoBean` annotations, Jackson 3, Security 7, Hibernate 7, and servlet container baselines.
 
-Observability also belongs here. If the service starts but no one can check its health, monitor its key signals, or inspect its logs, then the deployment is incomplete from an operational point of view. Running code is not the same thing as manageable code.
+Do not frame Boot 4 as only a label change. It is still Spring Boot, but it is a major generation update. A good deployment or migration plan identifies the pieces that changed and verifies them with tests and operational checks.
 
-For Spring Boot 3.x, it is also worth knowing that deployment discussions may now include Docker images, AOT processing, and native-image builds. Those topics are more advanced than a first deployment, but they help explain why modern Boot packaging is broader than just "make a jar and upload it."
-
-Security and exposure settings must also be reviewed before deployment. Public routes, Actuator endpoints, CORS rules, and credential handling all become more sensitive in a networked environment than they were during local development.
-
-A deployment checklist is useful because it turns these concerns into repeatable practice. Has the app been packaged cleanly? Are secrets externalized? Are health checks available? Are logs readable? Are the required profiles correct? These questions help reduce surprises.
-
-The broader lesson is that Spring Boot is not only a framework for writing backend code. It is also a framework for operating a backend service. Deployment readiness is the moment that full picture becomes clear.
+This final lesson connects the course together: you learned the application model, built APIs, added persistence, wrote tests, secured endpoints, observed runtime behavior, packaged the artifact, and now review the system as something that can actually run for users.
 
 ## Example
-```bash
-SPRING_PROFILES_ACTIVE=prod
-SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/learning_db
-SPRING_DATASOURCE_USERNAME=app_user
-SPRING_DATASOURCE_PASSWORD=***
-SERVER_PORT=8080
+```text
+Boot 4 deployment checklist:
+1. Build and run the packaged artifact outside the IDE.
+2. Provide database URLs, credentials, and secrets from the environment.
+3. Expose only necessary Actuator endpoints.
+4. Verify readiness and liveness probes.
+5. Run unit, web, persistence, security, and deployment smoke tests.
+6. Review Boot 4 migration items: starters, tests, Jackson 3, Security 7, Hibernate 7, and packaging.
 ```
 
 ## Common Mistakes
-- Shipping development-only config to production.
-- Committing secrets into the repository.
-- Deploying without checking logs, health endpoints, or startup behavior.
+- Treating deployment as only `mvn package`.
+- Making native image a requirement before the app is otherwise production-ready.
+- Migrating directly from an old codebase to Boot 4 without first removing deprecated previous-major usage.
+- Forgetting to retest security, JSON, persistence, and Actuator behavior after the platform upgrade.
 
 ## Practice
-- Create a deployment checklist for your current project.
-- List which values should come from environment variables in production.
-- Explain why 'it works on my machine' is not enough for deployment readiness.
+- Create a deployment checklist for your course project.
+- Mark which settings must come from environment variables or a secret store.
+- Write a migration note listing the Boot 4 changes your team would need to verify.
 
 ## Continuity
-- Previous lesson: `Lesson 20: Use Actuator for Health Checks and Monitoring`
-- Next lesson: This is the final lesson in the Spring Boot 3.x path.
+- Previous lesson: `Lesson 20: Use Actuator for Health, Probes, Metrics, and Observability`
+- Next lesson: This is the final checkpoint of the Spring Boot 4.x course.
 
 ## Key Takeaway
-- Deployment readiness combines packaging, configuration, security, monitoring, and environment discipline.
+- A Spring Boot 4.x app is ready to ship only when build, configuration, security, observability, and migration risks are verified together.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/actuator/index.html
-- https://docs.spring.io/spring-boot/reference/packaging/index.html
-- https://docs.spring.io/spring-boot/reference/features/external-config.html
+- https://docs.spring.io/spring-boot/reference/packaging/native-image/introducing-graalvm-native-images.html
+- https://docs.spring.io/spring-boot/reference/packaging/container-images/dockerfiles.html
+- https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide

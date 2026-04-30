@@ -1,92 +1,87 @@
 ---
-title: "第 14 課：為 Controller 與 Repository 撰寫整合測試"
+title: "第 14 課：為 Web 與 Persistence 撰寫 Boot 4 Integration Tests"
 lesson: 14
 slug: "lesson-14"
-summary: "整合測試能抓到單元測試看不到的接線、映射與持久化問題。"
+summary: "Boot 4 integration tests 應明確接上正確 test support，包含 MockMvc auto-configuration、RestTestClient、repository tests 與需要時的 Testcontainers。"
 ---
 
-# 第 14 課：為 Controller 與 Repository 撰寫整合測試
+# 第 14 課：為 Web 與 Persistence 撰寫 Boot 4 Integration Tests
 
-整合測試能抓到單元測試看不到的接線、映射與持久化問題。
+Boot 4 integration tests 應明確接上正確 test support，包含 MockMvc auto-configuration、RestTestClient、repository tests 與需要時的 Testcontainers。
 
 ## 這一課會學到什麼
-- 使用真實的框架接線來測試 controller 與 repository。
-- 在適合的情境下使用 MockMvc 這類偏向 Web 的測試工具。
-- 了解整合測試如何補足單元測試，而不是取代它。
+- 理解 Boot 4 testing changes 如何影響 MockMvc、mock annotations 與 technology-specific test starters。
+- 在 full-context test 需要 MockMvc 時使用 `@AutoConfigureMockMvc`。
+- 依驗證目標選擇 MockMvc、RestTestClient、repository tests 與 Testcontainers。
 
 ## 為什麼重要
-- 整合測試能抓到單元測試看不到的接線、映射與持久化問題。
-- 它們有助於驗證不同分層邊界是否能正確協作。
-- 它們能降低序列化、驗證與持久化錯誤一路流進正式環境的風險。
+- Integration tests 能捕捉 unit tests 看不到的 wiring、serialization、validation、persistence 與 security behavior。
+- Boot 4 不再因為 `@SpringBootTest` 存在，就假設某些 test clients 自動可用。
+- 正確 test setup 能避免 false confidence 與 confusing missing-bean failures。
 
 ## 主要觀念
-- 整合測試會驗證由框架管理的各個部分之間的協作。
-- MockMvc 很適合在不開瀏覽器的情況下驗證 Web 層。
-- 平衡的測試策略，會結合快速的單元測試與有選擇性的整合測試覆蓋。
+- `@SpringBootTest` 會啟動 application context，但不會自動提供所有 web test clients。
+- Full-context test 要使用 MockMvc 時，加入 `@AutoConfigureMockMvc`。
+- Boot 舊的 `@MockBean` 與 `@SpyBean` annotations 被 `@MockitoBean` 與 `@MockitoSpyBean` 取代。
+- 當 database behavior 必須 realistic 時，Testcontainers 與 service connections 很有用。
 
 ## 課程筆記
-單元測試非常適合驗證被隔離的邏輯，但它們無法告訴你整個應用程式是否被正確接線。整合測試透過讓多個分層一起運作，並納入真實的 Spring 行為，來補上這塊空白。
+Integration testing 問的是 application 多個部分是否能一起運作。Controller integration test 可能驗證 routing、validation、JSON、exception handling 與 security rules。Persistence integration test 可能驗證 JPA mapping 與針對真實 database shape 的 SQL behavior。
 
-在 controller 測試方面，像 MockMvc 這樣的工具能讓你對 Web 層送出請求，並驗證狀態碼、JSON payload、標頭與驗證回應。這很有用，因為許多 API 問題不是邏輯問題，而是映射或序列化問題。
+Boot 4 讓幾個 testing assumptions 更明確。`@SpringBootTest` 會啟動 application context，但不會自己提供 MockMvc。如果你想在 full context 中使用 MockMvc，就加上 `@AutoConfigureMockMvc`。如果你想做 server-style HTTP testing，學習 documented `RestTestClient` path 並加入所需 support。
 
-Repository 整合測試的重要性也很類似。某個 entity 在程式碼裡看起來也許正確，但映射到真實資料庫時仍可能出現意外行為。查詢、關聯、欄位映射與自動產生的 id，只有在真實持久化上下文中被驗證後，才更值得信任。
+Mock annotation names 也很重要。Boot 舊的 `@MockBean` 與 `@SpyBean` 已移除，改用 `@MockitoBean` 與 `@MockitoSpyBean`。這種小語法細節在 major-version update 時很容易讓複製的範例壞掉。
 
-整合測試通常比純單元測試慢，因此應該有意識地使用。目標不是用最高成本去測試每一個微不足道的分支，而是挑出那些框架接線與跨層行為最重要的位置來覆蓋。
+Repository 與 database behavior 方面，focused JPA test 可能足夠。當 MySQL-specific behavior 很重要時，Testcontainers 可以為 test 跑一個更真實的 database。這比 unit test 慢，但能驗證 mock 無法代表的 behavior。
 
-強健的測試策略往往像金字塔：大量單元測試、較少的整合測試，以及更少量的完整端對端檢查。Spring Boot 讓你能用聚焦的測試工具，務實地建立這個金字塔的中間層。在 Spring Boot 3.x 裡，這也可能包含用 Testcontainers 或 service connections 來建立更貼近真實資料庫的整合測試。
+Integration tests 要有目的。不要透過 HTTP layer 再測一次每條 service logic。用 integration tests 驗證 boundaries：web mapping、JSON conversion、validation、persistence wiring、transactions 與 security integration。
 
-這些測試也很有價值，因為它們反映了應用程式真正的公開契約。如果 API 回傳了錯誤的 JSON 形狀，或者 repository 查詢因映射問題而失敗，整合測試通常能在使用者發現之前先把問題揭露出來。
-
-隨著專案成長，你會越來越依賴這種多層次測試的組合。單元測試保護邏輯，整合測試保護邊界。兩者結合在一起，能讓後端更安全地持續演進。
+到這一課結束時，你應該能說明某個 test 為什麼要啟動 Spring，以及它需要哪個 Boot 4 test support。
 
 ## 範例
 ```java
-package com.tommy.learningapi.notes;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class NoteControllerTest {
+class NoteApiIntegrationTest {
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @Test
-    void getNotes_returnsOk() throws Exception {
+    void returnsNotes() throws Exception {
         mockMvc.perform(get("/api/notes"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+            .andExpect(status().isOk());
     }
 }
 ```
 
 ## 常見錯誤
-- 對每一個很小的行為都使用整合測試。
-- 忽略測試之間資料庫狀態的建立與清理。
-- 只測 happy path，卻跳過驗證與失敗行為。
+- 期待 `@SpringBootTest` 單獨注入 MockMvc。
+- 把 `@MockBean` examples 複製到 Boot 4 project，而不是使用 `@MockitoBean`。
+- 只用 mocks 測試 database-specific behavior。
+- 對 unit test 就能涵蓋的 rules 寫很慢的 full-context tests。
 
 ## 練習
-- 為一個 GET 端點撰寫一個 MockMvc 測試。
-- 新增一個 repository 測試，驗證 entity 的持久化或查詢行為。
-- 比較你的單元測試覆蓋了什麼，以及整合測試覆蓋了什麼。
-- 如果可以，再說明什麼情況下 Testcontainers 支撐的資料庫測試會比記憶體替代方案更可信。
+- 把一個 controller test 改成使用 `@SpringBootTest` 加 `@AutoConfigureMockMvc`。
+- 找出一個應由 `@MockitoBean` 取代 external collaborator 的 test。
+- 判斷某個 repository behavior 需要 in-memory database 還是 Testcontainers MySQL instance。
 
 ## 延續閱讀
-- 上一課：`第 13 課：為 Service 邏輯撰寫單元測試`
-- 下一課：`第 15 課：Spring Boot 應用程式中的常見除錯模式`
+- 上一課：`第 13 課：撰寫 Unit Tests 與 Focused Spring Tests`
+- 下一課：`第 15 課：Boot 4 Applications 常見 Debugging Patterns`
 
 ## 課後重點
-- 整合測試能抓到單元測試看不到的接線、映射與持久化問題。
+- Boot 4 integration tests 最好明確加入 test 真正需要的 web、mock、client 或 database support。
 
 ## 官方參考資料
-- https://docs.spring.io/spring-boot/reference/testing/index.html
-- https://docs.spring.io/spring-framework/reference/testing/mockmvc.html
+- https://docs.spring.io/spring-boot/reference/testing/spring-boot-applications.html
+- https://docs.spring.io/spring-boot/reference/testing/testcontainers.html
+- https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide

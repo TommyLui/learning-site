@@ -1,78 +1,76 @@
 ---
-title: "第 1 課：什麼是 Spring Boot 3.x，以及它為什麼重要"
+title: "第 1 課：什麼是 Spring Boot 4.x，以及它為什麼重要"
 lesson: 1
 slug: "lesson-1"
-summary: "Spring Boot 移除了 Java 後端開發中大量的設定阻力，讓你能把重心放在 API 設計、資料存取、測試與部署上。"
+summary: "Spring Boot 4.x 是用 Java 17+、Spring Framework 7 與 production-ready 預設值建立現代 Spring 應用程式的目前 major 版本。"
 ---
 
-# 第 1 課：什麼是 Spring Boot 3.x，以及它為什麼重要
+# 第 1 課：什麼是 Spring Boot 4.x，以及它為什麼重要
 
-Spring Boot 移除了 Java 後端開發中大量的設定阻力，讓你能把重心放在 API 設計、資料存取、測試與部署上。
+Spring Boot 4.x 是用 Java 17+、Spring Framework 7 與 production-ready 預設值建立現代 Spring 應用程式的目前 major 版本。
 
 ## 這一課會學到什麼
-- 理解 Spring Boot 3.x 是什麼、它解決哪些問題，以及為什麼它是很適合的後端學習路線。
-- 說明 Spring Framework 與 Spring Boot 之間的關係。
-- 認識自動設定、starter 與正式環境功能，如何改變開發體驗。
+- 理解 Spring Boot 4.x 是什麼，以及它為後端團隊解決哪些問題。
+- 把 Spring Boot 4.x 與 Spring Framework 7、Java 17+、Jakarta-based ecosystem 串起來。
+- 認識 starters、auto-configuration、testing support、Actuator 與 deployment tooling 為什麼屬於同一條學習路線。
 
 ## 為什麼重要
-- Spring Boot 移除了 Java 後端開發中大量的設定阻力，讓你能把重心放在 API 設計、資料存取、測試與部署上。
-- 它提供了一條更貼近真實後端開發的學習路線，而不是只停留在零散的玩具範例。
-- 它讓你有能力建立不只是能執行，還能被測試、設定與部署的應用程式。
+- Spring Boot 4.x 是 Spring ecosystem 的 GA 世代，不只是未來預覽版。
+- 它保留 Boot 友善初學者的模型，同時把底層平台推進到 Framework 7、Security 7、Hibernate 7、Jackson 3 與 Servlet 6.1。
+- 學習目前版本能讓你的範例更符合現代文件、dependency management 與 production expectation。
 
 ## 主要觀念
-- Spring Boot 是建立在 Spring Framework 之上，而不是取代它。
-- 帶有明確偏好的預設值與自動設定，能減少重複性的設定工作。
-- 像外部化設定與健康檢查工具這類正式環境功能，從一開始就很重要。
+- Spring Boot 建立在 Spring Framework 之上，而不是取代它。
+- Java 17+ 仍然是 minimum baseline，因此 Java 17 仍是安全的課程 runtime。
+- Boot 4 保留熟悉的 application model，同時改善 starters、tests、observability、packaging 與 native-image awareness。
 
 ## 課程筆記
-當人們第一次聽到 Spring Boot 時，常常會把它想成只是快速建立專案的捷徑。這個理解只對了一部分。Spring Boot 的確能讓你更快開始，但它更大的價值，在於它把 Spring 生態系變成更容易學習，也更容易在真實應用程式中使用的東西。
+理解 Spring Boot 最好的方式，是把它看成把龐大 Spring ecosystem 變成實用 application platform 的那一層。Spring Framework 提供 dependency injection、web foundations、data access integration、transactions 等基礎元件；Spring Boot 則選擇常見組合、管理相容版本，並套用合理預設，讓你更快進入真正的應用程式工作。
 
-Spring Framework 本來就提供了很強大的基礎元件，用來處理依賴注入、Web 應用程式、資料存取、安全性、測試，以及許多其他面向。對初學者來說，困難在於這些元件同時出現時，會顯得龐大又分散。Spring Boot 透過把常見組合打包起來，並提供合理的預設值，來解決這個學習門檻。
+Spring Boot 4.x 把這個 platform 更新到 Spring Framework 7 世代。它仍然很像 Spring Boot：你建立 application class、加入 starters、撰寫 controllers 與 services，並讓 auto-configuration 移除重複設定。重要差異在於預設 stack 往前推進，包含最新 Jakarta APIs、Spring Security 7、Spring Data 新世代、Hibernate 7、Jackson 3，以及 Tomcat 11 這類 Servlet 6.1 embedded servlet container。
 
-一個很好的理解方式是：Spring Framework 提供的是引擎零件，而 Spring Boot 幫你把車子組裝成可以開的狀態。你依然能受益於 Spring 生態系的深度，但在學到有用內容之前，不需要手動把每一塊都接起來。
+Java baseline 也很重要。Boot 4 需要 Java 17 或更新版本，代表 Java 17 仍然是有效的初學者基線。你不需要強制使用 Java 21 或 Java 25 才能學這套課，但要知道更新的 JDK 也會出現在團隊與 production 環境中。
 
-這也是為什麼「帶有偏好」這件事很重要。Spring Boot 會先替你做一些選擇。如果你加入 Web 相依套件，它會假設你在建立 Web 應用程式，並設定好對應的 Web stack。如果你加入資料相關相依套件，它會準備好持久化的基礎。這些預設值不只節省時間，也會教你結構。你會開始看見一個後端應用程式通常是如何被組織的。
+Boot 的心智模型沒有變成完全陌生的東西。Dependency injection、beans、configuration properties、profiles、controllers、DTOs、services、repositories、validation 與 layered design 仍然是核心。改變的是預設版本、建議 starter 名稱、testing support，以及一些 deployment 與 operational details。
 
-隨著專案成長，這種組織方式會變得特別重要。後端服務不只是一些 class 的集合。它還需要設定、啟動流程、相依管理、日誌、測試、部署封裝，以及營運可觀測性。Spring Boot 支援所有這些面向，所以比起單純展示 framework 的範例，它更接近真實的應用程式開發。
+這套課把 Spring Boot 當作 application-development path，而不只是 project generator。你會從 setup 開始，接著建立 REST endpoints、加入 validation 與 persistence、測試應用程式、保護 API、觀察 runtime、封裝 artifact，最後準備部署。這個順序更接近真實 backend service 成長的方式。
 
-Spring Boot 3.x 很值得學，因為它對齊目前主流的 Spring 生態系。它使用 Java 17+ 作為基線、全面轉向 Jakarta 命名空間，也反映了你在最新指南、範例與實際專案中會遇到的慣例。
-
-同時，也要理解 Spring Boot 沒有做什麼。它不會讓你不需要理解架構，也不會消除你學習依賴注入、HTTP、JSON、SQL、驗證或安全性的必要。它做的事情，是降低設定成本，讓你能把更多時間花在理解那些真正重要的概念上。
-
-對學習者來說，這樣的取捨很有力量。你不會被樣板程式碼困住，還沒碰到後端真正有意義的部分。你可以很快進入 controller、service、repository、測試與部署相關議題，並在一個已經能運作的應用程式裡逐步學習每個部分。
-
-到這一課結束時，最核心的結論應該很簡單：Spring Boot 之所以重要，是因為它縮短了從 framework 設定到應用程式思維的距離。它讓你透過真實的專案結構來學習後端開發，而不是只靠抽象設定。
+到這一課結束時，核心重點很簡單：Spring Boot 4.x 重要，因為它保留 Spring 的可親近性，同時給你一個目前且 production-aware 的 backend stack。
 
 ## 範例
 ```java
-// Spring Boot applications start from a standard Java main method.
+package com.tommy.learningapi;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 @SpringBootApplication
-public class DemoApplication {
+public class LearningApiApplication {
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(LearningApiApplication.class, args);
     }
 }
 ```
 
 ## 常見錯誤
 - 誤以為 Spring Boot 與 Spring Framework 沒有關係。
-- 只把它當成專案產生器，而不是應用程式開發平台。
-- 使用自動設定，卻不試著理解它到底在設定什麼。
-- 以為設定更快，就代表不再需要架構理解。
+- 以為升到 Boot 4 代表每個 beginner concept 都被改掉，而不是底層 platform 更新。
+- 以為一定要 Java 21 或 Java 25，忽略 Java 17+ 仍是支援 baseline。
+- 沒檢查 Boot 4 starter model，就學習過時的 dependency 名稱。
 
 ## 練習
-- 用你自己的話說明 Spring Boot 為 Java 後端開發解決了哪些問題。
-- 用一小段文字或圖示比較 Spring Framework 與 Spring Boot。
-- 列出三個因為 Spring Boot 處理了常見設定，而變得更容易接觸到的後端開發部分。
+- 說明 Spring Framework 與 Spring Boot 如何一起工作。
+- 列出三個 Spring Boot 4.x 中重要的 platform 更新。
+- 用一小段話說明為什麼 Java 17 仍是合理的課程 baseline。
 
 ## 延續閱讀
-- 上一課：這是 Spring Boot 3.x 課程的起點。
-- 下一課：`第 2 課：使用 Spring Initializr 建立專案`
+- 上一課：這是 Spring Boot 4.x 課程的起點。
+- 下一課：`第 2 課：使用 Spring Initializr 建立 Boot 4 專案`
 
 ## 課後重點
-- Spring Boot 移除了 Java 後端開發中大量的設定阻力，讓你能把重心放在 API 設計、資料存取、測試與部署上。
+- Spring Boot 4.x 保留熟悉的 Boot development model，同時讓新專案對齊目前 Spring Framework 7 ecosystem。
 
 ## 官方參考資料
 - https://spring.io/projects/spring-boot
+- https://docs.spring.io/spring-boot/system-requirements.html
 - https://docs.spring.io/spring-boot/reference/getting-started/index.html
-- https://github.com/spring-projects/spring-boot/releases

@@ -1,95 +1,76 @@
 ---
-title: "Lesson 6: Auto-configuration in Spring Boot 3.x"
+title: "Lesson 6: Auto-configuration and Boot 4 Modular Starters"
 lesson: 6
 slug: "lesson-6"
-summary: "Auto-configuration explains why Spring Boot feels fast and why adding dependencies can change application behavior."
+summary: "Boot 4 keeps auto-configuration approachable while moving toward more focused starter modules and companion test starters."
 ---
 
-# Lesson 6: Auto-configuration in Spring Boot 3.x
+# Lesson 6: Auto-configuration and Boot 4 Modular Starters
 
-Auto-configuration explains why Spring Boot feels fast and why adding dependencies can change application behavior.
+Boot 4 keeps auto-configuration approachable while moving toward more focused starter modules and companion test starters.
 
 ## What You Will Learn
-- Understand how Spring Boot decides which beans and defaults to configure automatically.
-- See how dependency choices influence application startup behavior.
-- Learn why custom configuration can override or complement Boot defaults.
+- Understand how starters and classpath conditions drive auto-configuration.
+- Recognize Boot 4's more focused starter naming, such as `spring-boot-starter-webmvc`.
+- See why companion test starters make test dependencies more explicit.
 
 ## Why This Matters
-- Auto-configuration explains why Spring Boot feels fast and why adding dependencies can change application behavior.
-- It helps you reason about startup logs, unexpected beans, and framework behavior after adding starters.
-- It turns Spring Boot from black magic into a readable set of conditions and defaults.
+- Auto-configuration is the reason adding one starter can change application behavior immediately.
+- Boot 4 starter modularization affects the dependency names you should teach and copy into new projects.
+- Understanding the conditions behind auto-configuration makes debugging less mysterious.
 
 ## Main Ideas
-- Auto-configuration is conditional, not unconditional.
-- Classpath contents strongly influence Boot behavior.
-- Custom beans often let you refine or replace defaults.
+- Starters are curated dependency sets, not magic annotations.
+- Auto-configuration activates when required classes, properties, and missing beans line up.
+- Boot 4 prefers focused starters and technology-specific test starters over one oversized default assumption.
 
 ## Lesson Notes
-One of the main reasons Spring Boot feels productive is that it performs a large amount of setup work for you. This is known as auto-configuration. Instead of asking you to declare every common framework component manually, Spring Boot checks what is available and configures likely defaults.
+Auto-configuration is one of the features that makes Spring Boot feel productive. You add a starter, Boot sees the related libraries on the classpath, checks configuration properties and existing beans, then creates infrastructure beans that a typical application would need.
 
-The word 'auto' can be misleading if you imagine random behavior. Boot is not guessing blindly. It uses conditional rules. If certain classes are present, if the application type is web-based, if no custom bean already exists, and if certain settings are enabled, then Boot applies a matching configuration.
+In Boot 4, the starter story is more modular. For a Spring MVC API, the preferred starter artifact is `spring-boot-starter-webmvc`. Related test support can be expressed with a focused starter such as `spring-boot-starter-webmvc-test`. The older broad names may still appear in migration discussions, but new course examples should teach the focused Boot 4 path.
 
-That means your dependency list is more important than it first appears. Adding a web starter suggests that you want web support. Adding JPA and a database driver suggests that you want persistence-related setup. The more you understand this relationship, the easier it becomes to predict what startup should do.
+This modularity does not change the beginner mental model: add the technology you need, then let Boot configure common infrastructure. What it changes is the precision of dependency choices. Web MVC, WebFlux, Data JPA, Security, Actuator, and their test support should be added deliberately rather than as one large bundle.
 
-This is also why two Spring Boot 3.x projects can behave very differently even if their application classes look almost identical. The major difference often comes from what is on the classpath, which starter modules are present, and which configuration properties are active.
+Auto-configuration is also conditional. If you define your own bean, Boot may back off. If a required class is missing, an auto-configuration path will not activate. If a property disables a feature, Boot respects that choice. Learning to read condition reports later will help you debug why something was or was not configured.
 
-Auto-configuration is powerful because it reduces boilerplate, but it does not remove control. If you want custom behavior, you can define your own beans or settings. In many cases, Boot will back off when it sees that you have supplied a more specific configuration.
+The safest habit is to keep dependencies aligned with the current lesson. Add the web MVC starter for controllers. Add validation when request validation starts. Add data JPA and the database driver when persistence starts. Add the matching test starter when you write framework-backed tests.
 
-A healthy learning habit is to treat auto-configuration as something to inspect rather than simply trust. Read startup output, notice which starters you add, and pay attention when a new dependency changes application behavior. In Spring Boot 3.x, that also means noticing when Jakarta-based dependencies, data starters, or security starters activate different defaults.
-
-Many early debugging problems connect back to this topic. Missing datasource settings, unexpected security defaults, or web endpoints not behaving as expected often make more sense once you understand that Boot is responding to conditions, not just executing static code.
-
-The goal of this lesson is not to disable auto-configuration everywhere. The goal is to see it as a readable framework feature: a set of sensible defaults that accelerate development while still leaving room for deliberate customization.
+By treating starters as explicit design choices, you keep the project understandable and make Boot 4's modularization work for you instead of against you.
 
 ## Example
-```java
-package com.tommy.learningapi.config;
-
-import java.time.Clock;
-import java.time.Instant;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
-
-@Configuration
-public class AppConfig {
-    @Bean
-    Clock appClock() {
-        return Clock.systemUTC();
-    }
-}
-
-@Service
-public class ReportService {
-    private final Clock appClock;
-
-    public ReportService(Clock appClock) {
-        this.appClock = appClock;
-    }
-
-    public Instant generatedAt() {
-        return appClock.instant();
-    }
-}
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webmvc</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webmvc-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
 ```
 
 ## Common Mistakes
-- Assuming auto-configuration means there is no configuration behind the scenes.
-- Adding starters without understanding the behavior they enable.
-- Trying to override defaults before understanding what Boot is already doing.
+- Copying older starter names into new Boot 4 examples without checking current guidance.
+- Adding starters just because they sound useful.
+- Assuming auto-configuration cannot be customized or replaced.
+- Debugging by guessing instead of checking which conditions matched.
 
 ## Practice
-- Add a new starter to a small demo app and observe what changes in the startup logs.
-- Explain in your own words what it means for configuration to be conditional.
-- List one case where you would want Boot defaults and one case where you would override them.
+- Inspect your build file and list the starters currently present.
+- Explain what each starter added to the application.
+- Add one focused test starter only when you are ready to write tests that need it.
 
 ## Continuity
-- Previous lesson: `Lesson 5: Configuration Files and Profiles`
-- Next lesson: `Lesson 7: Build Your First REST Controller`
+- Previous lesson: `Lesson 5: Configuration Files, Profiles, and Type-Safe Settings`
+- Next lesson: `Lesson 7: Build Your First REST Controller With Spring MVC`
 
 ## Key Takeaway
-- Auto-configuration explains why Spring Boot feels fast and why adding dependencies can change application behavior.
+- Boot 4 auto-configuration is easiest to understand when you treat every starter as an intentional capability choice.
 
 ## Official References
+- https://docs.spring.io/spring-boot/reference/using/build-systems.html
 - https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
-- https://docs.spring.io/spring-boot/reference/features/index.html
+- https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide

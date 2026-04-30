@@ -1,87 +1,83 @@
 ---
-title: "第 13 課：為 Service 邏輯撰寫單元測試"
+title: "第 13 課：撰寫 Unit Tests 與 Focused Spring Tests"
 lesson: 13
 slug: "lesson-13"
-summary: "單元測試能快速驗證規則，並讓 service 程式碼在修改時更安全。"
+summary: "好的 tests 從快速 unit coverage 開始，只有在需要驗證 framework behavior 時才加入 Spring context。"
 ---
 
-# 第 13 課：為 Service 邏輯撰寫單元測試
+# 第 13 課：撰寫 Unit Tests 與 Focused Spring Tests
 
-單元測試能快速驗證規則，並讓 service 程式碼在修改時更安全。
+好的 tests 從快速 unit coverage 開始，只有在需要驗證 framework behavior 時才加入 Spring context。
 
 ## 這一課會學到什麼
-- 為 service 層行為撰寫聚焦的單元測試。
-- 使用 mock 或 stub，把 service 與 repository 依賴隔離開來。
-- 了解單元測試應該證明什麼，以及不應該試圖證明什麼。
+- 分辨 plain unit tests 與 Spring-backed tests。
+- 不啟動完整 application context 測試 service logic。
+- 當需要 MVC、JSON、JPA 或 configuration behavior 時，使用 focused Spring test slices。
 
 ## 為什麼重要
-- 單元測試能快速驗證規則，並讓 service 程式碼在修改時更安全。
-- 它們能為商業邏輯提供快速回饋，而不需要啟動整個應用程式。
-- 它們讓重構變得更容易，因為重要決策受到可重複執行的檢查保護。
+- 不是每個 test 都需要 `@SpringBootTest` 的成本與複雜度。
+- 快速 service tests 能在 integration details 分散注意前，先驗證 business rules。
+- Boot 4 testing model 更 modular，因此選擇正確 test dependency 與 scope 很重要。
 
 ## 主要觀念
-- 單元測試應一次只隔離一個類別或一種行為。
-- 當依賴不是被測試的主體時，mock 很有用。
-- 好的測試描述的是商業行為，而不是重新實作方法內部細節。
+- Unit tests 用最少 framework involvement 驗證 plain Java behavior。
+- Test slices 驗證 Spring stack 的聚焦部分。
+- Full application tests 應留給真的需要 assembled context 的 behavior。
 
 ## 課程筆記
-當你的 service 層開始承載真正的規則時，它就值得被直接驗證。單元測試是做到這件事最快的方法，因為它們聚焦在單一類別的隔離驗證，而不是啟動整個應用程式。
+測試 Spring Boot application 不代表每個 test 都要啟動 Spring。許多重要 rules 存在 services、mappers、validators 與小型 helper classes 中。這些通常可以用 JUnit 與 Mockito 當作 plain Java objects 測試。
 
-一個 service 單元測試，通常會用 mock 或 stub 取代 repository 依賴。這很重要，因為目標不是要證明資料庫能正常運作，而是要證明當 repository 回傳特定結果或拋出特定情況時，service 的行為是否正確。
+這個區分讓 feedback 更快。如果 service 依賴 repository interface，unit test 可以傳入 mock 或 fake repository 直接驗證 service rule。你不需要 embedded server 或 database 來檢查一個 calculation 或 branch。
 
-例如，你可能想驗證 service 是否能回傳所有 notes、在 id 不存在時拋出 not-found 例外，或是在儲存前正確把 request 映射成 entity。這些都屬於商業層級的行為，而不是框架接線層級的問題。
+Spring-backed tests 仍然重要。Controller test 可能需要 request mapping、JSON conversion、validation 與 error handling。Repository test 可能需要 JPA mapping 與 database behavior。關鍵是只啟動符合你問題的 slice。
 
-寫得好的單元測試應該快速、表意清楚，而且聚焦。它應該告訴你是哪條規則失敗了，而不只是模糊地表示「某個地方出了問題」。如果測試本身很難理解，那麼 service 的設計可能也需要改善。
+Boot 4 也透過 technology-specific test starters 讓 test dependencies 更明確。Spring MVC controller test 使用 web MVC test support。JPA integration 使用 JPA test support。這避免假設一個 broad starter 會自動提供所有 technology 的 test behavior。
 
-一個常見陷阱是過度使用 mock，或去測試實作細節。如果你的斷言與方法怎麼寫綁得太緊，而不是與它保證什麼行為綁在一起，那麼小小的重構也會因為錯誤的原因讓測試失敗。
+Test names 要以 behavior 為導向。一個 test 應說明保護了什麼 rule，而不只是重複 method name。好的 tests 會成為 service boundary 的 documentation，讓 refactoring 更安全。
 
-另一個陷阱，是對簡單的 service 驗證也直接使用完整的 `@SpringBootTest` 啟動。這會讓測試變慢，也模糊單元測試與整合測試之間的界線。更大範圍的測試確實有其位置，但 service 規則通常值得一個更小、更精準的測試範圍。
-
-在 Spring Boot 3.x 專案裡，這個界線更重要，因為整合測試還可能涵蓋真實的框架接線、設定屬性、安全規則，以及容器化依賴。把單元測試維持得夠窄，才能讓那些更大的檢查真正有意義，而不是不小心全部混在一起。
-
-越早學會 service 單元測試，最大的好處其實不只是正確性，而是信心。隨著應用程式成長，你能在不害怕的情況下修改 service 行為，會成為很大的生產力優勢。
+正確 testing habit 是 layered：很多快速 unit tests、針對 framework boundaries 的 focused slice tests，以及較少的 full-context integration tests。
 
 ## 範例
 ```java
-package com.tommy.learningapi.notes;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 class NoteServiceTest {
+    private final NoteRepository repository = Mockito.mock(NoteRepository.class);
+    private final NoteService service = new NoteService(repository);
+
     @Test
-    void create_shouldSaveMappedNote() {
-        NoteRepository repository = mock(NoteRepository.class);
-        NoteService service = new NoteService(repository);
-        CreateNoteRequest request = new CreateNoteRequest("DI", "constructor injection");
+    void createsNoteWithTrimmedTitle() {
+        when(repository.save(Mockito.any(Note.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        service.create(request);
+        service.create(new CreateNoteRequest("  API notes  ", "content"));
 
-        verify(repository).save(any(Note.class));
+        verify(repository).save(Mockito.argThat(note -> note.getTitle().equals("API notes")));
     }
 }
 ```
 
 ## 常見錯誤
-- 對簡單的 service 測試也使用完整應用程式啟動。
-- 在 service 單元測試裡測 repository 或 controller 的行為。
-- 撰寫只是在映射私有實作細節的斷言。
+- 對每個小 service rule 都使用 `@SpringBootTest`。
+- Mock 到 test 已經不再驗證真實 behavior。
+- 忘記為被測 technology 加入 focused test starter。
+- 寫只鏡像 implementation details 的 tests。
 
 ## 練習
-- 為一個會從 mocked repository 讀取資料的 service 方法撰寫單元測試。
-- 為找不到 entity 或輸入無效的情境再加一個測試。
-- 說明為什麼 service 單元測試不需要真實資料庫。
+- 不啟動 Spring，為一個 service method 寫 unit test。
+- 找出一個值得使用 Spring MVC slice test 的 controller behavior。
+- 把目前 tests 分類為 unit、slice 或 full-context。
 
 ## 延續閱讀
-- 上一課：`第 12 課：用 Service 與 Repository 分層建立 CRUD API`
-- 下一課：`第 14 課：為 Controller 與 Repository 撰寫整合測試`
+- 上一課：`第 12 課：用 Service 與 Repository Layers 建立 CRUD APIs`
+- 下一課：`第 14 課：為 Web 與 Persistence 撰寫 Boot 4 Integration Tests`
 
 ## 課後重點
-- 單元測試能快速驗證規則，並讓 service 程式碼在修改時更安全。
+- Boot 4 test design 應先從小範圍開始，只在 framework boundary 屬於被測 behavior 時才加入 Spring context。
 
 ## 官方參考資料
 - https://docs.spring.io/spring-boot/reference/testing/index.html
-- https://docs.spring.io/spring-security/reference/servlet/test/method.html
+- https://docs.spring.io/spring-boot/reference/testing/spring-boot-applications.html

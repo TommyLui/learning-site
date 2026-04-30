@@ -1,78 +1,76 @@
 ---
-title: "Lesson 1: What Spring Boot 3.x Is and Why It Matters"
+title: "Lesson 1: What Spring Boot 4.x Is and Why It Matters"
 lesson: 1
 slug: "lesson-1"
-summary: "Spring Boot removes much of the setup friction in Java backend development so you can focus on API design, data access, testing, and deployment."
+summary: "Spring Boot 4.x is the current major line for building modern Spring applications with Java 17+, Spring Framework 7, and production-ready defaults."
 ---
 
-# Lesson 1: What Spring Boot 3.x Is and Why It Matters
+# Lesson 1: What Spring Boot 4.x Is and Why It Matters
 
-Spring Boot removes much of the setup friction in Java backend development so you can focus on API design, data access, testing, and deployment.
+Spring Boot 4.x is the current major line for building modern Spring applications with Java 17+, Spring Framework 7, and production-ready defaults.
 
 ## What You Will Learn
-- Understand what Spring Boot 3.x is, what problems it solves, and why it is a strong backend learning path.
-- Explain the relationship between Spring Framework and Spring Boot.
-- Recognize how auto-configuration, starters, and production-ready features change the development experience.
+- Understand what Spring Boot 4.x is and what problems it solves for backend teams.
+- Connect Spring Boot 4.x to Spring Framework 7, Java 17+, and the Jakarta-based ecosystem.
+- Recognize why starters, auto-configuration, testing support, Actuator, and deployment tooling belong in the same learning path.
 
 ## Why This Matters
-- Spring Boot removes much of the setup friction in Java backend development so you can focus on API design, data access, testing, and deployment.
-- It gives you a learning path that matches real backend development rather than isolated toy examples.
-- It prepares you to build applications that are not only runnable, but also testable, configurable, and deployable.
+- Spring Boot 4.x is a GA generation of the Spring ecosystem, not only a future preview.
+- It keeps the beginner-friendly Boot model while updating the underlying platform to Framework 7, Security 7, Hibernate 7, Jackson 3, and Servlet 6.1.
+- Learning the current line helps you build examples that match modern guides, dependency management, and production expectations.
 
 ## Main Ideas
-- Spring Boot builds on top of Spring Framework instead of replacing it.
-- Opinionated defaults and auto-configuration reduce repetitive setup work.
-- Production-ready features such as externalized configuration and health tooling matter from the beginning.
+- Spring Boot builds on Spring Framework instead of replacing it.
+- Java 17+ remains the minimum baseline, so Java 17 is still a safe course runtime.
+- Boot 4 keeps the familiar application model while refining starters, tests, observability, packaging, and native-image awareness.
 
 ## Lesson Notes
-When people first hear about Spring Boot, they often think of it as a shortcut for creating a project quickly. That idea is only partly true. Spring Boot certainly helps you start faster, but its bigger value is that it turns the Spring ecosystem into something much easier to learn and use in a real application.
+Spring Boot is best understood as the layer that turns the broad Spring ecosystem into a practical application platform. Spring Framework provides dependency injection, web foundations, data access integration, transactions, and many other building blocks. Spring Boot selects common combinations, manages compatible versions, and applies sensible defaults so you can reach useful application work faster.
 
-Spring Framework already provides powerful building blocks for dependency injection, web applications, data access, security, testing, and many other concerns. The difficulty for beginners is that these building blocks can feel large and fragmented when you meet them all at once. Spring Boot solves that learning barrier by packaging common combinations together and supplying sensible defaults.
+Spring Boot 4.x updates that platform for the Spring Framework 7 generation. It still feels like Spring Boot: you create an application class, add starters, write controllers and services, and let auto-configuration remove repetitive setup. The important difference is that the default stack has moved forward. Boot 4 aligns with current Jakarta APIs, Spring Security 7, Spring Data's newer generation, Hibernate 7, Jackson 3, and embedded servlet containers such as Tomcat 11 on Servlet 6.1.
 
-A good way to think about it is this: Spring Framework gives you the engine parts, while Spring Boot helps assemble the vehicle in a way that is ready to drive. You still benefit from the depth of the Spring ecosystem, but you do not have to wire every piece manually before you can learn something useful.
+The Java baseline is also important. Boot 4 requires Java 17 or newer, which means Java 17 remains a valid beginner baseline. You do not need to make Java 21 or Java 25 mandatory to learn the course, but you should know that newer JDKs are part of the ecosystem and may appear in production teams.
 
-This is why the term opinionated matters. Spring Boot makes choices for you up front. If you add web dependencies, it assumes you are building a web application and configures a web stack. If you add data dependencies, it prepares the foundations for persistence. These defaults save time, but they also teach structure. You begin to see how a backend application is usually organized.
+The Boot mental model has not changed into something unrecognizable. Dependency injection, beans, configuration properties, profiles, controllers, DTOs, services, repositories, validation, and layered design are still central. What changes is the set of default versions, the preferred starter names, the testing support, and several operational details you should learn with Boot 4 in mind.
 
-That organization becomes especially important as the project grows. A backend service is not just a collection of classes. It needs configuration, startup logic, dependency management, logging, testing, deployment packaging, and operational visibility. Spring Boot supports all of these concerns, which is why it feels closer to real application development than a bare framework demo.
+This course treats Spring Boot as an application-development path rather than a project generator. You will start with setup, then build REST endpoints, add validation and persistence, test the application, secure it, observe it, package it, and prepare it for deployment. That sequence mirrors the way real backend services grow.
 
-Spring Boot 3.x is also worth learning because it matches the current mainstream Spring ecosystem. It uses a Java 17+ baseline, aligns with the Jakarta EE namespace, and reflects the conventions you will meet in current guides, examples, and production code.
-
-It is also important to understand what Spring Boot does not do. It does not remove the need to understand architecture. It does not eliminate the need to learn dependency injection, HTTP, JSON, SQL, validation, or security. Instead, it lowers the setup cost so you can spend more time understanding those essential concepts.
-
-For a learner, that trade-off is powerful. You are not trapped in boilerplate before reaching the meaningful parts of backend work. You can quickly reach controllers, services, repositories, tests, and deployment concerns, then study each part with a working application already in place.
-
-By the end of this lesson, the core takeaway should be simple: Spring Boot matters because it shortens the path from framework setup to application thinking. It helps you learn backend development through realistic project structure, not through abstract configuration alone.
+By the end of this first lesson, the key idea is simple: Spring Boot 4.x matters because it keeps Spring approachable while giving you a current, production-aware backend stack.
 
 ## Example
 ```java
-// Spring Boot applications start from a standard Java main method.
+package com.tommy.learningapi;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 @SpringBootApplication
-public class DemoApplication {
+public class LearningApiApplication {
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(LearningApiApplication.class, args);
     }
 }
 ```
 
 ## Common Mistakes
-- Thinking Spring Boot is unrelated to Spring Framework.
-- Treating it only as a project generator instead of an application-development platform.
-- Using auto-configuration without trying to understand what it is configuring.
-- Assuming faster setup means architectural understanding is no longer necessary.
+- Treating Spring Boot as unrelated to Spring Framework.
+- Thinking the move to Boot 4 changes every beginner concept instead of updating the platform beneath those concepts.
+- Assuming Java 21 or Java 25 is required when Java 17+ is still the supported baseline.
+- Learning stale dependency names without checking the Boot 4 starter model.
 
 ## Practice
-- Explain in your own words what problems Spring Boot solves for Java backend development.
-- Compare Spring Framework and Spring Boot using a short paragraph or diagram.
-- List three parts of backend development that become easier to reach because Spring Boot handles common setup.
+- Explain how Spring Framework and Spring Boot work together.
+- List three platform updates that matter in Spring Boot 4.x.
+- Write a short paragraph explaining why Java 17 remains a reasonable course baseline.
 
 ## Continuity
-- Previous lesson: This is the starting point of the Spring Boot 3.x course.
-- Next lesson: `Lesson 2: Create a Project With Spring Initializr`
+- Previous lesson: This is the starting point of the Spring Boot 4.x course.
+- Next lesson: `Lesson 2: Create a Boot 4 Project With Spring Initializr`
 
 ## Key Takeaway
-- Spring Boot removes much of the setup friction in Java backend development so you can focus on API design, data access, testing, and deployment.
+- Spring Boot 4.x keeps the familiar Boot development model while aligning new projects with the current Spring Framework 7 ecosystem.
 
 ## Official References
 - https://spring.io/projects/spring-boot
+- https://docs.spring.io/spring-boot/system-requirements.html
 - https://docs.spring.io/spring-boot/reference/getting-started/index.html
-- https://github.com/spring-projects/spring-boot/releases

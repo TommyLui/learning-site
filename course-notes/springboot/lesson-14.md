@@ -1,92 +1,87 @@
 ---
-title: "Lesson 14: Write Integration Tests for Controllers and Repositories"
+title: "Lesson 14: Write Boot 4 Integration Tests for Web and Persistence"
 lesson: 14
 slug: "lesson-14"
-summary: "Integration tests catch wiring, mapping, and persistence problems that unit tests cannot see."
+summary: "Boot 4 integration tests should wire the right test support explicitly, including MockMvc auto-configuration, RestTestClient, repository tests, and Testcontainers where useful."
 ---
 
-# Lesson 14: Write Integration Tests for Controllers and Repositories
+# Lesson 14: Write Boot 4 Integration Tests for Web and Persistence
 
-Integration tests catch wiring, mapping, and persistence problems that unit tests cannot see.
+Boot 4 integration tests should wire the right test support explicitly, including MockMvc auto-configuration, RestTestClient, repository tests, and Testcontainers where useful.
 
 ## What You Will Learn
-- Test controllers and repositories with real framework wiring.
-- Use web-focused test tools such as MockMvc where appropriate.
-- Understand how integration tests complement, rather than replace, unit tests.
+- Understand Boot 4 testing changes that affect MockMvc, mock annotations, and technology-specific test starters.
+- Use `@AutoConfigureMockMvc` when a full-context test needs MockMvc.
+- Choose between MockMvc, RestTestClient, repository tests, and Testcontainers based on what you need to verify.
 
 ## Why This Matters
-- Integration tests catch wiring, mapping, and persistence problems that unit tests cannot see.
-- They help verify that the boundaries between layers work correctly together.
-- They reduce the risk of serialization, validation, and persistence failures slipping through to production.
+- Integration tests catch wiring, serialization, validation, persistence, and security behavior that unit tests cannot see.
+- Boot 4 no longer assumes some test clients are available just because `@SpringBootTest` is present.
+- Correct test setup prevents false confidence and confusing missing-bean failures.
 
 ## Main Ideas
-- Integration tests verify collaboration between framework-managed parts.
-- MockMvc is useful for web-layer verification without a browser.
-- A balanced test strategy combines fast unit tests with selected integration coverage.
+- `@SpringBootTest` starts the application context but does not automatically provide every web test client.
+- Add `@AutoConfigureMockMvc` when you want MockMvc in a full-context test.
+- Boot's older `@MockBean` and `@SpyBean` annotations are replaced by `@MockitoBean` and `@MockitoSpyBean`.
+- Testcontainers and service connections are useful when database behavior must be realistic.
 
 ## Lesson Notes
-Unit tests are excellent for isolated logic, but they cannot tell you whether the application is wired correctly as a whole. Integration tests cover that missing space by exercising multiple layers together with real Spring behavior involved.
+Integration testing asks whether multiple parts of the application work together. A controller integration test may verify routing, validation, JSON, exception handling, and security rules. A persistence integration test may verify JPA mapping and SQL behavior against a real database shape.
 
-For controller testing, tools such as MockMvc let you send requests to your web layer and assert on status codes, JSON payloads, headers, and validation responses. This is useful because many API problems are not logic problems; they are mapping or serialization problems.
+Boot 4 makes several testing assumptions more explicit. `@SpringBootTest` starts the application context, but it does not by itself provide MockMvc. If you want to use MockMvc with a full context, add `@AutoConfigureMockMvc`. If you want server-style HTTP testing, learn the documented `RestTestClient` path and add the needed support.
 
-Repository integration tests matter for a similar reason. An entity might look correct in code but still behave unexpectedly when mapped to a real database. Queries, relationships, column mappings, and generated ids are all easier to trust when they are verified against a real persistence context.
+The mock annotation names also matter. Boot's old `@MockBean` and `@SpyBean` are removed in favor of `@MockitoBean` and `@MockitoSpyBean`. That is the kind of small syntax detail that can break copied examples during a major-version update.
 
-Integration tests are usually slower than pure unit tests, which is why they should be used deliberately. The goal is not to test every trivial branch at the highest cost. The goal is to choose the places where framework wiring and cross-layer behavior are most important.
+For repository and database behavior, a focused JPA test may be enough. When MySQL-specific behavior matters, Testcontainers can run a realistic database for the test. That is slower than a unit test, but it verifies behavior a mock cannot represent.
 
-A strong testing strategy often looks like a pyramid: many unit tests, fewer integration tests, and a smaller set of full end-to-end checks. Spring Boot makes it practical to build the middle layer of that pyramid with focused testing tools. In Spring Boot 3.x, that can also include Testcontainers or service-connection-based database tests when you want realistic persistence behavior.
+Keep integration tests purposeful. Do not test every line of service logic again through the HTTP layer. Use integration tests to verify boundaries: web mapping, JSON conversion, validation, persistence wiring, transactions, and security integration.
 
-These tests are also valuable because they reflect the real public contract of the application. If the API returns the wrong JSON shape, or if a repository query fails because of a mapping issue, integration tests will often reveal it before a user does.
-
-As your project grows, you will rely more and more on this combination of test layers. Unit tests protect logic. Integration tests protect boundaries. Together, they make the backend safer to evolve.
+By the end of this lesson, you should be able to explain why a particular test starts Spring and which Boot 4 test support it needs.
 
 ## Example
 ```java
-package com.tommy.learningapi.notes;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class NoteControllerTest {
+class NoteApiIntegrationTest {
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @Test
-    void getNotes_returnsOk() throws Exception {
+    void returnsNotes() throws Exception {
         mockMvc.perform(get("/api/notes"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+            .andExpect(status().isOk());
     }
 }
 ```
 
 ## Common Mistakes
-- Using integration tests for every tiny behavior.
-- Ignoring database state setup and cleanup between tests.
-- Testing only happy paths while skipping validation and failure behavior.
+- Expecting `@SpringBootTest` alone to inject MockMvc.
+- Copying `@MockBean` examples into a Boot 4 project instead of using `@MockitoBean`.
+- Testing database-specific behavior only with mocks.
+- Writing slow full-context tests for rules that a unit test could cover.
 
 ## Practice
-- Write one MockMvc test for a GET endpoint.
-- Add one repository test that verifies entity persistence or lookup behavior.
-- Compare what your unit tests cover versus what your integration tests cover.
-- If possible, describe when a Testcontainers-backed database test would be more trustworthy than an in-memory substitute.
+- Convert one controller test to use `@SpringBootTest` plus `@AutoConfigureMockMvc`.
+- Identify one test where `@MockitoBean` would replace an external collaborator.
+- Decide whether a repository behavior needs an in-memory database or a Testcontainers MySQL instance.
 
 ## Continuity
-- Previous lesson: `Lesson 13: Write Unit Tests for Service Logic`
-- Next lesson: `Lesson 15: Common Debugging Patterns in Spring Boot Applications`
+- Previous lesson: `Lesson 13: Write Unit Tests and Focused Spring Tests`
+- Next lesson: `Lesson 15: Common Debugging Patterns in Boot 4 Applications`
 
 ## Key Takeaway
-- Integration tests catch wiring, mapping, and persistence problems that unit tests cannot see.
+- Boot 4 integration tests work best when you explicitly add the web, mock, client, or database support that the test actually needs.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/testing/index.html
-- https://docs.spring.io/spring-framework/reference/testing/mockmvc.html
+- https://docs.spring.io/spring-boot/reference/testing/spring-boot-applications.html
+- https://docs.spring.io/spring-boot/reference/testing/testcontainers.html
+- https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide

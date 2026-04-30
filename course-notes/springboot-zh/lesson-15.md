@@ -1,68 +1,69 @@
 ---
-title: "第 15 課：Spring Boot 應用程式中的常見除錯模式"
+title: "第 15 課：Boot 4 Applications 常見 Debugging Patterns"
 lesson: 15
 slug: "lesson-15"
-summary: "除錯是後端開發的日常技能，而 Spring Boot 應用程式常以可辨識的模式發生問題。"
+summary: "當你系統化閱讀 logs、condition reports、configuration sources、request flow 與 dependency boundaries，Boot 4 application debugging 會變得更容易。"
 ---
 
-# 第 15 課：Spring Boot 應用程式中的常見除錯模式
+# 第 15 課：Boot 4 Applications 常見 Debugging Patterns
 
-除錯是後端開發的日常技能，而 Spring Boot 應用程式常以可辨識的模式發生問題。
+當你系統化閱讀 logs、condition reports、configuration sources、request flow 與 dependency boundaries，Boot 4 application debugging 會變得更容易。
 
 ## 這一課會學到什麼
-- 建立一套可重複使用的除錯方法，來處理啟動、設定與請求流程問題。
-- 辨認常見的 Spring Boot 失敗類別，並知道應該先檢查哪裡。
-- 使用日誌、較小的重現案例，以及分層意識來更有效率地除錯。
+- 診斷 startup failures、missing beans、configuration issues 與 HTTP request problems。
+- 使用 logs 與 auto-configuration condition information 理解 Boot 做了什麼。
+- Debugging 時分離 dependency、configuration、web、persistence 與 security causes。
 
 ## 為什麼重要
-- 除錯是後端開發的日常技能，而 Spring Boot 應用程式常以可辨識的模式發生問題。
-- 有方法的工作流程，比隨機試錯更快也更可靠。
-- 越早找出失敗的是哪一層，就越容易修正真正原因。
+- Spring applications 可能因許多不同原因失敗，但一開始看起來很像。
+- 用猜的常會加入額外 changes，卻沒有修到 root cause。
+- Boot 4 modular starters 讓你更需要確認到底是哪個 dependency 提供某個 feature。
 
 ## 主要觀念
-- 大多數失敗都屬於某一層：啟動、Web、持久化、安全性或設定。
-- 如果你仔細閱讀，日誌通常會揭露第一個有用的症狀。
-- 把問題縮小成較小且可重現的案例，是最有效的除錯動作之一。
+- 讀第一個有意義的 error，不要只看 stack trace 最後一行。
+- 改 code 前先確認 dependencies、properties、profiles 與 bean discovery。
+- 套用 fix 前，先重現最小 failing path。
 
 ## 課程筆記
-Spring Boot 應用程式在除錯時容易讓人感到有壓力，因為啟動與請求處理期間會同時發生很多事情。一個請求可能牽涉到設定載入、bean 接線、驗證、service 邏輯、持久化與安全性。關鍵在於不要把每個問題都當成一個巨大的謎團。
+Debug Spring Boot 大多是在縮小 failure category。Missing endpoint 不同於 validation error；missing bean 不同於 disabled auto-configuration；database connection failure 不同於 repository query problem。先替問題命名 category。
 
-一個很有用的第一個問題其實很簡單：失敗發生在哪裡？如果應用程式根本無法啟動，就聚焦在啟動日誌、相依條件與設定值。如果它能啟動，但某個 endpoint 失敗，那問題更可能出在請求映射、序列化、service 邏輯或持久化行為。
+Startup logs 通常是第一個好工具。它們會顯示 active profiles、server port、bean creation 期間的 failures、datasource connection problems，有時也會顯示 configuration binding errors。從第一個 cause 往上讀，而不是只看最後一層 exception wrapper。
 
-日誌通常是最快讓情況變清楚的路徑。Spring Boot 的啟動輸出可以揭露遺漏的 bean、連接埠衝突、無效的 datasource 設定與自動設定條件。執行期日誌與 stack trace 則能精確指出請求失敗的位置。
+Auto-configuration debugging 也很有價值。如果你期待某功能被設定但沒有，問自己：哪個 starter 提供它？哪些 classes 在 classpath 上？哪些 properties 被設定？你自己的 bean 是否讓 Boot back off？Condition reports 能把 mystery 變成 checklist。
 
-另一項重要技能，是閱讀第一個真正有意義的錯誤，而不是最後一行看得到的訊息。很長的 stack trace 往往會在主要原因之後，帶出許多次要失敗。好的除錯，代表你能找到最早出現且具體說明問題的訊息。
+HTTP issues 要 trace request path。確認 URL、method、controller mapping、security filters、validation、service call、repository call 與 response translation。404、400、401、403 與 500 各自指向 request flow 的不同部分。
 
-簡化也是很強的技巧。停用不相關功能、減少請求 payload、隔離單一 controller，或在較小的測試中重現問題。失敗案例越小，就越容易看出 bug 背後真正的運作機制。
+Configuration issues 要檢查 active profile 與 property source。某個 value 可能被 environment variable、command-line argument 或 profile-specific file 覆蓋。不要假設 `application.properties` 裡的值就是 app 實際使用的值。
 
-理解應用程式的分層，也能提升除錯效率。如果缺少 bean，就去思考掃描與設定。如果某個 endpoint 回傳錯誤的 JSON，就去思考 controller 映射與序列化。如果寫入失敗，就去思考交易、entity 映射與資料庫限制。
-
-除錯的目標不只是解決眼前這個問題，而是建立一座模式資料庫。隨著時間累積，啟動失敗、安全性不匹配、驗證問題與資料庫錯誤，會開始變得熟悉，而不再像是隨機事件。
+好的 debugging 會留下更清楚的 project。修完後，思考是否需要 test、property default 或更明確 error message，避免同樣困惑再次出現。
 
 ## 範例
 ```properties
-logging.level.org.springframework=INFO
+# Helpful during focused local debugging, not a permanent production default.
+debug=true
+logging.level.org.springframework.boot.autoconfigure=DEBUG
 logging.level.com.tommy.learningapi=DEBUG
-logging.level.org.hibernate.SQL=DEBUG
 ```
 
 ## 常見錯誤
-- 一次改太多東西，結果失去對原因的掌握。
-- 忽略日誌中第一個有用的例外。
-- 還沒先檢查自己的設定，就假設框架壞掉了。
+- 還沒確認 failure category，就同時改很多無關項目。
+- 忽略 active profiles 與 property override order。
+- 忘記缺少 focused starter 可能看起來像缺少 framework feature。
+- 把 security 401 或 403 當成 controller mapping broken。
 
 ## 練習
-- 故意把一個 datasource 屬性設錯，並仔細閱讀啟動錯誤。
-- 為你的套件開啟 debug 日誌，並檢查一次請求流程。
-- 寫下你會如何把 bug 定位到 Web 層，而不是持久化層。
+- 在 practice branch 觸發 missing-bean error，找出第一個有用的 stack-trace cause。
+- 本機啟用 condition-report debugging，找出一個 matched auto-configuration。
+- 從 route 到 response status trace 一個 failing request。
 
 ## 延續閱讀
-- 上一課：`第 14 課：為 Controller 與 Repository 撰寫整合測試`
-- 下一課：`第 16 課：Spring Security 6 基礎`
+- 上一課：`第 14 課：為 Web 與 Persistence 撰寫 Boot 4 Integration Tests`
+- 下一課：`第 16 課：Spring Security 7 基礎`
 
 ## 課後重點
-- 除錯是後端開發的日常技能，而 Spring Boot 應用程式常以可辨識的模式發生問題。
+- Boot 4 systematic debugging 從分類 failure 開始，再用證據檢查 dependencies、configuration、bean wiring 與 request flow。
 
 ## 官方參考資料
+- https://docs.spring.io/spring-boot/reference/using/devtools.html
 - https://docs.spring.io/spring-boot/reference/features/logging.html
-- https://docs.spring.io/spring-boot/reference/features/spring-application.html#features.spring-application.startup-failure
+- https://docs.spring.io/spring-boot/reference/using/auto-configuration.html

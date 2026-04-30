@@ -1,68 +1,69 @@
 ---
-title: "Lesson 20: Use Actuator for Health Checks and Monitoring"
+title: "Lesson 20: Use Actuator for Health, Probes, Metrics, and Observability"
 lesson: 20
 slug: "lesson-20"
-summary: "Production applications need observability, not just features."
+summary: "Actuator gives Boot 4 services operational endpoints for health, readiness, liveness, metrics, and observability signals."
 ---
 
-# Lesson 20: Use Actuator for Health Checks and Monitoring
+# Lesson 20: Use Actuator for Health, Probes, Metrics, and Observability
 
-Production applications need observability, not just features.
+Actuator gives Boot 4 services operational endpoints for health, readiness, liveness, metrics, and observability signals.
 
 ## What You Will Learn
-- Use Spring Boot Actuator to expose operational information about the application.
-- Understand the purpose of health, info, and metrics endpoints.
-- Recognize why observability belongs in the application before deployment day arrives.
+- Add Actuator and expose selected operational endpoints safely.
+- Understand health contributors, readiness, and liveness groups in Boot 4.
+- Position metrics, Micrometer, and OpenTelemetry as part of production observability.
 
 ## Why This Matters
-- Production applications need observability, not just features.
-- Health and metrics information help operators and systems understand whether the app is running well.
-- Operational insight turns the app from code into a manageable service.
+- Deployed services need more than successful startup; platforms need to know whether they are alive and ready.
+- Health and metrics help teams diagnose problems before users report them.
+- Observability choices should be designed, not accidentally exposed.
 
 ## Main Ideas
-- Actuator exposes production-oriented endpoints.
-- Health checks are central to deployment and orchestration workflows.
-- Observability must be balanced with security and exposure control.
+- Actuator endpoints expose operational information such as health, info, and metrics.
+- Boot 4 enables liveness and readiness health groups by default.
+- Metrics and traces can flow through Micrometer and OpenTelemetry when the right dependencies and exporters are configured.
 
 ## Lesson Notes
-A backend service is not finished just because it can handle requests. Once it is deployed, people and systems need to know whether it is healthy, what it is doing, and how it should be monitored. Spring Boot Actuator exists to support exactly that operational perspective.
+Actuator is the Spring Boot feature set for production-ready operational endpoints. It can expose health, info, metrics, environment details, mappings, and more. The first rule is to expose only what you need. Operational visibility should not become accidental information leakage.
 
-Actuator adds endpoints that expose information such as application health, build info, metrics, mappings, loggers, and environment details. These endpoints are useful for developers, operators, and deployment platforms that need to evaluate whether the application is functioning correctly.
+Health checks answer different questions. Liveness asks whether the process should be considered alive. Readiness asks whether it is ready to receive traffic. Boot 4 exposes liveness and readiness health groups by default, which fits modern platform and Kubernetes-style probe thinking.
 
-The health endpoint is especially important because it acts as a quick signal of whether the application is alive and, depending on configuration, whether dependent systems such as databases are also available. This can influence load balancing, restart behavior, and deployment readiness checks.
+Health is built from contributors. A datasource health contributor can report database connectivity. Disk space and other infrastructure indicators can contribute their own statuses. If you create custom health indicators in Boot 4, use the current health contributor packages from the Boot docs.
 
-Observability is not only about dashboards or advanced monitoring stacks. It begins with making useful application state visible in a controlled way. That means even a small Spring Boot app benefits from Actuator because it teaches you to think beyond feature code.
+Metrics provide numerical signals over time: request counts, latencies, JVM memory, datasource pool activity, and more. Micrometer is the metrics facade used across the Spring ecosystem. For traces and exporting signals, Boot 4 adds a clearer OpenTelemetry starter path for OTLP-style observability.
 
-At the same time, operational endpoints should not be exposed carelessly. Some of them reveal sensitive implementation details. That is why exposure settings and security rules matter. Visibility should be intentional, not accidental.
+Do not expose every Actuator endpoint publicly. A common production pattern is to expose health probes to the platform, metrics to monitoring infrastructure, and sensitive endpoints only behind internal access controls or not at all.
 
-A healthy practice is to decide early which operational signals are valuable and who should be allowed to see them. That decision becomes more important as the app gains more endpoints, infrastructure, and deployment complexity. In Spring Boot, this usually means exposing only the endpoints you need and being careful with settings that reveal full health details or environment information.
-
-By learning Actuator here, you start treating the application as a long-running service that needs to be understood and maintained, not just a set of controller methods.
+This lesson connects development to operations. A service is not production-ready only because the API works locally; it also needs to communicate its runtime health and behavior to the environment around it.
 
 ## Example
 ```properties
 management.endpoints.web.exposure.include=health,info,metrics
-# Limit sensitive details unless the audience is trusted.
-management.endpoint.health.show-details=when-authorized
+management.endpoint.health.probes.enabled=true
+management.health.livenessstate.enabled=true
+management.health.readinessstate.enabled=true
 ```
 
 ## Common Mistakes
-- Exposing too many operational endpoints publicly.
-- Treating observability as optional until production issues appear.
-- Ignoring health checks when planning deployment behavior.
+- Exposing all Actuator endpoints to the public internet.
+- Treating liveness and readiness as the same signal.
+- Ignoring metrics until after a production incident.
+- Writing custom health code against outdated Boot packages.
 
 ## Practice
-- Enable the health endpoint and inspect its response.
-- Choose which Actuator endpoints you would expose internally versus publicly.
-- Explain how health checks help deployment platforms make decisions.
+- Add Actuator and expose only `health`, `info`, and `metrics` locally.
+- Visit the health endpoint and identify liveness/readiness information.
+- Write a short policy for which Actuator endpoints should be public, internal, or disabled.
 
 ## Continuity
-- Previous lesson: `Lesson 19: Build and Package the Application`
-- Next lesson: `Lesson 21: Prepare Spring Boot 3.x for Deployment`
+- Previous lesson: `Lesson 19: Build Executable Jars and Container-friendly Artifacts`
+- Next lesson: `Lesson 21: Prepare Spring Boot 4.x for Deployment and Migration`
 
 ## Key Takeaway
-- Production applications need observability, not just features.
+- Boot 4 Actuator turns runtime health, probes, metrics, and observability into first-class deployment concerns.
 
 ## Official References
-- https://docs.spring.io/spring-boot/reference/actuator/index.html
 - https://docs.spring.io/spring-boot/reference/actuator/endpoints.html
+- https://docs.spring.io/spring-boot/reference/actuator/metrics.html
+- https://docs.spring.io/spring-boot/reference/actuator/tracing.html

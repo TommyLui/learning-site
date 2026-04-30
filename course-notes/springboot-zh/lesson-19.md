@@ -1,72 +1,70 @@
 ---
-title: "第 19 課：建置並封裝應用程式"
+title: "第 19 課：建立 Executable Jars 與 Container-friendly Artifacts"
 lesson: 19
 slug: "lesson-19"
-summary: "只有當後端能在 IDE 之外被可靠地建置與執行時，它才真正有用。"
+summary: "Boot 4 applications 仍能乾淨封裝成 executable jars，而 container-friendly delivery 應使用 layers 與 jarmode tools，而不是已移除的 launch-script 習慣。"
 ---
 
-# 第 19 課：建置並封裝應用程式
+# 第 19 課：建立 Executable Jars 與 Container-friendly Artifacts
 
-只有當後端能在 IDE 之外被可靠地建置與執行時，它才真正有用。
+Boot 4 applications 仍能乾淨封裝成 executable jars，而 container-friendly delivery 應使用 layers 與 jarmode tools，而不是已移除的 launch-script 習慣。
 
 ## 這一課會學到什麼
-- 理解如何把 Spring Boot 應用程式封裝成可執行的成品。
-- 看見建置流程如何支援跨機器與跨環境的可重複交付。
-- 驗證為什麼可執行 jar 是 Spring Boot 如此常見的封裝目標。
-- 認識為什麼對 Docker 友善的封裝與分層映像，在現代交付流程中很重要。
+- 使用 Maven 或 Gradle 建立 Boot 4 application artifact。
+- 用 `java -jar` 執行 packaged application。
+- 理解 container images 的 layered 與 extracted jar workflows。
 
 ## 為什麼重要
-- 只有當後端能在 IDE 之外被可靠地建置與執行時，它才真正有用。
-- 可重複的封裝，對 CI、部署與協作來說都至關重要。
-- 執行封裝後的成品，能證明應用程式在單一本機開發環境之外仍能存活。
+- Packaging 把 local code 變成 deployment platform 可以執行的東西。
+- Boot 4 移除較舊 embedded launch-script support，但保留 executable jars 與 plugin-built artifacts。
+- Container images 在 dependencies、application code 與 generated assets 可以有意識地分層時運作更好。
 
 ## 主要觀念
-- 建置檔定義了應用程式如何被編譯與封裝。
-- 可執行 jar 能簡化許多部署工作流程。
-- 成功的建置屬於應用程式品質的一部分，而不是事後才想到的事情。
+- Spring Boot build plugin 建立能用 `java -jar` 執行的 executable jar。
+- 不要在 Boot 4 examples 中依賴舊式 fully executable launch-script patterns。
+- Jarmode tools 可以 extract archive，產生適合 container layering 的 layout。
 
 ## 課程筆記
-開發通常始於 IDE 裡，但正式系統並不住在那裡。到了某個階段，應用程式必須變成另一台機器、流程管線或執行環境能穩定執行的真正成品。封裝，就是讓這件事成真的步驟。
+建立 application artifact 與在 IDE 中執行是不同里程碑。Packaged artifact 證明 source code、resources、dependencies 與 Boot launcher 可以組成一個 runnable unit。
 
-在 Spring Boot 中，最常見的結果是可執行 jar。這個 jar 會把應用程式程式碼與執行所需的相依套件打包在一起，讓你能用 `java -jar` 直接啟動。這也是 Boot 為什麼在現代後端開發中如此務實的原因之一。
+Maven projects 常用 `./mvnw package`。Boot Maven plugin 會 repackage jar，讓它以 `java -jar` 可執行的 layout 包含 application classes 與 dependencies。Gradle 也有等價的 Boot plugin behavior。
 
-建置檔在這裡扮演核心角色。它控制相依套件解析、plugin 行為、Java 版本目標，以及封裝任務。當建置過程乾淨且可重複，團隊其他成員才會相信這個應用程式能被一致地編譯與執行。
+Boot 4 仍支援 executable jars，但課程 examples 應避免舊式 fully executable jar launch-script instructions。Migration guidance 移除了 embedded executable uber-jar launch scripts。請使用 `java -jar`，或 platform-specific service/container mechanisms。
 
-這也是本機便利結束、營運紀律開始的地方。應用程式不只要能在某位開發者的 IDE 裡執行。它也應該能從命令列建置、正確封裝，並在乾淨環境中由那個封裝啟動。
+Container delivery 帶來另一個 concern：layers。Dependencies 變化頻率比 application classes 低，所以當這些部分分離時，container builds 可以更快。Boot packaging tools 支援 layered jars，目前 docs 也展示 jarmode tools，把 archive extract 成適合 container images 的 layout。
 
-執行封裝後的成品是一個重要的驗證步驟，因為它會暴露你在 IDE 裡不容易察覺的假設。遺漏的資源、錯誤的 profile，或與路徑相關的問題，往往只有在應用程式以更接近真實情境的方式啟動時才會浮現。
+簡單 beginner path 仍然有效：build jar、用正確 environment variables 在本機執行，之後 copy 到 container image。當 app 成長時，再學 layered extraction 與 buildpacks，讓 image builds 更快且更可重複。
 
-封裝也直接連到部署自動化。CI 流程與託管環境通常不在乎你在開發時如何啟動應用程式；它們在乎的是建置命令是否成功，並產出穩定的輸出。在現代 Spring Boot 工作流裡，這個輸出之後也可能被拿去建立 Docker image 或分層容器建置，而不只是手動複製 jar。
-
-因此，這一課把焦點從寫程式轉向交付軟體。被封裝好的應用程式不只更容易在其他地方執行，也代表這個專案正變得可攜且在營運上更成熟。
+Packaging 也是 configuration discipline 回來的地方。Artifact 不應包含 production secrets。Runtime settings 例如 database URLs、credentials 與 exposed Actuator endpoints 應來自 deployment environment。
 
 ## 範例
 ```bash
-# 建置專案
-./mvnw clean package
-
-# 執行封裝後的應用程式
+./mvnw package
 java -jar target/learning-api-0.0.1-SNAPSHOT.jar
+
+# Container-friendly extraction example from the Boot 4 packaging model:
+java -Djarmode=tools -jar target/learning-api-0.0.1-SNAPSHOT.jar extract
 ```
 
 ## 常見錯誤
-- 只在 IDE 裡驗證應用程式。
-- 建置後沒有測試封裝好的成品。
-- 忽略跨機器或跨環境的建置可重現性。
+- 交付只能從 IDE 執行的 app。
+- 把 production secrets 烘進 packaged artifact。
+- 把已移除的 fully executable launch-script instructions 複製到 Boot 4 deployment notes。
+- 忽略 layers，導致每次 container change 都重新 build 所有 dependencies。
 
 ## 練習
-- 將你的專案封裝成 jar，並從命令列執行它。
-- 描述執行 jar 與使用 IDE 啟動器時，有哪些差異。
-- 寫下為什麼封裝對 CI 與部署很重要。
-- 描述一個即使你目前還是先學 executable jar，也仍然值得理解分層 container image 的原因。
+- Package app，並用 `java -jar` 執行。
+- 透過 environment variable 傳入一個 runtime setting。
+- 說明為什麼 dependency layers 與 application layers 應在 container builds 中分離。
 
 ## 延續閱讀
-- 上一課：`第 18 課：Session、JWT 與 Resource Server 基礎`
-- 下一課：`第 20 課：使用 Actuator 進行健康檢查與監控`
+- 上一課：`第 18 課：Session、JWT、Resource-server 與 Authorization-server 基礎`
+- 下一課：`第 20 課：使用 Actuator 處理 Health、Probes、Metrics 與 Observability`
 
 ## 課後重點
-- 只有當後端能在 IDE 之外被可靠地建置與執行時，它才真正有用。
+- Boot 4 packaging 保留簡單的 `java -jar`，並把 container-friendly workflows 推向 layered extraction 與 current tooling。
 
 ## 官方參考資料
-- https://docs.spring.io/spring-boot/reference/packaging/index.html
-- https://docs.spring.io/spring-boot/reference/packaging/container-images/index.html
+- https://docs.spring.io/spring-boot/reference/packaging/efficient.html
+- https://docs.spring.io/spring-boot/reference/packaging/container-images/dockerfiles.html
+- https://docs.spring.io/spring-boot/maven-plugin/packaging.html

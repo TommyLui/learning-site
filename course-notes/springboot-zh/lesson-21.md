@@ -1,75 +1,72 @@
 ---
-title: "第 21 課：為部署做好 Spring Boot 3.x 準備"
+title: "第 21 課：為 Spring Boot 4.x Deployment 與 Migration 做準備"
 lesson: 21
 slug: "lesson-21"
-summary: "部署就緒結合了封裝、設定、安全性、監控與環境管理紀律。"
+summary: "當 configuration、security、observability、packaging、AOT awareness 與 migration risks 被一起檢查，Boot 4 service 才算準備好部署。"
 ---
 
-# 第 21 課：為部署做好 Spring Boot 3.x 準備
+# 第 21 課：為 Spring Boot 4.x Deployment 與 Migration 做準備
 
-部署就緒結合了封裝、設定、安全性、監控與環境管理紀律。
+當 configuration、security、observability、packaging、AOT awareness 與 migration risks 被一起檢查，Boot 4 service 才算準備好部署。
 
 ## 這一課會學到什麼
-- 回顧把 Spring Boot 應用程式推向部署所需的實務要素。
-- 把設定、封裝、日誌、健康檢查與安全性串成一幅完整的營運圖像。
-- 建立部署思維，而不是把正式環境當成事後才考慮的事情。
+- 回顧 Boot 4 API 的實用 deployment checklist。
+- 理解 AOT 與 GraalVM native images 作為 advanced deployment options 的位置。
+- 認識從前一個 major line 移到 Boot 4 的安全 migration sequence。
 
 ## 為什麼重要
-- 部署就緒結合了封裝、設定、安全性、監控與環境管理紀律。
-- 正式環境問題往往不只是程式碼錯誤，也來自營運上的缺口。
-- 一份部署檢查清單，能把開發進度轉化為可維護的運行服務。
+- Production readiness 是許多前面 decisions 的組合，不是一個最後 command。
+- Boot 4 在 starters、tests、JSON、security、persistence 與 packaging 都有重要 major-version changes。
+- Migration work 應有意識地進行，避免把 application bugs 與 platform-upgrade issues 混在一起。
 
 ## 主要觀念
-- 部署是多個工程決策同時交會的時刻。
-- 外部化設定與祕密管理是不能妥協的要求。
-- 營運就緒包含啟動可靠性、日誌、健康檢查與存取控制。
+- Deployment 前必須檢查 externalized configuration、secrets、logging、health probes、metrics 與 security rules。
+- AOT 與 native images 能在某些情境改善 startup 與 memory，但需要 closed-world awareness 與額外測試。
+- Existing applications 應先升到最新穩定前一 major release，再升到 Boot 4。
 
 ## 課程筆記
-部署常被描述成最後一步，但在實務上，它其實是整個應用程式設計被一起檢驗的時刻。如果設定很脆弱，部署會暴露它；如果日誌不清楚，部署會暴露它；如果缺少健康檢查，部署也會把這件事暴露出來。
+Deployment readiness 是跨整個 application 的 checklist。Packaged jar 必須能在 IDE 外執行。Configuration 必須來自 environment。Secrets 不可 commit。Database connections 必須使用正確 profile。Security rules 必須保護 sensitive endpoints。Actuator exposure 必須有意識。Logs、metrics、health 與 readiness checks 必須對 platform 有用。
 
-一個準備好部署的 Spring Boot 應用程式，不應依賴那些只在開發者筆電上才成立的假設。路徑、連接埠、憑證、資料庫主機與執行期 profile，都應能從外部設定。如果應用程式太依賴本機預設值，那它一離開本地開發環境就會變得脆弱。
+Boot 4 也把 AOT 與 native-image considerations 帶進 modern deployment conversations。Spring AOT 可以產生幫助 native-image builds 的 assets。GraalVM native images 可以在某些 workloads 中降低 startup time 與 memory，但它們使用 closed-world model。Reflection、dynamic proxies、resources 與 runtime discovery 需要額外注意。把 native images 視為 advanced deployment option，不是 beginner requirement。
 
-祕密資料尤其需要小心。資料庫密碼、API 金鑰與其他敏感值，不應存在版本控制中，也不應寫在 Java 類別裡。正式部署仰賴一套環境策略，讓這些值保持外部化且受控。
+Container deployment 應建立在 packaging lesson 之上。使用 `java -jar`、buildpacks，或採用 current layered extraction patterns 的 Dockerfile。避免已移除的 fully executable launch-script instructions。Runtime configuration 應與 image content 分離。
 
-啟動行為也是部署議題之一。當應用程式無法連上必要基礎設施時，它應該清楚地失敗，而且日誌應讓這些失敗容易理解。混亂的啟動流程，會把部署變成猜謎。
+對 migrating existing app 的 teams，最安全路線不是盲目跳版。先升到最新 Spring Boot 3.5.x line、移除 deprecated APIs、更新 tests 並確認 behavior。接著再 migration 到 Boot 4，處理 major changes，例如 focused starters、test starter choices、`@MockitoBean` annotations、Jackson 3、Security 7、Hibernate 7 與 servlet container baselines。
 
-可觀測性也屬於這裡。如果服務啟動了，卻沒有人能檢查它的健康狀態、監控關鍵訊號，或查看它的日誌，那從營運角度來看，這次部署仍然是不完整的。能跑的程式碼，不等於可管理的程式碼。
+不要把 Boot 4 描述成只是 label change。它仍然是 Spring Boot，但也是 major generation update。好的 deployment 或 migration plan 會指出改變的 pieces，並透過 tests 與 operational checks 驗證。
 
-對 Spring Boot 3.x 來說，也值得知道部署話題現在常會延伸到 Docker image、AOT processing 與 native image。這些內容比第一次部署更進階，但它們能幫助你理解：現代 Boot 封裝早就不只剩下「做出 jar 然後上傳」這麼單一。
-
-在部署前，也必須重新檢查安全性與暴露設定。公開路由、Actuator endpoint、CORS 規則與憑證處理，在有網路連線的環境中，會比本機開發時敏感得多。
-
-部署檢查清單之所以有用，是因為它把這些關注點變成可重複的實踐。應用程式是否已乾淨地封裝？祕密是否已外部化？健康檢查是否可用？日誌是否可讀？所需的 profile 是否正確？這些問題有助於減少意外。
-
-更大的教訓是，Spring Boot 不只是用來撰寫後端程式碼的框架，它也是用來營運後端服務的框架。部署就緒，就是這幅完整圖像變得清楚的時刻。
+這最後一課把整套課串起來：你學了 application model、建立 APIs、加入 persistence、寫 tests、保護 endpoints、觀察 runtime behavior、封裝 artifact，現在要把 system 當作真的會為 users 執行的東西來 review。
 
 ## 範例
-```bash
-SPRING_PROFILES_ACTIVE=prod
-SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/learning_db
-SPRING_DATASOURCE_USERNAME=app_user
-SPRING_DATASOURCE_PASSWORD=***
-SERVER_PORT=8080
+```text
+Boot 4 deployment checklist:
+1. Build and run the packaged artifact outside the IDE.
+2. Provide database URLs, credentials, and secrets from the environment.
+3. Expose only necessary Actuator endpoints.
+4. Verify readiness and liveness probes.
+5. Run unit, web, persistence, security, and deployment smoke tests.
+6. Review Boot 4 migration items: starters, tests, Jackson 3, Security 7, Hibernate 7, and packaging.
 ```
 
 ## 常見錯誤
-- 把只適用於開發環境的設定送到正式環境。
-- 把祕密值提交進版本庫。
-- 在沒有檢查日誌、health endpoint 或啟動行為的情況下就部署。
+- 把 deployment 當成只有 `mvn package`。
+- 在 app 其他 production-ready 條件尚未具備前，就把 native image 當成 requirement。
+- 未先移除前一 major 的 deprecated usage，就直接從舊 codebase migration 到 Boot 4。
+- Platform upgrade 後忘記重新測試 security、JSON、persistence 與 Actuator behavior。
 
 ## 練習
-- 為你目前的專案建立一份部署檢查清單。
-- 列出在正式環境中哪些值應該來自環境變數。
-- 解釋為什麼「在我的電腦上可以運作」不足以代表已準備好部署。
+- 為你的 course project 建立 deployment checklist。
+- 標記哪些 settings 必須來自 environment variables 或 secret store。
+- 寫一段 migration note，列出 team 需要驗證的 Boot 4 changes。
 
 ## 延續閱讀
-- 上一課：`第 20 課：使用 Actuator 進行健康檢查與監控`
-- 下一課：這是 Spring Boot 3.x 路線的最後一課。
+- 上一課：`第 20 課：使用 Actuator 處理 Health、Probes、Metrics 與 Observability`
+- 下一課：這是 Spring Boot 4.x 課程的最後 checkpoint。
 
 ## 課後重點
-- 部署就緒結合了封裝、設定、安全性、監控與環境管理紀律。
+- Spring Boot 4.x app 只有在 build、configuration、security、observability 與 migration risks 都一起被驗證後，才真正準備好交付。
 
 ## 官方參考資料
-- https://docs.spring.io/spring-boot/reference/actuator/index.html
-- https://docs.spring.io/spring-boot/reference/packaging/index.html
-- https://docs.spring.io/spring-boot/reference/features/external-config.html
+- https://docs.spring.io/spring-boot/reference/packaging/native-image/introducing-graalvm-native-images.html
+- https://docs.spring.io/spring-boot/reference/packaging/container-images/dockerfiles.html
+- https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide

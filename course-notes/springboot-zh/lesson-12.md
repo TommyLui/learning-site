@@ -1,109 +1,84 @@
 ---
-title: "第 12 課：用 Service 與 Repository 分層建立 CRUD API"
+title: "第 12 課：用 Service 與 Repository Layers 建立 CRUD APIs"
 lesson: 12
 slug: "lesson-12"
-summary: "CRUD 是許多後端應用程式的基礎，而分層做法能讓這些邏輯更容易維護。"
+summary: "當 controllers、services、DTOs、repositories、validation 與 transactions 各自有清楚工作時，CRUD endpoints 才會可維護。"
 ---
 
-# 第 12 課：用 Service 與 Repository 分層建立 CRUD API
+# 第 12 課：用 Service 與 Repository Layers 建立 CRUD APIs
 
-CRUD 是許多後端應用程式的基礎，而分層做法能讓這些邏輯更容易維護。
+當 controllers、services、DTOs、repositories、validation 與 transactions 各自有清楚工作時，CRUD endpoints 才會可維護。
 
 ## 這一課會學到什麼
-- 把 controller、service 與 repository 串成完整的 CRUD 流程。
-- 使用 DTO 與 service，把 API 契約與持久化關注點分開。
-- 更乾淨地處理建立、更新、刪除與找不到資料等常見情境。
+- 用 layered boundaries 建立 create、read、update 與 delete flows。
+- 有意識地在 API DTOs 與 persistence entities 間轉換。
+- 為常見 CRUD outcomes 回傳適當 HTTP statuses。
 
 ## 為什麼重要
-- CRUD 是許多後端應用程式的基礎，而分層做法能讓這些邏輯更容易維護。
-- 分層邊界可以避免 controller 被持久化與商業邏輯塞爆。
-- 這也是應用程式開始看起來像真實後端服務，而不是一組彼此孤立示範的地方。
+- CRUD 只有在範例很小時才簡單；真實 projects 需要在 features 成長前建立 boundaries。
+- Layering 讓 validation、persistence、transactions、security 與 tests 更容易接上。
+- 一致的 API behavior 讓 clients 能可靠處理 success 與 failure。
 
 ## 主要觀念
-- Controller 負責轉換 HTTP 輸入與輸出。
-- Service 負責協調規則與持久化動作。
-- Repository 應該支援 CRUD 流程，但不應成為所有商業決策都堆積的地方。
+- Controllers 轉譯 HTTP；services 協調 business work；repositories 持久化資料。
+- DTOs 保護 API contracts 不被 entity details 汙染。
+- Not found、validation failure、create success、update success 與 delete success 都應一致表示。
 
 ## 課程筆記
-CRUD API 通常是後端應用程式中第一個讓人感覺完整的垂直切片。它接收客戶端輸入、驗證資料、協調領域邏輯、持久化狀態，並回傳有用的回應。因此，它非常適合拿來認真練習分層設計。
+CRUD API 是有用的里程碑，因為它迫使前面幾課一起運作。Controller 接收 request DTO，validation 檢查 input，service 協調 rules 與 persistence，repository 與 database 溝通，controller 用適當 status 回傳 response DTO。
 
-一個常見錯誤，是因為一開始看起來比較快，就把所有 CRUD 邏輯都塞進 controller。結果通常會得到一個同時處理請求解析、驗證判斷、entity 映射、repository 呼叫與回應塑形的類別。這很快就會變得難測試，也更難擴充。
+初學者最大的錯誤是讓 controller 做所有事情。一個 endpoint 可能還能運作，但很快就會難以測試與修改。把 application rules 移到 service，可以讓 web layer 保持薄，也讓 tests 有自然位置可以驗證 behavior，而不必每次都啟動完整 web stack。
 
-Service 層能讓設計保持乾淨。Controller 主要應該處理 HTTP 層級的工作：請求映射、輸入物件、回應狀態碼與回應主體。Service 則應該從商業角度決定 create、read、update 與 delete 操作該如何運作。
+Updates 與 deletes 需要小心處理 not-found behavior。如果 client 要求不存在的 note id，回傳 generic server error 會誤導。把 domain-specific exception 轉成 404 response 會更清楚，也更容易被 clients 處理。
 
-這種分離在更新與刪除流程中尤其有幫助。像是「如果 entity 不存在怎麼辦？」「哪些欄位可以被修改？」「之後應該回傳什麼？」這些問題，放在 service 裡通常比放在 controller 裡自然得多。
+Create operations 通常回傳 201 Created，常搭配 created representation。Reads 找到時回 200，找不到時回 404。Deletes 可以回 204 No Content。這些選擇不只是 framework details；它們是 REST API design 的一部分。
 
-DTO 在這裡同樣重要。請求 DTO 有助於定義客戶端被允許送出的資料，而回應 DTO 則讓你決定 API 要暴露哪些內容。這樣可以保護你的公開契約，不會直接綁死在未來可能改變的持久化細節上。
+Transactions 應覆蓋必須保持一致的 write operations。更新 entity 的 service method 應定義 unit of work。Read-only methods 有時可以使用 read-only transaction hints，但第一版先保持簡單可理解。
 
-Repository 仍然很重要，但它不應變成應用程式規則默默堆積的地方。它的角色是資料存取，而不是完整的應用程式協調中心。Service 層才是協調與領域決策更合適的家。
-
-當 CRUD 流程建立完成時，你就已經擁有應用程式的一個強力垂直切片。之後關於測試、安全與部署的課程都會變得更容易，因為現在已經有一個足夠真實的核心可以依靠。
+到這一課結束時，你應該有一個小型 API，看起來像真實 backend slice，而不是一組彼此無關的 framework demos。
 
 ## 範例
 ```java
-package com.tommy.learningapi.notes;
+@RestController
+@RequestMapping("/api/notes")
+class NoteController {
+    private final NoteService service;
 
-import java.util.Map;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-@Service
-public class NoteService {
-    private final NoteRepository noteRepository;
-
-    public NoteService(NoteRepository noteRepository) {
-        this.noteRepository = noteRepository;
+    NoteController(NoteService service) {
+        this.service = service;
     }
 
-    public Note create(CreateNoteRequest request) {
-        Note note = new Note();
-        note.setTitle(request.title());
-        note.setContent(request.content());
-        return noteRepository.save(note);
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    NoteResponse create(@Valid @RequestBody CreateNoteRequest request) {
+        return service.create(request);
     }
 
-    public Note findById(Long id) {
-        return noteRepository.findById(id)
-            .orElseThrow(() -> new NoteNotFoundException(id));
-    }
-}
-
-class NoteNotFoundException extends RuntimeException {
-    public NoteNotFoundException(Long id) {
-        super("Note not found: " + id);
-    }
-}
-
-@RestControllerAdvice
-class NoteErrorHandler {
-    @ExceptionHandler(NoteNotFoundException.class)
-    ResponseEntity<Map<String, Object>> handleNotFound(NoteNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-            .body(Map.of("error", ex.getMessage(), "status", 404));
+    @GetMapping("/{id}")
+    NoteResponse findById(@PathVariable Long id) {
+        return service.findById(id);
     }
 }
 ```
 
 ## 常見錯誤
-- 直接在 controller 中放入持久化邏輯。
-- 在更新或刪除時跳過找不到資料的處理。
-- 沒有思考 API 契約邊界，就盲目回傳 entity。
+- 把所有 CRUD logic 直接寫在 controllers 裡。
+- 預設把 database entities 當成 public response model。
+- 把所有 failure 都當成 500 error。
+- 更新 records 時沒有清楚 transaction boundary。
 
 ## 練習
-- 為一個 entity 實作 GET all、GET by id、POST、PUT 與 DELETE。
-- 把共用的 CRUD 規則從 controller 移到 service。
-- 設計一個回應 DTO，而不是直接回傳 entity。
+- 為一個 resource 建立 create 與 read endpoints。
+- 加入 not-found exception，並 map 成 404 response。
+- 畫出 request DTO 到 entity 再到 response DTO 的 flow。
 
 ## 延續閱讀
-- 上一課：`第 11 課：Entity、Repository 與 JPA 基礎`
-- 下一課：`第 13 課：為 Service 邏輯撰寫單元測試`
+- 上一課：`第 11 課：Entities、Repositories、Transactions 與 JPA 基礎`
+- 下一課：`第 13 課：撰寫 Unit Tests 與 Focused Spring Tests`
 
 ## 課後重點
-- CRUD 是許多後端應用程式的基礎，而分層做法能讓這些邏輯更容易維護。
+- 可維護的 Boot 4 CRUD API 來自 web、service 與 persistence layers 之間小而清楚的責任分工。
 
 ## 官方參考資料
-- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html
-- https://docs.spring.io/spring-data/jpa/reference/
+- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller.html
+- https://docs.spring.io/spring-data/jpa/reference/repositories/core-concepts.html
