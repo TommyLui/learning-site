@@ -71,3 +71,36 @@ Added a full Maven data-backed course with English and Traditional Chinese lesso
 ### Next Steps
 
 - None - task complete
+
+
+## Session 3: Update Spring Boot course to 4.x
+
+**Date**: 2026-04-30
+**Task**: Update Spring Boot course to 4.x
+**Branch**: `main`
+
+### Summary
+
+Redesigned the Spring Boot course around Spring Boot 4.x, updated English and Traditional Chinese markdown lessons and hubs, captured Spring Boot markdown-backed course contracts in frontend specs, and verified with npm run check and npm run build.
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `601e7ce` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
