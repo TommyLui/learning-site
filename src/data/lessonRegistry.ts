@@ -3,6 +3,8 @@ import { getCourseBySlug } from './courses';
 import type { CourseLessonArticle } from './goLessons';
 import { getGoLessons as getGoLessonsEn } from './goLessons';
 import { getGoLessons as getGoLessonsZh } from './goLessonsZh';
+import { getMavenLessons as getMavenLessonsEn } from './mavenLessons';
+import { getMavenLessons as getMavenLessonsZh } from './mavenLessonsZh';
 import { getRustLessons as getRustLessonsEn } from './rustLessons';
 import { getRustLessons as getRustLessonsZh } from './rustLessonsZh';
 import { getCSharpLessons as getCSharpLessonsEn } from './csharpLessons';
@@ -22,6 +24,7 @@ export const DEDICATED_TRACK_SLUGS = [
   'spring-boot',
   'react',
   'mysql',
+  'maven',
   'go',
   'rust',
   'csharp',
@@ -31,7 +34,7 @@ export const DEDICATED_TRACK_SLUGS = [
   'sqlite',
 ] as const;
 
-export const DATA_BACKED_TRACK_SLUGS = ['go', 'rust', 'csharp', 'nextjs', 'typescript', 'postgresql', 'sqlite'] as const;
+export const DATA_BACKED_TRACK_SLUGS = ['go', 'rust', 'csharp', 'nextjs', 'typescript', 'postgresql', 'sqlite', 'maven'] as const;
 
 export type DataBackedTrackSlug = (typeof DATA_BACKED_TRACK_SLUGS)[number];
 
@@ -55,6 +58,8 @@ function getLessonsBySlug(slug: DataBackedTrackSlug, locale: CourseLocale): Cour
   switch (slug) {
     case 'go':
       return locale === 'zh' ? getGoLessonsZh() : getGoLessonsEn();
+    case 'maven':
+      return locale === 'zh' ? getMavenLessonsZh() : getMavenLessonsEn();
     case 'rust':
       return locale === 'zh' ? getRustLessonsZh() : getRustLessonsEn();
     case 'csharp':

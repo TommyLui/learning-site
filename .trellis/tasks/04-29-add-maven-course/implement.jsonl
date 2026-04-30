@@ -1,0 +1,5 @@
+{"file":".trellis/spec/frontend/index.md","reason":"Frontend overview, routing/link checklist, and normal verification commands."}
+{"file":".trellis/spec/frontend/directory-structure.md","reason":"Data-backed course organization, route parity, redirect pages, and module-title matching rules."}
+{"file":".trellis/spec/frontend/type-safety.md","reason":"Course slug unions, const arrays, import type usage, and strict TypeScript conventions."}
+{"file":".trellis/spec/frontend/quality-guidelines.md","reason":"Required verification, forbidden patterns, and course data consistency checklist."}
+{"file":".trellis/tasks/04-29-add-maven-course/research/maven-curriculum.md","reason":"Maven 12-lesson curriculum, official documentation references, and lesson data constraints."}

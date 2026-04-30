@@ -35,7 +35,18 @@ export type ModuleLesson = {
 };
 
 export type Course = {
-  slug: 'react' | 'spring-boot' | 'mysql' | 'postgresql' | 'sqlite' | 'go' | 'rust' | 'csharp' | 'nextjs' | 'typescript';
+  slug:
+    | 'react'
+    | 'spring-boot'
+    | 'maven'
+    | 'mysql'
+    | 'postgresql'
+    | 'sqlite'
+    | 'go'
+    | 'rust'
+    | 'csharp'
+    | 'nextjs'
+    | 'typescript';
   title: string;
   // ...
 };
@@ -58,7 +69,7 @@ Lesson files define their article shape locally. Examples:
 `src/data/lessonRegistry.ts` re-exports the generic `CourseLessonArticle` type from `goLessons` and defines data-backed route types:
 
 ```ts
-export const DATA_BACKED_TRACK_SLUGS = ['go', 'rust', 'csharp', 'nextjs', 'typescript', 'postgresql', 'sqlite'] as const;
+export const DATA_BACKED_TRACK_SLUGS = ['go', 'rust', 'csharp', 'nextjs', 'typescript', 'postgresql', 'sqlite', 'maven'] as const;
 export type DataBackedTrackSlug = (typeof DATA_BACKED_TRACK_SLUGS)[number];
 ```
 

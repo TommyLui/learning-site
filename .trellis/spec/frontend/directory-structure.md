@@ -94,7 +94,7 @@ Their `/courses/<slug>/index.astro` files are small meta-refresh redirect pages.
 
 ### Generic data-backed lesson routes
 
-Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite use the generic dynamic lesson pages:
+Go, Rust, C#, Next.js, TypeScript, PostgreSQL, SQLite, and Maven use the generic dynamic lesson pages:
 
 - `src/pages/courses/[slug]/lessons/index.astro`
 - `src/pages/courses/[slug]/lessons/[lesson].astro`
@@ -158,6 +158,6 @@ Examples:
 
 - Do not hardcode root-relative URLs like `/courses` directly into `href` or `src`; use `withBase()` or `localize()`.
 - Do not add unrelated app code under `gullible-gamma/`.
-- Do not merge course tracks together unless explicitly requested; React, Spring Boot, MySQL, Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite are separate tracks.
+- Do not merge course tracks together unless explicitly requested; React, Spring Boot, Maven, MySQL, Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite are separate tracks.
 - Do not add a Chinese-only route or English-only route when a mirrored route is expected.
 - Do not duplicate course catalog data in a page when `src/data/courses.ts` or `src/data/lessonRegistry.ts` already owns it.

@@ -13,7 +13,18 @@ export type CourseModule = {
 };
 
 export type Course = {
-  slug: 'react' | 'spring-boot' | 'mysql' | 'postgresql' | 'sqlite' | 'go' | 'rust' | 'csharp' | 'nextjs' | 'typescript';
+  slug:
+    | 'react'
+    | 'spring-boot'
+    | 'maven'
+    | 'mysql'
+    | 'postgresql'
+    | 'sqlite'
+    | 'go'
+    | 'rust'
+    | 'csharp'
+    | 'nextjs'
+    | 'typescript';
   title: string;
   zhTitle?: string;
   shortLabel: string;
@@ -394,6 +405,131 @@ export const courses: Course[] = [
             number: 'Lesson 21',
             title: 'Prepare Spring Boot 3.x for deployment',
             summary: 'Review environment setup, externalized configuration, Docker, and native-image-aware deployment considerations.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'maven',
+    title: 'Maven',
+    zhTitle: 'Maven',
+    shortLabel: 'MVN',
+    category: 'Backend development',
+    zhCategory: '後端開發',
+    accent: '#C71A36',
+    subtitle: 'Learn Java build automation with POMs, dependencies, lifecycles, plugins, multi-module projects, and artifact publishing.',
+    zhSubtitle: '學習 Java 建置自動化，掌握 POM、依賴管理、生命週期、外掛、多模組專案與 artifact 發布。',
+    overview:
+      'This course teaches Maven as the practical build system behind many Java and Spring projects, from first setup through reproducible builds and shared artifacts.',
+    zhOverview: '這套課程把 Maven 當成許多 Java 與 Spring 專案背後的實務建置系統來學，從環境建置一路到可重現 build 與共享 artifacts。',
+    level: 'Beginner to intermediate',
+    zhLevel: '初階到中階',
+    totalLessons: 12,
+    focus: ['POM and coordinates', 'dependency management', 'build lifecycle and plugins', 'multi-module projects and publishing'],
+    zhFocus: ['POM 與 coordinates', '依賴管理', '建置生命週期與外掛', '多模組專案與 artifact 發布'],
+    prerequisites: ['Basic Java syntax', 'Comfort using command-line tools', 'Ability to run Java locally'],
+    zhPrerequisites: ['具備基本 Java 語法', '能使用命令列工具', '能在本機執行 Java'],
+    outcomes: [
+      'Read and maintain a Maven pom.xml with clear coordinates, dependencies, and managed versions',
+      'Run lifecycle phases and configure plugins for repeatable Java builds',
+      'Organize multi-module projects and understand local or remote artifact publishing workflows',
+    ],
+    zhOutcomes: [
+      '能閱讀並維護 Maven pom.xml，清楚處理 coordinates、dependencies 與 managed versions',
+      '能執行 lifecycle phases 並設定 plugins，建立可重複的 Java build',
+      '能組織 multi-module projects，並理解本機或遠端 artifact publishing 流程',
+    ],
+    modules: [
+      {
+        title: 'Module 1 · Maven foundations and project layout',
+        zhTitle: '模組 1 · Maven 基礎與專案結構',
+        description: 'Set up Maven, read the POM, and understand the standard project layout that Maven expects.',
+        zhDescription: '完成 Maven 環境建置，讀懂 POM，並理解 Maven 預期的標準專案結構。',
+        lessons: [
+          {
+            number: 'Lesson 1',
+            title: 'Install Maven and run the first project',
+            summary: 'Install Maven, verify Java, generate a starter project, and run the first package build.',
+          },
+          {
+            number: 'Lesson 2',
+            title: 'Read the POM and Maven coordinates',
+            summary: 'Understand the minimal pom.xml, artifact coordinates, packaging defaults, and Super POM behavior.',
+          },
+          {
+            number: 'Lesson 3',
+            title: 'Understand the standard directory layout',
+            summary: 'Learn where source code, resources, tests, site files, and generated output belong in Maven projects.',
+          },
+        ],
+      },
+      {
+        title: 'Module 2 · Dependencies and reproducible builds',
+        zhTitle: '模組 2 · 依賴管理與可重現建置',
+        description: 'Declare dependencies deliberately, control scopes, and centralize versions with dependencyManagement and BOMs.',
+        zhDescription: '有意識地宣告 dependencies、控制 scopes，並用 dependencyManagement 與 BOM 集中版本管理。',
+        lessons: [
+          {
+            number: 'Lesson 4',
+            title: 'Add dependencies and inspect the dependency tree',
+            summary: 'Declare direct dependencies, understand transitive resolution, and inspect the resolved dependency tree.',
+          },
+          {
+            number: 'Lesson 5',
+            title: 'Use dependency scopes correctly',
+            summary: 'Choose compile, provided, runtime, test, system, and import scopes based on classpath needs.',
+          },
+          {
+            number: 'Lesson 6',
+            title: 'Manage versions with dependencyManagement and BOMs',
+            summary: 'Centralize dependency versions and import BOMs so related libraries stay compatible.',
+          },
+        ],
+      },
+      {
+        title: 'Module 3 · Lifecycles, plugins, and build control',
+        zhTitle: '模組 3 · 生命週期、外掛與建置控制',
+        description: 'Run lifecycle phases, configure plugins, and use wrapper or profile tools for repeatable environments.',
+        zhDescription: '執行 lifecycle phases、設定 plugins，並用 wrapper 與 profiles 建立可重複環境。',
+        lessons: [
+          {
+            number: 'Lesson 7',
+            title: 'Run lifecycle phases with confidence',
+            summary: 'Understand Maven lifecycles and run clean, compile, test, package, verify, install, and deploy intentionally.',
+          },
+          {
+            number: 'Lesson 8',
+            title: 'Configure plugins and goals',
+            summary: 'Understand plugins, goals, executions, lifecycle bindings, and plugin version pinning.',
+          },
+          {
+            number: 'Lesson 9',
+            title: 'Use Maven Wrapper and profiles for repeatable environments',
+            summary: 'Use project wrapper scripts and profiles to keep builds consistent across machines and environments.',
+          },
+        ],
+      },
+      {
+        title: 'Module 4 · Multi-module projects and artifact publishing',
+        zhTitle: '模組 4 · 多模組專案與 artifact 發布',
+        description: 'Build related modules with the reactor, install artifacts locally, and understand remote deployment basics.',
+        zhDescription: '使用 reactor 建置相關 modules，在本機 install artifacts，並理解 remote deploy 基礎。',
+        lessons: [
+          {
+            number: 'Lesson 10',
+            title: 'Build a multi-module project with the reactor',
+            summary: 'Create an aggregator POM, define modules, and use reactor options for dependency-aware builds.',
+          },
+          {
+            number: 'Lesson 11',
+            title: 'Install artifacts locally for reuse',
+            summary: 'Use the install phase and local repository to reuse built artifacts across local Maven projects.',
+          },
+          {
+            number: 'Lesson 12',
+            title: 'Deploy artifacts to a remote repository',
+            summary: 'Understand deploy, distributionManagement, repository managers, credentials, and deploy-file workflows.',
           },
         ],
       },

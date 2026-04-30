@@ -12,7 +12,7 @@
 ## Scope
 
 - Work in the repo root app. `gullible-gamma/` is gitignored scaffold, not the active project.
-- This is a static Astro teaching site. Keep React, Spring Boot, MySQL, Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite as separate course tracks unless explicitly asked to restructure them.
+- This is a static Astro teaching site. Keep React, Spring Boot, Maven, MySQL, Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite as separate course tracks unless explicitly asked to restructure them.
 
 ## Commands
 
@@ -35,7 +35,7 @@
 
 - `src/data/courses.ts` is the shared course catalog for homepages, course menus, and module maps in both locales.
 - `src/data/lessonRegistry.ts` owns dedicated track slugs and the generic data-backed resolver.
-- Generic data-backed tracks are Go, Rust, C#, Next.js, TypeScript, PostgreSQL, and SQLite; their routes are `src/pages/courses/[slug]/lessons/**` and `src/pages/zh/courses/[slug]/lessons/**`.
+- Generic data-backed tracks are Go, Rust, C#, Next.js, TypeScript, PostgreSQL, SQLite, and Maven; their routes are `src/pages/courses/[slug]/lessons/**` and `src/pages/zh/courses/[slug]/lessons/**`.
 - React and MySQL have dedicated lesson routes under `src/pages/courses/react/**`, `src/pages/courses/mysql/**`, and zh mirrors.
 - Spring Boot lesson routes are dedicated, but content is loaded from markdown in `course-notes/springboot/` and `course-notes/springboot-zh/` by `src/data/springbootNotes.ts`.
 - When adding or renaming a data-backed track, update `src/data/lessonRegistry.ts`, `src/utils/paths.ts`, `src/data/courses.ts`, and both locale redirect pages for `/courses/<slug>/index.astro`.
