@@ -24,7 +24,8 @@ export type Course = {
     | 'rust'
     | 'csharp'
     | 'nextjs'
-    | 'typescript';
+    | 'typescript'
+    | 'docker';
   title: string;
   zhTitle?: string;
   shortLabel: string;
@@ -1619,6 +1620,141 @@ export const courses: Course[] = [
             number: 'Lesson 13',
             title: 'Build and organize a small Web API application',
             summary: 'Assemble a practical API with validation, structure, and a production-minded checklist.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'docker',
+    title: 'Docker',
+    zhTitle: 'Docker',
+    shortLabel: 'DK',
+    category: 'DevOps and platform fundamentals',
+    zhCategory: 'DevOps 與平台基礎',
+    accent: '#2496ED',
+    subtitle:
+      'Learn container fundamentals with Docker, from images and Dockerfiles to networking, Compose, and registry workflows.',
+    zhSubtitle: '學習 Docker 容器基礎，從 images、Dockerfile 到 networking、Compose 與 registry 流程。',
+    overview:
+      'This course teaches Docker from first container to multi-container apps, focusing on images, containers, volumes, networking, Compose, and practical habits for shipping containerized applications.',
+    zhOverview:
+      '這套課程從第一個容器帶到多容器應用，重點涵蓋 images、containers、volumes、networking、Compose，以及交付容器化應用的實務習慣。',
+    level: 'Beginner to intermediate',
+    zhLevel: '初階到中階',
+    totalLessons: 12,
+    focus: ['container fundamentals', 'images and Dockerfiles', 'volumes and networking', 'Docker Compose', 'registry workflows'],
+    zhFocus: ['container 基礎', 'images 與 Dockerfile', 'volumes 與 networking', 'Docker Compose', 'registry 流程'],
+    prerequisites: ['Basic command-line usage', 'General programming concepts', 'Familiarity with installing developer tools'],
+    zhPrerequisites: ['基本命令列操作', '一般程式設計概念', '具備安裝開發工具的能力'],
+    outcomes: [
+      'Build and run containerized applications with Docker',
+      'Write Dockerfiles and use Docker Compose for multi-container development',
+      'Apply practical image tagging, registry, and security habits',
+    ],
+    zhOutcomes: [
+      '能用 Docker 建置並執行容器化應用',
+      '能撰寫 Dockerfile 並用 Docker Compose 進行多容器開發',
+      '能應用實用的 image 標籤、registry 與安全性習慣',
+    ],
+    modules: [
+      {
+        title: 'Module 1 · Docker foundations and first container',
+        zhTitle: '模組 1 · Docker 基礎與第一個容器',
+        description: 'Start with what containers solve, install Docker, and run your first container.',
+        zhDescription: '從容器解決的問題開始，完成 Docker 安裝並執行第一個容器。',
+        lessons: [
+          {
+            number: 'Lesson 1',
+            title: 'What Docker is and why containers matter',
+            summary: 'Understand how containers package apps and why they improve portability.',
+          },
+          {
+            number: 'Lesson 2',
+            title: 'Install Docker and run your first container',
+            summary: 'Set up Docker locally and run a container from an existing image.',
+          },
+          {
+            number: 'Lesson 3',
+            title: 'Images, containers, and the Docker CLI workflow',
+            summary: 'Learn the relationship between images, running containers, and common CLI commands.',
+          },
+        ],
+      },
+      {
+        title: 'Module 2 · Images, layers, and Dockerfiles',
+        zhTitle: '模組 2 · Images、layers 與 Dockerfile',
+        description: 'Build images with Dockerfiles and understand how layers and caching work.',
+        zhDescription: '用 Dockerfile 建置 images，並理解 layers 與 caching 的運作方式。',
+        lessons: [
+          {
+            number: 'Lesson 4',
+            title: 'Build a Docker image with a Dockerfile',
+            summary: 'Write a Dockerfile, build an image, and run a container from it.',
+          },
+          {
+            number: 'Lesson 5',
+            title: 'Understand image layers and caching',
+            summary: 'See how each instruction creates a layer and how layer order affects build speed.',
+          },
+          {
+            number: 'Lesson 6',
+            title: 'Choose a base image and manage image size',
+            summary: 'Pick appropriate base images and use multi-stage builds to keep images small.',
+          },
+        ],
+      },
+      {
+        title: 'Module 3 · Container lifecycle, data, and volumes',
+        zhTitle: '模組 3 · Container 生命週期、資料與 volumes',
+        description: 'Control running containers and persist data safely outside the container filesystem.',
+        zhDescription: '控制執行中的 containers，並把資料安全地保留在 container filesystem 之外。',
+        lessons: [
+          {
+            number: 'Lesson 7',
+            title: 'Container lifecycle and essential commands',
+            summary: 'Start, stop, inspect, remove, and debug containers with practical commands.',
+          },
+          {
+            number: 'Lesson 8',
+            title: 'Persist data with volumes and bind mounts',
+            summary: 'Use named volumes and bind mounts so data survives container restarts.',
+          },
+          {
+            number: 'Lesson 9',
+            title: 'Environment variables and container configuration',
+            summary: 'Pass configuration into containers with env vars and small config files.',
+          },
+        ],
+      },
+      {
+        title: 'Module 4 · Networking and multi-container apps with Compose',
+        zhTitle: '模組 4 · Networking 與多容器 Compose 應用',
+        description: 'Connect containers with networks and describe multi-container apps with Docker Compose.',
+        zhDescription: '用 networks 連接 containers，並用 Docker Compose 描述多容器應用。',
+        lessons: [
+          {
+            number: 'Lesson 10',
+            title: 'Docker networking basics',
+            summary: 'Understand bridge networks, port mapping, and container-to-container communication.',
+          },
+          {
+            number: 'Lesson 11',
+            title: 'Orchestrate multi-container apps with Docker Compose',
+            summary: 'Define services, networks, and volumes in a compose file for local development.',
+          },
+        ],
+      },
+      {
+        title: 'Module 5 · Registry workflow and production-ready habits',
+        zhTitle: '模組 5 · Registry 流程與 production-ready 習慣',
+        description: 'Publish images to a registry and apply practical habits for safer container usage.',
+        zhDescription: '將 images 發布到 registry，並套用更安全的容器使用實務。',
+        lessons: [
+          {
+            number: 'Lesson 12',
+            title: 'Push, pull, and production-ready container habits',
+            summary: 'Use Docker Hub or a private registry, tag images clearly, and follow non-root and minimal-image habits.',
           },
         ],
       },

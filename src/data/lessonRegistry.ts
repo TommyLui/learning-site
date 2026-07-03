@@ -17,6 +17,8 @@ import { getPostgreSQLLessons as getPostgreSQLLessonsEn } from './postgresqlLess
 import { getPostgreSQLLessons as getPostgreSQLLessonsZh } from './postgresqlLessonsZh';
 import { getSQLiteLessons as getSQLiteLessonsEn } from './sqliteLessons';
 import { getSQLiteLessons as getSQLiteLessonsZh } from './sqliteLessonsZh';
+import { getDockerLessons as getDockerLessonsEn } from './dockerLessons';
+import { getDockerLessons as getDockerLessonsZh } from './dockerLessonsZh';
 
 export type { CourseLessonArticle } from './goLessons';
 
@@ -32,9 +34,10 @@ export const DEDICATED_TRACK_SLUGS = [
   'typescript',
   'postgresql',
   'sqlite',
+  'docker',
 ] as const;
 
-export const DATA_BACKED_TRACK_SLUGS = ['go', 'rust', 'csharp', 'nextjs', 'typescript', 'postgresql', 'sqlite', 'maven'] as const;
+export const DATA_BACKED_TRACK_SLUGS = ['go', 'rust', 'csharp', 'nextjs', 'typescript', 'postgresql', 'sqlite', 'maven', 'docker'] as const;
 
 export type DataBackedTrackSlug = (typeof DATA_BACKED_TRACK_SLUGS)[number];
 
@@ -72,6 +75,8 @@ function getLessonsBySlug(slug: DataBackedTrackSlug, locale: CourseLocale): Cour
       return locale === 'zh' ? getPostgreSQLLessonsZh() : getPostgreSQLLessonsEn();
     case 'sqlite':
       return locale === 'zh' ? getSQLiteLessonsZh() : getSQLiteLessonsEn();
+    case 'docker':
+      return locale === 'zh' ? getDockerLessonsZh() : getDockerLessonsEn();
   }
 }
 

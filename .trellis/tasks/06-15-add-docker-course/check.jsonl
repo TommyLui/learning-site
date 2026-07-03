@@ -1,0 +1,7 @@
+{"file":".trellis/spec/frontend/index.md","reason":"Frontend overview, routing/link checklist, and verification expectations."}
+{"file":".trellis/spec/frontend/directory-structure.md","reason":"Course data, data-backed routing, locale parity, and module-title matching rules to verify."}
+{"file":".trellis/spec/frontend/type-safety.md","reason":"Strict TypeScript and course slug registry conventions to verify."}
+{"file":".trellis/spec/frontend/quality-guidelines.md","reason":"Quality gate checklist, forbidden patterns, and normal verification commands."}
+{"file":".trellis/tasks/06-15-add-docker-course/prd.md","reason":"Acceptance criteria and expected Docker course shape."}
+{"file":".trellis/tasks/06-15-add-docker-course/design.md","reason":"Compatibility and data-flow expectations to verify."}
+{"file":".trellis/tasks/06-15-add-docker-course/implement.md","reason":"Review gates and validation commands."}
