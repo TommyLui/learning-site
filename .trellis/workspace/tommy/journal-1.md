@@ -104,3 +104,37 @@ Redesigned the Spring Boot course around Spring Boot 4.x, updated English and Tr
 ### Next Steps
 
 - None - task complete
+
+
+## Session 4: Finish Docker course
+
+**Date**: 2026-07-04
+**Task**: Finish Docker course
+**Branch**: `main`
+
+### Summary
+
+Added and verified the Docker data-backed course, including English and Traditional Chinese lesson data, registry/catalog wiring, redirects, and Trellis task archival.
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `d768278` | (see git log) |
+| `b5c1ff2` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
