@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Courses — Tommy's Notes Demo</title>
+  <meta name="description" content="Twelve self-contained course tracks — frontend, backend, database, and DevOps — reimagined in mid-century modern style.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-nav">
+    <div class="site-nav__inner">
+      <a class="site-nav__brand" href="index.html">Tommy's Notes</a>
+      <nav>
+        <ul class="site-nav__links">
+          <li><a class="site-nav__link" href="index.html">Home</a></li>
+          <li><a class="site-nav__link" href="courses.html" aria-current="page">Courses</a></li>
+          <li><a class="site-nav__link" href="style-guide.html">Style Guide</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container">
+      <div class="section-header">
+        <span class="section-header__eyebrow">All courses</span>
+        <h1 class="section-header__title">Twelve tracks, one learning path.</h1>
+      </div>
+      <p style="max-width:60ch;color:var(--color-text-muted);font-size:1.1rem;margin-bottom:2rem;">Each course is a self-contained track with lessons, examples, and practical habits. In this demo, the Docker track is expanded into a full detail page and lesson article.</p>
+
+      <div class="course-grid">
+        <a class="course-card" href="courses.html" aria-disabled="true">
+          <div class="course-card__strip" style="background:#4BB8D5"></div>
+          <div class="course-card__category">Frontend development</div>
+          <h3 class="course-card__title">React</h3>
+          <p class="course-card__subtitle">Build interfaces with reusable components, hooks, and routing.</p>
+          <div class="course-card__meta"><span>Beginner to intermediate</span><span>16 lessons</span></div>
+          <div style="margin-top:1rem;"><span class="badge badge--demo">Demo</span></div>
+        </a>
+
+        <a class="course-card" href="courses.html" aria-disabled="true">
+          <div class="course-card__strip" style="background:#6AA05A"></div>
+          <div class="course-card__category">Backend development</div>
+          <h3 class="course-card__title">Spring Boot 4.x</h3>
+          <p class="course-card__subtitle">Build backend APIs with Spring Boot 4.x, Java 17+, Spring Framework 7, Hibernate 7, Spring Security 7, and production-ready practices.</p>
+          <div class="course-card__meta"><span>Beginner to intermediate</span><span>21 lessons</span></div>
+          <div style="margin-top:1rem;"><span class="badge badge--demo">Demo</span></div>
+        </a>
+
+        <a class="course-card" href="courses.html" aria-disabled="true">
+          <div class="course-card__strip" style="background:#C71A36"></div>
+          <div class="course-card__category">Backend development</div>
+          <h3 class="course-card__title">Maven</h3>
+          <p class="course-card__subtitle">Learn Java build automation with POMs, dependencies, lifecycles, plugins, multi-module projects, and artifact publishing.</p>
+          <div class="course-card__meta"><span>Beginner to intermediate</span><span>12 lessons</span></div>
+          <div style="margin-top:1rem;"><span class="badge badge--demo">Demo</span></div>
+        </a>
+
+        <a class="course-card" href="courses.html" aria-disabled="true">
+          <div class="course-card__strip" style="background:#D08C36"></div>
+          <div class="course-card__category">Database development</div>
+          <h3 class="course-card__title">MySQL</h3>
+          <p class="course-card__subtitle">Learn SQL, schema design, joins, and relational database thinking.</p>
+          <div class="course-card__meta"><span>Beginner</span><span>14 lessons</span></div>
+          <div style="margin-top:1rem;"><span class="badge badge--demo">Demo</span></div>
+        </a>
+
+        <a class="course-card" href="courses.html" aria-disabled="true">
+          <div class="course-card__strip" style="background:#336791"></div>
+          <div class="course-card__category">Database development</div>
+          <h3 class="course-card__title">PostgreSQL</h3>
+          <p class="course-card__subtitle">Learn PostgreSQL foundations, SQL workflows, relational design, and practical performance habits.</p>
+          <div class="course-card__meta"><span>Beginner to intermediate</span><span>14 lessons</span></div>
+          <div style="margin-top:1rem;"><span class="badge badge--demo">Demo</span></div>
+        </a>
+
+        <a class="course-card" href="courses.html" aria-disabled="true">
+          <div class="course-card__strip" style="background:#0F80CC"></div>
+          <div class="course-card__category">Database development</div>
+          <h3 class="course-card__title">SQLite</h3>
+          <p class="course-card__subtitle">Learn SQLite foundations for file-based apps, safe writes, and practical embedded database design.</p>
+          <div class="course-card__meta"><span>Beginner to intermediate</span><span>13 lessons</span></div>
+          <div style="margin-top:1rem;"><span class="badge badge--demo">Demo</span></div>
+        </a>
+
+        <a class="course-card" href="courses.html" aria-disabled="true">
+          <div class="course-card__strip" style="background:#00ADD8"></div>
+          <div class="course-card__category">Backend and systems development</div>
+          <h3 class="course-card__title">Go</h3>
+          <p class="course-card__subtitle">Learn Go fundamentals, concurrency patterns, and practical HTTP service design.</p>
+          <div class="course-card__meta"><span>Beginner to intermediate</span><span>13 lessons</span></div>
+          <div style="margin-top:1rem;"><span class="badge badge--demo">Demo</span></div>
+        </a>
+
+        <a class="course-card" href="courses.html" aria-disabled="true">
+          <div class="course-card__strip" style="background:#B46A3A"></div>
+          <div class="course-card__category">Systems programming</div>
+          <h3 class="course-card__title">Rust</h3>
+          <p class="course-card__subtitle">Learn Rust ownership, type-driven design, and practical CLI workflows.</p>
+          <div class="course-card__meta"><span>Beginner to intermediate</span><span>13 lessons</span></div>
+          <div style="margin-top:1rem;"><span class="badge badge--demo">Demo</span></div>
+        </a>
+
+        <a class="course-card" href="courses.html" aria-disabled="true">
+          <div class="course-card__strip" style="background:#68217A"></div>
+          <div class="course-card__category">Backend and application development</div>
+          <h3 class="course-card__title">C#</h3>
+          <p class="course-card__subtitle">Learn modern C# with .NET CLI, async workflows, and ASP.NET Core basics.</p>
+          <div class="course-card__meta"><span>Beginner to intermediate</span><span>13 lessons</span></div>
+          <div style="margin-top:1rem;"><span class="badge badge--demo">Demo</span></div>
+        </a>
+
+        <a class="course-card" href="courses.html" aria-disabled="true">
+          <div class="course-card__strip" style="background:#1B4DFF"></div>
+          <div class="course-card__category">Full-stack web development</div>
+          <h3 class="course-card__title">Next.js</h3>
+          <p class="course-card__subtitle">Build production-ready React apps with the App Router, server rendering, and practical deployment workflows.</p>
+          <div class="course-card__meta"><span>Beginner to intermediate</span><span>14 lessons</span></div>
+          <div style="margin-top:1rem;"><span class="badge badge--demo">Demo</span></div>
+        </a>
+
+        <a class="course-card" href="courses.html" aria-disabled="true">
+          <div class="course-card__strip" style="background:#3178C6"></div>
+          <div class="course-card__category">Programming language fundamentals</div>
+          <h3 class="course-card__title">TypeScript</h3>
+          <p class="course-card__subtitle">Learn static typing for JavaScript and build safer frontend and backend code with practical TypeScript patterns.</p>
+          <div class="course-card__meta"><span>Beginner to intermediate</span><span>14 lessons</span></div>
+          <div style="margin-top:1rem;"><span class="badge badge--demo">Demo</span></div>
+        </a>
+
+        <a class="course-card" href="course-docker.html">
+          <div class="course-card__strip" style="background:#2496ED"></div>
+          <div class="course-card__category">DevOps and platform fundamentals</div>
+          <h3 class="course-card__title">Docker</h3>
+          <p class="course-card__subtitle">Learn container fundamentals with Docker, from images and Dockerfiles to networking, Compose, and registry workflows.</p>
+          <div class="course-card__meta"><span>Beginner to intermediate</span><span>12 lessons</span></div>
+          <div style="margin-top:1rem;"><span class="badge">Open detail</span></div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">Tommy's Notes — mid-century modern demo · 2026</div>
+  </footer>
+</body>
+</html>

@@ -37,7 +37,17 @@ export const DEDICATED_TRACK_SLUGS = [
   'docker',
 ] as const;
 
-export const DATA_BACKED_TRACK_SLUGS = ['go', 'rust', 'csharp', 'nextjs', 'typescript', 'postgresql', 'sqlite', 'maven', 'docker'] as const;
+export const DATA_BACKED_TRACK_SLUGS = [
+  'go',
+  'rust',
+  'csharp',
+  'nextjs',
+  'typescript',
+  'postgresql',
+  'sqlite',
+  'maven',
+  'docker',
+] as const;
 
 export type DataBackedTrackSlug = (typeof DATA_BACKED_TRACK_SLUGS)[number];
 

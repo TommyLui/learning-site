@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Docker Course — Tommy's Notes Demo</title>
+  <meta name="description" content="Docker course detail — learn container fundamentals with Docker, from images and Dockerfiles to networking, Compose, and registry workflows.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-nav">
+    <div class="site-nav__inner">
+      <a class="site-nav__brand" href="index.html">Tommy's Notes</a>
+      <nav>
+        <ul class="site-nav__links">
+          <li><a class="site-nav__link" href="index.html">Home</a></li>
+          <li><a class="site-nav__link" href="courses.html" aria-current="page">Courses</a></li>
+          <li><a class="site-nav__link" href="style-guide.html">Style Guide</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="container hero">
+      <div class="hero__text">
+        <span class="badge" style="margin-bottom:1rem;">Docker</span>
+        <h1 class="hero__title">Docker</h1>
+        <p class="hero__subtitle">Learn container fundamentals with Docker, from images and Dockerfiles to networking, Compose, and registry workflows.</p>
+        <div class="course-card__meta" style="margin-bottom:1.5rem;">
+          <span>Beginner to intermediate</span><span>12 lessons</span>
+        </div>
+        <a class="btn btn--primary" href="lesson-docker-1.html">Start lessons</a>
+      </div>
+      <div class="hero__decor" aria-hidden="true">
+        <div class="decor-blob" style="background:#2496ED"></div>
+        <svg class="decor-starburst" viewBox="0 0 100 100">
+          <g stroke="currentColor" stroke-width="4" stroke-linecap="round">
+            <line x1="50" y1="8" x2="50" y2="92"/>
+            <line x1="8" y1="50" x2="92" y2="50"/>
+            <line x1="20" y1="20" x2="80" y2="80"/>
+            <line x1="80" y1="20" x2="20" y2="80"/>
+          </g>
+          <circle cx="50" cy="50" r="6" fill="currentColor"/>
+        </svg>
+        <div class="decor-boomerang"></div>
+      </div>
+    </section>
+
+    <section class="section--tight container">
+      <div class="section-header">
+        <span class="section-header__eyebrow">Overview</span>
+        <h2 class="section-header__title">What this course covers</h2>
+      </div>
+      <p style="max-width:65ch;font-size:1.1rem;">This course teaches Docker from first container to multi-container apps, focusing on images, containers, volumes, networking, Compose, and practical habits for shipping containerized applications.</p>
+      <div class="course-card__meta" style="margin-top:1rem;">
+        <span>container fundamentals</span><span>images and Dockerfiles</span><span>volumes and networking</span><span>Docker Compose</span><span>registry workflows</span>
+      </div>
+    </section>
+
+    <section class="section--tight container" id="outcomes">
+      <div class="section-header">
+        <span class="section-header__eyebrow">Outcomes</span>
+        <h2 class="section-header__title">What you'll be able to do</h2>
+      </div>
+      <div class="course-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+        <div class="callout">
+          <div class="callout__title">Build &amp; run</div>
+          <p>Build and run containerized applications with Docker.</p>
+        </div>
+        <div class="callout">
+          <div class="callout__title">Write Dockerfiles</div>
+          <p>Write Dockerfiles and use Docker Compose for multi-container development.</p>
+        </div>
+        <div class="callout">
+          <div class="callout__title">Production habits</div>
+          <p>Apply practical image tagging, registry, and security habits.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section--tight container" id="prerequisites">
+      <div class="section-header">
+        <span class="section-header__eyebrow">Prerequisites</span>
+        <h2 class="section-header__title">Before you start</h2>
+      </div>
+      <div class="component-row">
+        <span class="badge badge--muted">Basic command-line usage</span>
+        <span class="badge badge--muted">General programming concepts</span>
+        <span class="badge badge--muted">Familiarity with installing developer tools</span>
+      </div>
+    </section>
+
+    <section class="section--tight container" id="modules">
+      <div class="section-header">
+        <span class="section-header__eyebrow">Modules</span>
+        <h2 class="section-header__title">Course curriculum</h2>
+      </div>
+
+      <div class="module-card" id="module-1">
+        <h3 class="module-card__title">Module 1 · Docker foundations and first container</h3>
+        <p class="module-card__desc">Start with what containers solve, install Docker, and run your first container.</p>
+        <a class="lesson-row" href="lesson-docker-1.html">
+          <span class="lesson-row__num">Lesson 1</span>
+          <span class="lesson-row__text"><strong>What Docker is and why containers matter</strong><span>Understand how containers package apps and why they improve portability.</span></span>
+        </a>
+        <a class="lesson-row" href="#module-1">
+          <span class="lesson-row__num">Lesson 2</span>
+          <span class="lesson-row__text"><strong>Install Docker and run your first container</strong><span>Set up Docker locally and run a container from an existing image.</span></span>
+        </a>
+        <a class="lesson-row" href="#module-1">
+          <span class="lesson-row__num">Lesson 3</span>
+          <span class="lesson-row__text"><strong>Images, containers, and the Docker CLI workflow</strong><span>Learn the relationship between images, running containers, and common CLI commands.</span></span>
+        </a>
+      </div>
+
+      <div class="module-card" id="module-2">
+        <h3 class="module-card__title">Module 2 · Images, layers, and Dockerfiles</h3>
+        <p class="module-card__desc">Build images with Dockerfiles and understand how layers and caching work.</p>
+        <a class="lesson-row" href="#module-2"><span class="lesson-row__num">Lesson 4</span><span class="lesson-row__text"><strong>Build a Docker image with a Dockerfile</strong><span>Write a Dockerfile, build an image, and run a container from it.</span></span></a>
+        <a class="lesson-row" href="#module-2"><span class="lesson-row__num">Lesson 5</span><span class="lesson-row__text"><strong>Understand image layers and caching</strong><span>See how each instruction creates a layer and how layer order affects build speed.</span></span></a>
+        <a class="lesson-row" href="#module-2"><span class="lesson-row__num">Lesson 6</span><span class="lesson-row__text"><strong>Choose a base image and manage image size</strong><span>Pick appropriate base images and use multi-stage builds to keep images small.</span></span></a>
+      </div>
+
+      <div class="module-card" id="module-3">
+        <h3 class="module-card__title">Module 3 · Container lifecycle, data, and volumes</h3>
+        <p class="module-card__desc">Control running containers and persist data safely outside the container filesystem.</p>
+        <a class="lesson-row" href="#module-3"><span class="lesson-row__num">Lesson 7</span><span class="lesson-row__text"><strong>Container lifecycle and essential commands</strong><span>Start, stop, inspect, remove, and debug containers with practical commands.</span></span></a>
+        <a class="lesson-row" href="#module-3"><span class="lesson-row__num">Lesson 8</span><span class="lesson-row__text"><strong>Persist data with volumes and bind mounts</strong><span>Use named volumes and bind mounts so data survives container restarts.</span></span></a>
+        <a class="lesson-row" href="#module-3"><span class="lesson-row__num">Lesson 9</span><span class="lesson-row__text"><strong>Environment variables and container configuration</strong><span>Pass configuration into containers with env vars and small config files.</span></span></a>
+      </div>
+
+      <div class="module-card" id="module-4">
+        <h3 class="module-card__title">Module 4 · Networking and multi-container apps with Compose</h3>
+        <p class="module-card__desc">Connect containers with networks and describe multi-container apps with Docker Compose.</p>
+        <a class="lesson-row" href="#module-4"><span class="lesson-row__num">Lesson 10</span><span class="lesson-row__text"><strong>Docker networking basics</strong><span>Understand bridge networks, port mapping, and container-to-container communication.</span></span></a>
+        <a class="lesson-row" href="#module-4"><span class="lesson-row__num">Lesson 11</span><span class="lesson-row__text"><strong>Orchestrate multi-container apps with Docker Compose</strong><span>Define services, networks, and volumes in a compose file for local development.</span></span></a>
+      </div>
+
+      <div class="module-card" id="module-5">
+        <h3 class="module-card__title">Module 5 · Registry workflow and production-ready habits</h3>
+        <p class="module-card__desc">Publish images to a registry and apply practical habits for safer container usage.</p>
+        <a class="lesson-row" href="#module-5"><span class="lesson-row__num">Lesson 12</span><span class="lesson-row__text"><strong>Push, pull, and production-ready container habits</strong><span>Use Docker Hub or a private registry, tag images clearly, and follow non-root and minimal-image habits.</span></span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">Tommy's Notes — mid-century modern demo · 2026</div>
+  </footer>
+</body>
+</html>

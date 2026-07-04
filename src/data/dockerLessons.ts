@@ -1,20 +1,4 @@
-export type CourseLessonArticle = {
-  lesson: number;
-  slug: string;
-  title: string;
-  summary: string;
-  moduleTitle: string;
-  intro: string;
-  learningPoints: string[];
-  lessonNotes: string[];
-  exampleLanguage: string;
-  exampleCode: string;
-  practice: string[];
-  reasons: string[];
-  mistakes: string[];
-  takeaways: string[];
-  references: { label: string; url: string }[];
-};
+import type { CourseLessonArticle } from './goLessons';
 
 export const dockerLessons: CourseLessonArticle[] = [
   {

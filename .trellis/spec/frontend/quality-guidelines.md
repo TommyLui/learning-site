@@ -122,6 +122,40 @@ Before considering a change complete, verify:
 
 ---
 
+## Root-Level Static Demo Folders
+
+When prototyping a redesign or visual experiment, a root-level static folder such as `demo/` (pure HTML/CSS, no build step) is a safe pattern for this repo.
+
+Why it works:
+
+- Astro scans `src/` for routes and content; a root-level `demo/` is ignored by `astro build` and does not appear in `dist/`.
+- It adds zero build risk and rolls back with `Remove-Item -Recurse demo/`.
+
+Conventions:
+
+- Keep demo files self-contained: shared `demo/styles.css` + relative `<a href>` links between pages. No imports from `src/`.
+- Do NOT modify any file under `src/` from a demo task.
+- Inline SVGs; avoid external image dependencies so the demo opens via `file://`.
+- After creating a demo folder, run `npm run check` and `npm run build` to confirm the production site is unaffected.
+
+### Verbatim course metadata in demos and standalone pages
+
+When copying course metadata (title, subtitle, category, level, outcomes, prerequisites, module titles, lesson summaries) from `src/data/courses.ts` into a demo or any standalone page, copy the strings verbatim. Do not paraphrase, shorten, or "improve" them.
+
+Why: the check agent for the mid-century demo found 14 paraphrased subtitles across `index.html` and `courses.html` that drifted from the source. Paraphrasing breaks content fidelity and makes the demo misleading as a representation of the real site.
+
+Example:
+
+```html
+<!-- Wrong: paraphrased -->
+<p class="course-card__subtitle">Learn Docker container fundamentals, from images to Compose and registries.</p>
+
+<!-- Correct: verbatim from src/data/courses.ts -->
+<p class="course-card__subtitle">Learn container fundamentals with Docker, from images and Dockerfiles to networking, Compose, and registry workflows.</p>
+```
+
+---
+
 ## Common Mistakes to Watch For
 
 - A page builds locally at `/` but breaks on GitHub Pages because links ignore `/learning-site`.

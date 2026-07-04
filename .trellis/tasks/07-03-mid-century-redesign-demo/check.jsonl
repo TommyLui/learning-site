@@ -1,0 +1,3 @@
+{"path":".trellis/tasks/07-03-mid-century-redesign-demo/prd.md","kind":"plan","note":"Acceptance criteria to verify against."}
+{"path":".trellis/tasks/07-03-mid-century-redesign-demo/design.md","kind":"plan","note":"Component contracts and token spec to verify implementation matches."}
+{"path":".trellis/tasks/07-03-mid-century-redesign-demo/research/mid-century-style-brief.md","kind":"research","note":"Style fidelity check: verify demo matches brief tokens and avoid list."}

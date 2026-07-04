@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Style Guide — Tommy's Notes Demo</title>
+  <meta name="description" content="Design system showcase for the mid-century modern demo — color tokens, typography, components, and decorative shapes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-nav">
+    <div class="site-nav__inner">
+      <a class="site-nav__brand" href="index.html">Tommy's Notes</a>
+      <nav>
+        <ul class="site-nav__links">
+          <li><a class="site-nav__link" href="index.html">Home</a></li>
+          <li><a class="site-nav__link" href="courses.html">Courses</a></li>
+          <li><a class="site-nav__link" href="style-guide.html" aria-current="page">Style Guide</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container">
+      <div class="section-header">
+        <span class="section-header__eyebrow">Design system</span>
+        <h1 class="section-header__title">Mid-century modern style guide</h1>
+      </div>
+      <p style="max-width:60ch;color:var(--color-text-muted);font-size:1.1rem;">Color tokens, typography, components, and decorative motifs that define this demo's visual language.</p>
+    </section>
+
+    <section class="section--tight container" id="colors">
+      <div class="section-header">
+        <span class="section-header__eyebrow">Color tokens</span>
+        <h2 class="section-header__title">Palette</h2>
+      </div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch__chip" style="background:#F6E8CF"></div><div class="swatch__body"><span class="swatch__name">--color-bg</span><span class="swatch__hex">#F6E8CF</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#FBF3E3"></div><div class="swatch__body"><span class="swatch__name">--color-bg-soft</span><span class="swatch__hex">#FBF3E3</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#FFF7E8"></div><div class="swatch__body"><span class="swatch__name">--color-surface</span><span class="swatch__hex">#FFF7E8</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#E8D3B0"></div><div class="swatch__body"><span class="swatch__name">--color-surface-alt</span><span class="swatch__hex">#E8D3B0</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#2F2A24"></div><div class="swatch__body"><span class="swatch__name">--color-text</span><span class="swatch__hex">#2F2A24</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#6F6256"></div><div class="swatch__body"><span class="swatch__name">--color-text-muted</span><span class="swatch__hex">#6F6256</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#FFF7E8"></div><div class="swatch__body"><span class="swatch__name">--color-text-inverse</span><span class="swatch__hex">#FFF7E8</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#1F7A7A"></div><div class="swatch__body"><span class="swatch__name">--color-teal</span><span class="swatch__hex">#1F7A7A</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#155C5C"></div><div class="swatch__body"><span class="swatch__name">--color-teal-dark</span><span class="swatch__hex">#155C5C</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#D9A441"></div><div class="swatch__body"><span class="swatch__name">--color-mustard</span><span class="swatch__hex">#D9A441</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#C95F2D"></div><div class="swatch__body"><span class="swatch__name">--color-orange</span><span class="swatch__hex">#C95F2D</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#727A3F"></div><div class="swatch__body"><span class="swatch__name">--color-olive</span><span class="swatch__hex">#727A3F</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#6B4226"></div><div class="swatch__body"><span class="swatch__name">--color-walnut</span><span class="swatch__hex">#6B4226</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#3F2819"></div><div class="swatch__body"><span class="swatch__name">--color-walnut-dark</span><span class="swatch__hex">#3F2819</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#3F2819"></div><div class="swatch__body"><span class="swatch__name">--color-border</span><span class="swatch__hex">#3F2819</span></div></div>
+        <div class="swatch"><div class="swatch__chip" style="background:#C8A978"></div><div class="swatch__body"><span class="swatch__name">--color-border-soft</span><span class="swatch__hex">#C8A978</span></div></div>
+      </div>
+    </section>
+
+    <section class="section--tight container" id="typography">
+      <div class="section-header">
+        <span class="section-header__eyebrow">Typography</span>
+        <h2 class="section-header__title">Font pairing</h2>
+      </div>
+      <div class="type-sample">
+        <div class="type-sample__label">Display · League Spartan</div>
+        <div class="type-display">Aa</div>
+        <p style="font-family:var(--font-display);font-weight:700;">The quick brown fox jumps over the lazy dog. 0123456789</p>
+      </div>
+      <div class="type-sample">
+        <div class="type-sample__label">Body · Inter</div>
+        <p class="type-body">Containers package an application with everything it needs to run, so it behaves the same on your laptop and in production. The quick brown fox jumps over the lazy dog.</p>
+      </div>
+      <div class="type-sample">
+        <div class="type-sample__label">Mono · JetBrains Mono</div>
+        <p class="type-mono">docker run hello-world</p>
+      </div>
+    </section>
+
+    <section class="section--tight container" id="components">
+      <div class="section-header">
+        <span class="section-header__eyebrow">Components</span>
+        <h2 class="section-header__title">Building blocks</h2>
+      </div>
+
+      <h3 style="font-family:var(--font-display);margin-top:1.5rem;">Buttons</h3>
+      <div class="component-row">
+        <button class="btn btn--primary">Primary</button>
+        <button class="btn btn--secondary">Secondary</button>
+        <button class="btn btn--outline">Outline</button>
+      </div>
+      <p style="color:var(--color-text-muted);font-size:0.9rem;">All buttons include hover (translate 2px, shadow shrinks), active (translate 4px, shadow zero), and focus-visible (mustard ring) states.</p>
+
+      <h3 style="font-family:var(--font-display);margin-top:2rem;">Badge</h3>
+      <div class="component-row">
+        <span class="badge">Badge</span>
+        <span class="badge badge--demo">Demo</span>
+        <span class="badge badge--muted">Muted</span>
+      </div>
+
+      <h3 style="font-family:var(--font-display);margin-top:2rem;">Card</h3>
+      <div class="course-grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));">
+        <div class="card">
+          <h4 style="margin:0 0 0.5rem;">Card title</h4>
+          <p style="margin:0;color:var(--color-text-muted);">A surface card with 2px walnut border, 14px radius, and a 6px soft offset shadow.</p>
+        </div>
+        <a class="course-card" href="#components">
+          <div class="course-card__strip"></div>
+          <div class="course-card__category">Category</div>
+          <h3 class="course-card__title">Course card</h3>
+          <p class="course-card__subtitle">Top color strip, badge, title, subtitle, level, lesson count.</p>
+          <div class="course-card__meta"><span>Beginner</span><span>10 lessons</span></div>
+        </a>
+      </div>
+
+      <h3 style="font-family:var(--font-display);margin-top:2rem;">Callouts</h3>
+      <div class="course-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+        <div class="callout"><div class="callout__title">Info</div><p>Teal left border for general notes.</p></div>
+        <div class="callout callout--warning"><div class="callout__title">Warning</div><p>Mustard left border for cautions.</p></div>
+        <div class="callout callout--danger"><div class="callout__title">Danger</div><p>Orange left border for mistakes.</p></div>
+        <div class="callout callout--success"><div class="callout__title">Success</div><p>Olive left border for good reasons.</p></div>
+        <div class="callout callout--highlight"><div class="callout__title">Highlight</div><p>Mustard highlight for takeaways.</p></div>
+      </div>
+
+      <h3 style="font-family:var(--font-display);margin-top:2rem;">Code block</h3>
+      <div class="code-block">
+        <div class="code-block__lang">bash</div>
+        <pre><code>docker run hello-world
+# Expected output explains that Docker pulled and ran a tiny image.</code></pre>
+      </div>
+      <p style="margin-top:1rem;">Inline code: <code class="inline">docker ps</code> uses surface-alt background.</p>
+
+      <h3 style="font-family:var(--font-display);margin-top:2rem;">Section header sample</h3>
+      <div class="section-header" style="background:var(--color-surface);border:2px solid var(--color-border);border-radius:var(--radius-md);padding:1.25rem;box-shadow:var(--shadow-offset-sm);">
+        <span class="section-header__eyebrow">Eyebrow</span>
+        <h2 class="section-header__title">Section title</h2>
+      </div>
+    </section>
+
+    <section class="section--tight container" id="decorative">
+      <div class="section-header">
+        <span class="section-header__eyebrow">Decorative</span>
+        <h2 class="section-header__title">Motifs</h2>
+      </div>
+      <div class="decor-showcase">
+        <div class="decor-item">
+          <svg class="decor-starburst decor-starburst--static" viewBox="0 0 100 100" style="color:var(--color-teal);">
+            <g stroke="currentColor" stroke-width="4" stroke-linecap="round">
+              <line x1="50" y1="8" x2="50" y2="92"/>
+              <line x1="8" y1="50" x2="92" y2="50"/>
+              <line x1="20" y1="20" x2="80" y2="80"/>
+              <line x1="80" y1="20" x2="20" y2="80"/>
+            </g>
+            <circle cx="50" cy="50" r="6" fill="currentColor"/>
+          </svg>
+          <div class="decor-item__label">Starburst · teal</div>
+        </div>
+        <div class="decor-item">
+          <div class="decor-blob decor-blob--static" style="background:var(--color-orange);"></div>
+          <div class="decor-item__label">Organic blob · orange</div>
+        </div>
+        <div class="decor-item">
+          <div class="decor-boomerang decor-boomerang--static"></div>
+          <div class="decor-item__label">Boomerang · mustard</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">Tommy's Notes — mid-century modern demo · 2026</div>
+  </footer>
+</body>
+</html>

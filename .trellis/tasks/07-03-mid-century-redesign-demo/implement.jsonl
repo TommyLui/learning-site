@@ -1,0 +1,6 @@
+{"path":".trellis/tasks/07-03-mid-century-redesign-demo/research/mid-century-style-brief.md","kind":"research","note":"Mid-century modern style brief: color tokens, typography, shapes, components, avoid list. Source: @librarian synthesized from Creative Bloq / Envato Tuts+."}
+{"path":".trellis/tasks/07-03-mid-century-redesign-demo/prd.md","kind":"plan","note":"Requirements + acceptance criteria for 5-page static demo."}
+{"path":".trellis/tasks/07-03-mid-century-redesign-demo/design.md","kind":"plan","note":"Technical design: file structure, tokens, component contracts, page layouts, responsive."}
+{"path":".trellis/tasks/07-03-mid-century-redesign-demo/implement.md","kind":"plan","note":"Execution checklist with 7 steps, validation commands, rollback."}
+{"path":"src/data/courses.ts","kind":"spec","note":"Course metadata source for home + courses index cards (all 12 courses) and Docker detail page (line 1629+). Read-only."}
+{"path":"src/data/dockerLessons.ts","kind":"spec","note":"Docker Lesson 1 full article data (lines 3-45): intro, learningPoints, lessonNotes, exampleCode, practice, reasons, mistakes, takeaways, references. Read-only."}

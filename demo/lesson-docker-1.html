@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson 1 · What Docker is and why containers matter — Tommy's Notes Demo</title>
+  <meta name="description" content="Docker Lesson 1 — understand how containers package apps and why they improve portability.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-nav">
+    <div class="site-nav__inner">
+      <a class="site-nav__brand" href="index.html">Tommy's Notes</a>
+      <nav>
+        <ul class="site-nav__links">
+          <li><a class="site-nav__link" href="index.html">Home</a></li>
+          <li><a class="site-nav__link" href="courses.html" aria-current="page">Courses</a></li>
+          <li><a class="site-nav__link" href="style-guide.html">Style Guide</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="article" style="padding-block:clamp(2.5rem,6vw,4rem);">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="courses.html">Courses</a><span>›</span><a href="course-docker.html">Docker</a><span>›</span>Lesson 1
+      </nav>
+
+      <div class="section-header">
+        <span class="section-header__eyebrow">Module 1 · Docker foundations and first container</span>
+        <h1 class="section-header__title">What Docker is and why containers matter</h1>
+      </div>
+
+      <p style="color:var(--color-text-muted);font-size:1.1rem;">Understand how containers package apps and why they improve portability.</p>
+
+      <p class="lead">Containers package an application with everything it needs to run, so it behaves the same on your laptop and in production.</p>
+
+      <section>
+        <h2>Learning points</h2>
+        <div class="callout">
+          <ol>
+            <li>Understand the difference between containers and virtual machines.</li>
+            <li>See how containers improve portability and consistency.</li>
+            <li>Know when Docker is a good fit for a project.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section>
+        <h2>Lesson notes</h2>
+        <p>Before Docker, "it works on my machine" was a common problem because development and production environments drifted.</p>
+        <p>A container shares the host kernel but packages its own filesystem, libraries, and dependencies.</p>
+        <p>Containers start quickly and use fewer resources than full virtual machines, making them practical for local development and deployment.</p>
+      </section>
+
+      <section>
+        <h2>Example</h2>
+        <div class="code-block">
+          <div class="code-block__lang">bash</div>
+          <pre><code>docker run hello-world
+# Expected output explains that Docker pulled and ran a tiny image.</code></pre>
+        </div>
+      </section>
+
+      <section>
+        <h2>Practice</h2>
+        <ol>
+          <li>Read the Docker overview page and list three problems containers solve.</li>
+          <li>Compare a VM diagram with a container diagram.</li>
+          <li>Explain to a teammate why a container is lighter than a VM.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Reasons &amp; Mistakes</h2>
+        <div class="two-col">
+          <div class="callout callout--success">
+            <div class="callout__title">Good reasons</div>
+            <ol>
+              <li>Consistent environments reduce deployment surprises.</li>
+              <li>Lightweight containers make scaling and local testing cheaper.</li>
+            </ol>
+          </div>
+          <div class="callout callout--danger">
+            <div class="callout__title">Common mistakes</div>
+            <ol>
+              <li>Treating Docker as just a packaging tool without understanding the runtime model.</li>
+              <li>Running every service in a container when a simple binary or script is enough.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Takeaways</h2>
+        <div class="callout callout--highlight">
+          <ol>
+            <li>Docker uses containers to package apps with their dependencies.</li>
+            <li>Containers improve consistency between development and production.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul class="references-list">
+          <li><a href="https://docs.docker.com/get-started/docker-overview/" target="_blank" rel="noopener">Docker docs · What is Docker?</a></li>
+          <li><a href="https://docs.docker.com/engine/reference/builder/" target="_blank" rel="noopener">Docker docs · Dockerfile reference</a></li>
+        </ul>
+      </section>
+
+      <p style="margin-top:2.5rem;font-family:var(--font-display);font-weight:700;">
+        Next: <a href="course-docker.html#module-1">Lesson 2 — Install Docker and run your first container</a>
+      </p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">Tommy's Notes — mid-century modern demo · 2026</div>
+  </footer>
+</body>
+</html>
