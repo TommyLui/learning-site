@@ -154,6 +154,54 @@ Example:
 <p class="course-card__subtitle">Learn container fundamentals with Docker, from images and Dockerfiles to networking, Compose, and registry workflows.</p>
 ```
 
+### Bilingual font strategy (EN + ZH)
+
+When a redesign uses a Latin-only display font (e.g., League Spartan), Chinese headings will not render in that font. For a bilingual EN/ZH site, always:
+
+1. Load a CJK display font (e.g., Noto Sans TC) in the Google Font `<link>`.
+2. Add a `:lang(zh-Hant)` heading override placed at the END of the stylesheet (so it wins the cascade over component heading rules), with CJK-friendly tracking (`letter-spacing: -0.01em`, `line-height: 1.15`).
+3. List every component heading selector that sets `font-family: var(--font-display)` in the override, with the `:lang(zh-Hant)` prefix for higher specificity. A bare `:lang(zh-Hant) h2` is NOT enough — later `.section-heading h2 { font-family: var(--font-display) }` has equal specificity and wins.
+
+Example (place at end of global.css):
+
+```css
+:lang(zh-Hant) h1,
+:lang(zh-Hant) h2,
+:lang(zh-Hant) h3,
+:lang(zh-Hant) h4,
+:lang(zh-Hant) .page-title,
+:lang(zh-Hant) .section-heading h2,
+:lang(zh-Hant) .course-card h3,
+:lang(zh-Hant) .module-head h3,
+:lang(zh-Hant) .note-card h3 {
+  font-family: "Noto Sans TC", var(--font-body);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+```
+
+Why: the apply-mcm-style task's first ZH override was placed mid-file and got overridden by later component heading rules, defeating the fallback on every Chinese section/card heading.
+
+### Accent color contrast for text
+
+Mid-century accent colors (teal `#1F7A7A`, orange `#C95F2D`, olive `#727A3F`) fail WCAG AA for normal text on the cream `#F6E8CF` background. Rules:
+
+- Body links use the DARKER variant (`--teal-dark` `#155C5C`), not `--teal`.
+- Small uppercase labels (eyebrow, category, menu labels) use `--walnut` `#6B4226` for text; the `✦` glyph stays `--mustard` for the accent.
+- Reserve full-saturation accents (`--teal`, `--orange`, `--olive`) for fills, borders, large display text, and decorative shapes — not running text.
+
+### Route A token migration: keep names, change values
+
+When applying a new visual theme to an existing CSS file with many references, prefer Route A: keep the old custom-property names (e.g., `--bg`, `--line`, `--hero-shadow`, `--radius-lg`) and only change their values; add new tokens for new concepts. Do NOT rename tokens in the same pass.
+
+Why: renaming tokens forces editing hundreds of references and drastically expands the change surface for a purely visual change. The semantic drift (e.g., `--line` now means "walnut border color" rather than "thin divider line") is an acceptable tradeoff for a one-time migration and can be cleaned up in a follow-up alias task.
+
+Caveat: document the semantic drift in the stylesheet header so future maintainers know `--line` is now a border color, not a 1px divider.
+
+### Focus on non-focusable wrappers (e.g., `<article>` cards)
+
+When a card is a non-focusable element like `<article>` but contains a focusable link, `:focus-visible` on the card never fires. Use `:focus-within` on the wrapper instead, and put `:focus-visible` on the inner link. Be aware this can produce two visible focus rings simultaneously (card + link) — that is acceptable when the card ring communicates "this whole unit is the focus context."
+
 ---
 
 ## Common Mistakes to Watch For

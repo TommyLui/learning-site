@@ -1,0 +1,8 @@
+{"path":"docs/redesign_website.md","kind":"spec","note":"Mid-century modern design summary: tokens, typography, components, layout, avoid list, application steps. Authoritative source for style values."}
+{"path":".trellis/tasks/07-03-mid-century-redesign-demo/research/mid-century-style-brief.md","kind":"research","note":"Original style brief from @librarian: colors, fonts, shapes, components, avoid list."}
+{"path":".trellis/tasks/07-04-apply-mcm-style/prd.md","kind":"plan","note":"Requirements + acceptance criteria for site-wide style application (Route A)."}
+{"path":".trellis/tasks/07-04-apply-mcm-style/design.md","kind":"plan","note":"Technical design: token replacement strategy, component contracts, hero SVG plan, ZH fallback."}
+{"path":".trellis/tasks/07-04-apply-mcm-style/implement.md","kind":"plan","note":"Execution checklist with 10 steps, validation, rollback, review gates."}
+{"path":"src/styles/global.css","kind":"spec","note":"Existing 1240-line stylesheet to rewrite. Contains all component class names to preserve. Read-only reference for class inventory."}
+{"path":"src/layouts/BaseLayout.astro","kind":"spec","note":"Layout shell to add Google Font link in <head>. Read-only reference."}
+{"path":"demo/styles.css","kind":"spec","note":"Validated mid-century CSS from demo. Reference for exact token values and component style patterns to port into global.css."}
